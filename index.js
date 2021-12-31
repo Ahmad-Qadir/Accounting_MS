@@ -11,10 +11,14 @@ const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const PORT = process.env.PORT || 5000;
 const app = express();
+const fs = require('fs')
+const csv = require('csv-parser')
+var uuid = require('uuid');
+
 var bodyParser = require('body-parser')
 // support parsing of application/json type post data
 app.use(bodyParser.json());
-// require('./controller/prod')
+require('./controller/prod')
 //support parsing of application/x-www-form-urlencoded post data
 app.use(bodyParser.urlencoded({
     extended: true
@@ -64,10 +68,8 @@ app.use(function (req, res, next) {
     next();
 });
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-const fs = require('fs')
-const csv = require('csv-parser')
-var uuid = require('uuid');
 
+console.log(__dirname)
 
 //Mongoose ODM
 mongoose.connect("mongodb+srv://Accountant:Accountant@cluster0.c5jxd.mongodb.net/AccountingMS?retryWrites=true&w=majority").then(
