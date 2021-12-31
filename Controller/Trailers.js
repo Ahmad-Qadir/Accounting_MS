@@ -2,10 +2,10 @@
 require('events').EventEmitter.defaultMaxListeners = Infinity
 const {
     roles
-} = require('../middleware/roles');
+} = require('../Middleware/roles');
 
 // ! Collections
-const TrailersCollection = require('../models/Trailers');
+const TrailersCollection = require('../Models/Trailers');
 
 // !: Basic Configuration
 //Authorization

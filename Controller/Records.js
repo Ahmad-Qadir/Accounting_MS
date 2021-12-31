@@ -2,11 +2,11 @@
 require('events').EventEmitter.defaultMaxListeners = Infinity
 const {
     roles
-} = require('../middleware/roles');
+} = require('../Middleware/roles');
 
 // ! Collections
-const RecordsCollection = require('../models/Records');
-const ProductsCollection = require('../models/products');
+const RecordsCollection = require('../Models/Records');
+const ProductsCollection = require('../Models/products');
 
 // !: Basic Configuration
 //Authorization

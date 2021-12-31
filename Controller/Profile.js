@@ -5,16 +5,16 @@ var invNum = require('invoice-number')
 
 
 //Collections Section
-const ProductsCollection = require('../models/products');
-const CustomerTypeCollection = require('../models/CustomerType');
-const HistoryClass = require('../models/Records');
-const ProfileCollection = require('../models/Profiles');
-const TrailerCollection = require('../models/Trailers');
-const CompanyCollection = require('../models/Company');
+const ProductsCollection = require('../Models/products');
+const CustomerTypeCollection = require('../Models/CustomerType');
+const HistoryClass = require('../Models/Records');
+const ProfileCollection = require('../Models/Profiles');
+const TrailerCollection = require('../Models/Trailers');
+const CompanyCollection = require('../Models/Company');
 
 const {
     roles
-} = require('../middleware/roles');
+} = require('../Middleware/roles');
 
 // !: Basic Configuration
 //Authorization

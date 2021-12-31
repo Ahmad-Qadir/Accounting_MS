@@ -2,16 +2,16 @@
 require('events').EventEmitter.defaultMaxListeners = Infinity
 const {
     roles
-} = require('../middleware/roles');
+} = require('../Middleware/roles');
 
 
 var uuid = require('uuid');
 
 
 // ! Collections
-const PartnersCollection = require('../models/Partners');
-const RecordsCollection = require('../models/Records');
-const DailyCollection = require('./daily_work');
+const PartnersCollection = require('../Models/Partners');
+const RecordsCollection = require('../Models/Records');
+const DailyCollection = require('./Daily_Work');
 
 // !: Basic Configuration
 //Authorization

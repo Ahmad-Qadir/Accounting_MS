@@ -5,16 +5,16 @@ const config = require('config');
 var uuid = require('uuid');
 const {
     roles
-} = require('../middleware/roles');
+} = require('../Middleware/roles');
 
 // ! Collections
-const ProductsCollection = require('../models/products');
-const RecordsCollection = require('../models/Records');
-const ProfileCollection = require('../models/Profiles');
-const TrailerCollection = require('../models/Trailers');
-const EmployeeClass = require('../models/employee');
-const CompanyCollection = require('../models/Company');
-const ItemUnitCollection = require('../models/ItemUnit');
+const ProductsCollection = require('../Models/products');
+const RecordsCollection = require('../Models/Records');
+const ProfileCollection = require('../Models/Profiles');
+const TrailerCollection = require('../Models/Trailers');
+const EmployeeClass = require('../Models/employee');
+const CompanyCollection = require('../Models/Company');
+const ItemUnitCollection = require('../Models/ItemUnit');
 
 // !: Basic Configuration
 //Authorization
