@@ -106,9 +106,9 @@ app.post('/parser', async (req, res) => {
         searchStr = {
             $or: [{
                 'itemName': regex
-            },{
+            }, {
                 'itemModel': regex
-            },{
+            }, {
                 'itemUnit': regex
             }, {
                 'manufacturerCompany': regex
@@ -346,7 +346,7 @@ app.get('/', async (req, res) => {
         var Expenses = []
         for (let index = 0; index < TotalExpenses.length; index++) {
             const element = TotalExpenses[index];
-            totalPrice = totalPrice + element['sellPrice']*element['totalQuantity'];
+            totalPrice = totalPrice + element['sellPrice'] * element['totalQuantity'];
         }
         Expenses = [totalPrice]
         //==============================================
@@ -354,7 +354,7 @@ app.get('/', async (req, res) => {
         var Income = []
         for (let index = 0; index < TotalIncome.length; index++) {
             const element = TotalIncome[index];
-            totalPriceIncome = totalPriceIncome + element['sellPrice']*element['totalQuantity'];
+            totalPriceIncome = totalPriceIncome + element['sellPrice'] * element['totalQuantity'];
         }
         Income = [totalPriceIncome]
         const Products = await ProductsCollection
@@ -364,7 +364,7 @@ app.get('/', async (req, res) => {
             .sort({
                 "createdAt": -1
             }).
-        populate('itemHistory')
+            populate('itemHistory')
 
 
         const _MostWanted = await ProductsCollection
@@ -392,7 +392,7 @@ app.get('/', async (req, res) => {
         res.render("Dashboard", {
             title: "Dashboard",
             product: Products,
-            mostwanted:_MostWanted,
+            mostwanted: _MostWanted,
             records: Records,
             expenses: Expenses,
             Income: Income,
@@ -410,11 +410,13 @@ app.get('/', async (req, res) => {
 
 
 //Error Handler
-// process.on('uncaughtException', function (err) {
-//     console.error((new Date).toUTCString() + ' uncaughtException:', err.message)
-// });
+process.on('uncaughtException', function (err) {
+    console.error((new Date).toUTCString() + ' uncaughtException:', err.message)
+});
 
 //Main Listner
-app.listen(PORT).on('error', function (err) {
+app.listen(PORT, function () {
+    console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+}).on('error', function (err) {
     console.log('Error Occured on error handler:' + err);
 });
