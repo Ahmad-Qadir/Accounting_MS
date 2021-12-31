@@ -1,6 +1,5 @@
 require('events').EventEmitter.defaultMaxListeners = Infinity
 const jwt = require('jsonwebtoken');
-const Bcrypt = require('bcrypt');
 const validator = require("joi");
 const config = require('config');
 
