@@ -1,0 +1,56 @@
+include ../components/Header
+block content
+    br
+    .container-fluid
+        // Page Heading
+        .d-sm-flex.align-items-left.justify-content-between.mb-4
+            h1.h3.mb-0.text-gray-800=title
+            .span
+                //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.mr-2(id="backup" onclick="backupAll()")
+                //-   i.fas.fa-database.fa-sm.text-white-50
+                //-   |  Backup Hotspots
+                a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white(href="/NewDailyTask")
+                    i.fas.fa-plus-square.fa-sm.text-white-50
+                    |  کاری نوێ
+        .container
+            != messages('message', locals)
+            if errors
+                each error, i in errors
+                    div(class="note note-danger") #{error.msg}
+        .row
+            .container-fluid.table-responsive
+                table(id="clientTable").table.table-hover.table-sm.dt-responsive.table-striped
+                    thead.thead-light
+                        tr(style="text-align:center; font-size:3 rem")
+                            th(scope='col') جۆر
+                            th(scope='col') تێبینی
+                            th(scope='col') لەلایان
+                            th(scope='col') بڕی پارە
+                            th(scope='col') جۆری پارە
+                            th(scope='col') بەروار
+
+                    tbody
+                        each item,i in task
+                            - var j=i;
+                            - var time = new Date();
+                            tr(style="font-weight:bold; font-size:2 rem; text-align:center;")
+                                td=item['task']
+                                td=item['note']
+                                td=item['createdBy']
+                                td=item['money']
+                                td=item['moneyType']
+                                td=item['createdAt'].toLocaleString()
+                    tfooter
+                        hr
+                        table.table.table-bordered
+                            tr(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
+                                td بڕی پارە بە دۆلار
+                                td="$ "+totalMoneyOfDolar
+                            tr(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
+                                td بڕی پارە بە دینار
+                                td="IQD "+totalMoneyOfDinar
+    //- include ../Components/Footer
+    script.
+        $(document).ready(function() {
+            $('#clientTable').DataTable();
+        } );

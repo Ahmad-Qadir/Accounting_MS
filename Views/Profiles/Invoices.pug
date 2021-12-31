@@ -1,0 +1,138 @@
+include ../components/Header
+block content
+  br
+  .container-fluid
+    // Page Heading
+    .d-sm-flex.align-items-left.justify-content-between.mb-4
+      h1.h3.mb-0.text-gray-800=" تۆماری "+ profile[0]['cutomerID']['clientName']
+      .container.col-md-4
+        .row.height.d-flex.justify-content-center.align-items-center
+          .col.md-6
+            .search-box
+              .input-group
+                input#search.form-control(type='text' placeholder='Search by Invoice ID')
+      .span
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-danger.shadow-sm.text-white.m-2(href="http://localhost/Profiles/Invoices/"+profile[0]['cutomerID']['_id'])
+          i.fas.fa-file-invoice.fa-sm.text-white-50
+          |  چاپکردنی تۆمارەکان
+        //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white(href=Address+"/Clients/Register")
+        //-     i.fas.fa-plus-square.fa-sm.text-white-50
+        //-     |  Add New Product
+    .row
+      .container-fluid.table-responsive
+        table(id="clientTable").table.table-hover.table-sm.dt-responsive.table-striped
+          thead.thead-light
+            tr
+              th(scope='col' style="font-size:90%") #
+              th(scope='col' style="font-size:90%") ناوی بەرهەم
+              th(scope='col' style="text-align:center; font-size:90%") کێش
+              th(scope='col' style="text-align:center; font-size:90%") ڕەنگ
+              th(scope='col' style="text-align:center; font-size:90%") ىڕ
+              th(scope='col' style="text-align:center; font-size:90%") باری ئێستا
+              th(scope='col' style="text-align:center; font-size:90%") بڕی فرۆشتن
+              th(scope='col' style="text-align:center; font-size:90%") کۆی گشتی نرخ
+              th(scope='col' style="text-align:center; font-size:90%") بارهەڵگر 
+              th(scope='col' style="text-align:center; font-size:90%") تێبینی 
+              th(scope='col' style="text-align:center; font-size:90%") بەروار 
+              th(scope='col' style="text-align:center; font-size:90%") لەلایان 
+              th(scope='col' style="text-align:center; font-size:90%") کردارەکان 
+
+          tbody
+            each item,i in invoices
+              - var json = JSON.stringify(invoices);
+              - var j=i;
+              tr
+                form(method='POST')
+                  td=item['recordCode']
+                  if item['productID']==undefined
+                    td پارەدان
+                    td(style="text-align:center;") 0
+                    td(style=`text-align:center;`) 0
+                    td(style="text-align:center;") 0
+                    td(style="text-align:center;")=item['status']
+                    td(style="text-align:center;") 0
+                    td(style="text-align:center;")="$ "+item['sellPrice'] * item['totalQuantity']
+                    td(style="text-align:center;") 0
+                    td(style="text-align:center;")=item['note']
+                    td(style="text-align:center;")=item['createdAt'].toLocaleString()
+                    td(style="text-align:center;")=item['addedBy']
+                    //- td=item['expireDate']
+                    td(style="text-align:center;")
+                      a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;"  href="http://localhost/Profiles/"+item['recordCode']+"/Print")
+                        span.icon.text-white-50
+                          i.fas.fa-print
+                  else 
+                    td=item['productID']['itemName']
+                    td(style="text-align:center;")=item['productID']['weight']+item['productID']['unit']
+                    td(style=`text-align:center; background-color:${item['productID']['color']}`)=item['productID']['color']
+                    td(style="text-align:center;")=item['totalQuantity']
+                    td(style="text-align:center;")=item['status']
+                    td(style="text-align:center;")="$ "+item['sellPrice']
+                    td(style="text-align:center;")="$ "+item['sellPrice'] * item['totalQuantity']
+                    td(style="text-align:center;")=item['trailerNumber']
+                    td(style="text-align:center;")=item['note']
+                    td(style="text-align:center;")=item['createdAt'].toLocaleString()
+                    td(style="text-align:center;")=item['addedBy']
+                    //- td=item['expireDate']
+                    td(style="text-align:center;")
+                      a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;"  href="http://localhost/Profiles/"+item['recordCode']+"/Print")
+                        span.icon.text-white-50
+                          i.fas.fa-print
+                    //- a(href="/Invoices/"+item['recordCode']+"/NewRecover" title="گەڕانەوەی بەرهەم" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;").btn.btn-sm.btn-primary.mr-2
+                    //-   span.icon.text-white-50
+                    //-     i.fas.fa-recycle
+                //- a.btn.btn-sm.btn-info.mr-2(title="Product Invoices" id="currentbackup"+j href="/Products/"+item['_id']+"/invoices")
+                //-     span.icon.text-white-50
+                //-         i.fas.fa-print
+                //- a(target="_blank" title="Edit Product" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;").btn.btn-sm.btn-warning.mr-2
+                //-     span.icon.text-white-50
+                //-         i.fas.fa-pencil-alt
+                //- include ../Components/Footer
+  script.
+    //- $(document).ready(function() {
+    //-   $('#clientTable').DataTable({
+    //-     "searching": true,
+    //-     "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+    //-     "pageLength": 50
+    //-   });
+    //- } );
+      function deleteRow(r,GetArray) {
+        var index = r.parentNode.parentNode.parentNode.rowIndex;
+        console.log(index)
+        var indexOfElement = r.id.match(/\d/g);
+        console.log(indexOfElement)
+
+        indexOfElement = indexOfElement.join("");
+        var ObjectID = GetArray[indexOfElement]["_id"];
+          clientID={
+            "address":ObjectID
+          }
+          $.ajax({
+            type: 'DELETE',
+            data: clientID,
+            url: "#{Address}/Clients/delete",
+            dataType: 'JSON'
+            })
+        document.getElementById("clientTable").deleteRow(index);
+      }
+
+      $(document).ready(function(){
+        // Activate tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+
+        // Filter table rows based on searched term
+          $("#search").on("keyup", function() {
+            var term = $(this).val().toLowerCase();
+            $("table tbody tr").each(function(){
+              $row = $(this);
+              var name = $row.find("td:nth-child(2)").text().toLowerCase();
+              if(name.search(term) < 0){                
+                $row.hide();
+              } else{
+                $row.show();
+              }
+            });
+          });
+        });
+
+

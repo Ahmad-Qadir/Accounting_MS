@@ -1,0 +1,76 @@
+include ../components/Header
+block content
+  br
+  .container
+    // Page Heading
+    .d-sm-flex.align-items-left.justify-content-between.mb-4
+      h1.h3.mb-0.text-gray-800=title
+      .span
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.mr-2(type='button' data-toggle='modal' onclick="printDiv('printableArea')")
+          i.fas.fa-print.fa-sm.text-white-50
+          |  Print
+    .jumbotron
+      .row
+        .container-fluid.table-responsive
+          .container(id="printableArea")
+            .card
+              .card-header
+                | Invoice
+                strong=" #2021/"+records[0]['recordCode']
+                span.float-right
+                  strong=records[0]['status']
+              .card-body
+                .row.mb-4
+                  .col-sm-6
+                    h6.mb-3 From:
+                    div
+                      strong="Titan Service - "+records[0]['addedBy']
+                    //- div Madalinskiego 8
+                    div Iraq - Erbil
+                    //- div Email: info@dotnettec.com
+                    div Phone: +964 750 000 00 00
+                  .col-sm-6
+                    h6.mb-3 To:
+                    div
+                      strong=profile["cutomerID"]['companyName']+" / "+profile["cutomerID"]['clientName']
+                    //- div Attn: Daniel Marek
+                    div=records[0]['createdAt'].toLocaleString()
+                    //- div Email: robert@daniel.com
+                    div="Phone: "+profile["cutomerID"]['phoneNumber'] +" / "+ profile["cutomerID"]['secondPhoneNumber']
+                .table-responsive-sm
+                  table.table.table-striped(id="invoiceTable")
+                    thead
+                      tr
+                        //- th.center #
+                        th بەرهەم
+                        th وردەکاریەکان
+                        th.right نرخی بەرهەم
+                        th.center بڕ
+                        th.right کۆی گشتی
+                    tbody
+                        each item,i in records
+                            tr  
+                                //- td=i+1
+                                if records[i]['productID']==undefined
+                                  td پارەدان
+                                  td 
+                                  td 
+                                  td 
+                                  td="$ "+records[i]['totalPrice']
+                                else 
+                                  td=records[i]['productID']['itemName']
+                                  td=records[i]['productID']['itemName']+"  "+records[i]['productID']['color']
+                                  td="$ "+records[i]['sellPrice']
+                                  td=records[i]['totalQuantity']
+                                  td="$ "+records[i]['sellPrice']*records[i]['totalQuantity']
+        script.
+            function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+            }

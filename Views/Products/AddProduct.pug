@@ -1,0 +1,120 @@
+include ../components/Header
+block content
+  br
+  .container
+    // Page Heading
+    .d-sm-flex.align-items-left.justify-content-between.mb-4
+    .jumbotron
+      .row
+        .container-fluid.table-responsive
+          form(method='POST' action="/Product")
+            .container
+              != messages('message', locals)
+              if errors
+                each error, i in errors
+                  div(class="alert alert-danger") #{error.msg}
+            h2 زانیاری بەرهەم
+            .row
+              .form-group.col-md-2
+                label ناوی بەرهەم
+                input.form-control(name="itemName" type='text' placeholder='' required)
+              .form-group.col-md-2
+                label جۆری بەرهەم
+                input.form-control(name="itemModel" type='text' placeholder='' required)
+              .form-group.col-md-2
+                label کۆمپانیای وەبەرهێن
+                select(name="manufacturerCompany" class="form-control")
+                  each item,i in company
+                      option(value=item['companyName'])=item['companyName']
+              .form-group.col-md-2
+                label وڵات
+                select(name="countryCompany" class="form-control")
+                  option(value="اردن") اردن
+                  option(value="عیراق") عیراق
+                  option(value="توركیا") توركیا
+                  option(value="ایتالیا") ایتالیا
+                  option(value="چین") چین
+                  option(value="ئیران") ئیران
+                  option(value="بریتانیا") بریتانیا
+              .form-group.col-md-2
+                label یەکەی پێوانە
+                select(name="unit" class="form-control")
+                  option(value="کارتۆن") کارتۆن
+                  option(value="دەرزەن") دەرزەن
+                  option(value="مەتر") مەتر
+                  option(value="کیلۆ") کیلۆ
+                  option(value="دانە") دانە
+                  option(value="لیتر") لیتر
+              .form-group.col-md-2
+                label یەکەی پێوانەی تاک
+                select(name="itemUnit" class="form-control")
+                  each item,i in itemUnit
+                      option(value=item['unitName'])=item['unitName']
+            .row
+              .form-group.col-md-2
+                label شێوەی بەرهەم
+                select(name="itemType" class="form-control")
+                  option(value="دهنی") دهنی
+                  option(value="مائی") مائی
+                  option(value="مائی و دهنی") مائی و دهنی
+                  option(value="نایترۆ سلیلۆز") نایترۆ سلیلۆز
+              .form-group.col-md-2
+                label کێش
+                input.form-control(name="weight" type='Number' required)
+              .form-group.col-md-2
+                label ڕەنگ
+                select(name="color" class="form-control")
+                  option(value="Red" style="background-color:Red") Red
+                  option(value="Green" style="background-color:Green") Green
+                  option(value="Blue" style="background-color:Blue") Blue
+                  option(value="Black" style="background-color:Black") Black
+                  option(value="Yellow" style="background-color:Yellow") Yellow
+                  option(value="Brown" style="background-color:Brown") Brown
+                  option(value="Pink" style="background-color:Pink") Pink
+                  option(value="Purple" style="background-color:Purple") Purple
+                  option(value="Grey" style="background-color:Grey") Grey
+                  option(value="White" style="background-color:White") White
+                  option(value="Orange" style="background-color:Orange") Orange
+              .form-group.col-md-2
+                label بەرواری بەسەرچوون
+                input.form-control(name="expireDate" type='date')
+              .form-group.col-md-1
+                label بڕ
+                input.form-control(name="perPacket" type='number' placeholder='0' required)
+              .form-group.col-md-1
+                label کۆمەڵ
+                input.form-control(name="packet" type='number' placeholder='0' required)
+              .form-group.col-md-2
+                label شوێنی بەکارهێنان
+                select(name="usedIn" class="form-control")
+                  option(value="خارجی") خارجی
+                  option(value="داخلی") داخلی
+                  option(value="داخلی و خارجی") داخلی و خارجی
+                  option(value="فلینكۆت") فلینكۆت
+            .row
+              .form-group.col-md-2
+                label تێجووی سەرەتایی
+                input.form-control(name="camePrice" type='number' placeholder='0' required)
+              .form-group.col-md-2
+                label مفرد
+                input.form-control(name="sellPriceMufrad" type='number' placeholder='0' required)
+              .form-group.col-md-2
+                label محل
+                input.form-control(name="sellPriceMahal" type='number' placeholder='0' required)
+              .form-group.col-md-2
+                label وەستا
+                input.form-control(name="sellPriceWasta" type='number' placeholder='0' required)
+              .form-group.col-md-2
+                label وەکیل
+                input.form-control(name="sellPriceWakil" type='number' placeholder='0' required)
+              .form-group.col-md-2
+                label شركه‌
+                input.form-control(name="sellPriceSharika" type='number' placeholder='0' required)
+          
+            button.btn.btn-primary.mt-2(type='submit') تۆمارکردن
+
+
+
+
+
+

@@ -1,0 +1,37 @@
+extends /Dashboard/Header
+block PageContent
+  // Begin Page Content
+  .container-fluid
+    // Page Heading
+    .d-sm-flex.align-items-left.justify-content-between.mb-4
+      h1.h3.mb-0.text-gray-800=title
+    // Content Row
+    .row
+      main.container(role='main')
+        table(class="table table-hover table-bordered" id="profileTable")                      
+          tbody
+            tr
+              th(style="width: 250px;") Full Name
+              th=result["fullname"]
+            tr
+              td Username
+              td=result['username']
+            tr
+              td Phone Number
+              td=result['phoneNumber']
+            tr
+              td Balance
+              td="$ "+result['balance']
+            tr
+              td Role
+              td=result['role']
+            tr
+              td Registration date
+              td=result['createdAt']
+            tr
+              td Latest Profile Modification
+              td=result['updatedAt']
+
+
+
+

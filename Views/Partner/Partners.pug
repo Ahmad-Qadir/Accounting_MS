@@ -1,0 +1,38 @@
+include ../components/Header
+block content
+    br
+    .container-fluid
+        // Page Heading
+        .d-sm-flex.align-items-left.justify-content-between.mb-4
+            h1.h3.mb-0.text-gray-800=title
+            .span
+                a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white(href="/Partners/Request")
+                    i.fas.fa-plus-square.fa-sm.text-white-50
+                    | ڕاکێشانی پارە
+        .container
+            != messages('message', locals)
+            if errors
+                each error, i in errors
+                    div(class="note note-danger") #{error.msg}
+        .row
+            .container-fluid.table-responsive
+                table(id="partnersTable").table.table-hover.table-sm.dt-responsive.table-striped
+                    thead.thead-light
+                        tr(style="text-align:center; font-size:3 rem")
+                            th(scope='col') ناو
+                            th(scope='col') بڕی باڵانس
+                            th(scope='col') پشک
+                            th(scope='col') کۆتا نوێکردنەوە
+                    tbody
+                        each item,i in partners
+                            - var j=i;
+                            - var time = new Date();
+                            tr(style="font-weight:bold; font-size:2 rem; text-align:center;")
+                                td=item['username']
+                                td=item['balance']
+                                td=item['rate']
+                                td=item['updatedAt'].toLocaleString()
+                    tfooter 
+                        tr 
+                            td="کۆی گشتی داهات:"+income
+                            //- td="کۆی گشتی خەرجی"+expense

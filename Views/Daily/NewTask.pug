@@ -1,0 +1,42 @@
+include ../components/Header
+block content
+    br
+    .container-fluid
+        // Page Heading
+        .d-sm-flex.align-items-left.justify-content-between.mb-4
+            h1.h3.mb-0.text-gray-800=title
+        .container
+            != messages('message', locals)
+            if errors
+                each error, i in errors
+                    div(class="note note-danger") #{error.msg}
+        .row
+            .container-fluid
+                form(method="POST" action="/Daily")
+                    h2 زانیاری کار
+                    .row
+                        .form-group.col-md-1
+                            label پارە
+                            input.form-control(name="money" type='number' value="0")
+                        .form-group.col-md-4
+                            label جۆر
+                            select(name="task" class="form-control")
+                                option(value="پیداویستی كۆمپانیا") پیداویستی كۆمپانیا
+                                option(value="کرێی گواستنەوە") کرێی گواستنەوە
+                                option(value="به‌نزین") به‌نزین 
+                                option(value="دیاری") دیاری 
+                                option(value="خواردن") خواردن 
+                                option(value="دابه‌زاندنی بار") دابه‌زاندنی بار 
+                                option(value="كارت") كارت 
+                                option(value="ته‌كسی") ته‌كسی 
+                                option(value="كرێی كارەبا") كرێی كارەبا 
+                        .form-group.col-md-3
+                            label جۆری پارە
+                            select(name="moneyType" class="form-control")
+                                option(value="دینار") دینار
+                                option(value="دۆلار") دۆلار
+                        .form-group.col-md-3
+                            label تێبینی
+                            input.form-control(name="note" type='text')
+                        .form-group.col-md-1
+                            button.mt-4.btn.btn-primary(type='submit') تۆمارکردن

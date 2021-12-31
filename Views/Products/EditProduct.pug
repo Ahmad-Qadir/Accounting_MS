@@ -1,0 +1,59 @@
+include ../components/Header
+block content
+  br
+  .container
+    // Page Heading
+    .d-sm-flex.align-items-left.justify-content-between.mb-4
+    .jumbotron
+      .row
+        .container-fluid.table-responsive
+          form(method='POST' action="/Products/"+product[0]['_id']+"/Update")
+            .container
+              != messages('message', locals)
+              if errors
+                each error, i in errors
+                  div(class="note note-danger") #{error.msg}
+            h2="نوێکردنەوەی زانیاریەکانی "+product[0]['itemName']
+            .row
+              .form-group.col-md-3
+                label ناوی بەرهەم
+                input.form-control(name="itemName" type='text' placeholder='' value=product[0]['itemName'] disabled)
+              .form-group.col-md-3
+                label کۆمپانیای وەبەرهێن
+                select(name="manufacturerCompany" class="form-control" disabled)
+                  option(value=product[0]['manufacturerCompany'])=product[0]['manufacturerCompany']
+              .form-group.col-md-3
+                label یەکەی پێوانە
+                select(name="unit" class="form-control" disabled)
+                  option(value=product[0]['unit'])=product[0]['unit']
+              .form-group.col-md-3
+                label شوێنی بەکارهێنان
+                select(name="usedIn" class="form-control")
+                  option(value="خارجی") خارجی
+                  option(value="داخلی") داخلی
+                  option(value="داخلی و خارجی") داخلی و خارجی
+                  option(value="فلینكۆت") فلینكۆت
+            .row
+              .form-group.col-md-2
+                label مفرد
+                input.form-control(name="sellPriceMufrad" type='number' placeholder='0' value=product[0]['sellPriceMufrad'])
+              .form-group.col-md-2
+                label محل
+                input.form-control(name="sellPriceMahal" type='number' placeholder='0' value=product[0]['sellPriceMahal'])
+              .form-group.col-md-2
+                label وەستا
+                input.form-control(name="sellPriceWasta" type='number' placeholder='0' value=product[0]['sellPriceWasta'])
+              .form-group.col-md-2
+                label وەکیل
+                input.form-control(name="sellPriceWakil" type='number' placeholder='0' value=product[0]['sellPriceWakil'])
+              .form-group.col-md-2
+                label شركه‌
+                input.form-control(name="sellPriceSharika" type='number' placeholder='0' value=product[0]['sellPriceSharika'])
+              .form-group.col-md-2
+                button.btn.btn-primary.mt-4(type='submit') نوێکردنەوە
+
+
+
+
+
+

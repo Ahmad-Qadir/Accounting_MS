@@ -1,0 +1,30 @@
+include ../components/Header
+block content
+  br
+  .container
+    // Page Heading
+    .d-sm-flex.align-items-left.justify-content-between.mb-4
+      h1.h3.mb-0.text-gray-800=title
+    .jumbotron
+      .row
+        .container-fluid.table-responsive
+          form(method="POST" action="/Partners/Request/NewRequest")
+            .container
+              != messages('message', locals)
+              if errors
+                each error, i in errors
+                  div(class="alert alert-danger") #{error.msg}
+            h2 زانیاری داواکاری
+            .row
+              .form-group.col-md-1
+                label بڕ
+                input.form-control(name="price" type='number' value="1")
+              .form-group.col-md-5
+                label پشکدار
+                select(name="partnerId" class="form-control")
+                  each item,i in partners
+                    option(value=item['_id'])=item['username']
+              .form-group.col-md-6
+                label تێبینی
+                input.form-control(name="note" type='text')
+            button.btn.btn-primary(type='submit') تۆمارکردن

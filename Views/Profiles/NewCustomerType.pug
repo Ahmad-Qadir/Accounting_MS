@@ -1,0 +1,26 @@
+extends /Dashboard/Header
+block PageContent
+  .container-fluid
+    .row
+      .container-fluid.table-responsive
+        form(method='POST' action="/Profiles/Customer/NewTypes")
+          .container
+            != messages('message', locals)
+            if errors
+              each error, i in errors
+                div(class="alert alert-danger") #{error.msg}
+          h2 Customer Type Information
+          .form-row
+            .form-group.col-md-4
+              label Customer Type
+              input.form-control(name="customerType" type='text' placeholder='Customer Type')
+            .form-group.col-md-4
+              label Note
+              input.form-control(name="note" type='text' placeholder='Note')
+          button.btn.btn-primary(type='submit') Submit
+
+
+
+
+
+

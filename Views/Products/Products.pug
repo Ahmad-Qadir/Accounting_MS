@@ -1,0 +1,269 @@
+include ../components/Header
+block content
+  br
+  .container-fluid
+    // Page Heading
+    .d-sm-flex.align-items-left.justify-content-between.mb-4
+      h1.h3.mb-0.text-gray-800=title
+      .span
+        //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.mr-2(id="backup" onclick="backupAll()")
+        //-   i.fas.fa-database.fa-sm.text-white-50
+        //-   |  Backup Hotspots
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.m-1(href="/NewProduct")
+          i.fas.fa-plus-square.fa-sm.text-white-50
+          |  بەرهەمی نوێ
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-warning.shadow-sm.text-white.m-1(href="/NewTrailer")
+          i.fas.fa-truck-moving.fa-sm.text-white-50
+          |  بار‌هەڵگری نوێ
+    .container
+      != messages('message', locals)
+      if errors
+        each error, i in errors
+          div(class="alert alert-danger") #{error.msg}
+    //- .container
+    //-   .row.height.d-flex.justify-content-center.align-items-center
+    //-     .col.md-6
+    //-       .search-box
+    //-         .input-group
+    //-           input#search.form-control(type='text' placeholder='Search by Name')
+    //-     .col.md-6
+    //-       .search-box
+    //-         .input-group
+    //-           input#searchByCom.form-control(type='text' placeholder='Search by Company')
+
+    hr
+    .row
+      .container-fluid.table-responsive
+        table(id="productTable").table.table-hover.table-lg.table-striped
+          thead.thead-light
+            tr(style="text-align:center; font-size:90%")
+              th(scope='col') ناوی بەرهەم
+              //- th(scope='col') Product Code
+              th(scope='col') وڵات
+              th(scope='col') کۆمپانیای وەبەرهێن
+              //- th(scope='col') Company Code
+              th(scope='col') جۆری بەرهەم
+              //- th(scope='col') Per Packet Weight
+              th(scope='col') کێشی گشتی
+              th(scope='col') ڕەنگ
+              //- th(scope='col') Remained Packets
+              th(scope='col') کۆی گشتی
+              //- th(scope='col') Registered Price
+              th(scope='col') فرۆشتن (تاک)
+              th(scope='col') فرۆشتنی گشتی (تاک)
+              //- th(scope='col') Expire Date 
+              //- th(scope='col') Trailer 
+              th(scope='col') کردارەکان 
+          tbody
+          //- tbody
+            each item,i in product
+              - var json = JSON.stringify(product);
+              - var j=i;
+              - var time = new Date();
+              tr(style="font-weight:bold; text-align:center")
+                form(method='POST')
+                  if item['expireDate'].getTime() > time.getTime()
+                    td=item['itemName']
+                  else 
+                    td=item['itemName']
+                      b(style="color:red") *
+                  //- td=item['itemCode']
+                  td=item['countryCompany']
+                  td=item['manufacturerCompany']
+                  //- td=item['companyCode']
+                  td=item['itemType']
+                  //- td=item['weight']+item['unit']
+                  td=item['totalWeight']+item['unit']
+                  td(style=`text-align:center; background-color:${item['color']}`)=item['color']
+                  //- td=item['remainedPacket']
+                  td=item['totalQuantity']
+                  //- td="$ "+item['camePrice']
+                  td="$ "+item['sellPriceMufrad']
+                  td="$ "+item['totalPrice']
+                  //- td=item['expireDate']
+                  //- td=item['trailerNumber']
+                  td
+                    a.btn.btn-sm.btn-secondary.m-1( title="زانیاری بەرهەم" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" type='button' data-toggle='modal' data-target='#infowindow'+i)
+                      span.icon.text-white-50
+                        i.fas.fa-info-circle
+                    a.btn.btn-sm.btn-info.m-1(title="تۆماری بەرهەم" href="/Products/"+item['_id']+"/invoices" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;")
+                      span.icon.text-white-50
+                        i.fas.fa-file-invoice
+                    a.btn.btn-sm.btn-warning.m-1.disabled(target="_blank" title="نوێکردنەوەی بەرهەم" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;")
+                      span.icon.text-white-50
+                        i.fas.fa-pencil-alt
+                    a.btn.btn-sm.btn-danger.m-1(target="_blank" title="ڕەشکردنەوەی بەرهەم" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" data-toggle="modal" data-target="#confirm-delete"+i)
+                      span.icon.text-white-50
+                        i.fas.fa-trash-alt
+                    a.btn.btn-sm.btn-primary.m-1(href="Products/"+item['_id']+"/NewRecover" title="گەڕانەوەی بەرهەم" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;")
+                      span.icon.text-white-50
+                        i.fas.fa-recycle
+                    // Modal
+                    .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id=`confirm-delete${i}`)
+                      .modal-dialog.modal-dialog-centered.modal-s(role='document')
+                        .modal-content
+                          .modal-header=item['itemName']
+
+                          .modal-body ئایا دڵنیای لە ڕەشکردنەوەی بەرهەمی 
+                            b=item['itemName']
+                          .modal-footer
+                            button.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
+                            a.btn.btn-danger.btn-ok(id="objID"+i data-dismiss='modal' onclick='deleteRow(this,'+json+')') ڕەشکردنەوە
+                    .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id=`infowindow${i}`)
+                      .modal-dialog.modal-dialog-centered.modal-xl(role='document')
+                        .modal-content
+                          .modal-header
+                            h5#exampleModalLongTitle.modal-title=item['itemName']
+                            button.close(type='button' data-dismiss='modal' aria-label='Close')
+                              span(aria-hidden='true') ×
+                          .modal-body
+                            table.table.table-striped
+                              //- thead.thead-dark
+                              //-   tr
+                              //-     th(scope='col' colspan=4) Product Information
+                              tbody
+                                tr
+                                  th(scope='row' style="text-align:left;" width="25%") ناوی بەرهەم
+                                  td=item['itemName']
+                                  th(scope='row' style="text-align:left;" width="25%") کۆدی بەرهەم
+                                  td=item['itemCode']
+                                tr
+                                  th(scope='row' style="text-align:left;" width="25%") کۆمپانیای وەبەرهێن 
+                                  td=item['manufacturerCompany']
+                                  th(scope='row' style="text-align:left;" width="25%") وڵات
+                                  td=item['countryCompany']
+                                tr
+                                  th(scope='row' style="text-align:left;" width="25%") یەکە
+                                  td=item['unit']
+                                  th(scope='row' style="text-align:left;" width="25%") جۆری بەرهەم
+                                  td=item['itemType']
+                                tr
+                                  th(scope='row' style="text-align:left;" width="25%") کێش
+                                  td=item['weight']+" "+item['unit']
+                                  th(scope='row' style="text-align:left;" width="25%") کێشی گشتی
+                                  td=item['totalWeight']+" "+item['unit']
+                                tr
+                                  th(scope='row' style="text-align:left;" width="25%") بار
+                                  td=item['status']
+                                  th(scope='row' style="text-align:left;" width="25%") ڕەنگ
+                                  td=item['color']
+                                tr
+                                  th(scope='row' style="text-align:left;" width="25%") پاکەت
+                                  td=item['packet']
+                                  th(scope='row' style="text-align:left;" width="25%") کۆی گشتی 
+                                  td=item['perPacket']
+                                tr
+                                  th(scope='row' style="text-align:left;" width="25%") کۆی گشتی پاکەت (ماوە)
+                                  td=item['remainedPacket']
+                                  th(scope='row' style="text-align:left;" width="25%") کۆی گشتی (ماوە)
+                                  td=item['remainedPerPacket']
+                                tr
+                                  th(scope='row' style="text-align:left;" width="25%") ژمارەی بارهەڵگر
+                                  td=item['trailerNumber']
+                                  th(scope='row' style="text-align:left;" width="25%") بەرواری بەسەرچوون
+                                  if item['expireDate'].getTime() > time.getTime()
+                                    td=item['expireDate'].toLocaleString()
+                                  else 
+                                    td.bg-danger.text-white=item['expireDate'].toLocaleString()
+                                      b(style="color:red").text-white   Expired
+                                tr
+                                  th(scope='row' style="text-align:left;" width="25%") نرخی هاتوو
+                                  td="$ "+item['camePrice']
+                                  th(scope='row' style="text-align:left;" width="25%") نرخی فرۆشتن (تاک)
+                                  td="$ "+item['sellPriceMufrad']
+                                tr
+                                  th(scope='row' style="text-align:left;" width="25%") نرخی فرۆشتن (شركه‌)
+                                  td="$ "+item['sellPriceSharika']
+                                  th(scope='row' style="text-align:left;" width="25%") نرخی فرۆشتن (وەستا)
+                                  td="$ "+item['sellPriceWasta']
+                                tr
+                                  th(scope='row' style="text-align:left;" width="25%") نرخی فرۆشتن (محل)
+                                  td="$ "+item['sellPriceMahal']
+                                  th(scope='row' style="text-align:left;" width="25%") نرخی فرۆشتن (وەکیل)
+                                  td="$ "+item['sellPriceWakil']
+                                tr(rowspan="3")
+                                  th(scope='row' style="text-align:left;" width="25%" ) کۆی گشتی هاتوو
+                                  td=item['totalQuantity']
+                                  th(scope='row' style="text-align:left;" width="25%") کۆی گشتی نرخ
+                                  td="$ "+item['totalPrice']
+                                tr
+                                  th(scope='row' style="text-align:left;" width="25%") تۆمارکراوە لەلایەن
+                                  td=item['addedBy']
+                                  th(scope='row' style="text-align:left;" width="25%") نوەکراوەتەوە لەلایەن
+                                  td=item['updatedBy']
+                                tr
+                                  th(scope='row' style="text-align:left;") تۆمارکراوە لە
+                                  td=item['createdAt'].toLocaleString('en-US')
+                                  th(scope='row' style="text-align:left;") نوەکراوەتەوە لە
+                                  td=item['updatedAt'].toLocaleString('en-US')
+                          //- .modal-footer
+                          //-   button.btn.btn-secondary(type='button' data-dismiss='modal') Close
+                          //- button.btn.btn-primary(type='button') Save changes
+
+  script.
+    $(document).ready(function() {
+      $('#productTable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": {url:"http://localhost/parser",type:"POST"},
+        'columns':
+          [
+            { 'data': 'itemName', "defaultContent": "", 'name': 'itemName' },
+            { 'data': 'countryCompany', "defaultContent": "N", 'name': 'countryCompany' },
+            { 'data': 'manufacturerCompany', "defaultContent": "X", 'name': 'manufacturerCompany' },
+            { 'data': 'itemType', "defaultContent": "N", 'name': 'itemType' },
+            { 'data': 'totalWeight', "defaultContent": "N", 'name': 'totalWeight' },
+            { 'data': 'color', "defaultContent": "N", 'name': 'color' },
+            { 'data': 'totalQuantity', "defaultContent": "N", 'name': 'totalQuantity' },
+            { 'data': 'sellPriceMufrad', "defaultContent": "N", 'name': 'sellPriceMufrad' },
+            { 'data': 'totalPrice', "defaultContent": "N", 'name': 'totalPrice' },
+            { 
+              data: '_id', 
+              render: function ( data, type, row, meta ) {
+                var object=[];
+                //- object[0]= "<a class='btn btn-sm btn-secondary m-1' title='زانیاری بەرهەم' style='padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;' type='button' data-toggle='modal' data-target='#infowindow"+data+"><span class='icon text-white-50'><i class='fas fa-info-circle'></i></span></a>";
+                object[0]= "<a class='btn btn-sm btn-info m-1' title='تۆماری بەرهەم' href='/Products/"+data+"/invoices' style='padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;'><span class='icon text-white-50'><i class='fas fa-file-invoice'></i></span></a>";
+                object[1]="<a class='btn btn-sm btn-warning m-1' href='/Products/"+data+"/Modification' title='نوێکردنەوەی بەرهەم' style='padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;'><span class='icon text-white-50'><i class='fas fa-pencil-alt'></i></span></a>";
+                object[2]="<a class='btn btn-sm btn-danger m-1' href='/Products/Remove/"+data+"'title='ڕەشکردنەوەی بەرهەم' style='padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;><span class='icon text-white-50'><i class='fas fa-trash-alt'></i></span></a>";
+                object[3]="<a class='btn btn-sm btn-primary m-1' href='/Products/"+data+"/NewRecover' title='گەڕانەوەی بەرهەم' style='padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;'><span class='icon text-white-50'><i class='fas fa-recycle'></i></span></a>";
+                return object;
+              } 
+            },
+
+          ],
+          "columnDefs": [
+            {
+              "targets": [0,1,2,3,4,5,6,7,8],
+              "createdCell": function (td, cellData, rowData, row, col) {
+                $(td).css("font-weight","bold");
+                $(td).css("text-align","center");
+              }
+            }
+          ],
+        //- "createdRow":function(row,data,index){
+        //- $(row).append('<td>'+ data['itemName']+'</td>');
+        //- $(row).append('<td>'+ data['color']+'</td>');
+        //- $(row).append('<td>'+ data['itemName']+'</td>');
+        //- $(row).append('<td>'+ data['itemName']+'</td>');
+        //- $(row).append('<td>'+ data['itemName']+'</td>');
+        //- $(row).append('<td>'+ data['itemName']+'</td>');
+        //- $(row).append('<td>'+ data['itemName']+'</td>');
+
+        //-   console.log(data)
+        //- },
+        //- "deferLoading": 20,
+        "deferRender": true,
+        //- "searching": true,
+        //- "paging": true
+      });
+    } );
+      function deleteRow(r,GetArray) {
+        var row = r.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.rowIndex;
+        console.log(r)
+          //- $.ajax({
+          //-   type: 'DELETE',
+          //-   url: "http://localhost/Products/Remove/"+GetArray[row-1]['_id'],
+          //-   dataType: 'JSON'
+          //-   })
+        document.getElementById("productTable").deleteRow(row);
+      }

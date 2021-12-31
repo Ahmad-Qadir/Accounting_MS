@@ -1,0 +1,48 @@
+include ../components/Header
+block content
+    br
+    .container
+        // Page Heading
+        .d-sm-flex.align-items-left.justify-content-between.mb-4
+            h1.h3.mb-0.text-gray-800=title
+        .jumbotron
+            .row
+                .container-fluid.table-responsive
+                    form(method="POST" action="/Products/"+trailer[0]['productID']+"/invoice")
+                        .container
+                            != messages('message', locals)
+                            if errors
+                                each error, i in errors
+                                    div(class="alert alert-danger") #{error.msg}
+                        h2 Request Information
+                        .form-row
+                            .form-group.col-md-4
+                                label Product Name
+                                input.form-control(name="itemName" type='text' value=trailer[0]['itemName'] disabled)
+                            .form-group.col-md-2
+                                label Sell Price
+                                input.form-control(name="sellPrice" type='text' value=trailer[0]['sellPrice'])
+                            .form-group.col-md-2
+                                label Requested Packets
+                                input.form-control(name="perPacket" type='number' value="1")
+                            .form-group.col-md-4
+                                label Trailer Number
+                                select(name="trailerNumber" class="form-control")
+                                    each item,i in trailer
+                                        option(value=trailer[i]['trailerNumber'])=trailer[i]['trailerNumber']+"-----Quantity:"+trailer[i]['totalQuantity']
+                        .form-row
+                            .form-group.col-md-5
+                                label Customer Name
+                                select(name="cutomerID" class="form-control")
+                                    each item,i in profiles
+                                        option(value=item['_id'])=item['clientName']
+                            .form-group.col-md-7
+                                label Note
+                                input.form-control(name="note" type='text')
+                        button.btn.btn-primary(type='submit') Submit
+
+
+
+
+
+

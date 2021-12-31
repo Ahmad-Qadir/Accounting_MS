@@ -1,0 +1,27 @@
+include ../components/Header
+block content
+    br
+    .container
+        .jumbotron
+            .row
+                .container-fluid.table-responsive
+                    form(method="POST" action="/Invoices/Print")
+                        h2 زانیاری داواکراوی چاپکردن
+                        .row
+                            .form-group.col-md-3
+                                label بەرواری سەرەتایی
+                                input.form-control(name="startDate" type='date')
+                            .form-group.col-md-3
+                                label بەرواری کۆتایی
+                                input.form-control(name="endDate" type='date')
+                            //- .form-group.col-md-3
+                            //-     label بار
+                            //-     select(name="status" class="form-control")
+                            //-         option(value="Partner Request") عیراق
+                            //-         option(value="Customer Request") توركیا
+                            //-         option(value="ایتالیا") ایتالیا
+                            //-         option(value="چین") چین
+                            //-         option(value="ئیران") ئیران
+                            //-         option(value="بریتانیا") بریتانیا
+                            .form-group.col-md-3
+                                button.btn.btn-primary.m-4(type='submit') داواکردن

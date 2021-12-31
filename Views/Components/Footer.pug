@@ -1,0 +1,28 @@
+hr
+.container
+  footer
+    p(style="float:left") Copyright &copy Titan Service Company 2021
+    p(style="float:right") Developed by
+      a(href="mailto:Ahmad.Qadir@outlook.com")  Ahmad Abdullah Qadir
+  // End of Footer
+  // End of Content Wrapper
+  // End of Page Wrapper
+  // Scroll to Top Button
+  a.scroll-to-top.rounded(href='#page-top')
+    i.fas.fa-angle-up
+  // Logout Modal
+  #logoutModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          h5#exampleModalLabel.modal-title Ready to Leave?
+          |           
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') &times;
+        |         
+        .modal-body Select &quot;Logout&quot; below if you are ready to end your current session.
+        |         
+        .modal-footer
+          button.btn.btn-secondary(type='button', data-dismiss='modal') Cancel
+          |           
+          a.btn.btn-primary(href='/logout') Logout

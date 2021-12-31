@@ -1,0 +1,118 @@
+include ../components/Header
+block content
+  br
+  .container-fluid
+    // Page Heading
+    .d-sm-flex.align-items-left.justify-content-between.mb-4
+      h1.h3.mb-0.text-gray-800
+      .span
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-danger.shadow-sm.text-white.mr-2(id="backup" onclick="backupAll()")
+          i.fas.fa-file-invoice.fa-sm.text-white-50
+          |  چاپکردنی تۆمارەکان
+        //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white(href=Address+"/Clients/Register")
+        //-     i.fas.fa-plus-square.fa-sm.text-white-50
+        //-     |  Add New Product
+
+    .card.container-fluid
+      .card-body
+        .row
+          .container-fluid.table-responsive
+            h2 زانیاری بەرهەم
+            .row
+              .form-group.col-md-2
+                label ناوی بەرهەم
+                input.form-control(name="itemName" type='text' value=product[0]['productID']['itemName'] disabled)
+              .form-group.col-md-2
+                label شێوەی بەرهەم
+                input.form-control(name="itemName" type='text' value=product[0]['productID']['itemModel'] disabled)
+              .form-group.col-md-2
+                label کۆمپانیای وەبەرهێن
+                input.form-control(name="manufacturerCompany" type='text' value=product[0]['productID']['manufacturerCompany'] disabled)
+              .form-group.col-md-2
+                label وڵات
+                input.form-control(name="countryCompany" type='text' value=product[0]['productID']['countryCompany'] disabled)
+              .form-group.col-md-2
+                label یەکەی پێوانە
+                input.form-control(name="unit" type='text' value=product[0]['productID']['unit'] disabled)
+              .form-group.col-md-2
+                label یەکەی پێوانەی تاک
+                input.form-control(name="unit" type='text' value=product[0]['productID']['itemUnit'] disabled)
+            .row
+              .form-group.col-md-3
+                label جۆری بەرهەم
+                input.form-control(name="itemType" type='text' value=product[0]['productID']['itemType'] disabled)
+              .form-group.col-md-3
+                label کێش
+                input.form-control(name="weight" type='text' value=product[0]['productID']['weight'] disabled)
+              .form-group.col-md-3
+                label ڕەنگ
+                input.form-control(name="color" type='text' value=product[0]['productID']['color'] disabled)
+              .form-group.col-md-3
+                label بەرواری بەسەرچوون
+                input.form-control(name="expireDate" type='text' value=product[0]['productID']['expireDate'].toLocaleString() disabled)
+            .row
+              .form-group.col-md-3
+                label بڕ
+                input.form-control(name="perPacket" type='text' value=product[0]['productID']['perPacket'] disabled)
+              .form-group.col-md-3
+                label کۆمەڵ
+                input.form-control(name="packet" type='text' value=product[0]['productID']['packet'] disabled)
+              .form-group.col-md-3
+                label تێجووی سەرەتایی
+                input.form-control(name="camePrice" type='text' value=product[0]['productID']['camePrice'] disabled)
+              .form-group.col-md-3
+                label شوێنی بەکارهێنان
+                input.form-control(name="usedIn" type='text' value=product[0]['productID']['usedIn'] disabled)
+            .row
+              .form-group.col-md-2
+                label مفرد
+                input.form-control(name="sellPriceMufrad" type='text' value=product[0]['productID']['sellPriceMufrad'] disabled)
+              .form-group.col-md-2
+                label محل
+                input.form-control(name="sellPriceMahal" type='text' value=product[0]['productID']['sellPriceMahal'] disabled)
+              .form-group.col-md-2
+                label وەستا
+                input.form-control(name="sellPriceWasta" type='text' value=product[0]['productID']['sellPriceWasta'] disabled)
+              .form-group.col-md-2
+                label وەکیل
+                input.form-control(name="sellPriceWakil" type='text' value=product[0]['productID']['sellPriceWakil'] disabled)
+              .form-group.col-md-2
+                label شركه
+                input.form-control(name="sellPriceSharika" type='text' value=product[0]['productID']['sellPriceSharika'] disabled)
+              .form-group.col-md-2
+                label ژمارەی بار
+                input.form-control(name="trailerNumber" type='text' value=product[0]['productID']['trailerNumber'] disabled)
+      .card-footer.text-muted="دوا نوێکردنەوە لەلایان "+productInfo[0]['updatedBy'] + " لە بەرواری "+productInfo[0]["updatedAt"].toLocaleString()
+    hr
+    h2 تۆماری بەرهەم
+    .row
+      .container-fluid.table-responsive
+        table(id="clientTable").table.table-hover.table-sm.dt-responsive.table-striped
+          thead.thead-light
+            tr
+              th(scope='col' style="font-size:90%") Invoice ID
+              th(scope='col' style="text-align:center; font-size:90%") کۆی گشتی
+              th(scope='col' style="text-align:center; font-size:90%") بار
+              th(scope='col' style="text-align:center; font-size:90%") نرخی بەرهەم
+              th(scope='col' style="text-align:center; font-size:90%") ژمارەی بارهەڵگر
+              th(scope='col' style="text-align:center; font-size:90%") تێبینی 
+              th(scope='col' style="text-align:center; font-size:90%") کڕیار 
+              th(scope='col' style="text-align:center; font-size:90%") بەروار 
+
+          tbody
+            each item,i in product
+              - var json = JSON.stringify(product);
+              - var j=i;
+              tr
+                form(method='POST')
+                  td=item['recordCode']
+                  td(style="text-align:center;")=item['totalQuantity']
+                  td(style="text-align:center;")=item['status']
+                  td(style="text-align:center;")="$ "+item['productID']['camePrice']
+                  td(style="text-align:center;")=item['trailerNumber']
+                  td(style="text-align:center;")=item['note']
+                  if item['cutomerID']==undefined
+                    td(style="text-align:center;") بەردەست نیە
+                  else
+                    td(style="text-align:center;")=profile[i]['cutomerID']['clientName']
+                  td(style="text-align:center;")=item['createdAt'].toLocaleString()

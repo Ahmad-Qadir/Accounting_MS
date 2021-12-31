@@ -1,0 +1,45 @@
+include ../components/Header
+block content
+    br
+    .container-fluid
+        // Page Heading
+        //- .d-sm-flex.align-items-left.justify-content-between.mb-4
+        //-   h1.h3.mb-0.text-gray-800=title
+        //-   .span
+        //-     //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.mr-2(id="backup" onclick="backupAll()")
+        //-     //-   i.fas.fa-database.fa-sm.text-white-50
+        //-     //-   |  Backup Hotspots
+        //-     a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white(href="/Profiles/AddNew")
+        //-       i.fas.fa-plus-square.fa-sm.text-white-50
+        //-       |  زیادکردنی کڕیاری نوێ
+        .row
+            #accordionExample.accordion
+                each item,i in trailers
+                    .accordion-item
+                        h2(id="heading"+i).accordion-header
+                            button.accordion-button(type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)="Trailer Number"+i
+                        .accordion-collapse.collapse.show(aria-labelledby="heading"+i data-mdb-parent='#accordionExample' id="collapse"+i)
+                            .accordion-body
+                                .container-fluid.table-responsive
+                                    table.table.table-hover.table-sm.dt-responsive.table-striped
+                                        thead.thead-light
+                                            tr(style="text-align:center; font-size:3 rem")
+                                                th(scope='col') ناو
+                                                th(scope='col') ژمارەی مۆبایل
+                                                th(scope='col') ناوی کۆمپانیا
+                                                th(scope='col') جۆری کڕیار
+                                                th(scope='col') ئیمیڵ
+                                                th(scope='col') ناونیشان
+                                                th(scope='col') باڵانسی ماوە
+                                                th(scope='col') ژمارەی فاتورە
+                                        tbody
+                                            tr(style="font-weight:bold; font-size:2 rem")
+                                                form(method='POST')
+                                                    td=item['clientName']
+                                                    td(style="text-align:center;")=item['phoneNumber']
+                                                    td(style="text-align:center;")=item['companyName']
+                                                    td(style="text-align:center;")=item['clientType']
+                                                    td(style="text-align:center;") "نیە"
+                                                    td(style="text-align:center;") "نیە"
+                                                    td(style="text-align:center;")=item['remainedbalance']
+                                                    td(style="text-align:center;")=Object.keys(item['invoiceID']).length

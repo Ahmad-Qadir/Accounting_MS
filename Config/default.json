@@ -1,0 +1,5 @@
+{
+    "MongoDB_URL": "mongodb://Accountant:Accountant@cluster0-shard-00-00.c5jxd.mongodb.net:27017,cluster0-shard-00-01.c5jxd.mongodb.net:27017,cluster0-shard-00-02.c5jxd.mongodb.net:27017/AccountingMS?ssl=true&replicaSet=atlas-9iwfyv-shard-0&authSource=admin&retryWrites=true&w=majority",
+    "privateKey": "TitanService_jwtPrivateKey",
+    "Default-Address":"http://localhost"
+}
