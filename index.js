@@ -14,7 +14,7 @@ const app = express();
 var bodyParser = require('body-parser')
 // support parsing of application/json type post data
 app.use(bodyParser.json());
-
+require('./Controller/prod')
 //support parsing of application/x-www-form-urlencoded post data
 app.use(bodyParser.urlencoded({
     extended: true
@@ -29,7 +29,7 @@ const swaggerOptions = {
             contact: {
                 name: "Ahmad Abdullah Qadir"
             },
-            servers: ["http://default_route:80"]
+            servers: ["http://localhost:80"]
         }
     },
     // ['.routes/*.js']

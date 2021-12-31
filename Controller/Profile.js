@@ -12,8 +12,6 @@ const ProfileCollection = require('../Models/Profiles');
 const TrailerCollection = require('../Models/Trailers');
 const CompanyCollection = require('../Models/Company');
 
-const default_route = config.get("Default-Address")
-
 const {
     roles
 } = require('../middleware/roles');
@@ -146,7 +144,7 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
 
     if (Invoices == "") {
         req.flash('danger', "کڕیاری داواکراو هیج تۆماڕێکی نیە");
-        res.redirect(default_route+"/Profiles")
+        res.redirect("http://localhost/Profiles")
     } else {
         res.render("profiles/invoices", {
             title: "Customer Invoice",
@@ -256,7 +254,7 @@ exports.AddNewInvoiceForCustomer = async (req, res, next) => {
         const resultOfValidator = validator.validate(req.body, validationSchema);
         if (resultOfValidator.error) {
             req.flash('danger', resultOfValidator.error.details[0].message);
-            res.redirect(default_route + Product[0]['_id'] + '/NewRequest')
+            res.redirect("http://localhost/" + Product[0]['_id'] + '/NewRequest')
             // res.status(400).send({
             //     message: resultOfValidator.error.details[0].message
             // });
@@ -270,7 +268,7 @@ exports.AddNewInvoiceForCustomer = async (req, res, next) => {
             //Prevent 
             if (Trailer[0]['totalQuantity'] < req.body.perPacket) {
                 req.flash('danger', "There is no enough Product in Store there is only " + Trailer[0]['totalQuantity'] + " remains in this Trailer");
-                res.redirect(default_route + Product[0]['_id'] + '/NewRequest')
+                res.redirect("http://localhost/" + Product[0]['_id'] + '/NewRequest')
             } else {
                 //===============Records Collection=============
                 const newRecordtoHistory = new RecordsCollection({
@@ -409,7 +407,7 @@ exports.NewCustomerTypeOperation = async (req, res, next) => {
         const resultOfValidator = validator.validate(req.body, validationSchema);
         if (resultOfValidator.error) {
             req.flash('danger', resultOfValidator.error.details[0].message);
-            res.redirect(default_route+"/Profiles/Customer/NewTypes")
+            res.redirect("http://localhost/Profiles/Customer/NewTypes")
         } else {
             const CustomerType = await CustomerTypeCollection.findOne({
                 customerType: req.body.customerType
@@ -497,7 +495,7 @@ exports.AddNewInvoiceForCustomer = async (req, res, next) => {
         const resultOfValidator = validator.validate(req.body, validationSchema);
         if (resultOfValidator.error) {
             req.flash('danger', resultOfValidator.error.details[0].message);
-            res.redirect(default_route + Product[0]['_id'] + '/NewRequest')
+            res.redirect("http://localhost/" + Product[0]['_id'] + '/NewRequest')
             // res.status(400).send({
             //     message: resultOfValidator.error.details[0].message
             // });
@@ -511,7 +509,7 @@ exports.AddNewInvoiceForCustomer = async (req, res, next) => {
             //Prevent 
             if (Trailer[0]['totalQuantity'] < req.body.perPacket) {
                 req.flash('danger', "There is no enough Product in Store there is only " + Trailer[0]['totalQuantity'] + " remains in this Trailer");
-                res.redirect(default_route + Product[0]['_id'] + '/NewRequest')
+                res.redirect("http://localhost/" + Product[0]['_id'] + '/NewRequest')
             } else {
                 //===============Records Collection=============
                 const newRecordtoHistory = new RecordsCollection({

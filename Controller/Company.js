@@ -12,8 +12,6 @@ const ProfileCollection = require('../Models/Profiles');
 const TrailerCollection = require('../Models/Trailers');
 const CompanyCollection = require('../Models/Company');
 
-const default_route = config.get("Default-Address")
-
 const {
     roles
 } = require('../middleware/roles');
@@ -76,7 +74,7 @@ exports.AddNewCompany = async (req, res, next) => {
         const resultOfValidator = validator.validate(req.body, validationSchema);
         if (resultOfValidator.error) {
             req.flash('danger', resultOfValidator.error.details[0].message);
-            res.redirect(default_route + "/Profiles/Customer/NewTypes")
+            res.redirect("http://localhost/Profiles/Customer/NewTypes")
         } else {
             const CompanyName = await CompanyCollection.findOne({
                 companyName: req.body.companyName

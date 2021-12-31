@@ -12,8 +12,6 @@ const ProfileCollection = require('../Models/Profiles');
 const TrailerCollection = require('../Models/Trailers');
 const DailyCollection = require('../Models/Daily_Task');
 
-const default_route = config.get("Default-Address")
-
 const {
     roles
 } = require('../middleware/roles');
@@ -62,7 +60,7 @@ exports.AddnewTask = async (req, res, next) => {
         const resultOfValidator = validator.validate(req.body, validationSchema);
         if (resultOfValidator.error) {
             req.flash('danger', resultOfValidator.error.details[0].message);
-            res.redirect(default_route + "/NewDailyTask")
+            res.redirect("http://localhost/NewDailyTask")
         } else {
             const Task = await DailyCollection({
                 task: req.body.task,
@@ -108,7 +106,7 @@ exports.GetAllTasks = async (req, res, next) => {
         task: Task,
         user: req.user,
         totalMoneyOfDinar: totalMoneyOfDinar,
-        totalMoneyOfDolar: totalMoneyOfDolar
+        totalMoneyOfDolar:totalMoneyOfDolar
     })
 }
 

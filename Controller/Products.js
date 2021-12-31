@@ -16,8 +16,6 @@ const EmployeeClass = require('../Models/Employee');
 const CompanyCollection = require('../Models/Company');
 const ItemUnitCollection = require('../Models/ItemUnit');
 
-const default_route = config.get("Default-Address")
-
 // !: Basic Configuration
 //Authorization
 exports.grantAccess = function (action, resource) {
@@ -503,7 +501,7 @@ exports.getInvoiceofSpecificProduct = async (req, res, next) => {
         })
     if (Products == "") {
         req.flash('danger', "بەرهەمی داواکراو هیج تۆماڕێکی نیە");
-        res.redirect(default_route+"/Products")
+        res.redirect("http://localhost/Products")
     } else {
         res.render("products/invoices", {
             product: Products,
@@ -584,8 +582,7 @@ exports.AddNewTrailer = async (req, res, next) => {
             invoiceID: invoiceID,
             time: Date(),
             user: req.user,
-            company: Company,
-            address:default_route
+            company: Company
         })
     } catch (error) {
         next(error)
