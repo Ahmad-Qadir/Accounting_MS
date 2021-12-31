@@ -76,13 +76,13 @@ mongoose.connect("mongodb+srv://Accountant:Accountant@cluster0.c5jxd.mongodb.net
 );
 
 //Collections
-const EmployeeClass = require(__dirname+'/controller/employee');
-const ProductsCollection = require(__dirname+'/models/products')
+const EmployeeClass = require('./controller/employee');
+const ProductsCollection = require('./models/products')
 const swaggerJSDoc = require('swagger-jsdoc');
-const RecordsCollection = require(__dirname+'/models/Records');
-const ProfileCollection = require(__dirname+'/models/Profiles');
-const TrailerCollection = require(__dirname+'/models/Trailers');
-const CompanyCollection = require(__dirname+'/models/Company');
+const RecordsCollection = require('./models/Records');
+const ProfileCollection = require('./models/Profiles');
+const TrailerCollection = require('./models/Trailers');
+const CompanyCollection = require('./models/Company');
 
 
 app.post('/parser', async (req, res) => {
