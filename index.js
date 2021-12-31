@@ -70,7 +70,7 @@ var uuid = require('uuid');
 
 
 //Mongoose ODM
-mongoose.connect(config.get("MongoDB_URL")).then(
+mongoose.connect("mongodb+srv://Accountant:Accountant@cluster0.c5jxd.mongodb.net/AccountingMS?retryWrites=true&w=majority").then(
     console.log('Connected to database server')
 );
 
