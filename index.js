@@ -9,7 +9,7 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const port = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 const app = express();
 var bodyParser = require('body-parser')
 // support parsing of application/json type post data
@@ -415,6 +415,6 @@ app.get('/', async (req, res) => {
 // });
 
 //Main Listner
-app.listen(port).on('error', function (err) {
+app.listen(PORT).on('error', function (err) {
     console.log('Error Occured on error handler:' + err);
 });
