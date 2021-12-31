@@ -18,7 +18,6 @@ var uuid = require('uuid');
 var bodyParser = require('body-parser')
 // support parsing of application/json type post data
 app.use(bodyParser.json());
-require('./Controller/prod')
 //support parsing of application/x-www-form-urlencoded post data
 app.use(bodyParser.urlencoded({
     extended: true
@@ -76,13 +75,14 @@ mongoose.connect("mongodb+srv://Accountant:Accountant@cluster0.c5jxd.mongodb.net
 );
 
 //Collections
-const EmployeeClass = require('./Controller/Employee');
-const ProductsCollection = require('./Models/Products')
+const EmployeeClass = require('/Controller/Employee');
+const ProductsCollection = require('/Models/Products')
 const swaggerJSDoc = require('swagger-jsdoc');
-const RecordsCollection = require('./Models/Records');
-const ProfileCollection = require('./Models/Profiles');
-const TrailerCollection = require('./Models/Trailers');
-const CompanyCollection = require('./Models/Company');
+const RecordsCollection = require('/Models/Records');
+const ProfileCollection = require('/Models/Profiles');
+const TrailerCollection = require('/Models/Trailers');
+const CompanyCollection = require('/Models/Company');
+require('/Controller/prod')
 
 
 app.post('/parser', async (req, res) => {
