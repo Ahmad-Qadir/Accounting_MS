@@ -415,6 +415,6 @@ app.get('/', async (req, res) => {
 // });
 
 //Main Listner
-app.listen(process.env.PORT || 80).on('error', function (err) {
+app.listen(port).on('error', function (err) {
     console.log('Error Occured on error handler:' + err);
 });
