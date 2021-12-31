@@ -410,9 +410,9 @@ app.get('/', async (req, res) => {
 
 
 //Error Handler
-// process.on('uncaughtException', function (err) {
-//     console.error((new Date).toUTCString() + ' uncaughtException:', err.message)
-// });
+process.on('uncaughtException', function (err) {
+    console.error((new Date).toUTCString() + ' uncaughtException:', err.message)
+});
 
 //Main Listner
 app.listen(PORT, function () {
