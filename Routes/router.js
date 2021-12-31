@@ -3,16 +3,16 @@ const router = express.Router();
 
 //Controllers
 // const Dashboard = require('../controller/Dashboard/Dashboard');
-const EmployeeController = require('../Controller/employee');
+const EmployeeController = require('../controller/employee');
 // const ItemsClass = require('../Models/items');
-const Products = require('../controller/Products');
-const Profiles = require('../controller/Profile');
-const Records = require('../controller/Records');
-const Company = require('../controller/Company');
-const Daily = require('../controller/Daily_Work');
+const Products = require('../controller/products');
+const Profiles = require('../controller/profile');
+const Records = require('../controller/records');
+const Company = require('../controller/company');
+const Daily = require('../controller/daily_work');
 const ItemUnit = require('../controller/ItemUnit');
-const Trailers = require('../controller/Trailers');
-const Partners = require('../controller/Partners');
+const Trailers = require('../controller/trailers');
+const Partners = require('../controller/partners');
 
 
 

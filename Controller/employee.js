@@ -4,13 +4,13 @@ const validator = require("joi");
 const config = require('config');
 
 //Collections Section
-const EmployeeClass = require('../Models/Employee');
+const EmployeeClass = require('../models/employee');
 const {
     roles
 } = require('../middleware/roles')
 
-const ProductsCollection = require('../Models/Products');
-const EmployeeCollection = require('../Models/Employee');
+const ProductsCollection = require('../models/products');
+const EmployeeCollection = require('../models/employee');
 
 async function hashPassword(password) {
     return await Bcrypt.hash(password, Bcrypt.genSaltSync(10));
