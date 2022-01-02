@@ -6,7 +6,7 @@ const {
 
 // ! Collections
 const RecordsCollection = require('../Models/datakan');
-const ProductsCollection = require('../Models/products');
+const ProductsCollection = require('../Models/barham');
 
 // !: Basic Configuration
 //Authorization
