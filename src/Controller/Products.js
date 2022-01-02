@@ -9,11 +9,11 @@ const {
 
 // ! Collections
 const ProductsCollection = require('../Models/products');
-const RecordsCollection = require('../Models/Records');
-const ProfileCollection = require('../Models/Profiles');
-const TrailerCollection = require('../Models/Trailers');
+const RecordsCollection = require('../Models/datakan');
+const ProfileCollection = require('../Models/shaxsi');
+const TrailerCollection = require('../Models/trela');
 const EmployeeClass = require('../Models/employee');
-const CompanyCollection = require('../Models/Company');
+const CompanyCollection = require('../Models/kompany');
 const ItemUnitCollection = require('../Models/ItemUnit');
 
 // !: Basic Configuration
