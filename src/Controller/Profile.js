@@ -1,7 +1,6 @@
 require('events').EventEmitter.defaultMaxListeners = Infinity
 const validator = require("joi");
 const config = require('config');
-var invNum = require('invoice-number')
 
 
 //Collections Section
