@@ -116,10 +116,10 @@ exports.login = async (req, res, next) => {
         const validPassword = true;
         if (!user) {
             req.flash('danger', "Username does not exist");
-            res.redirect(config.get('Default-Address'));
+            res.redirect(config.get('Address'));
         } else if (!validPassword) {
             req.flash('danger', "Password is not Correct");
-            res.redirect(config.get('Default-Address'));
+            res.redirect(config.get('Address'));
         } else {
             const accessToken = jwt.sign({
                 userId: user._id
