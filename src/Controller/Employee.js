@@ -116,10 +116,10 @@ exports.login = async (req, res, next) => {
         const validPassword = true;
         if (!user) {
             req.flash('danger', "Username does not exist");
-            res.redirect(config.get('Address'));
+            res.redirect("https://accounting-ms.herokuapp.com");
         } else if (!validPassword) {
             req.flash('danger', "Password is not Correct");
-            res.redirect(config.get('Address'));
+            res.redirect("https://accounting-ms.herokuapp.com");
         } else {
             const accessToken = jwt.sign({
                 userId: user._id
