@@ -9,7 +9,7 @@ const {
     roles
 } = require('../Middleware/roles')
 
-const ProductsCollection = require('../Models/barham');
+const ProductsCollection = require('../Models/Products');
 const EmployeeCollection = require('../Models/employee');
 
 async function hashPassword(password) {

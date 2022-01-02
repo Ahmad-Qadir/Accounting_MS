@@ -4,12 +4,12 @@ const config = require('config');
 
 
 //Collections Section
-const ProductsCollection = require('../Models/barham');
+const ProductsCollection = require('../Models/Products');
 const CustomerTypeCollection = require('../Models/CustomerType');
-const HistoryClass = require('../Models/datakan');
-const ProfileCollection = require('../Models/shaxsi');
-const TrailerCollection = require('../Models/trela');
-const CompanyCollection = require('../Models/kompany');
+const HistoryClass = require('../Models/Records');
+const ProfileCollection = require('../Models/Profiles');
+const TrailerCollection = require('../Models/Trailers');
+const CompanyCollection = require('../Models/Companies');
 
 const {
     roles

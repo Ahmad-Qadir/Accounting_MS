@@ -8,12 +8,12 @@ const {
 } = require('../Middleware/roles');
 
 // ! Collections
-const ProductsCollection = require('../Models/barham');
-const RecordsCollection = require('../Models/datakan');
-const ProfileCollection = require('../Models/shaxsi');
-const TrailerCollection = require('../Models/trela');
+const ProductsCollection = require('../Models/Products');
+const RecordsCollection = require('../Models/Records');
+const ProfileCollection = require('../Models/Profiles');
+const TrailerCollection = require('../Models/Trailers');
 const EmployeeClass = require('../Models/employee');
-const CompanyCollection = require('../Models/kompany');
+const CompanyCollection = require('../Models/Companies');
 const ItemUnitCollection = require('../Models/ItemUnit');
 
 // !: Basic Configuration
