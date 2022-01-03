@@ -116,7 +116,7 @@ exports.GetAllCustomers = async (req, res, next) => {
     const Profiles = await ProfileCollection
         .find({})
 
-    res.render("/Profiles/Profiles", {
+    res.render("Profiles/Profiles", {
         title: "کڕیارەکان",
         profiles: Profiles
     })
