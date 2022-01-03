@@ -1009,6 +1009,7 @@ exports.SearchForProductsinCompany = async (req, res, next) => {
 
 
 exports.GetProductswithSearch = async (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
     // const Products = await ProductsCollection
     //     .find({
     //         softdelete: false,
@@ -1084,7 +1085,6 @@ exports.GetProductswithSearch = async (req, res, next) => {
                     "recordsTotal": recordsTotal,
                     "data": results
                 });
-                console.log(data)
                 res.send(data);
             });
 
