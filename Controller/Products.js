@@ -504,7 +504,7 @@ exports.getInvoiceofSpecificProduct = async (req, res, next) => {
         })
     if (Products == "") {
         req.flash('danger', "بەرهەمی داواکراو هیج تۆماڕێکی نیە");
-        res.redirect(config.get("Default-Address")+"/Products")
+        res.redirect(process.env.address+"/Products")
     } else {
         res.render("products/invoices", {
             product: Products,

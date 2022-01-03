@@ -60,7 +60,7 @@ exports.AddnewTask = async (req, res, next) => {
         const resultOfValidator = validator.validate(req.body, validationSchema);
         if (resultOfValidator.error) {
             req.flash('danger', resultOfValidator.error.details[0].message);
-            res.redirect(config.get("Default-Address")+"/NewDailyTask")
+            res.redirect(process.env.address+"/NewDailyTask")
         } else {
             const Task = await DailyCollection({
                 task: req.body.task,

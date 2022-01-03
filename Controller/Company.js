@@ -74,7 +74,7 @@ exports.AddNewCompany = async (req, res, next) => {
         const resultOfValidator = validator.validate(req.body, validationSchema);
         if (resultOfValidator.error) {
             req.flash('danger', resultOfValidator.error.details[0].message);
-            res.redirect(config.get("Default-Address")+"/Profiles/Customer/NewTypes")
+            res.redirect(process.env.address+"/Profiles/Customer/NewTypes")
         } else {
             const CompanyName = await CompanyCollection.findOne({
                 companyName: req.body.companyName
