@@ -8,13 +8,13 @@ const {
 } = require('../Middleware/roles');
 
 // ! Collections
-const ProductsCollection = require('../dada/Product');
-const RecordsCollection = require('../dada/records');
-const ProfileCollection = require('../dada/Profiles');
-const TrailerCollection = require('../dada/Trailers');
-const EmployeeClass = require('../dada/Employee');
-const CompanyCollection = require('../dada/sharikakan');
-const ItemUnitCollection = require('../dada/ItemUnit');
+const ProductsCollection = require('../models/Product');
+const RecordsCollection = require('../models/records');
+const ProfileCollection = require('../models/Profiles');
+const TrailerCollection = require('../models/Trailers');
+const EmployeeClass = require('../models/Employee');
+const CompanyCollection = require('../models/sharikakan');
+const ItemUnitCollection = require('../models/ItemUnit');
 
 const address=process.env.address
 

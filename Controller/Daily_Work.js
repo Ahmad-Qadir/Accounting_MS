@@ -4,12 +4,12 @@ const config = require('config');
 
 
 //Collections Section
-const ProductsCollection = require('../dada/Product');
-const CustomerTypeCollection = require('../dada/CustomerType');
-const HistoryClass = require('../dada/records');
-const ProfileCollection = require('../dada/Profiles');
-const TrailerCollection = require('../dada/Trailers');
-const DailyCollection = require('../dada/Daily_Task');
+const ProductsCollection = require('../models/Product');
+const CustomerTypeCollection = require('../models/CustomerType');
+const HistoryClass = require('../models/records');
+const ProfileCollection = require('../models/Profiles');
+const TrailerCollection = require('../models/Trailers');
+const DailyCollection = require('../models/Daily_Task');
 const address=process.env.address
 
 const {

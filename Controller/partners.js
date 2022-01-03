@@ -9,8 +9,8 @@ var uuid = require('uuid');
 
 
 // ! Collections
-const PartnersCollection = require('../dada/Partners');
-const RecordsCollection = require('../dada/records');
+const PartnersCollection = require('../models/Partners');
+const RecordsCollection = require('../models/records');
 const DailyCollection = require('./Daily_Work');
 
 // !: Basic Configuration

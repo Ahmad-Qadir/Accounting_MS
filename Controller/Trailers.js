@@ -5,7 +5,7 @@ const {
 } = require('../Middleware/roles');
 
 // ! Collections
-const TrailersCollection = require('../dada/Trailers');
+const TrailersCollection = require('../models/Trailers');
 
 // !: Basic Configuration
 //Authorization
