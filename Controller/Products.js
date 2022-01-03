@@ -455,7 +455,7 @@ exports.getProducts = async (req, res, next) => {
         .sort({
             "createdAt": -1
         })
-    res.render("products/Products", {
+    res.render("Products/Products", {
         title: "بەرهەمەکان",
         product: Products,
         user: req.user
