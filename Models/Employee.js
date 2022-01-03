@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
-const Employee = mongoose.model('employees', new mongoose.Schema({
+const employeesSchema = new mongoose.Schema({
     username: String,
     password: {
         type: String,
@@ -21,16 +23,16 @@ const Employee = mongoose.model('employees', new mongoose.Schema({
     }]
 }, {
     timestamps: true
-}));
+});
 
-// employeesSchema.methods.generateAuthToken = function () {
-//     const token = jwt.sign({
-//         _id: this._id
-//     }, "TitanService_jwtPrivateKey", {
-//         expiresIn: "30d"
-//     });
-//     return token;
-// }
-// const EmployeesClass = mongoose.model('employees', employeesSchema);
+employeesSchema.methods.generateAuthToken = function () {
+    const token = jwt.sign({
+        _id: this._id
+    }, "TitanService_jwtPrivateKey", {
+        expiresIn: "30d"
+    });
+    return token;
+}
+const EmployeesClass = mongoose.model('employees', employeesSchema);
 
-module.exports = Employee;
+module.exports = EmployeesClass;

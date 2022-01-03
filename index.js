@@ -75,7 +75,7 @@ mongoose.connect("mongodb+srv://Accountant:Accountant@cluster0.c5jxd.mongodb.net
 );
 
 //Collections
-const EmployeeClass = require('./Controller/Employee');
+const EmployeeClass = require('./Models/Employee');
 const ProductsCollection = require('./Models/Product')
 const swaggerJSDoc = require('swagger-jsdoc');
 const RecordsCollection = require('./Models/Records');
@@ -300,7 +300,7 @@ app.use(async (req, res, next) => {
                 return res.render('Login', {
                     title: "Login",
                 });
-            }
+            }  
             res.locals.loggedInUser = await EmployeeClass.findById(userId);
             next();
         } catch (error) {
