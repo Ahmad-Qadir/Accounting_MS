@@ -8,11 +8,11 @@ const {
 } = require('../Middleware/roles');
 
 // ! Collections
-const ProductsCollection = require('../Models/barham');
+const ProductsCollection = require('../Models/Product');
 const RecordsCollection = require('../Models/Records');
 const ProfileCollection = require('../Models/Profiles');
 const TrailerCollection = require('../Models/Trailers');
-const EmployeeClass = require('../Models/mozaf');
+const EmployeeClass = require('../Models/Employee');
 const CompanyCollection = require('../Models/Companies');
 const ItemUnitCollection = require('../Models/ItemUnit');
 
