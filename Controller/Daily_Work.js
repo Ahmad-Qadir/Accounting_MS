@@ -4,12 +4,12 @@ const config = require('config');
 
 
 //Collections Section
-const ProductsCollection = require('../Models/Product');
-const CustomerTypeCollection = require('../Models/CustomerType');
-const HistoryClass = require('../Models/records');
-const ProfileCollection = require('../Models/Profiles');
-const TrailerCollection = require('../Models/Trailers');
-const DailyCollection = require('../Models/Daily_Task');
+const ProductsCollection = require('../models/Product');
+const CustomerTypeCollection = require('../models/CustomerType');
+const HistoryClass = require('../models/records');
+const ProfileCollection = require('../models/Profiles');
+const TrailerCollection = require('../models/Trailers');
+const DailyCollection = require('../models/Daily_Task');
 const address=process.env.address
 
 const {
