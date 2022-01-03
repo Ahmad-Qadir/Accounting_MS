@@ -13,26 +13,19 @@ const swaggerUi = require("swagger-ui-express");
 const PORT = process.env.PORT || 5000;
 const app = express();
 
-var allowlist = ['https://accounting-ms.herokuapp.com/Products/Parser']
-var corsOptionsDelegate = function (req, callback) {
-  var corsOptions;
-  if (allowlist.indexOf(req.header('Origin')) !== -1) {
-    corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
-  } else {
-    corsOptions = { origin: false } // disable CORS for this request
-  }
-  callback(null, corsOptions) // callback expects two parameters: error and options
-}
 
-app.use(cors(corsOptionsDelegate))
+
+
 
 const fs = require('fs')
 const csv = require('csv-parser')
 var uuid = require('uuid');
 
 var bodyParser = require('body-parser')
+
 // support parsing of application/json type post data
 app.use(bodyParser.json());
+
 //support parsing of application/x-www-form-urlencoded post data
 app.use(bodyParser.urlencoded({
     extended: true
@@ -82,6 +75,7 @@ app.use(function (req, res, next) {
     next();
 });
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use(cors());
 
 
 //Mongoose ODM
