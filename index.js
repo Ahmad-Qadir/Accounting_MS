@@ -13,13 +13,8 @@ const swaggerUi = require("swagger-ui-express");
 const PORT = process.env.PORT || 5000;
 const app = express();
 
-var corsOptions = {
-    origin: process.env.address,
-    optionsSuccessStatus: 200, // For legacy browser support
-    methods: "GET,POST"
-}
-
-app.use(cors(corsOptions))
+app.use(cors())
+app.options('*', cors())
 
 const fs = require('fs')
 const csv = require('csv-parser')
