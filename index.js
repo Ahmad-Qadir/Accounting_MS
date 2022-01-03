@@ -1,4 +1,5 @@
 //Packages
+const cors = require('cors')
 const path = require('path');
 const express = require("express");
 const config = require('config');
@@ -11,10 +12,11 @@ const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const PORT = process.env.PORT || 5000;
 const app = express();
+app.use(cors())
+
 const fs = require('fs')
 const csv = require('csv-parser')
 var uuid = require('uuid');
-var cors = require('cors')
  
 var bodyParser = require('body-parser')
 // support parsing of application/json type post data
@@ -55,7 +57,6 @@ app.use(express.urlencoded({
 }))
 app.use(cookieParser());
 app.use(flash());
-app.use(cors())
 app.use(session({
     secret: 'keyboard cat',
     cookie: {
