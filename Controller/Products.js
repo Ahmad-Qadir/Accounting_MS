@@ -9,11 +9,11 @@ const {
 
 // ! Collections
 const ProductsCollection = require('../models/Product');
-const RecordsCollection = require('../models/records');
+const RecordsCollection = require('../models/Records');
 const ProfileCollection = require('../models/Profiles');
 const TrailerCollection = require('../models/Trailers');
 const EmployeeClass = require('../models/Employee');
-const CompanyCollection = require('../models/sharikakan');
+const CompanyCollection = require('../models/Companies');
 const ItemUnitCollection = require('../models/ItemUnit');
 
 const address=process.env.address
