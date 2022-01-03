@@ -9,7 +9,7 @@ const {
 
 // ! Collections
 const ProductsCollection = require('../models/Product');
-const RecordsCollection = require('../models/dasd');
+const RecordsCollection = require('../models/records');
 const ProfileCollection = require('../models/Profiles');
 const TrailerCollection = require('../models/Trailers');
 const EmployeeClass = require('../models/Employee');
