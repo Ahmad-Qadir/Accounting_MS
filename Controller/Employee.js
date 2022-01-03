@@ -183,7 +183,7 @@ exports.UpdatePassword = async (req, res, next) => {
                 }
             });
         }
-        res.redirect(config.get('Default-Address') + "/MyAccount")
+        res.redirect(process.env.address + "/MyAccount")
     } catch (error) {
         next(error)
     }

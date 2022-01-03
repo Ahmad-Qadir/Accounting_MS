@@ -10,7 +10,7 @@ const HistoryClass = require('../Models/Records');
 const ProfileCollection = require('../Models/Profiles');
 const TrailerCollection = require('../Models/Trailers');
 const DailyCollection = require('../Models/Daily_Task');
-const address=config.get('Default-Address')
+const address=process.env.address
 
 const {
     roles

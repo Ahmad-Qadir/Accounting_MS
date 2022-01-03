@@ -16,7 +16,7 @@ const EmployeeClass = require('../Models/Employee');
 const CompanyCollection = require('../Models/Companies');
 const ItemUnitCollection = require('../Models/ItemUnit');
 
-const address=config.get('Default-Address')
+const address=process.env.address
 
 // !: Basic Configuration
 //Authorization

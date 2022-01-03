@@ -32,7 +32,7 @@ const swaggerOptions = {
             contact: {
                 name: "Ahmad Abdullah Qadir"
             },
-            servers: [config.get('Default-Address')]
+            servers: [process.env.address]
         }
     },
     // ['.routes/*.js']
