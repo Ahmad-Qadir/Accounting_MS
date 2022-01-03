@@ -5,8 +5,8 @@ const {
 } = require('../Middleware/roles');
 
 // ! Collections
-const RecordsCollection = require('../Models/records');
-const ProductsCollection = require('../Models/Product');
+const RecordsCollection = require('../models/records');
+const ProductsCollection = require('../models/Product');
 
 // !: Basic Configuration
 //Authorization
