@@ -205,7 +205,7 @@ block content
       $('#productTable').DataTable({
         "processing": true,
         "serverSide": true,
-        "ajax": {url:"#{address}/parser",type:"POST"},
+        "ajax": {url:"#{address}/Products/Parser",type:"POST"},
         'columns':
           [
             { 'data': 'itemName', "defaultContent": "", 'name': 'itemName' },

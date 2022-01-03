@@ -16,7 +16,7 @@ const EmployeeClass = require('../models/Employee');
 const CompanyCollection = require('../models/Companies');
 const ItemUnitCollection = require('../models/ItemUnit');
 
-const address=process.env.address
+const address = process.env.address
 
 // !: Basic Configuration
 //Authorization
@@ -461,7 +461,7 @@ exports.getProducts = async (req, res, next) => {
         title: "بەرهەمەکان",
         product: Products,
         user: req.user,
-        address:address
+        address: address
     })
 }
 
@@ -504,7 +504,7 @@ exports.getInvoiceofSpecificProduct = async (req, res, next) => {
         })
     if (Products == "") {
         req.flash('danger', "بەرهەمی داواکراو هیج تۆماڕێکی نیە");
-        res.redirect(process.env.address+"/Products")
+        res.redirect(process.env.address + "/Products")
     } else {
         res.render("products/invoices", {
             product: Products,
@@ -586,7 +586,7 @@ exports.AddNewTrailer = async (req, res, next) => {
             time: Date(),
             user: req.user,
             company: Company,
-            address:address
+            address: address
         })
     } catch (error) {
         next(error)
@@ -1005,6 +1005,92 @@ exports.SearchForProductsinCompany = async (req, res, next) => {
     } catch (error) {
         console.log(error)
     }
+}
+
+
+exports.GetProductswithSearch = async (req, res, next) => {
+    // const Products = await ProductsCollection
+    //     .find({
+    //         softdelete: false,
+    //     })
+    //     .sort({
+    //         "createdAt": -1
+    //     }).limit(20)
+
+
+    // res.send(Products)
+
+
+
+    var searchStr = req.body.search.value;
+    // console.log(searchStr)
+
+    if (searchStr) {
+        var regex = new RegExp(searchStr, "i")
+        searchStr = {
+            $or: [{
+                'itemName': regex
+            }, {
+                'itemModel': regex
+            }, {
+                'manufacturerCompany': regex
+            }, {
+                'companyCode': regex
+            }, {
+                'countryCompany': regex
+            }, {
+                'unit': regex
+            }, {
+                'perUnit': regex
+            }, {
+                'itemType': regex
+            }, {
+                'usedIn': regex
+            }, {
+                'color': regex
+            }, {
+                'status': regex
+            }]
+        };
+
+
+    } else {
+        searchStr = {};
+    }
+
+    var recordsTotal = 0;
+    var recordsFiltered = 0;
+
+    ProductsCollection.count({}, function (err, c) {
+        recordsTotal = c;
+        // console.log(c);
+        ProductsCollection.count(searchStr, function (err, c) {
+            recordsFiltered = c;
+            // console.log(c);
+            // console.log(req.body.start);
+            // console.log(req.body.length);
+            ProductsCollection.find(searchStr, 'itemName itemModel manufacturerCompany companyCode countryCompany perUnit itemType usedIn weight totalWeight color packet perPacket remainedPacket remainedPerPacket totalQuantity status expireDate camePrice sellPriceMufrad sellPriceMahal sellPriceWasta sellPriceWakil sellPriceSharika totalPrice trailerNumber addedBy updatedBy', {
+                'skip': Number(req.body.start),
+                'limit': Number(req.body.length)
+            }, function (err, results) {
+                if (err) {
+                    console.log('error while getting results' + err);
+                    return;
+                }
+
+                var data = JSON.stringify({
+                    "draw": req.body.draw,
+                    "recordsFiltered": recordsFiltered,
+                    "recordsTotal": recordsTotal,
+                    "data": results
+                });
+                res.send(data);
+            });
+
+        });
+    });
+
+
 }
 
 //TODO==================================
