@@ -9,7 +9,7 @@ const CustomerTypeCollection = require('../models/CustomerType');
 const HistoryClass = require('../models/records');
 const ProfileCollection = require('../models/Profiles');
 const TrailerCollection = require('../models/Trailers');
-const CompanyCollection = require('../models/sharikakan');
+const CompanyCollection = require('../models/Companies');
 const address=process.env.address
 
 const {
