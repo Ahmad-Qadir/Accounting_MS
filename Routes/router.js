@@ -11,7 +11,7 @@ const Records = require('../Controller/Records');
 const Company = require('../Controller/Company');
 const Daily = require('../Controller/Daily_Work');
 const ItemUnit = require('../Controller/ItemUnit');
-const Trailers = require('../Controller/Trailers');
+const Trailers = require('../Controller/Trailers'); 
 const Partners = require('../Controller/partners');
 
 
