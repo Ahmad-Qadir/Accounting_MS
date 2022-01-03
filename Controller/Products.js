@@ -458,7 +458,7 @@ exports.getProducts = async (req, res, next) => {
             "createdAt": -1
         })
 
-    res.header('Access-Control-Allow-Origin', '*').render("Products/Products", {
+    res.render("Products/Products", {
         title: "بەرهەمەکان",
         product: Products,
         user: req.user,
@@ -1077,7 +1077,6 @@ exports.GetProductswithSearch = async (req, res, next) => {
                     console.log('error while getting results' + err);
                     return;
                 }
-                console.log(data)
 
                 var data = JSON.stringify({
                     "draw": req.body.draw,
