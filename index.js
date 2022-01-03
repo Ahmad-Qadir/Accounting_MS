@@ -76,7 +76,7 @@ mongoose.connect("mongodb+srv://Accountant:Accountant@cluster0.c5jxd.mongodb.net
 
 //Collections
 const EmployeeClass = require('./Controller/Employee');
-const ProductsCollection = require('./Models/Products')
+const ProductsCollection = require('./Models/barham')
 const swaggerJSDoc = require('swagger-jsdoc');
 const RecordsCollection = require('./Models/Records');
 const ProfileCollection = require('./Models/Profiles');
