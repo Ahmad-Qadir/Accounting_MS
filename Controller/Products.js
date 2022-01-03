@@ -457,7 +457,8 @@ exports.getProducts = async (req, res, next) => {
         .sort({
             "createdAt": -1
         })
-    res.render("Products/Products", {
+
+    res.header('Access-Control-Allow-Origin', '*').render("Products/Products", {
         title: "بەرهەمەکان",
         product: Products,
         user: req.user,
@@ -1009,7 +1010,6 @@ exports.SearchForProductsinCompany = async (req, res, next) => {
 
 
 exports.GetProductswithSearch = async (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
     // const Products = await ProductsCollection
     //     .find({
     //         softdelete: false,
@@ -1024,7 +1024,6 @@ exports.GetProductswithSearch = async (req, res, next) => {
 
 
     var searchStr = req.body.search.value;
-    // console.log(searchStr)
 
     if (searchStr) {
         var regex = new RegExp(searchStr, "i")
@@ -1078,6 +1077,7 @@ exports.GetProductswithSearch = async (req, res, next) => {
                     console.log('error while getting results' + err);
                     return;
                 }
+                console.log(data)
 
                 var data = JSON.stringify({
                     "draw": req.body.draw,
