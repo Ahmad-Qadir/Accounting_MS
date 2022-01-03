@@ -105,7 +105,7 @@ exports.CreateNewProfile = async (req, res, next) => {
         .find({
             softdelete: false
         })
-    res.render("/Profiles/addProfile", {
+    res.render("Profiles/addProfile", {
         title: "زیادکردنی كڕیاری نوێ",
         types: CustomerType
     })

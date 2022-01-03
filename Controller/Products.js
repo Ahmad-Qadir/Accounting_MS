@@ -67,7 +67,7 @@ exports.AddNewProduct = async (req, res, next) => {
             .find({
                 softdelete: false,
             })
-        res.render('products/AddProduct.pug', {
+        res.render('Products/AddProduct.pug', {
             title: "زیادکردنی بەرهەمی نوێ",
             company: Company,
             itemUnit: ItemUnit
@@ -436,7 +436,7 @@ exports.AddNewRequest = async (req, res, next) => {
                 softdelete: false,
             })
 
-        res.render('products/CustomerRequest', {
+        res.render('Products/CustomerRequest', {
             title: "Add New Request",
             product: Products,
             trailer: Trailers,
@@ -506,7 +506,7 @@ exports.getInvoiceofSpecificProduct = async (req, res, next) => {
         req.flash('danger', "بەرهەمی داواکراو هیج تۆماڕێکی نیە");
         res.redirect(process.env.address + "/Products")
     } else {
-        res.render("products/invoices", {
+        res.render("Products/Invoices", {
             product: Products,
             title: " فاتوورەی " + Products[0]['productID']['itemName'],
             profile: Profile,
@@ -578,7 +578,7 @@ exports.AddNewTrailer = async (req, res, next) => {
                 softdelete: false,
             })
 
-        res.render('products/newTrailer', {
+        res.render('Products/newTrailer', {
             title: "زیاد کردنی بار",
             products: Products,
             trailers: Trailers,
