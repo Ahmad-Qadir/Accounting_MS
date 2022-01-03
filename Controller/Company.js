@@ -6,7 +6,7 @@ const config = require('config');
 //Collections Section
 const ProductsCollection = require('../Models/Product');
 const CustomerTypeCollection = require('../Models/CustomerType');
-const HistoryClass = require('../Models/Records');
+const HistoryClass = require('../Models/datakan');
 const ProfileCollection = require('../Models/Profiles');
 const TrailerCollection = require('../Models/Trailers');
 const CompanyCollection = require('../Models/Companies');
