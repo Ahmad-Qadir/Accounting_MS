@@ -1010,19 +1010,6 @@ exports.SearchForProductsinCompany = async (req, res, next) => {
 
 
 exports.GetProductswithSearch = async (req, res, next) => {
-    // const Products = await ProductsCollection
-    //     .find({
-    //         softdelete: false,
-    //     })
-    //     .sort({
-    //         "createdAt": -1
-    //     }).limit(20)
-
-
-    // res.send(Products)
-
-
-
     var searchStr = req.body.search.value;
 
     if (searchStr) {
