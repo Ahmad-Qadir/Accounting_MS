@@ -296,7 +296,7 @@ app.use(async (req, res, next) => {
             const {
                 userId,
                 exp
-            } = await jwt.verify(accessToken, config.get("privateKey"));
+            } = await jwt.verify(accessToken, "TitanService_jwtPrivateKey");
             // If token has expired
             if (exp < Date.now().valueOf() / 1000) {
                 return res.render('Login', {
@@ -322,7 +322,7 @@ app.get('/', async (req, res) => {
         const {
             userId,
             exp
-        } = await jwt.verify(accessToken, config.get("privateKey"));
+        } = await jwt.verify(accessToken, "TitanService_jwtPrivateKey");
         const User = await EmployeeClass.findById(userId);
 
         const Records = await RecordsCollection.find({}).populate("productID").sort({

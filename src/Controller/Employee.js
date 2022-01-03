@@ -123,7 +123,7 @@ exports.login = async (req, res, next) => {
         } else {
             const accessToken = jwt.sign({
                 userId: user._id
-            }, config.get("privateKey"), {
+            }, "TitanService_jwtPrivateKey", {
                 expiresIn: "30d"
             });
             res.cookie('x-access-token', accessToken, {
