@@ -44,7 +44,7 @@ router.get('/Products/:id/Modification', Products.allowIfLoggedin, Products.gran
 router.post('/Products/:id/Update', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.EditProductOperation);
 router.get('/Products/Model/:productModel', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.SearchForProductModel);
 router.get('/Products/Model/Company/:company', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.SearchForProductsinCompany);
-router.post('/Products/Parser', Products.GetProductswithSearch); // Get All Products
+router.get('/Products/Parser', Products.GetProductswithSearch); // Get All Products
 
 
 router.get('/NewProduct', Products.allowIfLoggedin, Products.grantAccess('createAny', 'products'), Products.AddNewProduct); // Add new Product
