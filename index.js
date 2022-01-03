@@ -14,7 +14,8 @@ const app = express();
 const fs = require('fs')
 const csv = require('csv-parser')
 var uuid = require('uuid');
-
+var cors = require('cors')
+ 
 var bodyParser = require('body-parser')
 // support parsing of application/json type post data
 app.use(bodyParser.json());
@@ -54,6 +55,7 @@ app.use(express.urlencoded({
 }))
 app.use(cookieParser());
 app.use(flash());
+app.use(cors())
 app.use(session({
     secret: 'keyboard cat',
     cookie: {
