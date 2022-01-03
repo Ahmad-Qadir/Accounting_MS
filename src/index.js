@@ -70,7 +70,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 
 //Mongoose ODM
-mongoose.connect("mongodb+srv://Accountant:Accountant@cluster0.c5jxd.mongodb.net/AccountingMS?retryWrites=true&w=majority").then(
+mongoose.connect("mongodb://Accountant:Accountant@cluster0-shard-00-00.c5jxd.mongodb.net:27017,cluster0-shard-00-01.c5jxd.mongodb.net:27017,cluster0-shard-00-02.c5jxd.mongodb.net:27017/AccountingMS?ssl=true&replicaSet=atlas-9iwfyv-shard-0&authSource=admin&retryWrites=true&w=majority").then(
     console.log('Connected to database server')
 );
 
@@ -303,6 +303,7 @@ app.use(async (req, res, next) => {
                     title: "Login",
                 });
             }
+            console.log(userId)
             res.locals.loggedInUser = await EmployeeClass.findById(userId);
             next();
         } catch (error) {
