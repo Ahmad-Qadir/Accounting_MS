@@ -209,7 +209,7 @@ block content
       event.preventDefault();
       var data=$.ajax({
         type: 'GET',
-        url: "#{address}/Products/Model/"+val.title,
+        url: "/Products/Model/"+val.title,
         dataType: 'JSON',
         success: function(data){
           $('#body-product'+idOfModel).empty()

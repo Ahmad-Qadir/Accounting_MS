@@ -268,7 +268,7 @@ block content
       //Send to Database
         var data= $.ajax({
           type: 'POST',
-          url: "#{address}/Products/NewTrailer",
+          url: "/Products/NewTrailer",
           dataType: 'JSON',
           data:getJSON(objectData),
           success: function(data){
