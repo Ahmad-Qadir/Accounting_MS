@@ -34,7 +34,7 @@ router.get('/MyAccount', EmployeeController.allowIfLoggedin, EmployeeController.
 
 //Products
 router.post('/Product', Products.allowIfLoggedin, Products.grantAccess('createAny', 'products'), Products.addNewItem); // Add new Product
-router.get('/Products', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.getProducts); // Get All Products
+router.get('/Products', Products.getProducts); // Get All Products
 router.get('/Products/:productName', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.getSpecificProducts); // Get Single Product
 router.get('/Products/:id/Invoices', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.getInvoiceofSpecificProduct); // Get Invoices of each Product
 router.get('/Products/:id/Modification', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.EditProductUI);
