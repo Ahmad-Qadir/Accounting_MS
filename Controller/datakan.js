@@ -5,7 +5,7 @@ const {
 } = require('../Middleware/roles');
 
 // ! Collections
-const RecordsCollection = require('../Models/Records');
+const RecordsCollection = require('../Models/datakan');
 const ProductsCollection = require('../Models/Product');
 
 // !: Basic Configuration
@@ -89,7 +89,7 @@ exports.Records = async (req, res, next) => {
         Income = [totalWeightIncome, totalQuantityIncome, camePriceIncome, sellPriceIncome, totalPriceIncome]
 
         // res.send(Records[0]['productID']['itemName'])
-        res.render('Records/Records', {
+        res.render('records/records', {
             title: "تۆمارەکان",
             records: Records,
             expenses: Expenses,
@@ -126,7 +126,7 @@ exports.SearchForSpecificInvoice = async (req, res, next) => {
 
 //Get Spedicif Invoice
 exports.ShowSelectedDateOfInvoices = async (req, res, next) => {
-    res.render('Records/Print', { title: "چاپکردنی تۆمارەکان" })
+    res.render('records/print', { title: "چاپکردنی تۆمارەکان" })
 }
 
 
