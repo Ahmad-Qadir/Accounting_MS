@@ -209,7 +209,7 @@ block content
       event.preventDefault();
       var data=$.ajax({
         type: 'GET',
-        url: "http://localhost/Products/Model/"+val.title,
+        url: "#{address}/Products/Model/"+val.title,
         dataType: 'JSON',
         success: function(data){
           $('#body-product'+idOfModel).empty()
@@ -258,7 +258,7 @@ block content
 
       var data=$.ajax({
         type: 'GET',
-        url: "http://localhost/Profiles/"+itemName+"/"+itemType+"/"+color,
+        url: "#{address}/Profiles/"+itemName+"/"+itemType+"/"+color,
         dataType: 'JSON',
         success: function(data){
           $("#"+trailerNumber).empty()
@@ -303,7 +303,7 @@ block content
       //Send to Database
         var data= $.ajax({
           type: 'POST',
-          url: "http://localhost/Products/#{profile[0]['_id']}/Requests",
+          url: "#{address}/Products/#{profile[0]['_id']}/Requests",
           dataType: 'JSON',
           data:getJSON(objectData),
           success: function(data){
@@ -328,7 +328,7 @@ block content
       //Send to Database
         var data= $.ajax({
           type: 'POST',
-          url: "http://localhost/Products/#{profile[0]['_id']}/Requests/"+paid,
+          url: "#{address}/Products/#{profile[0]['_id']}/Requests/"+paid,
           dataType: 'JSON',
           data:getJSON(objectData),
           success: function(data){
@@ -431,7 +431,7 @@ block content
       var Trailer= $( "#"+trailerNumber +" option:selected" ).text().split('-')[0];
         var data=$.ajax({
           type: 'GET',
-          url: "http://localhost/Product/Trailers/"+parseInt(Trailer)+"/"+itemName+"/"+color+"/"+itemType+"/#{profile[0]['clientType']}",
+          url: "#{address}/Product/Trailers/"+parseInt(Trailer)+"/"+itemName+"/"+color+"/"+itemType+"/#{profile[0]['clientType']}",
           dataType: 'JSON',
           success: function(data){
             if("#{profile[0]['clientType']}"=="مفرد"){

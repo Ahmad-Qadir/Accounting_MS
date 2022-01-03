@@ -169,7 +169,7 @@ block content
       event.preventDefault();
       var data=$.ajax({
         type: 'GET',
-        url: "http://localhost/Products/Model/Company/"+val.title,
+        url: "#{address}/Products/Model/Company/"+val.title,
         dataType: 'JSON',
         success: function(data){
           $('#body-product'+idOfModel).empty()
@@ -268,7 +268,7 @@ block content
       //Send to Database
         var data= $.ajax({
           type: 'POST',
-          url: "http://localhost/Products/NewTrailer",
+          url: "#{address}/Products/NewTrailer",
           dataType: 'JSON',
           data:getJSON(objectData),
           success: function(data){

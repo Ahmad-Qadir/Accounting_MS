@@ -10,6 +10,7 @@ const HistoryClass = require('../Models/Records');
 const ProfileCollection = require('../Models/Profiles');
 const TrailerCollection = require('../Models/Trailers');
 const CompanyCollection = require('../Models/Companies');
+const address=config.get('Default-Address')
 
 const {
     roles
@@ -143,12 +144,13 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
 
     if (Invoices == "") {
         req.flash('danger', "کڕیاری داواکراو هیج تۆماڕێکی نیە");
-        res.redirect("http://localhost/Profiles")
+        res.redirect(config.get("Default-Address")+"/Profiles")
     } else {
         res.render("profiles/invoices", {
             title: "Customer Invoice",
             invoices: Invoices,
-            profile: Profile
+            profile: Profile,
+            address:address
         })
     }
     // res.send(Invoices)
@@ -229,7 +231,8 @@ exports.AddNewRequest = async (req, res, next) => {
             invoiceID: invoiceID,
             company: Company,
             time: Date(),
-            user: req.user
+            user: req.user,
+            address:address
         })
     } catch (error) {
         next(error)
@@ -253,7 +256,7 @@ exports.AddNewInvoiceForCustomer = async (req, res, next) => {
         const resultOfValidator = validator.validate(req.body, validationSchema);
         if (resultOfValidator.error) {
             req.flash('danger', resultOfValidator.error.details[0].message);
-            res.redirect("http://localhost/" + Product[0]['_id'] + '/NewRequest')
+            res.redirect(config.get("Default-Address")+ Product[0]['_id'] + '/NewRequest')
             // res.status(400).send({
             //     message: resultOfValidator.error.details[0].message
             // });
@@ -267,7 +270,7 @@ exports.AddNewInvoiceForCustomer = async (req, res, next) => {
             //Prevent 
             if (Trailer[0]['totalQuantity'] < req.body.perPacket) {
                 req.flash('danger', "There is no enough Product in Store there is only " + Trailer[0]['totalQuantity'] + " remains in this Trailer");
-                res.redirect("http://localhost/" + Product[0]['_id'] + '/NewRequest')
+                res.redirect(config.get("Default-Address") + Product[0]['_id'] + '/NewRequest')
             } else {
                 //===============Records Collection=============
                 const newRecordtoHistory = new RecordsCollection({
@@ -406,7 +409,7 @@ exports.NewCustomerTypeOperation = async (req, res, next) => {
         const resultOfValidator = validator.validate(req.body, validationSchema);
         if (resultOfValidator.error) {
             req.flash('danger', resultOfValidator.error.details[0].message);
-            res.redirect("http://localhost/Profiles/Customer/NewTypes")
+            res.redirect(config.get("Default-Address")+"/Profiles/Customer/NewTypes")
         } else {
             const CustomerType = await CustomerTypeCollection.findOne({
                 customerType: req.body.customerType
@@ -494,7 +497,7 @@ exports.AddNewInvoiceForCustomer = async (req, res, next) => {
         const resultOfValidator = validator.validate(req.body, validationSchema);
         if (resultOfValidator.error) {
             req.flash('danger', resultOfValidator.error.details[0].message);
-            res.redirect("http://localhost/" + Product[0]['_id'] + '/NewRequest')
+            res.redirect(config.get("Default-Address")+ Product[0]['_id'] + '/NewRequest')
             // res.status(400).send({
             //     message: resultOfValidator.error.details[0].message
             // });
@@ -508,7 +511,7 @@ exports.AddNewInvoiceForCustomer = async (req, res, next) => {
             //Prevent 
             if (Trailer[0]['totalQuantity'] < req.body.perPacket) {
                 req.flash('danger', "There is no enough Product in Store there is only " + Trailer[0]['totalQuantity'] + " remains in this Trailer");
-                res.redirect("http://localhost/" + Product[0]['_id'] + '/NewRequest')
+                res.redirect(config.get("Default-Address")+ Product[0]['_id'] + '/NewRequest')
             } else {
                 //===============Records Collection=============
                 const newRecordtoHistory = new RecordsCollection({

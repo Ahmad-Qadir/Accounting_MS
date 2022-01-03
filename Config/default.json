@@ -1,5 +1,5 @@
 {
     "db":"mongodb+srv://Accountant:Accountant@cluster0.c5jxd.mongodb.net/AccountingMS?retryWrites=true&w=majority",
     "privateKey": "TitanService_jwtPrivateKey",
-    "Default-Address":"http://localhost"
+    "Default-Address":"http://localhost:5000"
 }

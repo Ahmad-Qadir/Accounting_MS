@@ -16,6 +16,8 @@ const EmployeeClass = require('../Models/Employee');
 const CompanyCollection = require('../Models/Companies');
 const ItemUnitCollection = require('../Models/ItemUnit');
 
+const address=config.get('Default-Address')
+
 // !: Basic Configuration
 //Authorization
 exports.grantAccess = function (action, resource) {
@@ -458,7 +460,8 @@ exports.getProducts = async (req, res, next) => {
     res.render("Products/Products", {
         title: "بەرهەمەکان",
         product: Products,
-        user: req.user
+        user: req.user,
+        address:address
     })
 }
 
@@ -501,7 +504,7 @@ exports.getInvoiceofSpecificProduct = async (req, res, next) => {
         })
     if (Products == "") {
         req.flash('danger', "بەرهەمی داواکراو هیج تۆماڕێکی نیە");
-        res.redirect("http://localhost/Products")
+        res.redirect(config.get("Default-Address")+"/Products")
     } else {
         res.render("products/invoices", {
             product: Products,
@@ -582,7 +585,8 @@ exports.AddNewTrailer = async (req, res, next) => {
             invoiceID: invoiceID,
             time: Date(),
             user: req.user,
-            company: Company
+            company: Company,
+            address:address
         })
     } catch (error) {
         next(error)

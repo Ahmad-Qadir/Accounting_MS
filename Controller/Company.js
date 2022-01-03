@@ -10,6 +10,7 @@ const HistoryClass = require('../Models/Records');
 const ProfileCollection = require('../Models/Profiles');
 const TrailerCollection = require('../Models/Trailers');
 const CompanyCollection = require('../Models/Companies');
+const address=config.get('Default-Address')
 
 const {
     roles
@@ -73,7 +74,7 @@ exports.AddNewCompany = async (req, res, next) => {
         const resultOfValidator = validator.validate(req.body, validationSchema);
         if (resultOfValidator.error) {
             req.flash('danger', resultOfValidator.error.details[0].message);
-            res.redirect("http://localhost/Profiles/Customer/NewTypes")
+            res.redirect(config.get("Default-Address")+"/Profiles/Customer/NewTypes")
         } else {
             const CompanyName = await CompanyCollection.findOne({
                 companyName: req.body.companyName

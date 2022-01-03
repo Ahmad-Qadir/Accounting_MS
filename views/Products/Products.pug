@@ -205,7 +205,7 @@ block content
       $('#productTable').DataTable({
         "processing": true,
         "serverSide": true,
-        "ajax": {url:"http://localhost/parser",type:"POST"},
+        "ajax": {url:"#{address}/parser",type:"POST"},
         'columns':
           [
             { 'data': 'itemName', "defaultContent": "", 'name': 'itemName' },
@@ -262,7 +262,7 @@ block content
         console.log(r)
           //- $.ajax({
           //-   type: 'DELETE',
-          //-   url: "http://localhost/Products/Remove/"+GetArray[row-1]['_id'],
+          //-   url: "#{address}/Products/Remove/"+GetArray[row-1]['_id'],
           //-   dataType: 'JSON'
           //-   })
         document.getElementById("productTable").deleteRow(row);

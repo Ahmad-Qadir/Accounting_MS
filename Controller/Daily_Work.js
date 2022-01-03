@@ -10,6 +10,7 @@ const HistoryClass = require('../Models/Records');
 const ProfileCollection = require('../Models/Profiles');
 const TrailerCollection = require('../Models/Trailers');
 const DailyCollection = require('../Models/Daily_Task');
+const address=config.get('Default-Address')
 
 const {
     roles
@@ -59,7 +60,7 @@ exports.AddnewTask = async (req, res, next) => {
         const resultOfValidator = validator.validate(req.body, validationSchema);
         if (resultOfValidator.error) {
             req.flash('danger', resultOfValidator.error.details[0].message);
-            res.redirect("http://localhost/NewDailyTask")
+            res.redirect(config.get("Default-Address")+"/NewDailyTask")
         } else {
             const Task = await DailyCollection({
                 task: req.body.task,

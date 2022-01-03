@@ -88,7 +88,7 @@ block content
 
           $.ajax({
             type: 'DELETE',
-            url: "http://localhost/Profiles/"+GetArray[row-1]['_id'],
+            url: "#{address}/Profiles/"+GetArray[row-1]['_id'],
             dataType: 'JSON'
             })
         document.getElementById("clientTable").deleteRow(row);
