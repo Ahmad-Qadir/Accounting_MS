@@ -10,7 +10,7 @@ var uuid = require('uuid');
 
 // ! Collections
 const PartnersCollection = require('../models/Partners');
-const RecordsCollection = require('../models/records');
+const RecordsCollection = require('../models/dasd');
 const DailyCollection = require('./Daily_Work');
 
 // !: Basic Configuration
