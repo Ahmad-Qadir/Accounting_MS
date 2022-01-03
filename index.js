@@ -301,7 +301,6 @@ app.use(async (req, res, next) => {
                     title: "Login",
                 });
             }
-            console.log(EmployeeClass.find({}))
             res.locals.loggedInUser = await EmployeeClass.findById(userId);
             next();
         } catch (error) {
