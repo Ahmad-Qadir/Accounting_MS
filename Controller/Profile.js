@@ -146,7 +146,7 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
         req.flash('danger', "کڕیاری داواکراو هیج تۆماڕێکی نیە");
         res.redirect(process.env.address+"/Profiles")
     } else {
-        res.render("/Profiles/Invoices", {
+        res.render("Profiles/Invoices", {
             title: "Customer Invoice",
             invoices: Invoices,
             profile: Profile,
@@ -222,7 +222,7 @@ exports.AddNewRequest = async (req, res, next) => {
                 softdelete: false,
             })
 
-        res.render('/Profiles/AddNewRequest', {
+        res.render('Profiles/AddNewRequest', {
             title: " فرۆشتن بۆ بەڕێز " + Profiles[0]['clientName'],
             profile: Profiles,
             productNames: ProductNames,
@@ -377,7 +377,7 @@ exports.ShowCustomerType = async (req, res, next) => {
             .find({
                 softdelete: false
             })
-        res.render('/Profiles/CustomerType', {
+        res.render('Profiles/CustomerType', {
             title: "Customer Types",
             type: CustomerType,
             user: req.user
@@ -390,7 +390,7 @@ exports.ShowCustomerType = async (req, res, next) => {
 //Add New Customer Types UI
 exports.NewCustomerType = async (req, res, next) => {
     try {
-        res.render('/Profiles/NewCustomerType', {
+        res.render('Profiles/NewCustomerType', {
             title: "New Customer Types",
             user: req.user
         })
