@@ -12,12 +12,19 @@ const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const PORT = process.env.PORT || 5000;
 const app = express();
-app.use(cors())
+
+var corsOptions = {
+    origin: process.env.address,
+    optionsSuccessStatus: 200, // For legacy browser support
+    methods: "GET,POST"
+}
+
+app.use(cors(corsOptions))
 
 const fs = require('fs')
 const csv = require('csv-parser')
 var uuid = require('uuid');
- 
+
 var bodyParser = require('body-parser')
 // support parsing of application/json type post data
 app.use(bodyParser.json());
@@ -213,7 +220,7 @@ app.use(async (req, res, next) => {
                 return res.render('Login', {
                     title: "Login",
                 });
-            }  
+            }
             res.locals.loggedInUser = await EmployeeClass.findById(userId);
             next();
         } catch (error) {
