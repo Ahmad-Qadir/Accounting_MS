@@ -1084,6 +1084,7 @@ exports.GetProductswithSearch = async (req, res, next) => {
                     "recordsTotal": recordsTotal,
                     "data": results
                 });
+                console.log(data)
                 res.send(data);
             });
 
