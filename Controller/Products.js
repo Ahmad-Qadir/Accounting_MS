@@ -1021,14 +1021,12 @@ exports.GetProductswithSearch = async (req, res, next) => {
                 'itemModel': regex
             }, {
                 'manufacturerCompany': regex
-            }, {
-                'companyCode': regex
-            }, {
+            } ,{
                 'countryCompany': regex
             }, {
                 'unit': regex
             }, {
-                'perUnit': regex
+                'itemUnit': regex
             }, {
                 'itemType': regex
             }, {
@@ -1048,6 +1046,23 @@ exports.GetProductswithSearch = async (req, res, next) => {
     var recordsTotal = 0;
     var recordsFiltered = 0;
 
+    // const results = await ProductsCollection.find(searchStr);
+    // recordsTotal = await ProductsCollection.count({});
+    // recordsFiltered = results.length;
+
+    // var data = JSON.stringify({
+    //     "draw": req.body.draw,
+    //     "recordsFiltered": recordsFiltered,
+    //     "recordsTotal": recordsTotal,
+    //     "data": results
+    // });
+    // res.send(data);
+
+    // setTimeout(() => {
+    //     console.log(results)
+    // }, 1000);
+
+    // console.log(ched)
     ProductsCollection.count({}, function (err, c) {
         recordsTotal = c;
         // console.log(c);
@@ -1056,7 +1071,7 @@ exports.GetProductswithSearch = async (req, res, next) => {
             // console.log(c);
             // console.log(req.body.start);
             // console.log(req.body.length);
-            ProductsCollection.find(searchStr, 'itemName itemModel manufacturerCompany companyCode countryCompany perUnit itemType usedIn weight totalWeight color packet perPacket remainedPacket remainedPerPacket totalQuantity status expireDate camePrice sellPriceMufrad sellPriceMahal sellPriceWasta sellPriceWakil sellPriceSharika totalPrice trailerNumber addedBy updatedBy', {
+            ProductsCollection.find(searchStr, 'itemName itemModel countryCompany manufacturerCompany unit itemUnit itemType usedIn weight color sellPriceMufrad totalQuantity', {
                 'skip': Number(req.body.start),
                 'limit': Number(req.body.length)
             }, function (err, results) {
@@ -1064,7 +1079,6 @@ exports.GetProductswithSearch = async (req, res, next) => {
                     console.log('error while getting results' + err);
                     return;
                 }
-
                 var data = JSON.stringify({
                     "draw": req.body.draw,
                     "recordsFiltered": recordsFiltered,

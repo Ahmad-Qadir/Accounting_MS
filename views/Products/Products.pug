@@ -38,21 +38,17 @@ block content
           thead.thead-light
             tr(style="text-align:center; font-size:90%")
               th(scope='col') ناوی بەرهەم
-              //- th(scope='col') Product Code
+              th(scope='col') جۆری بەرهەم
               th(scope='col') وڵات
               th(scope='col') کۆمپانیای وەبەرهێن
-              //- th(scope='col') Company Code
-              th(scope='col') جۆری بەرهەم
-              //- th(scope='col') Per Packet Weight
-              th(scope='col') کێشی گشتی
+              th(scope='col') پێوانەی گشتی
+              th(scope='col') پێوانەی تاک
+              th(scope='col') شێوازی بەرهەم
+              th(scope='col') شوێنی بەکارهێنان
+              th(scope='col') کێش
               th(scope='col') ڕەنگ
-              //- th(scope='col') Remained Packets
-              th(scope='col') کۆی گشتی
-              //- th(scope='col') Registered Price
               th(scope='col') فرۆشتن (تاک)
-              th(scope='col') فرۆشتنی گشتی (تاک)
-              //- th(scope='col') Expire Date 
-              //- th(scope='col') Trailer 
+              th(scope='col') کۆی گشتی
               th(scope='col') کردارەکان 
           tbody
           //- tbody
@@ -209,14 +205,17 @@ block content
         'columns':
           [
             { 'data': 'itemName', "defaultContent": "", 'name': 'itemName' },
+            { 'data': 'itemModel', "defaultContent": "", 'name': 'itemModel' },
             { 'data': 'countryCompany', "defaultContent": "N", 'name': 'countryCompany' },
             { 'data': 'manufacturerCompany', "defaultContent": "X", 'name': 'manufacturerCompany' },
-            { 'data': 'itemType', "defaultContent": "N", 'name': 'itemType' },
-            { 'data': 'totalWeight', "defaultContent": "N", 'name': 'totalWeight' },
+            { 'data': 'unit', "defaultContent": "X", 'name': 'unit' },
+            { 'data': 'itemUnit', "defaultContent": "X", 'name': 'itemUnit' },
+            { 'data': 'itemType', "defaultContent": "X", 'name': 'itemType' },
+            { 'data': 'usedIn', "defaultContent": "N", 'name': 'usedIn' },
+            { 'data': 'weight', "defaultContent": "N", 'name': 'weight' },
             { 'data': 'color', "defaultContent": "N", 'name': 'color' },
-            { 'data': 'totalQuantity', "defaultContent": "N", 'name': 'totalQuantity' },
             { 'data': 'sellPriceMufrad', "defaultContent": "N", 'name': 'sellPriceMufrad' },
-            { 'data': 'totalPrice', "defaultContent": "N", 'name': 'totalPrice' },
+            { 'data': 'totalQuantity', "defaultContent": "N", 'name': 'totalQuantity' },
             { 
               data: '_id', 
               render: function ( data, type, row, meta ) {
