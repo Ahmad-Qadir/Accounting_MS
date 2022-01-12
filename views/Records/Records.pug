@@ -15,7 +15,7 @@ block content
         table(id="productTable").table.table-hover.table-sm.dt-responsive.table-striped
           thead.thead-light
             tr
-              th(scope='col' style="font-size:90%") ناوی بەرهەم
+              th(scope='col' style="font-size:90%") بەرهەم
               th(scope='col' style="text-align:center; font-size:90%") کۆی گشتی
               th(scope='col' style="text-align:center; font-size:90%") نرخی بەرهەم
               th(scope='col' style="text-align:center; font-size:90%") فەرمانبەر
@@ -73,9 +73,9 @@ block content
                       span.icon.text-danger
                         i.fas.fa-money-bill-alt
                 else
-                  td=item['productID']['itemName']
+                  td=item['productID']['itemModel']+" "+item['productID']['itemName']+" "+item['productID']['itemType']+" "+item['productID']['weight']+" "+item['productID']['itemUnit']+" "+item['productID']['color']
                   td(style="text-align:center;")=item['totalQuantity']
-                  td(style="text-align:center;")="$ "+item['totalQuantity'] * item['sellPrice']
+                  td(style="text-align:center;")="$ "+item['totalPrice']
                   td(style="text-align:center;")=item['addedBy']
                   td(style="text-align:center;")=item['createdAt'].toLocaleString()
                   td(style="text-align:center;")=item['note']

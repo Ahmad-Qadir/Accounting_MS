@@ -10,7 +10,7 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 const app = express();
 
 

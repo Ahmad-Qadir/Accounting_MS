@@ -468,12 +468,14 @@ exports.getProducts = async (req, res, next) => {
 
 //Get Spedicif Products
 exports.getSpecificProducts = async (req, res, next) => {
-    var Name = req.params.productName;
-
+    // console.log(req.body)
     const Product = await ProductsCollection
         .find({
-            softdelete: false,
-            itemName: Name
+            itemName: req.body.itemName,
+            itemModel: req.body.itemModel,
+            weight: req.body.weight,
+            itemType: req.body.itemType,
+            color: req.body.color
         }).populate("itemHistory");
 
     res.send(Product);
@@ -599,7 +601,6 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
 
     try {
         var RequestList = req.body['tbody'];
-        var invoiceID = uuid.v1();
         const Trailer = await TrailerCollection.find({
             status: "New Trailer",
             softdelete: false
@@ -612,37 +613,46 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
         else
             var _TrailerNumber = Trailer[0]['trailerNumber'];
 
-        // console.log("ID: "+RequestList[0][0])                   
-        // console.log("Product Name: "+RequestList[0][1])
-        // console.log("Product Color: "+RequestList[0][2])
-        // console.log("Product Type: "+RequestList[0][3])
-        // console.log("Item Unit: "+RequestList[0][4])
-        // console.log("Wakil: "+RequestList[0][5])
-        // console.log("Sharika: "+RequestList[0][6])
-        // console.log("Mahal: "+RequestList[0][7])
-        // console.log("Mufrad: "+RequestList[0][8])
-        // console.log("Wasta: "+RequestList[0][9])
-        // console.log("Total Quantity: "+RequestList[0][10])
-        // console.log("Come Price: "+RequestList[0][11])
-        // console.log("Sell Price: "+RequestList[0][12])
-        // console.log("Total Price: "+RequestList[0][13])
+        var invoiceID = _TrailerNumber;
 
+        // console.log("ID: "+RequestList[0][0])                   
+        // console.log("Product Model: "+RequestList[0][1])
+        // console.log("Product Name: "+RequestList[0][2])
+        // console.log("Product Color: "+RequestList[0][3])
+        // console.log("Product Type: "+RequestList[0][4])
+        // console.log("Weight: "+RequestList[0][5])
+        // console.log("Wakil: "+RequestList[0][6])
+        // console.log("Sharika: "+RequestList[0][7])
+        // console.log("Mahal: "+RequestList[0][8])
+        // console.log("Mufrad: "+RequestList[0][9])
+        // console.log("Wasta: "+RequestList[0][10])
+        // console.log("Total Quantity: "+RequestList[0][11])
+        // console.log("Come Price: "+RequestList[0][12])
+        // console.log("Sell Price: "+RequestList[0][13])
+        // console.log("Total Price: "+RequestList[0][14])
 
         for (let index = 0; index < RequestList.length; index++) {
             const element = RequestList[index];
+
             const Product = await ProductsCollection.find({
-                itemName: element[1],
-                color: element[2],
-                itemType: element[3]
+                itemModel: element[1],
+                itemName: element[2],
+                color: element[3],
+                itemType: element[4],
+                weight: element[5].split(" ")[0],
+                itemUnit: element[5].split(" ")[1]
             });
+
+            console.log(Product)
 
 
             const newRecordtoHistory = new RecordsCollection({
                 recordCode: invoiceID,
-                totalQuantity: parseInt(element[10]),
+                totalQuantity: parseInt(element[11]),
                 status: "New Trailer",
-                camePrice: parseInt(element[11]),
-                sellPrice: parseInt(element[12]),
+                camePrice: parseInt(element[12]),
+                sellPrice: parseInt(element[13]),
+                totalPrice: parseInt(element[13]) * parseInt(element[11]),
                 trailerNumber: _TrailerNumber + 1,
                 addedBy: req.user.username,
                 updatedBy: req.user.username,
@@ -651,7 +661,7 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
             await newRecordtoHistory.save();
 
 
-            var quantity = Product[0]['totalQuantity'] + parseInt(element[10]);
+            var quantity = Product[0]['totalQuantity'] + parseInt(element[11]);
 
             await ProductsCollection.findByIdAndUpdate({
                 "_id": Product[0]['_id']
@@ -659,13 +669,13 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
                 remainedPacket: parseInt(quantity / Product[0]['perPacket']),
                 remainedPerPacket: quantity % Product[0]['perPacket'],
                 totalQuantity: quantity,
-                totalPrice: Product[0]['totalPrice'] + (parseInt(element[10]) * parseInt(element[12])),
-                totalWeight: Product[0]['totalWeight'] + (parseInt(element[10]) * Product[0]['weight']),
-                sellPriceWakil: parseInt(element[5]),
-                sellPriceSharika: parseInt(element[6]),
-                sellPriceMahal: parseInt(element[7]),
-                sellPriceMufrad: parseInt(element[8]),
-                sellPriceWasta: parseInt(element[9]),
+                totalPrice: Product[0]['totalPrice'] + (parseInt(element[11]) * parseInt(element[13])),
+                totalWeight: Product[0]['totalWeight'] + (parseInt(element[11]) * Product[0]['weight']),
+                sellPriceWakil: parseInt(element[6]),
+                sellPriceSharika: parseInt(element[7]),
+                sellPriceMahal: parseInt(element[8]),
+                sellPriceMufrad: parseInt(element[9]),
+                sellPriceWasta: parseInt(element[10]),
                 updatedBy: req.user.username,
                 $push: {
                     itemHistory: newRecordtoHistory["_id"],
@@ -681,19 +691,19 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
                 usedIn: Product[0]['usedIn'],
                 color: Product[0]['color'],
                 weight: Product[0]['weight'],
-                totalWeight: Product[0]['totalWeight'] + (parseInt(element[10]) * Product[0]['weight']),
+                totalWeight: Product[0]['totalWeight'] + (parseInt(element[11]) * Product[0]['weight']),
                 camePrice: Product[0]['camePrice'],
-                sellPriceWakil: parseInt(element[5]),
-                sellPriceSharika: parseInt(element[6]),
-                sellPriceMahal: parseInt(element[7]),
-                sellPriceMufrad: parseInt(element[8]),
-                sellPriceWasta: parseInt(element[9]),
-                totalPrice: Product[0]['totalPrice'] + (parseInt(element[10]) * parseInt(element[12])),
-                packet: parseInt(element[10]) / Product[0]['packet'],
-                perPacket: parseInt(element[10]) % Product[0]['packet'],
-                remainedPacket: parseInt(element[10]) / Product[0]['packet'],
-                remainedPerPacket: parseInt(element[10]) % Product[0]['packet'],
-                totalQuantity: parseInt(element[10]),
+                sellPriceWakil: parseInt(element[6]),
+                sellPriceSharika: parseInt(element[7]),
+                sellPriceMahal: parseInt(element[8]),
+                sellPriceMufrad: parseInt(element[9]),
+                sellPriceWasta: parseInt(element[10]),
+                totalPrice: Product[0]['totalPrice'] + (parseInt(element[11]) * parseInt(element[13])),
+                packet: parseInt(element[11]) / Product[0]['packet'],
+                perPacket: parseInt(element[11]) % Product[0]['packet'],
+                remainedPacket: parseInt(element[11]) / Product[0]['packet'],
+                remainedPerPacket: parseInt(element[11]) % Product[0]['packet'],
+                totalQuantity: parseInt(element[11]),
                 status: "New Trailer",
                 expireDate: Product[0]['expireDate'],
                 trailerNumber: _TrailerNumber + 1,
@@ -1021,7 +1031,7 @@ exports.GetProductswithSearch = async (req, res, next) => {
                 'itemModel': regex
             }, {
                 'manufacturerCompany': regex
-            } ,{
+            }, {
                 'countryCompany': regex
             }, {
                 'unit': regex

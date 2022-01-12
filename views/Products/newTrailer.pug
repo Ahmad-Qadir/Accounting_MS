@@ -101,9 +101,10 @@ block content
                     thead
                       tr
                         th.center #
+                        th جۆری بەرهەم
                         th ناوی بەرهەم
                         th ڕەنگ
-                        th جۆری بەرهەم
+                        th شێوازی بەرهەم
                         th پێوانە
                         th وەکیل
                         th شرکە
@@ -176,8 +177,8 @@ block content
           $('#body-product'+idOfModel).append($("<table></table>").attr("id","datas"+idOfModel).attr('class',"table table-hover table-lg table-striped container-fluid table-responsive"));
           $('#datas'+idOfModel).append($("<tr></tr>").attr('style',"text-align:center").attr('id','header'+idOfModel));
           $('#header'+idOfModel).append($("<th></th>").text('#'));
-          $('#header'+idOfModel).append($("<th></th>").text('ناوی بەرهەم'));
           $('#header'+idOfModel).append($("<th></th>").text('جۆری بەرهەم'));
+          $('#header'+idOfModel).append($("<th></th>").text('ناوی بەرهەم'));
           $('#header'+idOfModel).append($("<th></th>").text('ڕەنگ'));
           $('#header'+idOfModel).append($("<th></th>").text('شێوازی بەرهەم'));
           $('#header'+idOfModel).append($("<th></th>").text('پێوانە'));
@@ -220,18 +221,20 @@ block content
       var total=parseInt(document.getElementById('total').innerHTML);
       for (let i = 1; i < table.length; i++) {
         if(document.getElementById(table[i].childNodes[0].firstChild.id).checked==true){
+          console.log(table[i].childNodes[1].firstChild)
+          console.log(table[i].childNodes[2].childNodes[0])
           $("#invoiceTable").find('tbody')
             .append($('<tr>')
               .append($('<td>')
                 .text($('#invoiceTable>tbody>tr').length+1)
               ).append($('<td>')
-                .text(table[i].childNodes[0].firstChild.value) //Item Name
+                .text(table[i].childNodes[1].innerHTML) //Item Model
               ).append($('<td>')
-                .text(table[i].childNodes[2].innerHTML) //Item Color
+                .text(table[i].childNodes[2].innerHTML) //Item Name
               ).append($('<td>')
-                .text(table[i].childNodes[3].innerHTML) //
+                .text(table[i].childNodes[3].innerHTML) //Item Color
               ).append($('<td>')
-                .text(table[i].childNodes[4].innerHTML)
+                .text(table[i].childNodes[4].innerHTML) //
               ).append($('<td>')
                 .text(table[i].childNodes[5].innerHTML)
               ).append($('<td>')
@@ -243,16 +246,18 @@ block content
               ).append($('<td>')
                 .text(table[i].childNodes[9].innerHTML)
               ).append($('<td>')
-                .text(table[i].childNodes[10].firstChild.value)
+                .text(table[i].childNodes[10].innerHTML)
               ).append($('<td>')
                 .text(table[i].childNodes[11].firstChild.value)
+              ).append($('<td>')
+                .text(table[i].childNodes[12].firstChild.value)
               ).append($("<td>")
                 .text(" ")
               ).append($('<td>')
-                .text(parseInt(table[i].childNodes[10].firstChild.value)*parseInt(table[i].childNodes[11].firstChild.value))
+                .text(parseInt(table[i].childNodes[11].firstChild.value)*parseInt(table[i].childNodes[12].firstChild.value))
               )
             );
-              document.getElementById('total').innerHTML=parseInt(document.getElementById('total').innerHTML)+parseInt(table[i].childNodes[10].firstChild.value)*parseInt(table[i].childNodes[11].firstChild.value)
+              document.getElementById('total').innerHTML=parseInt(document.getElementById('total').innerHTML)+parseInt(table[i].childNodes[11].firstChild.value)*parseInt(table[i].childNodes[12].firstChild.value)
         }
         else{
           continue;
@@ -326,12 +331,13 @@ block content
           console.log(table[i].cells[5].textContent)
           console.log(table[i].cells[6].textContent)
           console.log(table[i].cells[7].textContent)
-          console.log(table[i].cells[8].textContent)  //SellPriceMufrad
-          console.log(table[i].cells[9].textContent)
+          console.log(table[i].cells[8].textContent)
+          console.log(table[i].cells[9].textContent)  //SellPriceMufrad
           console.log(table[i].cells[10].textContent)
-          console.log(table[i].cells[11].textContent) //Came Price
-          console.log(table[i].cells[12].textContent=Math.round((expense/total)*parseInt(table[i].cells[8].textContent)+parseInt(table[i].cells[11].textContent))) //Company Price
-          console.log(table[i].cells[13].textContent)
+          console.log(table[i].cells[11].textContent)
+          console.log(table[i].cells[12].textContent) //Came Price
+          console.log(table[i].cells[13].textContent=Math.round((expense/total)*parseInt(table[i].cells[9].textContent)+parseInt(table[i].cells[12].textContent))) //Company Price
+          console.log(table[i].cells[14].textContent)
 
         }
       }
