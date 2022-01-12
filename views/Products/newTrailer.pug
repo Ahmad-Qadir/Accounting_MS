@@ -177,8 +177,9 @@ block content
           $('#datas'+idOfModel).append($("<tr></tr>").attr('style',"text-align:center").attr('id','header'+idOfModel));
           $('#header'+idOfModel).append($("<th></th>").text('#'));
           $('#header'+idOfModel).append($("<th></th>").text('ناوی بەرهەم'));
-          $('#header'+idOfModel).append($("<th></th>").text('ڕەنگ'));
           $('#header'+idOfModel).append($("<th></th>").text('جۆری بەرهەم'));
+          $('#header'+idOfModel).append($("<th></th>").text('ڕەنگ'));
+          $('#header'+idOfModel).append($("<th></th>").text('شێوازی بەرهەم'));
           $('#header'+idOfModel).append($("<th></th>").text('پێوانە'));
           $('#header'+idOfModel).append($("<th></th>").text('وەکیل'));
           $('#header'+idOfModel).append($("<th></th>").text('شرکە'));
@@ -192,6 +193,7 @@ block content
             $('#datas'+idOfModel).append($("<tr></tr>").attr("id","rows"+idOfModel+i));
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','check'+idOfModel+i));
             $('#check'+idOfModel+i).append($("<input></input>").attr('id','checkstatus'+idOfModel+i).attr('type','checkbox').attr('value',data[i]['itemName']).attr('style','zoom: 1.5;'));
+            $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['itemModel']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['itemName']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['color']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['itemType']));
@@ -204,7 +206,7 @@ block content
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','quantity'+idOfModel+i));
             $('#quantity'+idOfModel+i).append($("<input></input>").attr('style','zoom: 0.8;').attr('type','number').attr('name','totalQuan').attr('value','0').attr('class','form-control').attr('id','totalQuan'+idOfModel+i));
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','priceRow'+idOfModel+i));
-            $('#priceRow'+idOfModel+i).append($("<input></input>").attr('style','zoom: 0.8;').attr('type','number').attr('name','priceOf').attr('id','priceOf'+idOfModel+i).attr('class','form-control').attr('value',"0"));
+            $('#priceRow'+idOfModel+i).append($("<input></input>").attr('style','zoom: 0.8;').attr('type','number').attr('name','priceOf').attr('id','priceOf'+idOfModel+i).attr('class','form-control').attr('value',data[i]['camePrice']));
             }
           }
       })
