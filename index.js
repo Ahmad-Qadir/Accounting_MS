@@ -95,7 +95,7 @@ require('./Controller/prod')
 
 
 app.get('/import', async (req, res) => {
-    fs.createReadStream("C:\\Users\\Ahmed\\Desktop\\Items.csv")
+    fs.createReadStream("C:\\Users\\ahmed.q\\Desktop\\Aufoq.csv")
         .pipe(csv())
         .on('data', async function (row) {
             const newProduct = new ProductsCollection({
@@ -103,29 +103,29 @@ app.get('/import', async (req, res) => {
                 itemCode: uuid.v1(),
                 itemModel: row.itemModel,
                 itemUnit: row.itemUnit,
+                itemType: row.itemType,
                 manufacturerCompany: row.manufacturerCompany,
                 companyCode: row.companyCode,
                 countryCompany: row.countryCompany,
                 unit: row.unit,
-                itemType: row.itemType,
                 usedIn: row.usedIn,
                 weight: parseInt(row.weight),
                 totalWeight: parseInt(row.weight) * parseInt(row.perPacket),
                 color: row.color,
-                packet: row.packet,
-                camePrice: row.camePrice,
-                sellPriceMufrad: row.sellPriceMufrad,
-                sellPriceMahal: row.sellPriceMahal,
-                sellPriceWasta: row.sellPriceWasta,
-                sellPriceWakil: row.sellPriceWakil,
-                sellPriceSharika: row.sellPriceSharika,
-                totalPrice: row.camePrice * parseInt(row.perPacket),
+                packet: parseInt(row.packet),
                 perPacket: parseInt(row.perPacket),
-                remainedPacket: row.remainedPacket,
+                remainedPacket: parseInt(row.remainedPacket),
                 remainedPerPacket: parseInt(row.perPacket),
                 totalQuantity: parseInt(row.perPacket),
                 status: "New Product",
                 expireDate: Date.now(),
+                camePrice: parseInt(row.camePrice),
+                sellPriceMufrad: parseInt(row.sellPriceMufrad),
+                sellPriceMahal: parseInt(row.sellPriceMahal),
+                sellPriceWasta: parseInt(row.sellPriceWasta),
+                sellPriceWakil: parseInt(row.sellPriceWakil),
+                sellPriceSharika: parseInt(row.sellPriceSharika),
+                totalPrice: parseInt(row.camePrice) * parseInt(row.perPacket),
                 trailerNumber: 1,
                 addedBy: "Ahmad Qadir",
                 updatedBy: "Ahmad Qadir",
@@ -143,11 +143,8 @@ app.get('/import', async (req, res) => {
                 sellPriceSharika: row.sellPriceSharika,
                 totalPrice: row.camePrice * parseInt(row.perPacket),
                 perPacket: parseInt(row.perPacket),
-                remainedPacket: row.remainedPacket,
-                remainedPerPacket: parseInt(row.perPacket),
                 totalQuantity: parseInt(row.perPacket),
                 status: "New Product",
-                expireDate: Date.now(),
                 trailerNumber: 1,
                 addedBy: "Ahmad Qadir",
                 updatedBy: "Ahmad Qadir",
@@ -156,42 +153,6 @@ app.get('/import', async (req, res) => {
                 productID: newProduct['_id'],
             });
             await newItem.save();
-            const newTrailer = new TrailerCollection({
-                itemName: row.itemName,
-                itemCode: uuid.v1(),
-                itemModel: row.itemModel,
-                itemUnit: row.itemUnit,
-                manufacturerCompany: row.manufacturerCompany,
-                companyCode: row.companyCode,
-                countryCompany: row.countryCompany,
-                unit: row.unit,
-                itemType: row.itemType,
-                usedIn: row.usedIn,
-                weight: parseInt(row.weight),
-                totalWeight: parseInt(row.weight) * parseInt(row.perPacket),
-                color: row.color,
-                packet: row.packet,
-                camePrice: row.camePrice,
-                sellPriceMufrad: row.sellPriceMufrad,
-                sellPriceMahal: row.sellPriceMahal,
-                sellPriceWasta: row.sellPriceWasta,
-                sellPriceWakil: row.sellPriceWakil,
-                sellPriceSharika: row.sellPriceSharika,
-                totalPrice: row.camePrice * parseInt(row.perPacket),
-                perPacket: parseInt(row.perPacket),
-                remainedPacket: row.remainedPacket,
-                remainedPerPacket: parseInt(row.perPacket),
-                totalQuantity: parseInt(row.perPacket),
-                status: "New Product",
-                expireDate: Date.now(),
-                trailerNumber: 1,
-                addedBy: "Ahmad Qadir",
-                updatedBy: "Ahmad Qadir",
-                note: ".",
-                softdelete: "false",
-                productID: newProduct['_id'],
-            });
-            await newTrailer.save();
             await ProductsCollection.findByIdAndUpdate({
                 _id: newProduct['_id']
             }, {

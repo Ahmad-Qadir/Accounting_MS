@@ -8,7 +8,12 @@ const itemHistorySchema = new mongoose.Schema({
     status: String,
     trailerNumber: Number,
     camePrice:Number,
-    sellPrice: Number,
+    sellPriceMufrad: Number,
+    sellPriceMahal: Number,
+    sellPriceWasta: Number,
+    sellPriceWakil: Number,
+    sellPriceSharika: Number,
+    totalPrice:Number,
     addedBy: { 
         type: String
     },

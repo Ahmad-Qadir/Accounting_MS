@@ -10,7 +10,6 @@ const ItemsSchema = new mongoose.Schema({
     companyCode: String,
     countryCompany: String,
     unit: String,
-    packet: Number, //pakat
     usedIn: String, //shweni bakar henan
     weight: Number,
     totalWeight: Number,
