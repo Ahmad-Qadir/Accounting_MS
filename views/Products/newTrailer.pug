@@ -197,7 +197,7 @@ block content
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['itemName']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['color']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['itemType']));
-            $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['itemUnit']).attr('id',"unit"+idOfModel+i));
+            $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['weight']+" "+data[i]['itemUnit']).attr('id',"unit"+idOfModel+i));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['sellPriceWakil']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['sellPriceSharika']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['sellPriceMahal']));

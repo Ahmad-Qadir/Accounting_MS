@@ -37,8 +37,8 @@ block content
         table(id="productTable").table.table-hover.table-lg.table-striped
           thead.thead-light
             tr(style="text-align:center; font-size:90%")
-              th(scope='col') ناوی بەرهەم
               th(scope='col') جۆری بەرهەم
+              th(scope='col') ناوی بەرهەم
               th(scope='col') وڵات
               th(scope='col') کۆمپانیای وەبەرهێن
               th(scope='col') پێوانەی گشتی
@@ -204,8 +204,8 @@ block content
         "ajax": {url:"/Products/Parser",type:"POST"},
         'columns':
           [
-            { 'data': 'itemName', "defaultContent": "", 'name': 'itemName' },
             { 'data': 'itemModel', "defaultContent": "", 'name': 'itemModel' },
+            { 'data': 'itemName', "defaultContent": "", 'name': 'itemName' },
             { 'data': 'countryCompany', "defaultContent": "N", 'name': 'countryCompany' },
             { 'data': 'manufacturerCompany', "defaultContent": "X", 'name': 'manufacturerCompany' },
             { 'data': 'unit', "defaultContent": "X", 'name': 'unit' },

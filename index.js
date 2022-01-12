@@ -95,7 +95,7 @@ require('./Controller/prod')
 
 
 app.get('/import', async (req, res) => {
-    fs.createReadStream("C:\\Users\\ahmed.q\\Desktop\\Aufoq.csv")
+    fs.createReadStream("C:\\Users\\ahmed.q\\Desktop\\by.csv")
         .pipe(csv())
         .on('data', async function (row) {
             const newProduct = new ProductsCollection({
