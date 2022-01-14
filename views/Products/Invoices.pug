@@ -23,8 +23,8 @@ block content
                 label ناوی بەرهەم
                 input.form-control(name="itemName" type='text' value=product[0]['productID']['itemName'] disabled)
               .form-group.col-md-2
-                label شێوەی بەرهەم
-                input.form-control(name="itemName" type='text' value=product[0]['productID']['itemModel'] disabled)
+                label جۆری بەرهەم
+                input.form-control(name="itemModel" type='text' value=product[0]['productID']['itemModel'] disabled)
               .form-group.col-md-2
                 label کۆمپانیای وەبەرهێن
                 input.form-control(name="manufacturerCompany" type='text' value=product[0]['productID']['manufacturerCompany'] disabled)
@@ -39,7 +39,7 @@ block content
                 input.form-control(name="unit" type='text' value=product[0]['productID']['itemUnit'] disabled)
             .row
               .form-group.col-md-3
-                label جۆری بەرهەم
+                label شێوەی بەرهەم
                 input.form-control(name="itemType" type='text' value=product[0]['productID']['itemType'] disabled)
               .form-group.col-md-3
                 label کێش
@@ -90,7 +90,7 @@ block content
         table(id="clientTable").table.table-hover.table-sm.dt-responsive.table-striped
           thead.thead-light
             tr
-              th(scope='col' style="font-size:90%") Invoice ID
+              th(scope='col' style="font-size:90%") ژمارەی تۆمار
               th(scope='col' style="text-align:center; font-size:90%") کۆی گشتی
               th(scope='col' style="text-align:center; font-size:90%") بار
               th(scope='col' style="text-align:center; font-size:90%") نرخی بەرهەم
@@ -105,10 +105,10 @@ block content
               - var j=i;
               tr
                 form(method='POST')
-                  td=item['recordCode']
+                  td=item['trailerNumber']
                   td(style="text-align:center;")=item['totalQuantity']
                   td(style="text-align:center;")=item['status']
-                  td(style="text-align:center;")="$ "+item['productID']['camePrice']
+                  td(style="text-align:center;")="$ "+item['productID']['totalPrice']
                   td(style="text-align:center;")=item['trailerNumber']
                   td(style="text-align:center;")=item['note']
                   if item['cutomerID']==undefined

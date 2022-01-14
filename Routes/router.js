@@ -42,7 +42,7 @@ router.get('/Products/:productName', Products.allowIfLoggedin, Products.grantAcc
 router.get('/Products/:id/Invoices', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.getInvoiceofSpecificProduct); // Get Invoices of each Product
 router.get('/Products/:id/Modification', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.EditProductUI);
 router.post('/Products/:id/Update', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.EditProductOperation);
-router.get('/Products/Model/:productModel', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.SearchForProductModel);
+router.post('/Products/Model', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.SearchForProductModel);
 router.get('/Products/Model/Company/:company', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.SearchForProductsinCompany);
 router.post('/Products/Parser', Products.GetProductswithSearch); // Get All Products
 
@@ -55,7 +55,7 @@ router.post('/Products/RemoveProduct/:id', Products.allowIfLoggedin, Products.gr
 router.get('/Products/Remove/:id', Products.allowIfLoggedin, Products.grantAccess('deleteAny', 'products'), Products.RemoveProductUI); // Add new Request per Product
 router.post('/Products/NewTrailer', Products.allowIfLoggedin, Products.grantAccess('createAny', 'products'), Products.AppendNewTrailertoProduct)
 router.get('/NewTrailer', Products.allowIfLoggedin, Products.grantAccess('createAny', 'products'), Products.AddNewTrailer); // Add new Request per Product
-router.get('/Product/Trailers/:trailerNum/:productName/:color/:itemType/:customerType', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.CheckForProductPriceInTrailer); // Add new Request per Product
+router.post('/Product/Trailers/:trailerNum/:customerType', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.CheckForProductPriceInTrailer); // Add new Request per Product
 router.put('/Invoices/:invoiceID/:customerid/Recover', Products.allowIfLoggedin, Products.grantAccess('updateAny', 'invoice'), Products.DeleteItemInInvoice); // Add new Request
 router.get('/Invoice/:invoiceID/:productName', Records.allowIfLoggedin, Records.grantAccess('readAny', 'invoice'), Records.SearchForSpecificInvoice); // Add new Request
 router.get('/Invoices/query', Records.allowIfLoggedin, Records.grantAccess('readAny', 'invoice'), Records.ShowSelectedDateOfInvoices); // Add new Request
@@ -88,7 +88,7 @@ router.get('/Profiles/:id/invoices', Profiles.allowIfLoggedin, Profiles.grantAcc
 router.get('/Profile/:id/NewRequest', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.AddNewRequest); // Add new Request per Customer
 router.get('/Profiles/:invoiceID/Print', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.PrintSelectedInvoice); // Print Invoice
 router.get('/Profiles/AddNew', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.CreateNewProfile);
-router.get('/Profiles/:productName/:productType/:productColor', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.CheckForTrailerInRequest);
+router.get('/Profiles/:itemModel/:itemName/:itemType/:color/:itemUnit', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.CheckForTrailerInRequest);
 router.get('/Profiles/Customer/Types', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.ShowCustomerType);
 router.get('/Profiles/Customer/NewTypes', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.NewCustomerType);
 router.post('/Profiles/Customer/NewTypes', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.NewCustomerTypeOperation);

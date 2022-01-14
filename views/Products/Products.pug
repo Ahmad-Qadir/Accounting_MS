@@ -47,7 +47,7 @@ block content
               th(scope='col') شوێنی بەکارهێنان
               th(scope='col') کێش
               th(scope='col') ڕەنگ
-              th(scope='col') فرۆشتن (تاک)
+              //- th(scope='col') فرۆشتن (تاک)
               th(scope='col') کۆی گشتی
               th(scope='col') کردارەکان 
           tbody
@@ -199,6 +199,9 @@ block content
   script.
     $(document).ready(function() {
       $('#productTable').DataTable({
+        "mRender" : function(oObj) {
+          return '<select id="year">' + '<option value="2010">2010</option>' + '<option value="2011">2011</option>' + '<option value="2012">2012</option>' + '</select> ';
+        },
         "processing": true,
         "serverSide": true,
         "ajax": {url:"/Products/Parser",type:"POST"},
@@ -214,7 +217,7 @@ block content
             { 'data': 'usedIn', "defaultContent": "N", 'name': 'usedIn' },
             { 'data': 'weight', "defaultContent": "N", 'name': 'weight' },
             { 'data': 'color', "defaultContent": "N", 'name': 'color' },
-            { 'data': 'sellPriceMufrad', "defaultContent": "N", 'name': 'sellPriceMufrad' },
+            //- { 'data': 'sellPriceMufrad', "defaultContent": "N", 'name': 'sellPriceMufrad' },
             { 'data': 'totalQuantity', "defaultContent": "N", 'name': 'totalQuantity' },
             { 
               data: '_id', 

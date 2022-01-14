@@ -288,6 +288,16 @@ app.get('/', async (req, res) => {
 });
 
 
+app.get('/remover', async (req, res) => {
+    var checker = await ProductsCollection.updateMany({
+    }, {
+        remainedPacket: 0,
+        remainedPerPacket: 0,
+        totalQuantity: 0
+    });
+    res.send(checker)
+});
+
 //Error Handler
 process.on('uncaughtException', function (err) {
     console.error((new Date).toUTCString() + ' uncaughtException:', err.message)

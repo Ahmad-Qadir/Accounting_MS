@@ -106,7 +106,7 @@ exports.addNewItem = async (req, res, next) => {
                 countryCompany: req.body.countryCompany,
                 usedIn: req.body.usedIn,
                 weight: req.body.weight,
-                totalWeight: req.body.weight * req.body.packet * req.body.perPacket,
+                totalWeight: 0,
                 color: req.body.color,
                 packet: req.body.packet,
                 camePrice: req.body.camePrice,
@@ -115,11 +115,11 @@ exports.addNewItem = async (req, res, next) => {
                 sellPriceWasta: req.body.sellPriceWasta,
                 sellPriceWakil: req.body.sellPriceWakil,
                 sellPriceSharika: req.body.sellPriceSharika,
-                totalPrice: req.body.sellPriceMufrad * req.body.packet * req.body.perPacket,
+                totalPrice: 0,
                 perPacket: req.body.perPacket,
-                remainedPacket: req.body.packet,
-                remainedPerPacket: req.body.perPacket,
-                totalQuantity: req.body.packet * req.body.perPacket,
+                remainedPacket: 0,
+                remainedPerPacket: 0,
+                totalQuantity: 0,
                 status: "New Product",
                 expireDate: req.body.expireDate,
                 trailerNumber: Trailer.length,
@@ -505,13 +505,14 @@ exports.getInvoiceofSpecificProduct = async (req, res, next) => {
         .find({
             _id: req.params.id
         })
+
     if (Products == "") {
         req.flash('danger', "بەرهەمی داواکراو هیج تۆماڕێکی نیە");
-        res.redirect(process.env.address + "/Products")
+        res.redirect("/Products")
     } else {
         res.render("Products/Invoices", {
             product: Products,
-            title: " فاتوورەی " + Products[0]['productID']['itemName'],
+            title: " فاتوورەی " + Products[0]['productID']['itemName'] + " - " + Products[0]['productID']['itemModel'] + " - " + Products[0]['productID']['weight'] + " - " + Products[0]['productID']['color'],
             profile: Profile,
             productInfo: ProductInfo
         })
@@ -560,22 +561,24 @@ exports.EditProductOperation = async (req, res, next) => {
 //Add New Trailer UI
 exports.AddNewTrailer = async (req, res, next) => {
     try {
-        const Records = await RecordsCollection
-            .find({
-                status: "New Trailer",
-                softdelete: false
-            });
-
-        var invoiceID = Records.length;
+        const Trailer = await TrailerCollection.find({
+            status: "New Trailer",
+            softdelete: false
+        }).sort({
+            "createdAt": -1
+        });
+        if (Trailer.length == 0)
+            var invoiceID = 0;
+        else if (Trailer[0]['trailerNumber'] == 0)
+            var invoiceID = 1;
+        else
+            var invoiceID = Trailer[0]['trailerNumber'] + 1;
 
         const Products = await ProductsCollection
             .find({
                 softdelete: false
             })
-        const Trailers = await TrailerCollection
-            .find({
-                softdelete: false,
-            })
+
         const Company = await CompanyCollection
             .find({
                 softdelete: false,
@@ -584,7 +587,6 @@ exports.AddNewTrailer = async (req, res, next) => {
         res.render('Products/newTrailer', {
             title: "زیاد کردنی بار",
             products: Products,
-            trailers: Trailers,
             invoiceID: invoiceID,
             time: Date(),
             user: req.user,
@@ -608,12 +610,15 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
             "createdAt": -1
         });
 
+
         if (Trailer.length == 0)
             var _TrailerNumber = 0;
+        else if (Trailer[0]['trailerNumber'] == 0)
+            var _TrailerNumber = 1;
         else
-            var _TrailerNumber = Trailer[0]['trailerNumber'];
+            var _TrailerNumber = Trailer[0]['trailerNumber'] + 1;
 
-        var invoiceID = _TrailerNumber;
+        var record = uuid.v1();
 
         // console.log("ID: "+RequestList[0][0])                   
         // console.log("Product Model: "+RequestList[0][1])
@@ -627,7 +632,7 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
         // console.log("Mufrad: "+RequestList[0][9])
         // console.log("Wasta: "+RequestList[0][10])
         // console.log("Total Quantity: "+RequestList[0][11])
-        // console.log("Come Price: "+RequestList[0][12])
+        // console.log("Came Price: "+RequestList[0][12])
         // console.log("Sell Price: "+RequestList[0][13])
         // console.log("Total Price: "+RequestList[0][14])
 
@@ -643,20 +648,19 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
                 itemUnit: element[5].split(" ")[1]
             });
 
-            console.log(Product)
-
 
             const newRecordtoHistory = new RecordsCollection({
-                recordCode: invoiceID,
+                recordCode: record,
                 totalQuantity: parseInt(element[11]),
                 status: "New Trailer",
                 camePrice: parseInt(element[12]),
                 sellPrice: parseInt(element[13]),
-                totalPrice: parseInt(element[13]) * parseInt(element[11]),
-                trailerNumber: _TrailerNumber + 1,
+                totalPrice: parseInt(element[12]) * parseInt(element[11]),
+                trailerNumber: _TrailerNumber,
                 addedBy: req.user.username,
                 updatedBy: req.user.username,
                 productID: Product[0]['_id'],
+                note: req.params.note,
             });
             await newRecordtoHistory.save();
 
@@ -706,10 +710,10 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
                 totalQuantity: parseInt(element[11]),
                 status: "New Trailer",
                 expireDate: Product[0]['expireDate'],
-                trailerNumber: _TrailerNumber + 1,
+                trailerNumber: _TrailerNumber,
                 addedBy: req.user.username,
                 updatedBy: req.user.username,
-                note: req.body.note,
+                note: req.params.note,
                 productID: Product[0]['_id'],
             });
             await newTrailer.save();
@@ -733,10 +737,13 @@ exports.CheckForProductPriceInTrailer = async (req, res, next) => {
     try {
         const Products = await ProductsCollection
             .find({
-                itemName: req.params.productName,
-                itemType: req.params.itemType,
-                color: req.params.color,
-                softdelete: false
+                itemName: req.body.itemName,
+                softdelete: false,
+                itemType: req.body.itemType,
+                color: req.body.color,
+                itemModel: req.body.itemModel,
+                itemUnit: req.body.itemUnit.split(" ")[1],
+                weight: req.body.itemUnit.split(" ")[0],
             })
         const Trailers = await TrailerCollection
             .find({
@@ -985,14 +992,11 @@ exports.DeleteItemInInvoice = async (req, res, next) => {
 
 //Delete Items in Invoice
 exports.SearchForProductModel = async (req, res, next) => {
-
     try {
-        var Name = req.params.productModel;
-
         const Product = await ProductsCollection
             .find({
                 softdelete: false,
-                itemName: Name
+                itemModel: req.body.itemModel,
             });
         res.send(Product);
     } catch (error) {

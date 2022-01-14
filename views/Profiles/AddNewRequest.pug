@@ -71,7 +71,7 @@ block content
 
             tbody
               .row
-                .form-group.col-md-2
+                .form-group.col-md-3
                   label ناوی بەرهەم
                   input(name="itemName" class="form-control fstdropdown-select" id="productName" onclick='myFunction()' onkeyup='filterFunction()')
                   .dropdown
@@ -80,25 +80,25 @@ block content
                         a(href="#" onclick="getModel(this,event);" title=item type='button' data-toggle="modal" data-target="#confirm-product"+i)=item
                 .form-group.col-md-2
                   p(id="dataofIncome")
-                        //- a(href="#" onclick="updateValue(this.title, event);" title=item['itemName'] type='button' data-toggle="modal" data-target="#confirm-product")=item['itemName']  
-                        //- .form-group.col-md-2
-                        //-   label ژمارەی داواکراو
-                        //-   input.form-control(name="perPacket" type='number' placeholder='0' id="perPacket")
-                        //- .form-group.col-md-2
-                        //-   label فرۆشتن
-                        //-   input.form-control(name="sellPrice" type='number' placeholder='0' id="sellPrice")
-                        //- .form-group.col-md-2
-                        //-   label ژمارەی بارهەڵگر
-                        //-   select(name="trailerNumber" class="form-control" id="trailerNumbers")
-                        //-     option(value="") بارێک دیاری بکە...
-                        //-     option(value="s")=item
-                        //- .form-group.col-md-2
-                        //-   label بەرهەمی بەردەست
-                        //-   input.form-control(name="Remained" type='number' value='0' disabled id="remained")
-                        //- .form-group.col-md-2
-                        //-   a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.mt-4(type='button' onclick="resultOfValidation()" id="clickButton")
-                        //-     i.fas.fa-plus-square.fa-sm.text-white-50
-                        //-     |  زیادکردنی بەرهەم
+                    //- a(href="#" onclick="updateValue(this.title, event);" title=item['itemName'] type='button' data-toggle="modal" data-target="#confirm-product")=item['itemName']  
+                    //- .form-group.col-md-2
+                    //-   label ژمارەی داواکراو
+                    //-   input.form-control(name="perPacket" type='number' placeholder='0' id="perPacket")
+                    //- .form-group.col-md-2
+                    //-   label فرۆشتن
+                    //-   input.form-control(name="sellPrice" type='number' placeholder='0' id="sellPrice")
+                    //- .form-group.col-md-2
+                    //-   label ژمارەی بارهەڵگر
+                    //-   select(name="trailerNumber" class="form-control" id="trailerNumbers")
+                    //-     option(value="") بارێک دیاری بکە...
+                    //-     option(value="s")=item
+                    //- .form-group.col-md-2
+                    //-   label بەرهەمی بەردەست
+                    //-   input.form-control(name="Remained" type='number' value='0' disabled id="remained")
+                    //- .form-group.col-md-2
+                    //-   a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.mt-4(type='button' onclick="resultOfValidation()" id="clickButton")
+                    //-     i.fas.fa-plus-square.fa-sm.text-white-50
+                    //-     |  زیادکردنی بەرهەم
           .container(id="printableArea")
             .card.border.border-dark
               .card-header.justify-content-between
@@ -208,29 +208,35 @@ block content
       var idOfModel= model.match(/\d+/)[0]
       event.preventDefault();
       var data=$.ajax({
-        type: 'GET',
-        url: "/Products/Model/"+val.title,
+        type: 'POST',
+        url: "/Products/Model",
         dataType: 'JSON',
+        data:{  
+          "itemModel":val.title
+        },
         success: function(data){
           $('#body-product'+idOfModel).empty()
           $('#body-product'+idOfModel).append($("<table></table>").attr("id","datas"+idOfModel).attr('class',"table table-hover table-lg table-striped container-fluid table-responsive"));
           $('#datas'+idOfModel).append($("<tr></tr>").attr('style',"text-align:center").attr('id','header'+idOfModel));
           $('#header'+idOfModel).append($("<th></th>").text('#'));
-          $('#header'+idOfModel).append($("<th></th>").text('ناوی بەرهەم'));
-          $('#header'+idOfModel).append($("<th></th>").text('ڕەنگ'));
           $('#header'+idOfModel).append($("<th></th>").text('جۆری بەرهەم'));
+          $('#header'+idOfModel).append($("<th></th>").text('ناوی بەرهەم'));
+          $('#header'+idOfModel).append($("<th></th>").text('شێوازی بەرهەم'));
+          $('#header'+idOfModel).append($("<th></th>").text('ڕەنگ'));
+          $('#header'+idOfModel).append($("<th></th>").text('پێوانە'));
           $('#header'+idOfModel).append($("<th></th>").text('ژمارە'));
           $('#header'+idOfModel).append($("<th></th>").text('نرخ'));
           $('#header'+idOfModel).append($("<th></th>").text('ژمارەی بارهەڵگر'));
-          $('#header'+idOfModel).append($("<th></th>").text('پێوانە'));
           //- 
           for (let i = 0; i < data.length; i++) {
             $('#datas'+idOfModel).append($("<tr></tr>").attr("id","rows"+idOfModel+i));
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','check'+idOfModel+i));
             $('#check'+idOfModel+i).append($("<input></input>").attr('id','checkstatus'+idOfModel+i).attr('type','checkbox').attr('value',data[i]['itemName']).attr('style','zoom: 1.5;'));
-            $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['itemName']).attr('onClick',"updatePrice(this.parentNode,event)"));
-            $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['color']));
+            $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['itemModel']));
+            $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['itemName']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['itemType']));
+            $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['color']));
+            $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['weight']+" "+data[i]['itemUnit']).attr('id',"unit"+idOfModel+i));
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','quantity'+idOfModel+i));
             $('#quantity'+idOfModel+i).append($("<input></input>").attr('onclick','updateValue(this.parentNode.parentNode,event)').attr('type','number').attr('name','totalQuan').attr('class','form-control').attr('id','totalQuan'+idOfModel+i));
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','priceRow'+idOfModel+i));
@@ -238,7 +244,8 @@ block content
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','trailerRow'+idOfModel+i));
             $('#trailerRow'+idOfModel+i).append($("<select></select>").attr('name','trailerNumber').attr('id','trailerNumbers'+idOfModel+i).attr('class','form-control'));
             $('#trailerNumbers'+idOfModel+i).append($("<option></option>").attr('value',data[i]['trailerNumber']).text(data[i]['trailerNumber']));
-            $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['itemUnit']).attr('id',"unit"+idOfModel+i));
+            $('#rows'+idOfModel+i).append($("<td></td>").attr('id','priceChecker'+idOfModel+i));
+            $('#priceChecker'+idOfModel+i).append($("<i></i>").attr('class',"fas fa-hand-holding-usd").attr('onClick',"updatePrice(this.parentNode.parentNode,event)"));
             }
           }
       })
@@ -246,19 +253,20 @@ block content
 
     // Update Value Regarding the Item Name
     function updateValue(val, event) {
-      var itemName=val.childNodes[0].firstChild.value;
-      var color=val.childNodes[2].innerHTML;
+      var itemModel=val.childNodes[1].innerHTML;
+      var itemName=val.childNodes[2].innerHTML;
       var itemType=val.childNodes[3].innerHTML;
-      var quantity=val.childNodes[4].firstChild.id;
-      var priceOf=val.childNodes[5].firstChild.id;
-      var trailerNumber=val.childNodes[6].firstChild.id;
-      //- console.log(trailerNumber)
+      var color=val.childNodes[4].innerHTML;
+      var itemUnit=val.childNodes[5].innerHTML;
+      var quantity=val.childNodes[6].firstChild.id;
+      var priceOf=val.childNodes[7].firstChild.id;
+      var trailerNumber=val.childNodes[8].firstChild.id;
       //- document.getElementById("productName").value = val;
       event.preventDefault();
 
       var data=$.ajax({
         type: 'GET',
-        url: "/Profiles/"+itemName+"/"+itemType+"/"+color,
+        url: "/Profiles/"+itemModel+"/"+itemName+"/"+itemType+"/"+color+"/"+itemUnit,
         dataType: 'JSON',
         success: function(data){
           $("#"+trailerNumber).empty()
@@ -371,42 +379,42 @@ block content
       var table=val.parentNode.parentNode.childNodes[2].childNodes[0].childNodes;
       var checkstatus=val.parentNode.parentNode.childNodes[2].childNodes[0].childNodes[1].childNodes[0].firstChild.id;
       for (let i = 1; i < table.length; i++) {
-          if(document.getElementById(table[i].childNodes[0].firstChild.id).checked==true){
-            console.log("Item Name")
-            console.log("Item Color"+table[i].childNodes[2].innerHTML)
-            console.log("Item Type"+table[i].childNodes[3].innerHTML)
-            console.log("Item Price"+table[i].childNodes[5].firstChild.value)
-            console.log("Item Quantity"+table[i].childNodes[4].firstChild.value)
-            console.log("Item Trailer"+table[i].childNodes[6].firstChild.value)
-            console.log("Item Unit"+table[i].childNodes[7].innerHTML)
+        if(document.getElementById(table[i].childNodes[0].firstChild.id).checked==true){
+          console.log("Item Name")
+          console.log("Item Color"+table[i].childNodes[2].innerHTML)
+          console.log("Item Type"+table[i].childNodes[3].innerHTML)
+          console.log("Item Price"+table[i].childNodes[5].firstChild.value)
+          console.log("Item Quantity"+table[i].childNodes[4].firstChild.value)
+          console.log("Item Trailer"+table[i].childNodes[6].firstChild.value)
+          console.log("Item Unit"+table[i].childNodes[7].innerHTML)
 
-            $("#invoiceTable").find('tbody')
-              .append($('<tr>')
-                .append($('<td>')
-                  .text($('#invoiceTable>tbody>tr').length+1)
-                ).append($('<td>')
-                  .text(table[i].childNodes[0].firstChild.value)
-                ).append($('<td>')
-                  .text(table[i].childNodes[2].innerHTML+"/"+table[i].childNodes[3].innerHTML+"/"+table[i].childNodes[7].innerHTML)
-                ).append($('<td>')
-                  .text(table[i].childNodes[5].firstChild.value)
-                ).append($('<td>')
-                  .text(table[i].childNodes[4].firstChild.value)
-                ).append($('<td>')
-                  .text(parseInt(table[i].childNodes[4].firstChild.value)*parseInt(table[i].childNodes[5].firstChild.value))
-                ).append($('<td>')
-                  .text(table[i].childNodes[6].firstChild.value).attr("style","display:none")
-                )
-              );
-              var subtotal=document.getElementById('total').innerHTML;
-              document.getElementById('total').innerHTML=parseInt(subtotal)+parseInt(table[i].childNodes[4].firstChild.value)*parseInt(table[i].childNodes[5].firstChild.value)
-              //- document.getElementById('total').innerHTML=document.getElementById('subtotal').innerHTML - (document.getElementById('subtotal').innerHTML*parseInt(document.getElementById("discount").value)/100) +parseInt(document.getElementById("olddebut").innerHTML)
-          }
-          else{
-            continue;
-          }
+          $("#invoiceTable").find('tbody')
+            .append($('<tr>')
+              .append($('<td>')
+                .text($('#invoiceTable>tbody>tr').length+1)
+              ).append($('<td>')
+                .text(table[i].childNodes[0].firstChild.value)
+              ).append($('<td>')
+                .text(table[i].childNodes[2].innerHTML+"/"+table[i].childNodes[3].innerHTML+"/"+table[i].childNodes[7].innerHTML)
+              ).append($('<td>')
+                .text(table[i].childNodes[5].firstChild.value)
+              ).append($('<td>')
+                .text(table[i].childNodes[4].firstChild.value)
+              ).append($('<td>')
+                .text(parseInt(table[i].childNodes[4].firstChild.value)*parseInt(table[i].childNodes[5].firstChild.value))
+              ).append($('<td>')
+                .text(table[i].childNodes[6].firstChild.value).attr("style","display:none")
+              )
+            );
+            var subtotal=document.getElementById('total').innerHTML;
+            document.getElementById('total').innerHTML=parseInt(subtotal)+parseInt(table[i].childNodes[4].firstChild.value)*parseInt(table[i].childNodes[5].firstChild.value)
+            //- document.getElementById('total').innerHTML=document.getElementById('subtotal').innerHTML - (document.getElementById('subtotal').innerHTML*parseInt(document.getElementById("discount").value)/100) +parseInt(document.getElementById("olddebut").innerHTML)
+        }
+        else{
+          continue;
+        }
       }
-      
+
     }
 
     //Print Section
@@ -420,19 +428,28 @@ block content
 
     //Update Price Field depending on Item Name
     function updatePrice(val, event) {
-      var itemName=val.childNodes[0].firstChild.value;
-      var color=val.childNodes[2].innerHTML;
+      var itemModel=val.childNodes[1].innerHTML;
+      var itemName=val.childNodes[2].innerHTML;
       var itemType=val.childNodes[3].innerHTML;
-      var quantity=val.childNodes[4].firstChild.id;
-      var priceOf=val.childNodes[5].firstChild.id;
-      var trailerNumber=val.childNodes[6].firstChild.id;
+      var color=val.childNodes[4].innerHTML;
+      var itemUnit=val.childNodes[5].innerHTML;
+      var quantity=val.childNodes[6].firstChild.id;
+      var priceOf=val.childNodes[7].firstChild.id;
+      var trailerNumber=val.childNodes[8].firstChild.id;
 
       event.preventDefault();
       var Trailer= $( "#"+trailerNumber +" option:selected" ).text().split('-')[0];
         var data=$.ajax({
-          type: 'GET',
-          url: "/Product/Trailers/"+parseInt(Trailer)+"/"+itemName+"/"+color+"/"+itemType+"/#{profile[0]['clientType']}",
+          type: 'POST',
+          url: "/Product/Trailers/"+parseInt(Trailer)+"/#{profile[0]['clientType']}",
           dataType: 'JSON',
+          data:{
+            "itemModel":itemModel,
+            "itemName":itemName,
+            "itemType":itemType,
+            "color":color,
+            "itemUnit":itemUnit
+          },
           success: function(data){
             if("#{profile[0]['clientType']}"=="مفرد"){
               document.getElementById(priceOf).value = data['sellPriceMufrad'];

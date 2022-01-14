@@ -271,7 +271,7 @@ block content
 
     function payNow(){
       objectData=document.getElementById("invoiceTable")
-
+      var note=document.getElementById("note").value
       //Send to Database
         var data= $.ajax({
           type: 'POST',

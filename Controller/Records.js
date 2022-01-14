@@ -46,7 +46,7 @@ exports.Records = async (req, res, next) => {
     try {
         const Records = await RecordsCollection.find({}).populate("productID").sort({
             "createdAt": -1
-        }).limit(50);
+        }).limit(20);
         const TotalExpenses = await RecordsCollection.find({
             status: {
                 $nin: ["Customer Request"]

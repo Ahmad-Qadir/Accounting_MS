@@ -10,7 +10,7 @@ const HistoryClass = require('../models/records');
 const ProfileCollection = require('../models/Profiles');
 const TrailerCollection = require('../models/Trailers');
 const CompanyCollection = require('../models/Companies');
-const address=process.env.address
+const address = process.env.address
 
 const {
     roles
@@ -144,13 +144,13 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
 
     if (Invoices == "") {
         req.flash('danger', "کڕیاری داواکراو هیج تۆماڕێکی نیە");
-        res.redirect(process.env.address+"/Profiles")
+        res.redirect(process.env.address + "/Profiles")
     } else {
         res.render("Profiles/Invoices", {
             title: "Customer Invoice",
             invoices: Invoices,
             profile: Profile,
-            address:address
+            address: address
         })
     }
     // res.send(Invoices)
@@ -205,8 +205,8 @@ exports.AddNewRequest = async (req, res, next) => {
             .find({
                 id: req.params.id,
                 softdelete: false
-            }).distinct('itemName')
-
+            }).distinct('itemModel')
+            
         const Profiles = await ProfileCollection
             .find({
                 _id: req.params.id,
@@ -232,7 +232,7 @@ exports.AddNewRequest = async (req, res, next) => {
             company: Company,
             time: Date(),
             user: req.user,
-            address:address
+            address: address
         })
     } catch (error) {
         next(error)
@@ -256,7 +256,7 @@ exports.AddNewInvoiceForCustomer = async (req, res, next) => {
         const resultOfValidator = validator.validate(req.body, validationSchema);
         if (resultOfValidator.error) {
             req.flash('danger', resultOfValidator.error.details[0].message);
-            res.redirect(process.env.address+ Product[0]['_id'] + '/NewRequest')
+            res.redirect(process.env.address + Product[0]['_id'] + '/NewRequest')
             // res.status(400).send({
             //     message: resultOfValidator.error.details[0].message
             // });
@@ -264,6 +264,11 @@ exports.AddNewInvoiceForCustomer = async (req, res, next) => {
             var totalRequestedPackets = req.body.perPacket;
             const Trailer = await TrailerCollection.find({
                 itemName: Product[0]['itemName'],
+                itemModel: Product[0]['itemModel'],
+                color: Product[0]['color'],
+                itemType: Product[0]['itemType'],
+                weight: Product[0]['weight'],
+                itemUnit: Product[0]['itemUnit'],
                 trailerNumber: req.body.trailerNumber
             });
 
@@ -409,7 +414,7 @@ exports.NewCustomerTypeOperation = async (req, res, next) => {
         const resultOfValidator = validator.validate(req.body, validationSchema);
         if (resultOfValidator.error) {
             req.flash('danger', resultOfValidator.error.details[0].message);
-            res.redirect(process.env.address+"/Profiles/Customer/NewTypes")
+            res.redirect(process.env.address + "/Profiles/Customer/NewTypes")
         } else {
             const CustomerType = await CustomerTypeCollection.findOne({
                 customerType: req.body.customerType
@@ -449,10 +454,13 @@ exports.CheckForTrailerInRequest = async (req, res, next) => {
     try {
         const Products = await ProductsCollection
             .find({
-                itemName: req.params.productName,
+                itemName: req.params.itemName,
                 softdelete: false,
-                itemType: req.params.productType,
-                color: req.params.productColor,
+                itemType: req.params.itemType,
+                color: req.params.color,
+                itemModel: req.params.itemModel,
+                itemUnit: req.params.itemUnit.split(" ")[1],
+                weight: req.params.itemUnit.split(" ")[0],
             })
         const Trailers = await TrailerCollection
             .find({
@@ -497,7 +505,7 @@ exports.AddNewInvoiceForCustomer = async (req, res, next) => {
         const resultOfValidator = validator.validate(req.body, validationSchema);
         if (resultOfValidator.error) {
             req.flash('danger', resultOfValidator.error.details[0].message);
-            res.redirect(process.env.address+ Product[0]['_id'] + '/NewRequest')
+            res.redirect(process.env.address + Product[0]['_id'] + '/NewRequest')
             // res.status(400).send({
             //     message: resultOfValidator.error.details[0].message
             // });
@@ -511,7 +519,7 @@ exports.AddNewInvoiceForCustomer = async (req, res, next) => {
             //Prevent 
             if (Trailer[0]['totalQuantity'] < req.body.perPacket) {
                 req.flash('danger', "There is no enough Product in Store there is only " + Trailer[0]['totalQuantity'] + " remains in this Trailer");
-                res.redirect(process.env.address+ Product[0]['_id'] + '/NewRequest')
+                res.redirect(process.env.address + Product[0]['_id'] + '/NewRequest')
             } else {
                 //===============Records Collection=============
                 const newRecordtoHistory = new RecordsCollection({
