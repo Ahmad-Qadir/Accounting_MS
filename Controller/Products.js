@@ -997,6 +997,8 @@ exports.SearchForProductModel = async (req, res, next) => {
             .find({
                 softdelete: false,
                 itemModel: req.body.itemModel,
+            }).sort({
+                itemName: 1
             });
         res.send(Product);
     } catch (error) {
@@ -1014,7 +1016,8 @@ exports.SearchForProductsinCompany = async (req, res, next) => {
                 softdelete: false,
                 manufacturerCompany: CompanyName
             }).sort({
-                "itemName": 1
+                itemModel: 1,
+                itemName:1
             });
         res.send(Product);
     } catch (error) {

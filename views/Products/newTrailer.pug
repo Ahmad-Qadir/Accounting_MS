@@ -71,7 +71,7 @@ block content
               .row
                 .form-group.col-md-4
                   label ناوی کۆمپانیا
-                  input(name="companyName" class="form-control fstdropdown-select" id="companyName" onclick='myFunction()' onkeyup='filterFunction()')
+                  input(name="companyName" class="form-control fstdropdown-select custom-selection" id="companyName" onclick='myFunction()' onkeyup='filterFunction()')
                   .dropdown
                     #myDropdown.dropdown-content
                       each item,i in company
@@ -131,9 +131,18 @@ block content
       each item,i in company
         //- if element['manufacturerCompany']==item['companyName']
         .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-product'+i)
-          .modal-dialog.modal-dialog-centered.modal-xl(role='document')
+          .modal-dialog.modal-dialog-centered.modal-fullscreen(role='document')
             .modal-content
               .modal-header=item['companyName']
+                //- .col-md-2 
+                //-   input.form-control(type='text' id="nawibarham"+i placeholder='ناوی بەرهەم')
+                //-   //- input#hid_search(type='hidden')
+                //- .col-md-2
+                //-   input.form-control(type='text' id="shewayBarham"+i placeholder='ڕەنگی بەرهەم')
+                //-   //- input#button(type='button' onmousedown="doSearch(document.getElementById('search').value)" value='Find')
+                //- .col-md-2
+                //-   input.form-control(type='text' id="search"+i placeholder='جۆری بەرهەم')
+
               thead.thead-dark
                 .container(id="result")
               .modal-body(id='body-product'+i)
@@ -144,6 +153,44 @@ block content
     // The code to open the dropdown 
     function myFunction() {
       document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    
+    //- function doSearch(text,color="yellow") {
+      //- if (color!="transparent") {
+      //-   doSearch(document.getElementById('hid_search').value,"transparent"); 
+      //-   document.getElementById('hid_search').value = text; 
+      //-   }
+      //- if (window.find && window.getSelection) {
+      //-   document.designMode = "on";
+      //-   var sel = window.getSelection();
+      //-   sel.collapse(document.body, 0);
+
+      //-   while (window.find(text)) {
+      //-     document.execCommand("HiliteColor", false, color);
+      //-     sel.collapseToEnd();
+      //-   }
+      //-   document.designMode = "off";
+      //- } else if (document.body.createTextRange) {
+      //-   var textRange = document.body.createTextRange();
+      //-   while (textRange.findText(text)) {
+      //-     textRange.execCommand("BackColor", false, color);
+      //-     textRange.collapse(false);
+      //-   }
+      //- }
+      //- }
+
+    window.onclick = function(event) {
+      if (!event.target.matches('.custom-selection')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
     }
 
     // Auto Find Datas in Input Form
@@ -175,7 +222,8 @@ block content
         success: function(data){
           $('#body-product'+idOfModel).empty()
           $('#body-product'+idOfModel).append($("<table></table>").attr("id","datas"+idOfModel).attr('class',"table table-hover table-lg table-striped container-fluid table-responsive"));
-          $('#datas'+idOfModel).append($("<tr></tr>").attr('style',"text-align:center").attr('id','header'+idOfModel));
+          $('#datas'+idOfModel).append($("<thead></thead>").attr('id','MainHeader'+idOfModel));
+          $('#MainHeader'+idOfModel).append($("<tr></tr>").attr('style',"text-align:center").attr('id','header'+idOfModel));
           $('#header'+idOfModel).append($("<th></th>").text('#'));
           $('#header'+idOfModel).append($("<th></th>").text('جۆری بەرهەم'));
           $('#header'+idOfModel).append($("<th></th>").text('ناوی بەرهەم'));
@@ -189,9 +237,10 @@ block content
           $('#header'+idOfModel).append($("<th></th>").text('وەستا'));
           $('#header'+idOfModel).append($("<th></th>").text('ژمارە'));
           $('#header'+idOfModel).append($("<th></th>").text('نرخی کڕین'));
+          $('#datas'+idOfModel).append($("<tbody></tbody>").attr('id','MainBody'+idOfModel));
           //- 
           for (let i = 0; i < data.length; i++) {
-            $('#datas'+idOfModel).append($("<tr></tr>").attr("id","rows"+idOfModel+i));
+            $('#MainBody'+idOfModel).append($("<tr></tr>").attr("id","rows"+idOfModel+i));
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','check'+idOfModel+i));
             $('#check'+idOfModel+i).append($("<input></input>").attr('id','checkstatus'+idOfModel+i).attr('type','checkbox').attr('value',data[i]['itemName']).attr('style','zoom: 1.5;'));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['itemModel']));
@@ -205,24 +254,68 @@ block content
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['sellPriceMufrad']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['sellPriceWasta']));
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','quantity'+idOfModel+i));
-            $('#quantity'+idOfModel+i).append($("<input></input>").attr('style','zoom: 0.8;').attr('type','number').attr('name','totalQuan').attr('value','0').attr('class','form-control').attr('id','totalQuan'+idOfModel+i));
+            $('#quantity'+idOfModel+i).append($("<input></input>").attr('type','number').attr('name','totalQuan').attr('value','0').attr('class','form-control').attr('id','totalQuan'+idOfModel+i));
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','priceRow'+idOfModel+i));
-            $('#priceRow'+idOfModel+i).append($("<input></input>").attr('style','zoom: 0.8;').attr('type','number').attr('name','priceOf').attr('id','priceOf'+idOfModel+i).attr('class','form-control').attr('value',data[i]['camePrice']));
+            $('#priceRow'+idOfModel+i).append($("<input></input>").attr('type','number').attr('name','priceOf').attr('id','priceOf'+idOfModel+i).attr('class','form-control').attr('value',data[i]['camePrice']));
             }
+
+            $('#datas'+idOfModel).DataTable({
+                "paging": false
+            });
+
+          //-   $("#search"+idOfModel).on("keyup", function() {
+          //-   var term = $(this).val().toLowerCase();
+          //-   $("table tr").each(function(){
+          //-     $row = $(this);
+          //-     var name = $row.find("td:nth-child(2)").text().toLowerCase();
+          //-     if(name.search(term) < 0){                
+          //-       $row.hide();
+          //-     } else{
+          //-       $row.show();
+          //-     }
+          //-   });
+          //- });
+
+          //- $("#nawibarham"+idOfModel).on("keyup", function() {
+          //-   var term = $(this).val().toLowerCase();
+          //-   $("table tr").each(function(){
+          //-     $row = $(this);
+          //-     var name = $row.find("td:nth-child(3)").text().toLowerCase();
+          //-     if(name.search(term) < 0){                
+          //-       $row.hide();
+          //-     } else{
+          //-       $row.show();
+          //-     }
+          //-   });
+          //- });
+
+          //- $("#shewayBarham"+idOfModel).on("keyup", function() {
+          //-   var term = $(this).val().toLowerCase();
+          //-   $("table tr").each(function(){
+          //-     $row = $(this);
+          //-     var name = $row.find("td:nth-child(4)").text().toLowerCase();
+          //-     if(name.search(term) < 0){                
+          //-       $row.hide();
+          //-     } else{
+          //-       $row.show();
+          //-     }
+          //-   });
+          //- });
+
+
           }
       })
     }
 
     //Section of Adding Selected items in Table
     function resultOfValidation(val){
-      var table=val.parentNode.parentNode.childNodes[2].childNodes[0].childNodes;
-      var checkstatus=val.parentNode.parentNode.childNodes[2].childNodes[0].childNodes[1].childNodes[0].firstChild.id;
+      var table=val.parentNode.parentNode.childNodes[2].childNodes[0].childNodes[1].childNodes[1].childNodes;
+      //- var checkstatus=val.parentNode.parentNode.childNodes[2].childNodes[0].childNodes[2].childNodes[1].childNodes;
       var expens=parseInt(document.getElementById('PriceOfExpense').value);
       var total=parseInt(document.getElementById('total').innerHTML);
       for (let i = 1; i < table.length; i++) {
+        console.log(table[i].childNodes[0].firstChild.id)
         if(document.getElementById(table[i].childNodes[0].firstChild.id).checked==true){
-          console.log(table[i].childNodes[1].firstChild)
-          console.log(table[i].childNodes[2].childNodes[0])
           $("#invoiceTable").find('tbody')
             .append($('<tr>')
               .append($('<td>')
