@@ -223,7 +223,7 @@ exports.NewInvoice = async (req, res, next) => {
 
             var totalRequestedPackets = element[4];
 
-            var _SellPrice = parseInt(element[3].replace(/[^0-9]/g, ''))
+            var _SellPrice = parseFloat(element[3].replace(/[^0-9]/g, ''))
             if (element[6].split('-')[0] == 0) {
                 const Trailer = await RecordsCollection.find({
                     productID: Product[0]['_id'],
@@ -255,7 +255,7 @@ exports.NewInvoice = async (req, res, next) => {
                     await ProductsCollection.findByIdAndUpdate({
                         _id: Product[0]['_id']
                     }, {
-                        remainedPacket: parseInt(result / Product[0]['perPacket']),
+                        remainedPacket: parseFloat(result / Product[0]['perPacket']),
                         remainedPerPacket: result % Product[0]['perPacket'],
                         totalQuantity: result,
                         updatedBy: req.user.username,
@@ -320,7 +320,7 @@ exports.NewInvoice = async (req, res, next) => {
                     await ProductsCollection.findByIdAndUpdate({
                         _id: Product[0]['_id']
                     }, {
-                        remainedPacket: parseInt(result / Product[0]['perPacket']),
+                        remainedPacket: parseFloat(result / Product[0]['perPacket']),
                         remainedPerPacket: result % Product[0]['perPacket'],
                         totalQuantity: result,
                         updatedBy: req.user.username,
@@ -403,7 +403,7 @@ exports.NewInvoiceForDebut = async (req, res, next) => {
         await ProfileCollection.findByIdAndUpdate({
             _id: req.params.id
         }, {
-            remainedbalance: Prof[0]['remainedbalance'] - parseInt(req.params.paid),
+            remainedbalance: Prof[0]['remainedbalance'] - parseFloat(req.params.paid),
             $push: {
                 invoiceID: newRecordtoHistory["_id"],
             }
@@ -651,11 +651,11 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
 
             const newRecordtoHistory = new RecordsCollection({
                 recordCode: record,
-                totalQuantity: parseInt(element[11]),
+                totalQuantity: parseFloat(element[11]),
                 status: "New Trailer",
-                camePrice: parseInt(element[12]),
-                sellPrice: parseInt(element[13]),
-                totalPrice: parseInt(element[12]) * parseInt(element[11]),
+                camePrice: parseFloat(element[12]),
+                sellPrice: parseFloat(element[13]),
+                totalPrice: parseFloat(element[12]) * parseFloat(element[11]),
                 trailerNumber: _TrailerNumber,
                 addedBy: req.user.username,
                 updatedBy: req.user.username,
@@ -665,21 +665,21 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
             await newRecordtoHistory.save();
 
 
-            var quantity = Product[0]['totalQuantity'] + parseInt(element[11]);
+            var quantity = Product[0]['totalQuantity'] + parseFloat(element[11]);
 
             await ProductsCollection.findByIdAndUpdate({
                 "_id": Product[0]['_id']
             }, {
-                remainedPacket: parseInt(quantity / Product[0]['perPacket']),
+                remainedPacket: parseFloat(quantity / Product[0]['perPacket']),
                 remainedPerPacket: quantity % Product[0]['perPacket'],
                 totalQuantity: quantity,
-                totalPrice: Product[0]['totalPrice'] + (parseInt(element[11]) * parseInt(element[13])),
-                totalWeight: Product[0]['totalWeight'] + (parseInt(element[11]) * Product[0]['weight']),
-                sellPriceWakil: parseInt(element[6]),
-                sellPriceSharika: parseInt(element[7]),
-                sellPriceMahal: parseInt(element[8]),
-                sellPriceMufrad: parseInt(element[9]),
-                sellPriceWasta: parseInt(element[10]),
+                totalPrice: Product[0]['totalPrice'] + (parseFloat(element[11]) * parseFloat(element[13])),
+                totalWeight: Product[0]['totalWeight'] + (parseFloat(element[11]) * Product[0]['weight']),
+                sellPriceWakil: parseFloat(element[6]),
+                sellPriceSharika: parseFloat(element[7]),
+                sellPriceMahal: parseFloat(element[8]),
+                sellPriceMufrad: parseFloat(element[9]),
+                sellPriceWasta: parseFloat(element[10]),
                 updatedBy: req.user.username,
                 $push: {
                     itemHistory: newRecordtoHistory["_id"],
@@ -695,19 +695,19 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
                 usedIn: Product[0]['usedIn'],
                 color: Product[0]['color'],
                 weight: Product[0]['weight'],
-                totalWeight: Product[0]['totalWeight'] + (parseInt(element[11]) * Product[0]['weight']),
+                totalWeight: Product[0]['totalWeight'] + (parseFloat(element[11]) * Product[0]['weight']),
                 camePrice: Product[0]['camePrice'],
-                sellPriceWakil: parseInt(element[6]),
-                sellPriceSharika: parseInt(element[7]),
-                sellPriceMahal: parseInt(element[8]),
-                sellPriceMufrad: parseInt(element[9]),
-                sellPriceWasta: parseInt(element[10]),
-                totalPrice: Product[0]['totalPrice'] + (parseInt(element[11]) * parseInt(element[13])),
-                packet: parseInt(element[11]) / Product[0]['packet'],
-                perPacket: parseInt(element[11]) % Product[0]['packet'],
-                remainedPacket: parseInt(element[11]) / Product[0]['packet'],
-                remainedPerPacket: parseInt(element[11]) % Product[0]['packet'],
-                totalQuantity: parseInt(element[11]),
+                sellPriceWakil: parseFloat(element[6]),
+                sellPriceSharika: parseFloat(element[7]),
+                sellPriceMahal: parseFloat(element[8]),
+                sellPriceMufrad: parseFloat(element[9]),
+                sellPriceWasta: parseFloat(element[10]),
+                totalPrice: Product[0]['totalPrice'] + (parseFloat(element[11]) * parseFloat(element[13])),
+                packet: parseFloat(element[11]) / Product[0]['packet'],
+                perPacket: parseFloat(element[11]) % Product[0]['packet'],
+                remainedPacket: parseFloat(element[11]) / Product[0]['packet'],
+                remainedPerPacket: parseFloat(element[11]) % Product[0]['packet'],
+                totalQuantity: parseFloat(element[11]),
                 status: "New Trailer",
                 expireDate: Product[0]['expireDate'],
                 trailerNumber: _TrailerNumber,
@@ -747,7 +747,7 @@ exports.CheckForProductPriceInTrailer = async (req, res, next) => {
             })
         const Trailers = await TrailerCollection
             .find({
-                trailerNumber: isNaN(parseInt(req.params.trailerNum)) ? 0 : parseInt(req.params.trailerNum),
+                trailerNumber: isNaN(parseFloat(req.params.trailerNum)) ? 0 : parseFloat(req.params.trailerNum),
                 softdelete: false,
                 productID: Products[0]["_id"],
                 status: "New Trailer"
@@ -786,7 +786,7 @@ exports.RecoveredSoldProducts = async (req, res, next) => {
         _id: req.params.id
     });
     try {
-        var totalRecoveredPackets = parseInt(req.body.perPacket);
+        var totalRecoveredPackets = parseFloat(req.body.perPacket);
 
         const Recovered = await RecordsCollection
             .find({
@@ -810,7 +810,7 @@ exports.RecoveredSoldProducts = async (req, res, next) => {
             await ProductsCollection.findByIdAndUpdate({
                 _id: req.params.id
             }, {
-                remainedPacket: parseInt(result / Product[0]['perPacket']),
+                remainedPacket: parseFloat(result / Product[0]['perPacket']),
                 remainedPerPacket: result % Product[0]['perPacket'],
                 totalQuantity: result,
                 updatedBy: req.user.username,
@@ -870,7 +870,7 @@ exports.RecoveredSoldProducts = async (req, res, next) => {
             await ProductsCollection.findByIdAndUpdate({
                 _id: req.params.id
             }, {
-                remainedPacket: parseInt(result / Product[0]['perPacket']),
+                remainedPacket: parseFloat(result / Product[0]['perPacket']),
                 remainedPerPacket: result % Product[0]['perPacket'],
                 totalQuantity: result,
                 updatedBy: req.user.username,
@@ -909,7 +909,7 @@ exports.DeleteItemInInvoice = async (req, res, next) => {
                 itemName: element[1]
             });
 
-            var totalRequestedPackets = parseInt(element[4]);
+            var totalRequestedPackets = parseFloat(element[4]);
 
             const Trailer = await TrailerCollection.find({
                 itemName: element[1],
@@ -943,7 +943,7 @@ exports.DeleteItemInInvoice = async (req, res, next) => {
             await ProductsCollection.findByIdAndUpdate({
                 _id: Product[0]['_id']
             }, {
-                remainedPacket: parseInt(result / Product[0]['perPacket']),
+                remainedPacket: parseFloat(result / Product[0]['perPacket']),
                 remainedPerPacket: result % Product[0]['perPacket'],
                 totalQuantity: result,
                 updatedBy: req.user.username,
@@ -971,7 +971,7 @@ exports.DeleteItemInInvoice = async (req, res, next) => {
             await TrailerCollection.findByIdAndUpdate({
                 _id: Trailer[0]['_id']
             }, {
-                remainedPacket: parseInt(numbeOfPacketsinTrailer / Trailer[0]['perPacket']),
+                remainedPacket: parseFloat(numbeOfPacketsinTrailer / Trailer[0]['perPacket']),
                 remainedPerPacket: numbeOfPacketsinTrailer % Trailer[0]['perPacket'],
                 totalQuantity: numbeOfPacketsinTrailer,
                 updatedBy: req.user.username,
@@ -1015,10 +1015,8 @@ exports.SearchForProductsinCompany = async (req, res, next) => {
             .find({
                 softdelete: false,
                 manufacturerCompany: CompanyName
-            }).sort({
-                itemModel: 1,
-                itemName:1
             });
+            console.log(Product)
         res.send(Product);
     } catch (error) {
         console.log(error)

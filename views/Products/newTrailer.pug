@@ -247,7 +247,14 @@ block content
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['itemName']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['color']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['itemType']));
-            $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['weight']+" "+data[i]['itemUnit']).attr('id',"unit"+idOfModel+i));
+            if(parseFloat(data[i]['weight'])>2.9 && parseFloat(data[i]['weight'])<5)
+              $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['weight']+" "+data[i]['itemUnit']).attr('id',"unit"+idOfModel+i).attr('style',"background-color:#661E18;color:#FFFFFF"));
+            else if(parseFloat(data[i]['weight'])>6.9 && parseFloat(data[i]['weight'])<10)
+              $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['weight']+" "+data[i]['itemUnit']).attr('id',"unit"+idOfModel+i).attr('style',"background-color:#186628;color:#FFFFFF"));
+            else if(parseFloat(data[i]['weight'])>=15)
+              $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['weight']+" "+data[i]['itemUnit']).attr('id',"unit"+idOfModel+i).attr('style',"background-color:#182966;color:#FFFFFF"));
+            else
+              $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['weight']+" "+data[i]['itemUnit']).attr('id',"unit"+idOfModel+i));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['sellPriceWakil']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['sellPriceSharika']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['sellPriceMahal']));
@@ -310,11 +317,7 @@ block content
     //Section of Adding Selected items in Table
     function resultOfValidation(val){
       var table=val.parentNode.parentNode.childNodes[2].childNodes[0].childNodes[1].childNodes[1].childNodes;
-      //- var checkstatus=val.parentNode.parentNode.childNodes[2].childNodes[0].childNodes[2].childNodes[1].childNodes;
-      var expens=parseInt(document.getElementById('PriceOfExpense').value);
-      var total=parseInt(document.getElementById('total').innerHTML);
-      for (let i = 1; i < table.length; i++) {
-        console.log(table[i].childNodes[0].firstChild.id)
+      for (let i = 0; i < table.length; i++) {
         if(document.getElementById(table[i].childNodes[0].firstChild.id).checked==true){
           $("#invoiceTable").find('tbody')
             .append($('<tr>')
@@ -347,19 +350,15 @@ block content
               ).append($("<td>")
                 .text(" ")
               ).append($('<td>')
-                .text(parseInt(table[i].childNodes[11].firstChild.value)*parseInt(table[i].childNodes[12].firstChild.value))
+                .text(parseFloat(table[i].childNodes[11].firstChild.value)*parseFloat(table[i].childNodes[12].firstChild.value))
               )
             );
-              document.getElementById('total').innerHTML=parseInt(document.getElementById('total').innerHTML)+parseInt(table[i].childNodes[11].firstChild.value)*parseInt(table[i].childNodes[12].firstChild.value)
+              document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML)+parseFloat(table[i].childNodes[11].firstChild.value)*parseFloat(table[i].childNodes[12].firstChild.value)
         }
         else{
           continue;
         }
       }
-
-      //- var subtotal=document.getElementById('subtotal').innerHTML;
-      //- document.getElementById('subtotal').innerHTML=parseInt(subtotal)+document.getElementById("perPacket").value*document.getElementById("sellPrice").value
-      //- document.getElementById('subtotal').innerHTML
     }
 
     function payNow(){
@@ -407,8 +406,8 @@ block content
     }
 
     function rearrangement(){
-      var expense=parseInt(document.getElementById('PriceOfExpense').value); //Expense Price
-      var total=parseInt(document.getElementById('total').innerHTML); //Total Price
+      var expense=parseFloat(document.getElementById('PriceOfExpense').value); //Expense Price
+      var total=parseFloat(document.getElementById('total').innerHTML); //Total Price
       var objectData=document.getElementById("invoiceTable")
       if(isNaN(expense)){
         document.getElementById("PriceOfExpense").classList.add("btn-outline-danger")
@@ -429,7 +428,7 @@ block content
           console.log(table[i].cells[10].textContent)
           console.log(table[i].cells[11].textContent)
           console.log(table[i].cells[12].textContent) //Came Price
-          console.log(table[i].cells[13].textContent=Math.round((expense/total)*parseInt(table[i].cells[9].textContent)+parseInt(table[i].cells[12].textContent))) //Company Price
+          console.log(table[i].cells[13].textContent=Math.round((expense/total)*parseFloat(table[i].cells[9].textContent)+parseFloat(table[i].cells[12].textContent))) //Company Price
           console.log(table[i].cells[14].textContent)
 
         }

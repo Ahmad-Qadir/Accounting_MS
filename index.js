@@ -95,7 +95,7 @@ require('./Controller/prod')
 
 
 app.get('/import', async (req, res) => {
-    fs.createReadStream("C:\\Users\\ahmed.q\\Desktop\\by.csv")
+    fs.createReadStream("C:\\Users\\Ahmad\\Desktop\\metalsteel.csv")
         .pipe(csv())
         .on('data', async function (row) {
             const newProduct = new ProductsCollection({
@@ -109,23 +109,23 @@ app.get('/import', async (req, res) => {
                 countryCompany: row.countryCompany,
                 unit: row.unit,
                 usedIn: row.usedIn,
-                weight: parseInt(row.weight),
-                totalWeight: parseInt(row.weight) * parseInt(row.perPacket),
+                weight: row.weight,
+                totalWeight: row.weight * row.perPacket,
                 color: row.color,
-                packet: parseInt(row.packet),
-                perPacket: parseInt(row.perPacket),
-                remainedPacket: parseInt(row.remainedPacket),
-                remainedPerPacket: parseInt(row.perPacket),
-                totalQuantity: parseInt(row.perPacket),
+                packet: row.packet,
+                perPacket: row.perPacket,
+                remainedPacket: 0,
+                remainedPerPacket: 0,
+                totalQuantity: 0,
                 status: "New Product",
                 expireDate: Date.now(),
-                camePrice: parseInt(row.camePrice),
-                sellPriceMufrad: parseInt(row.sellPriceMufrad),
-                sellPriceMahal: parseInt(row.sellPriceMahal),
-                sellPriceWasta: parseInt(row.sellPriceWasta),
-                sellPriceWakil: parseInt(row.sellPriceWakil),
-                sellPriceSharika: parseInt(row.sellPriceSharika),
-                totalPrice: parseInt(row.camePrice) * parseInt(row.perPacket),
+                camePrice: row.camePrice,
+                sellPriceMufrad: row.sellPriceMufrad,
+                sellPriceMahal: row.sellPriceMahal,
+                sellPriceWasta: row.sellPriceWasta,
+                sellPriceWakil: row.sellPriceWakil,
+                sellPriceSharika: row.sellPriceSharika,
+                totalPrice: row.camePrice * row.perPacket,
                 trailerNumber: 1,
                 addedBy: "Ahmad Qadir",
                 updatedBy: "Ahmad Qadir",
@@ -141,9 +141,9 @@ app.get('/import', async (req, res) => {
                 sellPriceWasta: row.sellPriceWasta,
                 sellPriceWakil: row.sellPriceWakil,
                 sellPriceSharika: row.sellPriceSharika,
-                totalPrice: row.camePrice * parseInt(row.perPacket),
-                perPacket: parseInt(row.perPacket),
-                totalQuantity: parseInt(row.perPacket),
+                totalPrice: row.camePrice * row.perPacket,
+                perPacket: row.perPacket,
+                totalQuantity: row.perPacket,
                 status: "New Product",
                 trailerNumber: 1,
                 addedBy: "Ahmad Qadir",
@@ -258,7 +258,7 @@ app.get('/', async (req, res) => {
             const element = Products[index];
             total_Products = total_Products + element['totalQuantity']
         }
-        // var _balance = Income * (parseInt(User['ratio']) / 100)
+        // var _balance = Income * (parseFloat(User['ratio']) / 100)
         // await EmployeeClass.findByIdAndUpdate({
         //     _id: User['_id']
         // }, {
@@ -296,6 +296,41 @@ app.get('/remover', async (req, res) => {
         totalQuantity: 0
     });
     res.send(checker)
+});
+
+app.get('/removerOfCust', async (req, res) => {
+    var checker = await ProfileCollection.updateMany({
+    }, {
+        borrowedBalance: 0,
+        recoveredBalance: 0,
+        remainedbalance: 0,
+        invoiceID: []
+    });
+    res.send(checker)
+});
+
+app.get('/updater', async (req, res) => {
+    fs.createReadStream("C:\\Users\\Ahmad\\Desktop\\qarz.csv")
+        .pipe(csv())
+        .on('data', async function (row) {
+
+            const user = await ProfileCollection.findOne({
+                clientName: row.clientName,
+                companyName: row.companyName
+            })
+            var checker = await ProfileCollection.findByIdAndUpdate({
+                _id: user['_id']
+            }, {
+                borrowedBalance: parseFloat(row.borrowedBalance),
+                recoveredBalance: parseFloat(row.recoveredBalance),
+                remainedbalance: parseFloat(row.remainedbalance),
+            });
+        })
+        .on('end', function () {
+            res.send("end")
+            // TODO: SAVE users data to another file
+        })
+
 });
 
 //Error Handler

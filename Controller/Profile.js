@@ -144,7 +144,7 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
 
     if (Invoices == "") {
         req.flash('danger', "کڕیاری داواکراو هیج تۆماڕێکی نیە");
-        res.redirect(process.env.address + "/Profiles")
+        res.redirect("/Profiles")
     } else {
         res.render("Profiles/Invoices", {
             title: "Customer Invoice",

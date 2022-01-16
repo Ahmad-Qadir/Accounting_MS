@@ -11,9 +11,12 @@ html(lang="ar" dir="rtl")
     // MDB
     link(href='https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css' rel='stylesheet')
 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+
+
     title=title
   body
-    nav.navbar.navbar-expand-lg.navbar-dark.bg-info
+    nav.navbar.navbar-expand-lg(style="background-image: linear-gradient(to right, #434343 0%, black 100%);" lang="en")
       .container-fluid
         a.navbar-brand(href='/') 
           b Titan Service
@@ -22,17 +25,23 @@ html(lang="ar" dir="rtl")
         #navbarSupportedContent.collapse.navbar-collapse
           ul.navbar-nav.me-auto.mb-2.mb-lg-0
             li.nav-item
-              a.nav-link(aria-current='page' href='/') سەرەکی
+              a.nav-link.navbar-brand.text-white(aria-current='page' href='/') 
+                b سەرەکی
             li.nav-item
-              a.nav-link(href='/Products') بەرهەمەکان
+              a.nav-link.navbar-brand.text-white(href='/Products') 
+                b بەرهەمەکان
             li.nav-item
-              a.nav-link(href='/Records') تۆمارەکان
+              a.nav-link.navbar-brand.text-white(href='/Records')
+                b  تۆمارەکان
             li.nav-item
-              a.nav-link(href='/Daily') کاری ڕۆژانە
+              a.nav-link.navbar-brand.text-white(href='/Daily')
+                b  کاری ڕۆژانە
             li.nav-item
-              a.nav-link(href='/Partners') خەرجی پشکدارەکان
+              a.nav-link.navbar-brand.text-white(href='/Partners')
+                b  خەرجی پشکدارەکان
             li.nav-item
-              a.nav-link(href='/Profiles') فرۆشتن
+              a.nav-link.navbar-brand.text-white(href='/Profiles')
+                b  فرۆشتن
             //- li.nav-item.dropdown
             //-   a#navbarDropdown.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false')
             //-     | Report
@@ -46,10 +55,11 @@ html(lang="ar" dir="rtl")
             //-     li
             //-       a.dropdown-item(href='#') Something else here
     block content
-    
+      body(style="background: #C9CCD3;background-image: linear-gradient(-180deg, rgba(255,255,255,0.50) 0%, rgba(0,0,0,0.50) 100%);background-blend-mode: lighten;")
+
     block scripts 
       script(src='https://code.jquery.com/jquery-3.5.1.min.js')
       script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js')
       script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js')
       script(src='//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js')
-      script(type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js")
+      script(type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js")

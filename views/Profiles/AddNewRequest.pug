@@ -73,7 +73,7 @@ block content
               .row
                 .form-group.col-md-3
                   label ناوی بەرهەم
-                  input(name="itemName" class="form-control fstdropdown-select" id="productName" onclick='myFunction()' onkeyup='filterFunction()')
+                  input(name="itemName" class="form-control fstdropdown-select custom-selection" id="productName" onclick='myFunction()' onkeyup='filterFunction()')
                   .dropdown
                     #myDropdown.dropdown-content
                       each item,i in productNames
@@ -197,6 +197,19 @@ block content
       document.getElementById("myDropdown").classList.toggle("show");
     }
 
+    window.onclick = function(event) {
+      if (!event.target.matches('.custom-selection')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+    }
+
     // The code to close the dropdown
     //- $('myDropdown').click(function(e) {
     //-   document.getElementById("myDropdown").classList.toggle("hide");
@@ -217,7 +230,8 @@ block content
         success: function(data){
           $('#body-product'+idOfModel).empty()
           $('#body-product'+idOfModel).append($("<table></table>").attr("id","datas"+idOfModel).attr('class',"table table-hover table-lg table-striped container-fluid table-responsive"));
-          $('#datas'+idOfModel).append($("<tr></tr>").attr('style',"text-align:center").attr('id','header'+idOfModel));
+          $('#datas'+idOfModel).append($("<thead></thead>").attr('style',"text-align:center").attr('id','MainHeader'+idOfModel));
+          $('#MainHeader'+idOfModel).append($("<tr></tr>").attr('style',"text-align:center").attr('id','header'+idOfModel));
           $('#header'+idOfModel).append($("<th></th>").text('#'));
           $('#header'+idOfModel).append($("<th></th>").text('جۆری بەرهەم'));
           $('#header'+idOfModel).append($("<th></th>").text('ناوی بەرهەم'));
@@ -227,8 +241,10 @@ block content
           $('#header'+idOfModel).append($("<th></th>").text('ژمارە'));
           $('#header'+idOfModel).append($("<th></th>").text('نرخ'));
           $('#header'+idOfModel).append($("<th></th>").text('ژمارەی بارهەڵگر'));
+          $('#datas'+idOfModel).append($("<tbody></tbody>").attr('id','MainBody'+idOfModel));
           //- 
           for (let i = 0; i < data.length; i++) {
+            $('#MainBody'+idOfModel).append($("<tr></tr>").attr("id","rows"+idOfModel+i));
             $('#datas'+idOfModel).append($("<tr></tr>").attr("id","rows"+idOfModel+i));
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','check'+idOfModel+i));
             $('#check'+idOfModel+i).append($("<input></input>").attr('id','checkstatus'+idOfModel+i).attr('type','checkbox').attr('value',data[i]['itemName']).attr('style','zoom: 1.5;'));
@@ -236,7 +252,14 @@ block content
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['itemName']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['itemType']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['color']));
-            $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['weight']+" "+data[i]['itemUnit']).attr('id',"unit"+idOfModel+i));
+            if(parseFloat(data[i]['weight'])>2.9 && parseFloat(data[i]['weight'])<5)
+              $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['weight']+" "+data[i]['itemUnit']).attr('id',"unit"+idOfModel+i).attr('style',"background-color:#661E18;color:#FFFFFF"));
+            else if(parseFloat(data[i]['weight'])>6.9 && parseFloat(data[i]['weight'])<10)
+              $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['weight']+" "+data[i]['itemUnit']).attr('id',"unit"+idOfModel+i).attr('style',"background-color:#186628;color:#FFFFFF"));
+            else if(parseFloat(data[i]['weight'])>=15)
+              $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['weight']+" "+data[i]['itemUnit']).attr('id',"unit"+idOfModel+i).attr('style',"background-color:#182966;color:#FFFFFF"));
+            else
+              $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['weight']+" "+data[i]['itemUnit']).attr('id',"unit"+idOfModel+i));
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','quantity'+idOfModel+i));
             $('#quantity'+idOfModel+i).append($("<input></input>").attr('onclick','updateValue(this.parentNode.parentNode,event)').attr('type','number').attr('name','totalQuan').attr('class','form-control').attr('id','totalQuan'+idOfModel+i));
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','priceRow'+idOfModel+i));
@@ -271,7 +294,7 @@ block content
         success: function(data){
           $("#"+trailerNumber).empty()
           for (let i = 0; i < data.length; i++) {
-            if(parseInt(data[i]['totalQuantity'])==0){
+            if(parseFloat(data[i]['totalQuantity'])==0){
               continue;
             }else{
               if(data[i]['status']=="Recovered")
@@ -364,7 +387,7 @@ block content
     //- $( "#perPacket" ).change(function() {
     //-   var requestedPacket=document.getElementById("perPacket").value;
     //-   var remainedPacket=document.getElementById("remained").value;
-    //-   if(parseInt(remainedPacket)<parseInt(requestedPacket)){
+    //-   if(parseFloat(remainedPacket)<parseFloat(requestedPacket)){
     //-     document.getElementById("perPacket").classList.add("btn-outline-danger")
     //-     $('#result').append($("<div></div>").attr("class","note note-danger mb-1").text("ناتوانیت بڕی دیاریکراو زیاتربێت لە بەرهەمی بەردەست لە باری دیاریکراو"));
     //-   }else{
@@ -374,41 +397,49 @@ block content
     //- });
 
 
+
     //Section of Adding Selected items in Table
     function resultOfValidation(val){
-      var table=val.parentNode.parentNode.childNodes[2].childNodes[0].childNodes;
-      var checkstatus=val.parentNode.parentNode.childNodes[2].childNodes[0].childNodes[1].childNodes[0].firstChild.id;
-      for (let i = 1; i < table.length; i++) {
-        if(document.getElementById(table[i].childNodes[0].firstChild.id).checked==true){
-          console.log("Item Name")
-          console.log("Item Color"+table[i].childNodes[2].innerHTML)
-          console.log("Item Type"+table[i].childNodes[3].innerHTML)
-          console.log("Item Price"+table[i].childNodes[5].firstChild.value)
-          console.log("Item Quantity"+table[i].childNodes[4].firstChild.value)
-          console.log("Item Trailer"+table[i].childNodes[6].firstChild.value)
-          console.log("Item Unit"+table[i].childNodes[7].innerHTML)
+      var table=val.parentNode.parentNode.childNodes[2].childNodes[0].childNodes[1].childNodes;
+      for (let i = 0; i < table.length; i++) {
+        console.log(table[i].childNodes[0].childNodes[0].id).checked
+        if(document.getElementById(table[i].childNodes[0].childNodes[0].id).checked==true){
+          //- console.log("Item Model"+table[i].childNodes[1].innerHTML)
+          //- console.log("Item Name"+table[i].childNodes[2].innerHTML)
+          //- console.log("Item Type"+table[i].childNodes[3].innerHTML)
+          //- console.log("Item Color"+table[i].childNodes[4].innerHTML)
+          //- console.log("Item Unit"+table[i].childNodes[5].innerHTML)
+          //- console.log("Item Quantity"+table[i].childNodes[6].firstChild.value)
+          //- console.log("Item Price"+table[i].childNodes[7].firstChild.value)
+          //- console.log("Item Trailer"+table[i].childNodes[8].firstChild.value)
 
-          $("#invoiceTable").find('tbody')
-            .append($('<tr>')
-              .append($('<td>')
-                .text($('#invoiceTable>tbody>tr').length+1)
-              ).append($('<td>')
-                .text(table[i].childNodes[0].firstChild.value)
-              ).append($('<td>')
-                .text(table[i].childNodes[2].innerHTML+"/"+table[i].childNodes[3].innerHTML+"/"+table[i].childNodes[7].innerHTML)
-              ).append($('<td>')
-                .text(table[i].childNodes[5].firstChild.value)
-              ).append($('<td>')
-                .text(table[i].childNodes[4].firstChild.value)
-              ).append($('<td>')
-                .text(parseInt(table[i].childNodes[4].firstChild.value)*parseInt(table[i].childNodes[5].firstChild.value))
-              ).append($('<td>')
-                .text(table[i].childNodes[6].firstChild.value).attr("style","display:none")
-              )
-            );
-            var subtotal=document.getElementById('total').innerHTML;
-            document.getElementById('total').innerHTML=parseInt(subtotal)+parseInt(table[i].childNodes[4].firstChild.value)*parseInt(table[i].childNodes[5].firstChild.value)
-            //- document.getElementById('total').innerHTML=document.getElementById('subtotal').innerHTML - (document.getElementById('subtotal').innerHTML*parseInt(document.getElementById("discount").value)/100) +parseInt(document.getElementById("olddebut").innerHTML)
+          //- $("#invoiceTable").find('tbody')
+          //-   .append($('<tr>')
+          //-     .append($('<td>')
+          //-       .text($('#invoiceTable>tbody>tr').length+1)
+          //-     ).append($('<td>')
+          //-       .text(table[i].childNodes[1].innerHTML)
+          //-     ).append($('<td>')
+          //-       .text(table[i].childNodes[2].innerHTML)
+          //-     ).append($('<td>')
+          //-       .text(table[i].childNodes[3].innerHTML)
+          //-     ).append($('<td>')
+          //-       .text(table[i].childNodes[4].innerHTML)
+          //-     ).append($('<td>')
+          //-       .text(table[i].childNodes[5].innerHTML)
+          //-     ).append($('<td>')
+          //-       .text(table[i].childNodes[6].firstChild.value)
+          //-     ).append($('<td>')
+          //-       .text(table[i].childNodes[7].firstChild.value)
+          //-     ).append($('<td>')
+          //-       .text(parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value))
+          //-     ).append($('<td>')
+          //-       .text(table[i].childNodes[8].firstChild.value).attr("style","display:none")
+          //-     )
+          //-   );
+          //-   var subtotal=document.getElementById('total').innerHTML;
+          //-   document.getElementById('total').innerHTML=parseFloat(subtotal)+parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)
+          //- document.getElementById('total').innerHTML=document.getElementById('subtotal').innerHTML - (document.getElementById('subtotal').innerHTML*parseFloat(document.getElementById("discount").value)/100) +parseFloat(document.getElementById("olddebut").innerHTML)
         }
         else{
           continue;
@@ -441,7 +472,7 @@ block content
       var Trailer= $( "#"+trailerNumber +" option:selected" ).text().split('-')[0];
         var data=$.ajax({
           type: 'POST',
-          url: "/Product/Trailers/"+parseInt(Trailer)+"/#{profile[0]['clientType']}",
+          url: "/Product/Trailers/"+parseFloat(Trailer)+"/#{profile[0]['clientType']}",
           dataType: 'JSON',
           data:{
             "itemModel":itemModel,
