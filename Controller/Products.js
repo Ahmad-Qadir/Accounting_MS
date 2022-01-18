@@ -63,6 +63,11 @@ exports.AddNewProduct = async (req, res, next) => {
                 softdelete: false,
             })
 
+        const Color = await ProductsCollection
+            .find({
+                softdelete: false
+            }).distinct('color')
+
         const ItemUnit = await ItemUnitCollection
             .find({
                 softdelete: false,
@@ -70,7 +75,8 @@ exports.AddNewProduct = async (req, res, next) => {
         res.render('Products/AddProduct.pug', {
             title: "زیادکردنی بەرهەمی نوێ",
             company: Company,
-            itemUnit: ItemUnit
+            itemUnit: ItemUnit,
+            colors: Color
         })
     } catch (error) {
         next(error)
@@ -215,16 +221,32 @@ exports.NewInvoice = async (req, res, next) => {
         var invoiceID = Records.length;
         for (let index = 0; index < RequestList.length; index++) {
             const element = RequestList[index];
+            // console.log("Item Model:" + element[1])
+            // console.log("Item Name:" + element[2])
+            // console.log("Item Type:" + element[3])
+            // console.log("Item Color:" + element[4])
+            // console.log("Item Weight:" + element[5].split(" ")[0])
+            // console.log("Item Unit:" + element[5].split(" ")[1])
+            // console.log("Item Number:"+element[6])
+            // console.log("Sell Price:"+element[7])
+            // console.log("Total Price:"+element[8])
+            // console.log("Item Trailer:"+element[9])
+
+
+
             const Product = await ProductsCollection.find({
-                itemName: element[1],
-                itemTye: element[2].split('/')[1],
-                color: element[2].split('/')[0]
+                itemModel: element[1],
+                itemName: element[2],
+                itemType: element[3],
+                color: element[4],
+                weight: parseFloat(element[5].split(" ")[0]),
+                itemUnit: element[5].split(" ")[1]
             });
 
-            var totalRequestedPackets = element[4];
+            var totalRequestedPackets = element[6];
 
-            var _SellPrice = parseFloat(element[3].replace(/[^0-9]/g, ''))
-            if (element[6].split('-')[0] == 0) {
+            var _SellPrice = parseFloat(element[7].replace(/[^0-9]/g, ''))
+            if (element[8].split('-')[0] == 0) {
                 const Trailer = await RecordsCollection.find({
                     productID: Product[0]['_id'],
                     trailerNumber: 0,
@@ -241,7 +263,8 @@ exports.NewInvoice = async (req, res, next) => {
                         totalQuantity: totalRequestedPackets,
                         status: "Customer Request",
                         sellPrice: _SellPrice,
-                        trailerNumber: element[6].split('-')[0],
+                        totalPrice: _SellPrice * totalRequestedPackets,
+                        trailerNumber: element[8].split('-')[0],
                         addedBy: req.user.username,
                         updatedBy: req.user.username,
                         note: req.body.note,
@@ -255,7 +278,7 @@ exports.NewInvoice = async (req, res, next) => {
                     await ProductsCollection.findByIdAndUpdate({
                         _id: Product[0]['_id']
                     }, {
-                        remainedPacket: parseFloat(result / Product[0]['perPacket']),
+                        remainedPacket: parseInt(result / Product[0]['perPacket']),
                         remainedPerPacket: result % Product[0]['perPacket'],
                         totalQuantity: result,
                         updatedBy: req.user.username,
@@ -265,11 +288,11 @@ exports.NewInvoice = async (req, res, next) => {
                             itemHistory: newRecordtoHistory["_id"],
                         }
                     });
+
                     await ProfileCollection.findByIdAndUpdate({
                         _id: req.params.id
                     }, {
                         updatedBy: req.user.username,
-                        remainedbalance: 0,
                         $push: {
                             invoiceID: newRecordtoHistory["_id"],
                         }
@@ -290,16 +313,16 @@ exports.NewInvoice = async (req, res, next) => {
 
                 }
 
-            } else {
+            }
+            else {
                 const Trailer = await TrailerCollection.find({
-                    itemName: element[1],
-                    itemTye: element[2].split('/')[1],
-                    color: element[2].split('/')[0],
-                    trailerNumber: element[6].split('-')[0]
+                    productID: Product[0]['_id'],
+                    trailerNumber: element[9].split('-')[0]
                 });
+
                 //Prevent 
                 if (Trailer[0]['totalQuantity'] < totalRequestedPackets) {
-                    res.send("بەرهەمی " + Trailer[0]['itemName'] + " " + Trailer[0]['color'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە");
+                    res.status(402).send("بەرهەمی " + Trailer[0]['itemName'] + " " + Trailer[0]['color'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە");
                 } else {
                     //===============Records Collection=============
                     const newRecordtoHistory = new RecordsCollection({
@@ -307,7 +330,8 @@ exports.NewInvoice = async (req, res, next) => {
                         totalQuantity: totalRequestedPackets,
                         status: "Customer Request",
                         sellPrice: _SellPrice,
-                        trailerNumber: element[6].split('-')[0],
+                        totalPrice:_SellPrice*totalRequestedPackets,
+                        trailerNumber: element[9].split('-')[0],
                         addedBy: req.user.username,
                         updatedBy: req.user.username,
                         note: req.body.note,
@@ -334,7 +358,6 @@ exports.NewInvoice = async (req, res, next) => {
                         _id: req.params.id
                     }, {
                         updatedBy: req.user.username,
-                        remainedbalance: 0,
                         $push: {
                             invoiceID: newRecordtoHistory["_id"],
                         }
@@ -361,12 +384,8 @@ exports.NewInvoice = async (req, res, next) => {
                 }
 
             }
-
-
-
         }
-        res.send("بە سەرکەوتوویی تۆمارکرا")
-
+        res.status(200).send("بە سەرکەوتوویی تۆمارکرا")
 
     } catch (error) {
         console.log(error)
@@ -1016,7 +1035,7 @@ exports.SearchForProductsinCompany = async (req, res, next) => {
                 softdelete: false,
                 manufacturerCompany: CompanyName
             });
-            console.log(Product)
+        console.log(Product)
         res.send(Product);
     } catch (error) {
         console.log(error)

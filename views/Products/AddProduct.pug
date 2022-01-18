@@ -64,17 +64,8 @@ block content
               .form-group.col-md-2
                 label ڕەنگ
                 select(name="color" class="form-control")
-                  option(value="Red" style="background-color:Red") Red
-                  option(value="Green" style="background-color:Green") Green
-                  option(value="Blue" style="background-color:Blue") Blue
-                  option(value="Black" style="background-color:Black") Black
-                  option(value="Yellow" style="background-color:Yellow") Yellow
-                  option(value="Brown" style="background-color:Brown") Brown
-                  option(value="Pink" style="background-color:Pink") Pink
-                  option(value="Purple" style="background-color:Purple") Purple
-                  option(value="Grey" style="background-color:Grey") Grey
-                  option(value="White" style="background-color:White") White
-                  option(value="Orange" style="background-color:Orange") Orange
+                  each item,i in colors
+                      option(value=item)=item
               .form-group.col-md-2
                 label بەرواری بەسەرچوون
                 input.form-control(name="expireDate" type='date')

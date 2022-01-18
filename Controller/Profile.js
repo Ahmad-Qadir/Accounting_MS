@@ -240,115 +240,115 @@ exports.AddNewRequest = async (req, res, next) => {
 }
 
 //Add New Invoice For Customer Operation
-exports.AddNewInvoiceForCustomer = async (req, res, next) => {
-    const Product = await ProductsCollection.find({
-        _id: req.params.id
-    });
-    try {
-        const validationSchema = {
-            sellPrice: validator.number().required(),
-            perPacket: validator.number().required(),
-            trailerNumber: validator.number().required(),
-            cutomerID: validator.string().required(),
-            note: validator.string().required(),
-            recordCode: validator.string()
-        }
-        const resultOfValidator = validator.validate(req.body, validationSchema);
-        if (resultOfValidator.error) {
-            req.flash('danger', resultOfValidator.error.details[0].message);
-            res.redirect(process.env.address + Product[0]['_id'] + '/NewRequest')
-            // res.status(400).send({
-            //     message: resultOfValidator.error.details[0].message
-            // });
-        } else {
-            var totalRequestedPackets = req.body.perPacket;
-            const Trailer = await TrailerCollection.find({
-                itemName: Product[0]['itemName'],
-                itemModel: Product[0]['itemModel'],
-                color: Product[0]['color'],
-                itemType: Product[0]['itemType'],
-                weight: Product[0]['weight'],
-                itemUnit: Product[0]['itemUnit'],
-                trailerNumber: req.body.trailerNumber
-            });
+// exports.AddNewInvoiceForCustomer = async (req, res, next) => {
+//     // const Product = await ProductsCollection.find({
+//     //     _id: req.params.id
+//     // });
+//     try {
+//         const validationSchema = {
+//             sellPrice: validator.number().required(),
+//             perPacket: validator.number().required(),
+//             trailerNumber: validator.number().required(),
+//             cutomerID: validator.string().required(),
+//             note: validator.string().required(),
+//             recordCode: validator.string()
+//         }
+//         const resultOfValidator = validator.validate(req.body, validationSchema);
+//         if (resultOfValidator.error) {
+//             req.flash('danger', resultOfValidator.error.details[0].message);
+//             res.redirect(process.env.address + Product[0]['_id'] + '/NewRequest')
+//             // res.status(400).send({
+//             //     message: resultOfValidator.error.details[0].message
+//             // });
+//         } else {
+//             var totalRequestedPackets = req.body.perPacket;
+//             const Trailer = await TrailerCollection.find({
+//                 itemName: Product[0]['itemName'],
+//                 itemModel: Product[0]['itemModel'],
+//                 color: Product[0]['color'],
+//                 itemType: Product[0]['itemType'],
+//                 weight: Product[0]['weight'],
+//                 itemUnit: Product[0]['itemUnit'],
+//                 trailerNumber: req.body.trailerNumber
+//             });
 
-            //Prevent 
-            if (Trailer[0]['totalQuantity'] < req.body.perPacket) {
-                req.flash('danger', "There is no enough Product in Store there is only " + Trailer[0]['totalQuantity'] + " remains in this Trailer");
-                res.redirect(process.env.address + Product[0]['_id'] + '/NewRequest')
-            } else {
-                //===============Records Collection=============
-                const newRecordtoHistory = new RecordsCollection({
-                    recordCode: uuid.v1(),
-                    weight: Product[0]['weight'],
-                    totalWeight: Product[0]['weight'] * totalRequestedPackets,
-                    totalQuantity: totalRequestedPackets,
-                    status: "Customer Request",
-                    color: Product[0]['color'],
-                    camePrice: Trailer[0]['camePrice'],
-                    sellPrice: req.body.sellPrice,
-                    totalPrice: req.body.sellPrice * totalRequestedPackets,
-                    expireDate: Product[0]['expireDate'],
-                    trailerNumber: req.body.trailerNumber,
-                    addedBy: req.user.username,
-                    updatedBy: req.user.username,
-                    note: req.body.note,
-                    cutomerID: req.body.cutomerID,
-                    trailerID: Trailer[0]['_id'],
-                    productID: Product[0]['_id'],
-                });
-                await newRecordtoHistory.save();
-                var result = Product[0]['totalQuantity'] - totalRequestedPackets;
-                await ProductsCollection.findByIdAndUpdate({
-                    _id: req.params.id
-                }, {
-                    remainedPacket: parseInt(result / Product[0]['perPacket']),
-                    remainedPerPacket: result % Product[0]['perPacket'],
-                    totalQuantity: result,
-                    updatedBy: req.user.username,
-                    totalPrice: Product[0]['totalPrice'] - (totalRequestedPackets * Product[0]['sellPrice']),
-                    totalWeight: Product[0]['totalWeight'] - (totalRequestedPackets * Product[0]['weight']),
-                    $push: {
-                        itemHistory: newRecordtoHistory["_id"],
-                    }
-                });
-                await ProfileCollection.findByIdAndUpdate({
-                    _id: req.body.cutomerID
-                }, {
-                    borrowedBalance: Product[0]['sellPrice'],
-                    recoveredBalance: req.body.sellPrice,
-                    // remainedbalance: Product[0]['remainedbalance'] - req.body.recoveredBalance,
-                    updatedBy: req.user.username,
-                    $push: {
-                        invoiceID: newRecordtoHistory["_id"],
-                    }
-                });
+//             //Prevent 
+//             if (Trailer[0]['totalQuantity'] < req.body.perPacket) {
+//                 req.flash('danger', "There is no enough Product in Store there is only " + Trailer[0]['totalQuantity'] + " remains in this Trailer");
+//                 res.redirect(process.env.address + Product[0]['_id'] + '/NewRequest')
+//             } else {
+//                 //===============Records Collection=============
+//                 const newRecordtoHistory = new RecordsCollection({
+//                     recordCode: uuid.v1(),
+//                     weight: Product[0]['weight'],
+//                     totalWeight: Product[0]['weight'] * totalRequestedPackets,
+//                     totalQuantity: totalRequestedPackets,
+//                     status: "Customer Request",
+//                     color: Product[0]['color'],
+//                     camePrice: Trailer[0]['camePrice'],
+//                     sellPrice: req.body.sellPrice,
+//                     totalPrice: req.body.sellPrice * totalRequestedPackets,
+//                     expireDate: Product[0]['expireDate'],
+//                     trailerNumber: req.body.trailerNumber,
+//                     addedBy: req.user.username,
+//                     updatedBy: req.user.username,
+//                     note: req.body.note,
+//                     cutomerID: req.body.cutomerID,
+//                     trailerID: Trailer[0]['_id'],
+//                     productID: Product[0]['_id'],
+//                 });
+//                 await newRecordtoHistory.save();
+//                 var result = Product[0]['totalQuantity'] - totalRequestedPackets;
+//                 await ProductsCollection.findByIdAndUpdate({
+//                     _id: req.params.id
+//                 }, {
+//                     remainedPacket: parseInt(result / Product[0]['perPacket']),
+//                     remainedPerPacket: result % Product[0]['perPacket'],
+//                     totalQuantity: result,
+//                     updatedBy: req.user.username,
+//                     totalPrice: Product[0]['totalPrice'] - (totalRequestedPackets * Product[0]['sellPrice']),
+//                     totalWeight: Product[0]['totalWeight'] - (totalRequestedPackets * Product[0]['weight']),
+//                     $push: {
+//                         itemHistory: newRecordtoHistory["_id"],
+//                     }
+//                 });
+//                 await ProfileCollection.findByIdAndUpdate({
+//                     _id: req.body.cutomerID
+//                 }, {
+//                     borrowedBalance: Product[0]['sellPrice'],
+//                     recoveredBalance: req.body.sellPrice,
+//                     // remainedbalance: Product[0]['remainedbalance'] - req.body.recoveredBalance,
+//                     updatedBy: req.user.username,
+//                     $push: {
+//                         invoiceID: newRecordtoHistory["_id"],
+//                     }
+//                 });
 
 
 
-                var numbeOfPacketsinTrailer = Trailer[0]['totalQuantity'] - totalRequestedPackets;
-                await TrailerCollection.findByIdAndUpdate({
-                    _id: Trailer[0]['_id']
-                }, {
-                    remainedPacket: parseInt(numbeOfPacketsinTrailer / Trailer[0]['perPacket']),
-                    remainedPerPacket: numbeOfPacketsinTrailer % Trailer[0]['perPacket'],
-                    totalQuantity: numbeOfPacketsinTrailer,
-                    updatedBy: req.user.username,
-                    totalPrice: Trailer[0]['totalPrice'] - (totalRequestedPackets * Trailer[0]['sellPrice']),
-                    totalWeight: Trailer[0]['totalWeight'] - (totalRequestedPackets * Trailer[0]['weight']),
-                    $push: {
-                        invoiceID: newRecordtoHistory["_id"],
-                    }
-                });
-                req.flash('success', "The record has been saved");
-                res.redirect('/Products')
-            }
+//                 var numbeOfPacketsinTrailer = Trailer[0]['totalQuantity'] - totalRequestedPackets;
+//                 await TrailerCollection.findByIdAndUpdate({
+//                     _id: Trailer[0]['_id']
+//                 }, {
+//                     remainedPacket: parseInt(numbeOfPacketsinTrailer / Trailer[0]['perPacket']),
+//                     remainedPerPacket: numbeOfPacketsinTrailer % Trailer[0]['perPacket'],
+//                     totalQuantity: numbeOfPacketsinTrailer,
+//                     updatedBy: req.user.username,
+//                     totalPrice: Trailer[0]['totalPrice'] - (totalRequestedPackets * Trailer[0]['sellPrice']),
+//                     totalWeight: Trailer[0]['totalWeight'] - (totalRequestedPackets * Trailer[0]['weight']),
+//                     $push: {
+//                         invoiceID: newRecordtoHistory["_id"],
+//                     }
+//                 });
+//                 req.flash('success', "The record has been saved");
+//                 res.redirect('/Products')
+//             }
 
-        }
-    } catch (error) {
-        next(error)
-    }
-}
+//         }
+//     } catch (error) {
+//         next(error)
+//     }
+// }
 
 //Print Selected Invoice
 exports.PrintSelectedInvoice = async (req, res, next) => {

@@ -115,7 +115,7 @@ block content
                     //- div Madalinskiego 8
                     div Iraq - Erbil
                     //- div Email: info@dotnettec.com
-                    div ژمارەی مۆبایل:07504444444 
+                    //- div ژمارەی مۆبایل:07504444444 
                   .col-sm-6
                     h6.mb-3 بەڕێز:
                     div
@@ -133,11 +133,14 @@ block content
                     thead
                       tr
                         th.center #
-                        th بەرهەم
-                        th وردەکاریەکان
-                        th.right نرخ
-                        th.center دانە
-                        th.right کۆی گشتی نرخ
+                        th جۆری بەرهەم
+                        th ناوی بەرهەم
+                        th شێوازی بەرهەم
+                        th ڕەنگ
+                        th پێوانە
+                        th ژمارە
+                        th.right نرخی تاک
+                        th.right کۆی گشتی
                     tbody(id="dataOfInvoiceTable")
                 .row
                   .col-lg-8.col-sm-8
@@ -182,7 +185,7 @@ block content
                         a.btn.btn-success.btn-ok(onclick="payNowDebut()" data-dismiss='modal') رازیبوون
                 each item,i in productNames
                   .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-product'+i)
-                    .modal-dialog.modal-dialog-centered.modal-xl(role='document')
+                    .modal-dialog.modal-dialog-centered.modal-fullscreen(role='document')
                       .modal-content
                         .modal-header=item
                         thead.thead-dark
@@ -230,7 +233,7 @@ block content
         success: function(data){
           $('#body-product'+idOfModel).empty()
           $('#body-product'+idOfModel).append($("<table></table>").attr("id","datas"+idOfModel).attr('class',"table table-hover table-lg table-striped container-fluid table-responsive"));
-          $('#datas'+idOfModel).append($("<thead></thead>").attr('style',"text-align:center").attr('id','MainHeader'+idOfModel));
+          $('#datas'+idOfModel).append($("<thead></thead>").attr('id','MainHeader'+idOfModel));
           $('#MainHeader'+idOfModel).append($("<tr></tr>").attr('style',"text-align:center").attr('id','header'+idOfModel));
           $('#header'+idOfModel).append($("<th></th>").text('#'));
           $('#header'+idOfModel).append($("<th></th>").text('جۆری بەرهەم'));
@@ -241,11 +244,11 @@ block content
           $('#header'+idOfModel).append($("<th></th>").text('ژمارە'));
           $('#header'+idOfModel).append($("<th></th>").text('نرخ'));
           $('#header'+idOfModel).append($("<th></th>").text('ژمارەی بارهەڵگر'));
+          $('#header'+idOfModel).append($("<th></th>").text('ڕێکخستنەوەی پارە'));
           $('#datas'+idOfModel).append($("<tbody></tbody>").attr('id','MainBody'+idOfModel));
           //- 
           for (let i = 0; i < data.length; i++) {
             $('#MainBody'+idOfModel).append($("<tr></tr>").attr("id","rows"+idOfModel+i));
-            $('#datas'+idOfModel).append($("<tr></tr>").attr("id","rows"+idOfModel+i));
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','check'+idOfModel+i));
             $('#check'+idOfModel+i).append($("<input></input>").attr('id','checkstatus'+idOfModel+i).attr('type','checkbox').attr('value',data[i]['itemName']).attr('style','zoom: 1.5;'));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['itemModel']));
@@ -270,6 +273,9 @@ block content
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','priceChecker'+idOfModel+i));
             $('#priceChecker'+idOfModel+i).append($("<i></i>").attr('class',"fas fa-hand-holding-usd").attr('onClick',"updatePrice(this.parentNode.parentNode,event)"));
             }
+            $('#datas'+idOfModel).DataTable({
+                "paging": false
+            });
           }
       })
     }
@@ -341,7 +347,7 @@ block content
             $('#newRecord').append($("<div></div>").attr("class","note note-success").text(data.responseText));
           },
           error: function(err){
-            $('#newRecord').append($("<div></div>").attr("class","note note-success").text(err.responseText));
+            $('#newRecord').append($("<div></div>").attr("class","note note-danger").text(err.responseText));
           }
       })
     }
@@ -400,46 +406,55 @@ block content
 
     //Section of Adding Selected items in Table
     function resultOfValidation(val){
-      var table=val.parentNode.parentNode.childNodes[2].childNodes[0].childNodes[1].childNodes;
-      for (let i = 0; i < table.length; i++) {
-        console.log(table[i].childNodes[0].childNodes[0].id).checked
-        if(document.getElementById(table[i].childNodes[0].childNodes[0].id).checked==true){
-          //- console.log("Item Model"+table[i].childNodes[1].innerHTML)
-          //- console.log("Item Name"+table[i].childNodes[2].innerHTML)
-          //- console.log("Item Type"+table[i].childNodes[3].innerHTML)
-          //- console.log("Item Color"+table[i].childNodes[4].innerHTML)
-          //- console.log("Item Unit"+table[i].childNodes[5].innerHTML)
-          //- console.log("Item Quantity"+table[i].childNodes[6].firstChild.value)
-          //- console.log("Item Price"+table[i].childNodes[7].firstChild.value)
-          //- console.log("Item Trailer"+table[i].childNodes[8].firstChild.value)
+      var table=val.parentNode.parentNode.childNodes[2].childNodes[0].childNodes[1].childNodes[1].childNodes;
 
-          //- $("#invoiceTable").find('tbody')
-          //-   .append($('<tr>')
-          //-     .append($('<td>')
-          //-       .text($('#invoiceTable>tbody>tr').length+1)
-          //-     ).append($('<td>')
-          //-       .text(table[i].childNodes[1].innerHTML)
-          //-     ).append($('<td>')
-          //-       .text(table[i].childNodes[2].innerHTML)
-          //-     ).append($('<td>')
-          //-       .text(table[i].childNodes[3].innerHTML)
-          //-     ).append($('<td>')
-          //-       .text(table[i].childNodes[4].innerHTML)
-          //-     ).append($('<td>')
-          //-       .text(table[i].childNodes[5].innerHTML)
-          //-     ).append($('<td>')
-          //-       .text(table[i].childNodes[6].firstChild.value)
-          //-     ).append($('<td>')
-          //-       .text(table[i].childNodes[7].firstChild.value)
-          //-     ).append($('<td>')
-          //-       .text(parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value))
-          //-     ).append($('<td>')
-          //-       .text(table[i].childNodes[8].firstChild.value).attr("style","display:none")
-          //-     )
-          //-   );
-          //-   var subtotal=document.getElementById('total').innerHTML;
-          //-   document.getElementById('total').innerHTML=parseFloat(subtotal)+parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)
-          //- document.getElementById('total').innerHTML=document.getElementById('subtotal').innerHTML - (document.getElementById('subtotal').innerHTML*parseFloat(document.getElementById("discount").value)/100) +parseFloat(document.getElementById("olddebut").innerHTML)
+      for (let i = 0; i < table.length; i++) {
+      //- console.log(table[i].childNodes[0].firstChild.id)
+        if(document.getElementById(table[i].childNodes[0].childNodes[0].id).checked==true){
+          //- th جۆری بەرهەم
+          //-               th ناوی بەرهەم
+          //-               th ڕەنگ
+          //-               th شێوازی بەرهەم
+          //-               th پێوانە
+          //-               th ژمارە
+          //-               th.right کۆی گشتی
+          //- console.log(table[i].childNodes[0].childNodes[0].id)
+        //- console.log("Item Model"+table[i].childNodes[1].innerHTML)
+        //- console.log("Item Name"+table[i].childNodes[2].innerHTML)
+        //- console.log("Item Type"+table[i].childNodes[3].innerHTML)
+        //- console.log("Item Color"+table[i].childNodes[4].innerHTML)
+        //- console.log("Item Unit"+table[i].childNodes[5].innerHTML)
+        //- console.log("Item Quantity"+table[i].childNodes[6].firstChild.value)
+        //- console.log("Item Price"+table[i].childNodes[7].firstChild.value)
+        //- console.log("Item Trailer"+table[i].childNodes[8].firstChild.value)
+
+        $("#invoiceTable").find('tbody')
+          .append($('<tr>')
+            .append($('<td>')
+              .text($('#invoiceTable>tbody>tr').length+1)
+            ).append($('<td>')
+              .text(table[i].childNodes[1].innerHTML)
+            ).append($('<td>')
+              .text(table[i].childNodes[2].innerHTML)
+            ).append($('<td>')
+              .text(table[i].childNodes[3].innerHTML)
+            ).append($('<td>')
+              .text(table[i].childNodes[4].innerHTML)
+            ).append($('<td>')
+              .text(table[i].childNodes[5].innerHTML)
+            ).append($('<td>')
+              .text(table[i].childNodes[6].firstChild.value)
+            ).append($('<td>')
+              .text(table[i].childNodes[7].firstChild.value)
+            ).append($('<td>')
+              .text(parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value))
+            ).append($('<td>')
+              .text(table[i].childNodes[8].firstChild.value).attr("style","display:none")
+            )
+          );
+          var subtotal=document.getElementById('total').innerHTML;
+          document.getElementById('total').innerHTML=parseFloat(subtotal)+parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)
+        document.getElementById('total').innerHTML=document.getElementById('subtotal').innerHTML - (document.getElementById('subtotal').innerHTML*parseFloat(document.getElementById("discount").value)/100) +parseFloat(document.getElementById("olddebut").innerHTML)
         }
         else{
           continue;
