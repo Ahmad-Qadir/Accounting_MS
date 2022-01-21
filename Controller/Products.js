@@ -246,7 +246,7 @@ exports.NewInvoice = async (req, res, next) => {
             var totalRequestedPackets = element[6];
 
             var _SellPrice = parseFloat(element[7].replace(/[^0-9]/g, ''))
-            if (element[8].split('-')[0] == 0) {
+            if (element[9].split('-')[0] == 0) {
                 const Trailer = await RecordsCollection.find({
                     productID: Product[0]['_id'],
                     trailerNumber: 0,
@@ -330,7 +330,7 @@ exports.NewInvoice = async (req, res, next) => {
                         totalQuantity: totalRequestedPackets,
                         status: "Customer Request",
                         sellPrice: _SellPrice,
-                        totalPrice:_SellPrice*totalRequestedPackets,
+                        totalPrice: _SellPrice * totalRequestedPackets,
                         trailerNumber: element[9].split('-')[0],
                         addedBy: req.user.username,
                         updatedBy: req.user.username,
@@ -764,15 +764,7 @@ exports.CheckForProductPriceInTrailer = async (req, res, next) => {
                 itemUnit: req.body.itemUnit.split(" ")[1],
                 weight: req.body.itemUnit.split(" ")[0],
             })
-        const Trailers = await TrailerCollection
-            .find({
-                trailerNumber: isNaN(parseFloat(req.params.trailerNum)) ? 0 : parseFloat(req.params.trailerNum),
-                softdelete: false,
-                productID: Products[0]["_id"],
-                status: "New Trailer"
-            })
-        res.send(Trailers[0])
-
+        res.send(Products[0])
     } catch (error) {
         next(error)
     }

@@ -78,8 +78,9 @@ block content
                     #myDropdown.dropdown-content
                       each item,i in productNames
                         a(href="#" onclick="getModel(this,event);" title=item type='button' data-toggle="modal" data-target="#confirm-product"+i)=item
+
                 .form-group.col-md-2
-                  p(id="dataofIncome")
+                  p(id="dataofIncome") 0
                     //- a(href="#" onclick="updateValue(this.title, event);" title=item['itemName'] type='button' data-toggle="modal" data-target="#confirm-product")=item['itemName']  
                     //- .form-group.col-md-2
                     //-   label ژمارەی داواکراو
@@ -103,31 +104,31 @@ block content
             .card.border.border-dark
               .card-header.justify-content-between
                 .row
-                  strong.col-md-10="ژمارەی تۆمار: "+invoiceID
-                  span.col-md-2
+                  strong.col-sm-10="ژمارەی تۆمار: "+invoiceID
+                  span.col-sm-2
                     strong فرۆشتن
-              .card-body
+              .card-body.col-lg-12
                 .row.mb-4
-                  .col-sm-6
-                    h6.mb-3 لەلایان:
-                    div
-                      strong="Titan Service - " + user.username
-                    //- div Madalinskiego 8
-                    div Iraq - Erbil
-                    //- div Email: info@dotnettec.com
-                    //- div ژمارەی مۆبایل:07504444444 
-                  .col-sm-6
-                    h6.mb-3 بەڕێز:
-                    div
-                      strong=profile[0]['clientName']
-                    //- div Attn: Daniel Marek
+                  //- .col-lg-6
+                  //-   h6.mb-3 لەلایان:
+                  //-   div
+                  //-     strong="Titan Service - " + user.username
+                  //-   //- div Madalinskiego 8
+                  //-   div Iraq - Erbil
+                  //-   //- div Email: info@dotnettec.com
+                  //-   //- div ژمارەی مۆبایل:07504444444 
+                  .col-lg-12
                     -var today = new Date();
                     -var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
                     -var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
                     -var dateTime = date+' '+time;
-                    div=dateTime
+                    div
+                      strong="ناو:"+profile[0]['clientName']+"__________شوێن:"+profile[0]['companyName']+"__________بەروار:"+dateTime
+                    //- div Attn: Daniel Marek
+
                     //- div Email: robert@daniel.com
-                    div="ژمارەی مۆبایل: "+profile[0]['phoneNumber']
+                    //- div=
+                hr
                 .table-responsive-sm
                   table.table.table-striped(id="invoiceTable")
                     thead
@@ -143,10 +144,10 @@ block content
                         th.right کۆی گشتی
                     tbody(id="dataOfInvoiceTable")
                 .row
-                  .col-lg-8.col-sm-8
-                    b تێبینی
-                    textarea.form-control.rounded-0(rows='5' cols='80' id='note')
-                  .col-lg-4.col-sm-4.ml-auto
+                  //- .col-md-8
+                  //-   b تێبینی
+                  //-   textarea.form-control.rounded-0(rows='5' cols='80' id='note')
+                  .col-md-4.ml-auto
                     table.table.table-clear(id="totalPayment")
                       tbody
                         //- tr
@@ -244,7 +245,7 @@ block content
           $('#header'+idOfModel).append($("<th></th>").text('ژمارە'));
           $('#header'+idOfModel).append($("<th></th>").text('نرخ'));
           $('#header'+idOfModel).append($("<th></th>").text('ژمارەی بارهەڵگر'));
-          $('#header'+idOfModel).append($("<th></th>").text('ڕێکخستنەوەی پارە'));
+          $('#header'+idOfModel).append($("<th></th>").text('نرخی هاتوو'));
           $('#datas'+idOfModel).append($("<tbody></tbody>").attr('id','MainBody'+idOfModel));
           //- 
           for (let i = 0; i < data.length; i++) {
@@ -270,11 +271,10 @@ block content
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','trailerRow'+idOfModel+i));
             $('#trailerRow'+idOfModel+i).append($("<select></select>").attr('name','trailerNumber').attr('id','trailerNumbers'+idOfModel+i).attr('class','form-control'));
             $('#trailerNumbers'+idOfModel+i).append($("<option></option>").attr('value',data[i]['trailerNumber']).text(data[i]['trailerNumber']));
-            $('#rows'+idOfModel+i).append($("<td></td>").attr('id','priceChecker'+idOfModel+i));
-            $('#priceChecker'+idOfModel+i).append($("<i></i>").attr('class',"fas fa-hand-holding-usd").attr('onClick',"updatePrice(this.parentNode.parentNode,event)"));
+            $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['camePrice']));
             }
             $('#datas'+idOfModel).DataTable({
-                "paging": false
+              "paging": false
             });
           }
       })
@@ -293,6 +293,8 @@ block content
       //- document.getElementById("productName").value = val;
       event.preventDefault();
 
+
+
       var data=$.ajax({
         type: 'GET',
         url: "/Profiles/"+itemModel+"/"+itemName+"/"+itemType+"/"+color+"/"+itemUnit,
@@ -303,17 +305,31 @@ block content
             if(parseFloat(data[i]['totalQuantity'])==0){
               continue;
             }else{
-              if(data[i]['status']=="Recovered")
+              if(data[i]['status']=="Recovered"){
                 $("#"+trailerNumber).append($("<option></option>").attr("value",data[i]['trailerNumber']).text(data[i]['trailerNumber']+"-----ماوە:"+data[i]['totalQuantity']+"(گەڕاوە)"));
-              else
+              }else{
                 $("#"+trailerNumber).append($("<option></option>").attr("value",data[i]['trailerNumber']).text(data[i]['trailerNumber']+"-----ماوە:"+data[i]['totalQuantity']));
-              document.getElementById(priceOf).value = data[i]['camePrice'];
+              //- document.getElementById(priceOf).value = data[i]['camePrice'];
+                if("#{profile[0]['clientType']}"=="مفرد"){
+                  document.getElementById(priceOf).value = data[i]['sellPriceMufrad'];
+                }else if("#{profile[0]['clientType']}"=="محل"){
+                  document.getElementById(priceOf).value = data[i]['sellPriceMahal'];
+                }else if("#{profile[0]['clientType']}"=="وەستا"){
+                  document.getElementById(priceOf).value = data[i]['sellPriceWasta'];
+                }else if("#{profile[0]['clientType']}"=="وەکیل"){
+                  document.getElementById(priceOf).value = data[i]['sellPriceWakil'];
+                }else if("#{profile[0]['clientType']}"=="شركه‌"){
+                  document.getElementById(priceOf).value = data[i]['sellPriceSharika'];
+                }
+              }
             }
             }
-
-
           }
-      })
+      });
+
+      //============================
+
+      //============================
     }
 
     // Auto Find Datas in Input Form
@@ -419,46 +435,52 @@ block content
           //-               th ژمارە
           //-               th.right کۆی گشتی
           //- console.log(table[i].childNodes[0].childNodes[0].id)
-        //- console.log("Item Model"+table[i].childNodes[1].innerHTML)
-        //- console.log("Item Name"+table[i].childNodes[2].innerHTML)
-        //- console.log("Item Type"+table[i].childNodes[3].innerHTML)
-        //- console.log("Item Color"+table[i].childNodes[4].innerHTML)
-        //- console.log("Item Unit"+table[i].childNodes[5].innerHTML)
-        //- console.log("Item Quantity"+table[i].childNodes[6].firstChild.value)
-        //- console.log("Item Price"+table[i].childNodes[7].firstChild.value)
-        //- console.log("Item Trailer"+table[i].childNodes[8].firstChild.value)
+          //- console.log("Item Model"+table[i].childNodes[1].innerHTML)
+          //- console.log("Item Name"+table[i].childNodes[2].innerHTML)
+          //- console.log("Item Type"+table[i].childNodes[3].innerHTML)
+          //- console.log("Item Color"+table[i].childNodes[4].innerHTML)
+          //- console.log("Item Unit"+table[i].childNodes[5].innerHTML)
+          //- console.log("Item Quantity"+table[i].childNodes[6].firstChild.value)
+          //- console.log("Item Price"+table[i].childNodes[7].firstChild.value)
+          //- console.log("Item Trailer"+table[i].childNodes[8].firstChild.value)
+          console.log(table[i].childNodes[7].firstChild.value+"and "+table[i].childNodes[9].innerHTML)
 
-        $("#invoiceTable").find('tbody')
-          .append($('<tr>')
-            .append($('<td>')
-              .text($('#invoiceTable>tbody>tr').length+1)
-            ).append($('<td>')
-              .text(table[i].childNodes[1].innerHTML)
-            ).append($('<td>')
-              .text(table[i].childNodes[2].innerHTML)
-            ).append($('<td>')
-              .text(table[i].childNodes[3].innerHTML)
-            ).append($('<td>')
-              .text(table[i].childNodes[4].innerHTML)
-            ).append($('<td>')
-              .text(table[i].childNodes[5].innerHTML)
-            ).append($('<td>')
-              .text(table[i].childNodes[6].firstChild.value)
-            ).append($('<td>')
-              .text(table[i].childNodes[7].firstChild.value)
-            ).append($('<td>')
-              .text(parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value))
-            ).append($('<td>')
-              .text(table[i].childNodes[8].firstChild.value).attr("style","display:none")
-            )
-          );
-          var subtotal=document.getElementById('total').innerHTML;
-          document.getElementById('total').innerHTML=parseFloat(subtotal)+parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)
-        document.getElementById('total').innerHTML=document.getElementById('subtotal').innerHTML - (document.getElementById('subtotal').innerHTML*parseFloat(document.getElementById("discount").value)/100) +parseFloat(document.getElementById("olddebut").innerHTML)
-        }
-        else{
-          continue;
-        }
+          document.getElementById("dataofIncome").innerHTML = parseFloat(document.getElementById("dataofIncome").innerHTML)+parseFloat(table[i].childNodes[7].firstChild.value)*parseFloat(table[i].childNodes[6].firstChild.value)-parseFloat(table[i].childNodes[9].innerHTML)*parseFloat(table[i].childNodes[6].firstChild.value)+"TAN"+Math.random().toString(36).substring(7);
+
+          $("#invoiceTable").find('tbody')
+            .append($('<tr>')
+              .append($('<td>')
+                .text($('#invoiceTable>tbody>tr').length+1)
+              ).append($('<td>')
+                .text(table[i].childNodes[1].innerHTML)
+              ).append($('<td>')
+                .text(table[i].childNodes[2].innerHTML)
+              ).append($('<td>')
+                .text(table[i].childNodes[3].innerHTML)
+              ).append($('<td>')
+                .text(table[i].childNodes[4].innerHTML)
+              ).append($('<td>')
+                .text(table[i].childNodes[5].innerHTML)
+              ).append($('<td>')
+                .text(table[i].childNodes[6].firstChild.value)
+              ).append($('<td>')
+                .text(table[i].childNodes[7].firstChild.value)
+              ).append($('<td>')
+                .text(parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value))
+              ).append($('<td>')
+                .text(table[i].childNodes[8].firstChild.value).attr("style","display:none")
+              ).append($('<td>')
+                .append($('<a>')).append($("<i>")
+                  .attr("title",'Delete').attr('class',"delete fas fa-trash")
+                )
+              )
+            );
+            var subtotal=document.getElementById('total').innerHTML;
+            document.getElementById('total').innerHTML=parseFloat(subtotal)+ parseFloat(document.getElementById("olddebut").innerHTML)+parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)
+          }
+          else{
+            continue;
+          }
       }
 
     }
@@ -482,12 +504,11 @@ block content
       var quantity=val.childNodes[6].firstChild.id;
       var priceOf=val.childNodes[7].firstChild.id;
       var trailerNumber=val.childNodes[8].firstChild.id;
-
       event.preventDefault();
-      var Trailer= $( "#"+trailerNumber +" option:selected" ).text().split('-')[0];
+
         var data=$.ajax({
           type: 'POST',
-          url: "/Product/Trailers/"+parseFloat(Trailer)+"/#{profile[0]['clientType']}",
+          url: "/Product/Trailers/#{profile[0]['clientType']}",
           dataType: 'JSON',
           data:{
             "itemModel":itemModel,
@@ -497,17 +518,16 @@ block content
             "itemUnit":itemUnit
           },
           success: function(data){
-            if("#{profile[0]['clientType']}"=="مفرد"){
-              document.getElementById(priceOf).value = data['sellPriceMufrad'];
-            }else if("#{profile[0]['clientType']}"=="محل"){
-              document.getElementById(priceOf).value = data['sellPriceMahal'];
-            }else if("#{profile[0]['clientType']}"=="وەستا"){
-              document.getElementById(priceOf).value = data['sellPriceWasta'];
-            }else if("#{profile[0]['clientType']}"=="وەکیل"){
-              document.getElementById(priceOf).value = data['sellPriceWakil'];
-            }else if("#{profile[0]['clientType']}"=="شركه‌"){
-              document.getElementById(priceOf).value = data['sellPriceSharika'];
-            }
+            console.log(data)
+
             }
         })
     }
+
+    $(document).ready(function(){
+      // Delete row on delete button click
+      $(document).on("click", ".delete", function(){
+        $(this).parents("tr").remove();
+        document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.parentNode.childNodes[8].innerHTML)
+        });
+    });

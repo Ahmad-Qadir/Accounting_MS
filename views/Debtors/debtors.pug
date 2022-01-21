@@ -1,0 +1,64 @@
+include ../Components/Header
+block content
+  br
+  .container-fluid
+    // Page Heading
+    .d-sm-flex.align-items-left.justify-content-between.mb-4
+      h1.h3.mb-0.text-gray-800=title
+      .span
+        //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.mr-2(id="backup" onclick="backupAll()")
+        //-   i.fas.fa-database.fa-sm.text-white-50
+        //-   |  Backup Hotspots
+        //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white(href="/Profiles/AddNew")
+        //-   i.fas.fa-plus-square.fa-sm.text-white-50
+        //-   |  زیادکردنی کڕیاری نوێ
+    .container
+      != messages('message', locals)
+      if errors
+        each error, i in errors
+          div(class="note note-danger") #{error.msg}
+    .row
+      .container-fluid.table-responsive
+        table(id="clientTable").table.table-hover.table-sm.dt-responsive.table-striped
+          thead.thead-light
+            tr(style="text-align:center; font-size:3 rem")
+              th(scope='col') #
+              th(scope='col') ناو
+              th(scope='col') ژمارەی مۆبایل
+              th(scope='col') ناوی کۆمپانیا
+              th(scope='col') جۆری کڕیار
+              th(scope='col') قەرزی گەڕاوە
+              th(scope='col') قەرزی بردراو
+              th(scope='col') قەرزی ماوە
+
+          tbody
+            each item,i in profile
+              - var j=i+1
+              tr(style="font-weight:bold; font-size:2 rem")
+                  td(style="text-align:center;")=j
+                  td=item['clientName']
+                  td(style="text-align:center;")=item['phoneNumber']
+                  td(style="text-align:center;")=item['companyName']
+                  td(style="text-align:center;")=item['clientType']
+                  td(style="text-align:center;")="$ "+item['recoveredBalance']
+                  td(style="text-align:center;")="$ "+item['borrowedBalance']
+                  td(style="text-align:center;")="$ "+item['remainedbalance']
+
+  //- include ../Components/Footer
+  script.
+    $(document).ready(function() {
+      $('#clientTable').DataTable();
+    } );
+
+    function deleteRow(r,GetArray) {
+      var row = r.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.rowIndex;
+
+        $.ajax({
+          type: 'DELETE',
+          url: "#{address}/Profiles/"+GetArray[row-1]['_id'],
+          dataType: 'JSON'
+          })
+      document.getElementById("clientTable").deleteRow(row);
+      }
+
+

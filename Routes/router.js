@@ -55,7 +55,7 @@ router.post('/Products/RemoveProduct/:id', Products.allowIfLoggedin, Products.gr
 router.get('/Products/Remove/:id', Products.allowIfLoggedin, Products.grantAccess('deleteAny', 'products'), Products.RemoveProductUI); // Add new Request per Product
 router.post('/Products/NewTrailer', Products.allowIfLoggedin, Products.grantAccess('createAny', 'products'), Products.AppendNewTrailertoProduct)
 router.get('/NewTrailer', Products.allowIfLoggedin, Products.grantAccess('createAny', 'products'), Products.AddNewTrailer); // Add new Request per Product
-router.post('/Product/Trailers/:trailerNum/:customerType', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.CheckForProductPriceInTrailer); // Add new Request per Product
+router.post('/Product/Trailers/:customerType', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.CheckForProductPriceInTrailer); // Add new Request per Product
 router.put('/Invoices/:invoiceID/:customerid/Recover', Products.allowIfLoggedin, Products.grantAccess('updateAny', 'invoice'), Products.DeleteItemInInvoice); // Add new Request
 router.get('/Invoice/:invoiceID/:productName', Records.allowIfLoggedin, Records.grantAccess('readAny', 'invoice'), Records.SearchForSpecificInvoice); // Add new Request
 router.get('/Invoices/query', Records.allowIfLoggedin, Records.grantAccess('readAny', 'invoice'), Records.ShowSelectedDateOfInvoices); // Add new Request
@@ -94,6 +94,7 @@ router.get('/Profiles/Customer/NewTypes', Profiles.allowIfLoggedin, Profiles.gra
 router.post('/Profiles/Customer/NewTypes', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.NewCustomerTypeOperation);
 router.get('/Profiles/Invoices/:id', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.PrintAllInvoiceforCustomer); // Get All invoice for specific Profile
 router.delete('/Profiles/:id', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.RemoveProfile); // Get All invoice for specific Profile
+router.get('/Profiles/Debtors', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.debtors); // Get All Debtors
 
 //Item Unit
 router.post('/Products/ItemUnit',  ItemUnit.AddNewItemUnit); // Get All Customers Profile
