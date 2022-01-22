@@ -6,7 +6,7 @@ const config = require('config');
 //Collections Section
 const ProductsCollection = require('../models/Product');
 const CustomerTypeCollection = require('../models/CustomerType');
-const HistoryClass = require('../models/records');
+const RecordsCollection = require('../models/records');
 const ProfileCollection = require('../models/Profiles');
 const TrailerCollection = require('../models/Trailers');
 const DailyCollection = require('../models/Daily_Task');
@@ -71,6 +71,16 @@ exports.AddnewTask = async (req, res, next) => {
             });
 
             await Task.save();
+
+            const newRecordtoHistory = new RecordsCollection({
+                status: req.body.task,
+                sellPrice:req.body.money,
+                totalPrice: req.body.money,
+                addedBy: req.user.username,
+                updatedBy: req.user.username,
+                note: req.body.note,
+            });
+            await newRecordtoHistory.save();
             res.redirect('/Daily')
         }
     } catch (error) {

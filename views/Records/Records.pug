@@ -72,6 +72,11 @@ block content
                     td(style="text-align:center;")
                       span.icon.text-danger
                         i.fas.fa-money-bill-alt
+                  else
+                    td(style="text-align:center;")=item['status']
+                    td(style="text-align:center;")
+                      span.icon.text-danger
+                        i.fas.fa-tasks
                 else
                   td=item['productID']['itemModel']+" "+item['productID']['itemName']+" "+item['productID']['itemType']+" "+item['productID']['weight']+" "+item['productID']['itemUnit']+" "+item['productID']['color']
                   td(style="text-align:center;")=item['totalQuantity']
@@ -114,6 +119,11 @@ block content
                     td(style="text-align:center;")
                       span.icon.text-danger
                         i.fas.fa-money-bill-alt
+                  else
+                    td(style="text-align:center;")=item['status']
+                    td(style="text-align:center;")
+                      span.icon.text-danger
+                        i.fas.fa-tasks
           //- tfoot
           //-   tr.bg-dark.text-light
           //-     td(style="text-align:center;") کۆی تێچوو
