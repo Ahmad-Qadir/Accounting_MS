@@ -1,19 +1,16 @@
 var mongoose = require('mongoose');
 
 const TrailerSchema = new mongoose.Schema({
-    itemName: {
-        type: String,
-    },
-    itemCode: {
-        type: String,
-    },
-    manufacturerCompany: String,
+    itemName: String,
+    itemCode: String,
+    itemModel:String,
     itemUnit: String,
-
+    itemType: String,
+    manufacturerCompany: String,
     companyCode: String,
     countryCompany: String,
     unit: String,
-    itemType: String,
+    usedIn: String, //shweni bakar henan
     weight: Number,
     totalWeight: Number,
     color: String,
@@ -22,6 +19,7 @@ const TrailerSchema = new mongoose.Schema({
     remainedPacket: Number, // Quantity
     remainedPerPacket: Number,
     totalQuantity: Number, // Total Number of All Products
+    totalPrice: Number,
     status: String,
     expireDate: Date,
     camePrice: Number,
@@ -30,7 +28,6 @@ const TrailerSchema = new mongoose.Schema({
     sellPriceWasta: Number,
     sellPriceWakil: Number,
     sellPriceSharika: Number,
-    totalPrice: Number,
     trailerNumber: Number,
     addedBy: {
         type: String

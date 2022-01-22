@@ -17,29 +17,40 @@ block content
                 each item,i in trailers
                     .accordion-item
                         h2(id="heading"+i).accordion-header
-                            button.accordion-button(type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)="Trailer Number"+i
-                        .accordion-collapse.collapse.show(aria-labelledby="heading"+i data-mdb-parent='#accordionExample' id="collapse"+i)
+                            .row
+                                button.accordion-button(type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
+                                    .col-md-1="بارهەڵگری ژمارە: "+i
+                                    .col-md-2="کۆی بەرهەم: "+item['count']
+                                    .col-md-3="تێچووی بارهەڵگر: "+item['amount']
+                                    .col-md-4="بەروار: "+item['items'][0]['createdAt'].toLocaleString()
+                        .accordion-collapse.collapse.hide(aria-labelledby="heading"+i data-mdb-parent='#accordionExample' id="collapse"+i)
                             .accordion-body
                                 .container-fluid.table-responsive
                                     table.table.table-hover.table-sm.dt-responsive.table-striped
                                         thead.thead-light
                                             tr(style="text-align:center; font-size:3 rem")
-                                                th(scope='col') ناو
-                                                th(scope='col') ژمارەی مۆبایل
-                                                th(scope='col') ناوی کۆمپانیا
-                                                th(scope='col') جۆری کڕیار
-                                                th(scope='col') ئیمیڵ
-                                                th(scope='col') ناونیشان
-                                                th(scope='col') باڵانسی ماوە
-                                                th(scope='col') ژمارەی فاتورە
+                                                th(scope='col') جۆری بەرهەم
+                                                th(scope='col') ناوی بەرهەم
+                                                th(scope='col') کۆمپانیای وەبەرهێن
+                                                th(scope='col') پێوانەی تاک
+                                                th(scope='col') شێوازی بەرهەم
+                                                th(scope='col') شوێنی بەکارهێنان
+                                                th(scope='col') کێش
+                                                th(scope='col') نرخی هاتوو
+                                                th(scope='col') بڕی هاتوو
+                                                th(scope='col') ڕەنگ
+                                                th(scope='col') کۆی گشتی
                                         tbody
-                                            tr(style="font-weight:bold; font-size:2 rem")
-                                                form(method='POST')
-                                                    td=item['clientName']
-                                                    td(style="text-align:center;")=item['phoneNumber']
-                                                    td(style="text-align:center;")=item['companyName']
-                                                    td(style="text-align:center;")=item['clientType']
-                                                    td(style="text-align:center;") "نیە"
-                                                    td(style="text-align:center;") "نیە"
-                                                    td(style="text-align:center;")=item['remainedbalance']
-                                                    td(style="text-align:center;")=Object.keys(item['invoiceID']).length
+                                            each data,j in item['items']
+                                                tr(style="font-weight:bold; font-size:2 rem")
+                                                    td(style="text-align:center;")=data['itemModel']
+                                                    td(style="text-align:center;")=data['itemName']
+                                                    td(style="text-align:center;")=data['manufacturerCompany']
+                                                    td(style="text-align:center;")=data['itemUnit']
+                                                    td(style="text-align:center;")=data['itemType']
+                                                    td(style="text-align:center;")=data['usedIn']
+                                                    td(style="text-align:center;")=data['weight']
+                                                    td(style="text-align:center;")=data['camePrice']
+                                                    td(style="text-align:center;")=data['totalQuantity']
+                                                    td(style="text-align:center;")=data['color']
+                                                    td(style="text-align:center;")=parseFloat(data['totalQuantity'])*parseFloat(data['camePrice'])

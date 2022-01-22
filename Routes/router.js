@@ -101,7 +101,8 @@ router.post('/Products/ItemUnit',  ItemUnit.AddNewItemUnit); // Get All Customer
 
 
 //Trailers
-router.get('/Trailers', Trailers.allowIfLoggedin, Trailers.grantAccess('readAny', 'profile'), Trailers.Trailers); // Get All invoice for specific Profile
+router.get('/Trailers', Trailers.Trailers); // Get All Trailers
+
 
 
 

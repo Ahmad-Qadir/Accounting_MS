@@ -12,13 +12,13 @@ const ItemsSchema = new mongoose.Schema({
     unit: String,
     usedIn: String, //shweni bakar henan
     weight: Number,
+    totalWeight: Number,
     color: String,
     packet: Number, //pakat
     perPacket: Number, // Quantity
     remainedPacket: Number, // Quantity
     remainedPerPacket: Number,
     totalQuantity: Number, // Total Number of All Products
-    totalWeight: Number,
     totalPrice: Number,
     status: String,
     expireDate: Date,

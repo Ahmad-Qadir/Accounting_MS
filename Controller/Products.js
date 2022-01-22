@@ -706,11 +706,13 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
             });
             const newTrailer = new TrailerCollection({
                 itemName: Product[0]['itemName'],
+                itemModel: Product[0]['itemModel'],
+                itemType: Product[0]['itemType'], //[boyax-adawat]
+                itemUnit: Product[0]['itemUnit'],
                 manufacturerCompany: Product[0]['manufacturerCompany'],
                 companyCode: Product[0]['companyCode'],
                 countryCompany: Product[0]['countryCompany'],
                 unit: Product[0]['unit'],
-                itemType: Product[0]['itemType'], //[boyax-adawat]
                 usedIn: Product[0]['usedIn'],
                 color: Product[0]['color'],
                 weight: Product[0]['weight'],

@@ -44,13 +44,14 @@ exports.allowIfLoggedin = async (req, res, next) => {
 exports.Trailers = async (req, res, next) => {
     try {
         const Trailers = await TrailersCollection
-            .aggregate([{
-                $sort: { "createdAt": -1 },
-                $group: { "_id": { trailerNumber: "$trailerNumber" }, Files: { $push: "$$ROOT" } }
-            }])
+            .aggregate([
+                { $group: { _id: { trailerNumber: "$trailerNumber" }, count: { $sum: 1 }, amount: { $sum: "$totalPrice" }, items: { $push: { weight: "$weight", itemName: "$itemName", itemModel: "$itemModel", totalQuantity: "$totalQuantity", camePrice: "$camePrice", itemUnit: "$itemUnit", itemType: "$itemType", manufacturerCompany: "$manufacturerCompany", color: "$color", remainedPacket: "$remainedPacket", remainedPerPacket: "$remainedPerPacket", usedIn: "$usedIn", totalQuantity: "$totalQuantity", createdAt: "$createdAt" } } } },
+            ])
 
-        res.json(Trailers)
-        // res.render('Trailers/Trailers', {trailers: Trailers,title:"بارهەڵگرەکان"})
+        // res.json(Trailers)
+        // setTimeout(() => {
+        res.render('Trailers/Trailers', { trailers: Trailers, title: "بارهەڵگرەکان" })
+        // }, 1000);
     } catch (error) {
         next(error)
     }
