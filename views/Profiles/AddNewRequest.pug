@@ -104,31 +104,34 @@ block content
             .card.border.border-dark
               .card-header.justify-content-between
                 .row
-                  strong.col-sm-10="ژمارەی تۆمار: "+invoiceID
-                  span.col-sm-2
-                    strong فرۆشتن
-              .card-body.col-lg-12
-                .row.mb-4
-                  //- .col-lg-6
-                  //-   h6.mb-3 لەلایان:
-                  //-   div
-                  //-     strong="Titan Service - " + user.username
-                  //-   //- div Madalinskiego 8
-                  //-   div Iraq - Erbil
-                  //-   //- div Email: info@dotnettec.com
-                  //-   //- div ژمارەی مۆبایل:07504444444 
-                  .col-lg-12
-                    -var today = new Date();
-                    -var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-                    -var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                    -var dateTime = date+' '+time;
-                    div
-                      strong="ناو:"+profile[0]['clientName']+"__________شوێن:"+profile[0]['companyName']+"__________بەروار:"+dateTime
-                    //- div Attn: Daniel Marek
-
-                    //- div Email: robert@daniel.com
-                    //- div=
-                hr
+                  //- strong.col-sm-10="ژمارەی تۆمار: "+invoiceID
+                  //- span.col-sm-2
+                  //-   strong فرۆشتن
+              .card-body
+                .p-4.shadow-4.rounded-3(style='background-color: hsl(0, 0%, 94%);')
+                  .row 
+                    .col-sm-4
+                      h2 تیتان سێرڤس
+                      br
+                      h6 لەلایان:
+                      div
+                        strong="Titan Service - "+user.username
+                      //- div Madalinskiego 8
+                      strong="بار: "+"فرۆشتن"
+                      //- div Email: info@dotnettec.com
+                      //- div Phone: +964 750 000 00 00
+                    .col-sm-4
+                      img#icon(src='https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png' width=150)
+                    .col-sm-4
+                      h2 Titan Service
+                      br
+                      h6 بۆ:
+                      div
+                        strong=profile[0]['companyName']+" / "+profile[0]['clientName']
+                      //- div Attn: Daniel Marek
+                      //- div Email: robert@daniel.com
+                      div="Phone: "+profile[0]['phoneNumber'] +" / "+ profile[0]['secondPhoneNumber']
+                  
                 .table-responsive-sm
                   table.table.table-striped(id="invoiceTable")
                     thead
@@ -172,6 +175,19 @@ block content
                             strong کۆی گشتی
                           td.right
                             strong(id="total") 0
+                tfooter.shadow-4.rounded-3(style='background-color: hsl(0, 0%, 94%);')
+                  hr
+                  .row 
+                    .col-md-3 
+                      span="ژمارەی تۆمار: "+invoiceID
+                    .col-md-4
+                      -var today = new Date();
+                      -var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                      -var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                      -var dateTime = date+' '+time;
+                      span="بەروار: "+dateTime.toLocaleString()
+                    .col-md-5
+                      span="ناونیشان: "+"هەولێر - گەڕەکی ڕاستی - کۆڵانی بەرامبەر کۆڵێژی ئەندازیاری"
                 // Modal
                 .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-payment')
                   .modal-dialog.modal-dialog-centered.modal-s(role='document')

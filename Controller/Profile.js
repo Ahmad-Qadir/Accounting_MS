@@ -385,7 +385,7 @@ exports.PrintSelectedInvoice = async (req, res, next) => {
 
         // res.json(Records)
         res.render('Components/PrintInvoice', {
-            title: "Invoice of " + req.params.invoiceID,
+            title: "تۆماری ژمارە " + req.params.invoiceID,
             records: Records,
             profile: ProfileInformation[0]
         })

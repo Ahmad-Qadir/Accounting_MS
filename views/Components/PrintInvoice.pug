@@ -8,69 +8,139 @@ block content
       .span
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.mr-2(type='button' data-toggle='modal' onclick="printDiv('printableArea')")
           i.fas.fa-print.fa-sm.text-white-50
-          |  Print
+          |  چاپکردن
     .jumbotron
       .row
         .container-fluid.table-responsive
           .container(id="printableArea")
             .card
-              .card-header
-                | Invoice
-                strong=" #2021/"+records[0]['recordCode']
-                span.float-right
-                  strong=records[0]['status']
+              .card-header.justify-content-between
+                //- strong.col-sm-10=
+                //- span.col-sm-2
+                //-   strong فرۆشتن
               .card-body
-                .row.mb-4
-                  .col-sm-6
-                    h6.mb-3 From:
-                    div
-                      strong="Titan Service - "+records[0]['addedBy']
-                    //- div Madalinskiego 8
-                    div Iraq - Erbil
-                    //- div Email: info@dotnettec.com
-                    div Phone: +964 750 000 00 00
-                  .col-sm-6
-                    h6.mb-3 To:
-                    div
-                      strong=profile["cutomerID"]['companyName']+" / "+profile["cutomerID"]['clientName']
-                    //- div Attn: Daniel Marek
-                    div=records[0]['createdAt'].toLocaleString()
-                    //- div Email: robert@daniel.com
-                    div="Phone: "+profile["cutomerID"]['phoneNumber'] +" / "+ profile["cutomerID"]['secondPhoneNumber']
+                .p-4.shadow-4.rounded-3(style='background-color: hsl(0, 0%, 94%);')
+                  .row 
+                    .col-sm-4
+                      h2 تیتان سێرڤس
+                      br
+                      h6 لەلایان:
+                      div
+                        strong="Titan Service - "+records[0]['addedBy']
+                      //- div Madalinskiego 8
+                      strong="بار: "+"فرۆشتن"
+                      //- div Email: info@dotnettec.com
+                      //- div Phone: +964 750 000 00 00
+                    .col-sm-4
+                      img#icon(src='https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png' width=150)
+                    .col-sm-4
+                      h2 Titan Service
+                      br
+                      h6 بۆ:
+                      div
+                        strong=profile["cutomerID"]['companyName']+" / "+profile["cutomerID"]['clientName']
+                      //- div Attn: Daniel Marek
+                      //- div Email: robert@daniel.com
+                      div="Phone: "+profile["cutomerID"]['phoneNumber'] +" / "+ profile["cutomerID"]['secondPhoneNumber']
+                  hr
+                  .row 
+                    .col-md-3 
+                      span="ژمارەی تۆمار: "+records[0]['recordCode']
+                    .col-md-4
+                      span="بەروار: "+records[0]['createdAt'].toLocaleString()
+                    .col-md-5
+                      span="ناونیشان: "+"هەولێر - گەڕەکی ڕاستی - کۆڵانی بەرامبەر کۆڵێژی ئەندازیاری"
+                  hr
+                //-  p
+                //-    | This is a simple hero unit, a simple jumbotron-style component for calling extra
+                //-    | attention to featured content or information.
+                //-  hr.my-4
+                //-  p
+                //-    | It uses utility classes for typography and spacing to space content out within the
+                //-    | larger container.
+                //-  button.btn.btn-primary(type='button')
+                //-    | Learn more
+                //- .row.mb-4
+                //-   .col-sm-6
+
+                //-   .col-sm-6
+
                 .table-responsive-sm
                   table.table.table-striped(id="invoiceTable")
                     thead
                       tr
                         //- th.center #
-                        th بەرهەم
-                        th وردەکاریەکان
-                        th.right نرخی بەرهەم
-                        th.center بڕ
+                        th.center #
+                        th جۆری بەرهەم
+                        th ناوی بەرهەم
+                        th شێوازی بەرهەم
+                        th ڕەنگ
+                        th پێوانە
+                        th ژمارە
+                        th.right نرخی تاک
                         th.right کۆی گشتی
                     tbody
-                        each item,i in records
-                            tr  
-                                //- td=i+1
-                                if records[i]['productID']==undefined
-                                  td پارەدان
-                                  td 
-                                  td 
-                                  td 
-                                  td="$ "+records[i]['totalPrice']
-                                else 
-                                  td=records[i]['productID']['itemName']
-                                  td=records[i]['productID']['itemName']+"  "+records[i]['productID']['color']
-                                  td="$ "+records[i]['sellPrice']
-                                  td=records[i]['totalQuantity']
-                                  td="$ "+records[i]['sellPrice']*records[i]['totalQuantity']
+                      each item,i in records
+                        - var j=i+1
+                          tr  
+                            if records[i]['productID']==undefined
+                              td=j
+                              td پارەدان
+                              td 
+                              td 
+                              td 
+                              td 
+                              td 
+                              td 
+                              td="$ "+records[i]['totalPrice']
+                            else 
+                              td=j
+                              td=records[i]['productID']['itemModel']
+                              td=records[i]['productID']['itemName']
+                              td=records[i]['productID']['itemType']
+                              td=records[i]['productID']['color']
+                              td=records[i]['productID']['itemUnit']
+                              td=records[i]['totalQuantity']
+                              td="$ "+records[i]['sellPrice']
+                              td="$ "+records[i]['sellPrice']*records[i]['totalQuantity']
+                .row
+                  .col-md-8
+                    b تێبینی
+                    textarea.form-control.rounded-0(rows='5' cols='80' id='note')
+                  .col-md-4.ml-auto
+                    table.table.table-clear(id="totalPayment")
+                      tbody
+                        //- tr
+                        //-   td.left
+                        //-     strong کۆی گشتی تۆمار
+                        //-   td(id="subtotal").right 0
+                        tr
+                          td.left
+                            strong قەرزی پێشوو
+                          //- td(id="olddebut").right=profile[0]['remainedbalance']
+                        //- tr
+                        //-   td.left
+                        //-     strong داشکان
+                        //-   td.right
+                        //-     input(type="number" id="discount" value="0")
+                        //- tr
+                        //-   td.left
+                        //-     strong VAT (10%)
+                        //-   td.right $679,76
+                        tr
+                          td.left
+                            strong کۆی گشتی
+                          td.right
+                            strong(id="total") 0
+
         script.
-            function printDiv(divName) {
-            var printContents = document.getElementById(divName).innerHTML;
-            var originalContents = document.body.innerHTML;
+          function printDiv(divName) {
+          var printContents = document.getElementById(divName).innerHTML;
+          var originalContents = document.body.innerHTML;
 
-            document.body.innerHTML = printContents;
+          document.body.innerHTML = printContents;
 
-            window.print();
+          window.print();
 
-            document.body.innerHTML = originalContents;
-            }
+          document.body.innerHTML = originalContents;
+          }
