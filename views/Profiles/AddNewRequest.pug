@@ -57,6 +57,9 @@ block content
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm.text-white.m-1(type='button' onclick="payNow()")
           i.fas.fa-money-bill-alt.fa-sm.text-white-50
           |  پارەدانی گشتی
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white.m-1.disabled(type='button' onclick="payNow()")
+          i.fas.fa-money-bill-alt.fa-sm.text-white-50
+          |  قەرزکردن
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-warning.shadow-sm.text-white.m-1(type='button' data-toggle="modal" data-target="#confirm-payment")
           i.fas.fa-wallet.fa-sm.text-white-50
           |  دانەوەی پارە
@@ -147,9 +150,9 @@ block content
                         th.right کۆی گشتی
                     tbody(id="dataOfInvoiceTable")
                 .row
-                  //- .col-md-8
-                  //-   b تێبینی
-                  //-   textarea.form-control.rounded-0(rows='5' cols='80' id='note')
+                  .col-md-8
+                    b تێبینی
+                    textarea.form-control.rounded-0(rows='5' cols='80' id='note')
                   .col-md-4.ml-auto
                     table.table.table-clear(id="totalPayment")
                       tbody
@@ -166,15 +169,15 @@ block content
                         //-     strong داشکان
                         //-   td.right
                         //-     input(type="number" id="discount" value="0")
-                        //- tr
-                        //-   td.left
-                        //-     strong VAT (10%)
-                        //-   td.right $679,76
                         tr
                           td.left
-                            strong کۆی گشتی
+                            strong قەرزی ئێستا
+                          td.right(id="total") 0
+                        tr
+                          td.left
+                            strong کۆی گشتی (دۆلار)
                           td.right
-                            strong(id="total") 0
+                            strong(id="finalPrice") 0
                 tfooter.shadow-4.rounded-3(style='background-color: hsl(0, 0%, 94%);')
                   hr
                   .row 
@@ -493,6 +496,7 @@ block content
             );
             var subtotal=document.getElementById('total').innerHTML;
             document.getElementById('total').innerHTML=parseFloat(subtotal)+ parseFloat(document.getElementById("olddebut").innerHTML)+parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)
+            document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML)+parseFloat(parseFloat(document.getElementById("olddebut").innerHTML))
           }
           else{
             continue;
