@@ -81,79 +81,59 @@ block content
                     #myDropdown.dropdown-content
                       each item,i in productNames
                         a(href="#" onclick="getModel(this,event);" title=item type='button' data-toggle="modal" data-target="#confirm-product"+i)=item
-
                 .form-group.col-md-2
                   p(id="dataofIncome") 0
-                    //- a(href="#" onclick="updateValue(this.title, event);" title=item['itemName'] type='button' data-toggle="modal" data-target="#confirm-product")=item['itemName']  
-                    //- .form-group.col-md-2
-                    //-   label ژمارەی داواکراو
-                    //-   input.form-control(name="perPacket" type='number' placeholder='0' id="perPacket")
-                    //- .form-group.col-md-2
-                    //-   label فرۆشتن
-                    //-   input.form-control(name="sellPrice" type='number' placeholder='0' id="sellPrice")
-                    //- .form-group.col-md-2
-                    //-   label ژمارەی بارهەڵگر
-                    //-   select(name="trailerNumber" class="form-control" id="trailerNumbers")
-                    //-     option(value="") بارێک دیاری بکە...
-                    //-     option(value="s")=item
-                    //- .form-group.col-md-2
-                    //-   label بەرهەمی بەردەست
-                    //-   input.form-control(name="Remained" type='number' value='0' disabled id="remained")
-                    //- .form-group.col-md-2
-                    //-   a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.mt-4(type='button' onclick="resultOfValidation()" id="clickButton")
-                    //-     i.fas.fa-plus-square.fa-sm.text-white-50
-                    //-     |  زیادکردنی بەرهەم
-          .container(id="printableArea")
+          .container(id="printableArea").d-block.d-print-none
             .card.border.border-dark
               .card-header.justify-content-between
-                .row
-                  //- strong.col-sm-10="ژمارەی تۆمار: "+invoiceID
-                  //- span.col-sm-2
-                  //-   strong فرۆشتن
-              .card-body
+                //- strong.col-sm-10="ژمارەی تۆمار: "+invoiceID
+                //- span.col-sm-2
+                //-   strong فرۆشتن
                 .p-4.shadow-4.rounded-3(style='background-color: hsl(0, 0%, 94%);')
-                  .row 
-                    .col-sm-4
-                      h2 تیتان سێرڤس
-                      br
-                      h6 لەلایان:
-                      div
-                        strong="Titan Service - "+user.username
-                      //- div Madalinskiego 8
-                      strong="بار: "+"فرۆشتن"
-                      //- div Email: info@dotnettec.com
-                      //- div Phone: +964 750 000 00 00
-                    .col-sm-4
-                      img#icon(src='https://i.ibb.co/T1wGH2C/titan.jpg' width=350)
-                    .col-sm-4
-                      h2 Titan Service
-                      br
-                      h6 بۆ:
-                      div
-                        strong=profile[0]['companyName']+" / "+profile[0]['clientName']
-                      //- div Attn: Daniel Marek
-                      //- div Email: robert@daniel.com
-                      div="Phone: "+profile[0]['phoneNumber'] +" / "+ profile[0]['secondPhoneNumber']
-                  
-                .table-responsive-sm
+                  .container
+                    .row.col-12
+                      .col-3
+                        h2 تیتان سێرڤس
+                        br
+                        h6 لەلایان:
+                        div
+                          strong=user.username
+                        //- div Madalinskiego 8
+                        strong="بار: "+"فرۆشتن"
+                        //- div Email: info@dotnettec.com
+                        //- div Phone: +964 750 000 00 00
+                      .col-5
+                        img#icon(src='https://i.ibb.co/T1wGH2C/titan.jpg' width=200)
+                      .col-4
+                        h2 Titan Service
+                        br
+                        h6 بۆ:
+                        div
+                          strong=profile[0]['companyName']+" / "+profile[0]['clientName']
+                        //- div Attn: Daniel Marek
+                        //- div Email: robert@daniel.com
+                        div="ژمارەی مۆبایل: "+profile[0]['phoneNumber']
+
+              .card-body
+                .table-responsive-sm.col-12
                   table.table.table-striped(id="invoiceTable").table-bordered
                     thead
                       tr
                         th.center #
-                        th بڕاندی بەرهەم
-                        th ناوی بەرهەم
-                        th جۆری بەرهەم
-                        th ڕەنگ
-                        th پێوانە
-                        th ژمارە
-                        th.right نرخی تاک
-                        th.right کۆی گشتی
+                        th(style="text-align:center; font-size:100%;font-weight:bold") بڕاندی بەرهەم
+                        th(style="text-align:center; font-size:100%;font-weight:bold") ناوی بەرهەم
+                        th(style="text-align:center; font-size:100%;font-weight:bold") جۆری بەرهەم
+                        th(style="text-align:center; font-size:100%;font-weight:bold") ڕەنگ
+                        th(style="text-align:center; font-size:100%;font-weight:bold") پێوانە
+                        th(style="text-align:center; font-size:100%;font-weight:bold") ژمارە
+                        th(style="text-align:center; font-size:100%;font-weight:bold").right نرخی تاک
+                        th(style="text-align:center; font-size:100%;font-weight:bold").right کۆی گشتی
                     tbody(id="dataOfInvoiceTable")
                 .row
-                  .col-md-8
+                  .col-8
                     b تێبینی
                     textarea.form-control.rounded-0(rows='5' cols='80' id='note')
-                  .col-md-4.ml-auto
+                  .col-4.ml-auto
                     table.table.table-clear(id="totalPayment")
                       tbody
                         //- tr
@@ -178,42 +158,43 @@ block content
                             strong کۆی گشتی (دۆلار)
                           td.right
                             strong(id="finalPrice") 0
-                tfooter.shadow-4.rounded-3(style='background-color: hsl(0, 0%, 94%);')
-                  hr
-                  .row 
-                    .col-md-3 
-                      span="ژمارەی تۆمار: "+invoiceID
-                    .col-md-4
-                      -var today = new Date();
-                      -var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-                      -var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                      -var dateTime = date+' '+time;
-                      span="بەروار: "+dateTime.toLocaleString()
-                    .col-md-5
-                      span="ناونیشان: "+"هەولێر - گەڕەکی ڕاستی - کۆڵانی بەرامبەر کۆڵێژی ئەندازیاری"
-                // Modal
-                .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-payment')
-                  .modal-dialog.modal-dialog-centered.modal-s(role='document')
-                    .modal-content
-                      .modal-header دواخستنی پارەدان
-
-                      .modal-body 
-                        p بڕی پارەی دراو
-                          input.form-control(name="debut" type='number' value='0' id="paidmoney")
-                      .modal-footer
-                        button.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
-                        a.btn.btn-success.btn-ok(onclick="payNowDebut()" data-dismiss='modal') رازیبوون
-                each item,i in productNames
-                  .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-product'+i)
-                    .modal-dialog.modal-dialog-centered.modal-fullscreen(role='document')
+              .card-footer.shadow-4.rounded-3(style='background-color: hsl(0, 0%, 94%);')
+                .row 
+                  .col-3 
+                    span="ژمارەی تۆمار: "+invoiceID
+                  .col-4
+                    -var today = new Date();
+                    -var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                    -var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                    -var dateTime = date+' '+time;
+                    span="بەروار: "+dateTime.toLocaleString()
+                  .col-5
+                    span="ناونیشان: "+"هەولێر - گەڕەکی ڕاستی - کۆڵانی بەرامبەر کۆڵێژی ئەندازیاری"
+                  // Modal
+                  .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-payment')
+                    .modal-dialog.modal-dialog-centered.modal-s(role='document')
                       .modal-content
-                        .modal-header=item
-                        thead.thead-dark
-                          .container(id="result")
-                        .modal-body(id='body-product'+i)
+                        .modal-header دواخستنی پارەدان
+
+                        .modal-body 
+                          p بڕی پارەی دراو
+                            input.form-control(name="debut" type='number' value='0' id="paidmoney")
                         .modal-footer
                           button.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
-                          a.btn.btn-success.btn-ok(onclick="resultOfValidation(this)" data-dismiss='modal') زیادکردنی بەرهەم
+                          a.btn.btn-success.btn-ok(onclick="payNowDebut()" data-dismiss='modal') رازیبوون
+                  each item,i in productNames
+                    .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-product'+i)
+                      .modal-dialog.modal-dialog-centered.modal-fullscreen(role='document')
+                        .modal-content
+                          .modal-header=item
+                          thead.thead-dark
+                            .container(id="result")
+                          .modal-body(id='body-product'+i)
+                          .modal-footer
+                            button.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
+                            a.btn.btn-success.btn-ok(onclick="resultOfValidation(this)" data-dismiss='modal') زیادکردنی بەرهەم
+
+
   script.
     // The code to open the dropdown 
     function myFunction() {
