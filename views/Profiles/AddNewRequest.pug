@@ -124,7 +124,7 @@ block content
                       //- div Email: info@dotnettec.com
                       //- div Phone: +964 750 000 00 00
                     .col-sm-4
-                      img#icon(src='https://www.freepnglogos.com/uploads/google-logo-png/google-logo-png-suite-everything-you-need-know-about-google-newest-0.png' width=150)
+                      img#icon(src='https://i.ibb.co/T1wGH2C/titan.jpg' width=350)
                     .col-sm-4
                       h2 Titan Service
                       br
@@ -136,13 +136,13 @@ block content
                       div="Phone: "+profile[0]['phoneNumber'] +" / "+ profile[0]['secondPhoneNumber']
                   
                 .table-responsive-sm
-                  table.table.table-striped(id="invoiceTable")
+                  table.table.table-striped(id="invoiceTable").table-bordered
                     thead
                       tr
                         th.center #
-                        th جۆری بەرهەم
+                        th بڕاندی بەرهەم
                         th ناوی بەرهەم
-                        th شێوازی بەرهەم
+                        th جۆری بەرهەم
                         th ڕەنگ
                         th پێوانە
                         th ژمارە
@@ -252,13 +252,13 @@ block content
         },
         success: function(data){
           $('#body-product'+idOfModel).empty()
-          $('#body-product'+idOfModel).append($("<table></table>").attr("id","datas"+idOfModel).attr('class',"table table-hover table-lg table-striped container-fluid table-responsive"));
+          $('#body-product'+idOfModel).append($("<table></table>").attr("id","datas"+idOfModel).attr('class',"table table-hover table-lg table-striped container-fluid table-responsive table-bordered"));
           $('#datas'+idOfModel).append($("<thead></thead>").attr('id','MainHeader'+idOfModel));
           $('#MainHeader'+idOfModel).append($("<tr></tr>").attr('style',"text-align:center").attr('id','header'+idOfModel));
           $('#header'+idOfModel).append($("<th></th>").text('#'));
-          $('#header'+idOfModel).append($("<th></th>").text('جۆری بەرهەم'));
+          $('#header'+idOfModel).append($("<th></th>").text('بڕاندی بەرهەم'));
           $('#header'+idOfModel).append($("<th></th>").text('ناوی بەرهەم'));
-          $('#header'+idOfModel).append($("<th></th>").text('شێوازی بەرهەم'));
+          $('#header'+idOfModel).append($("<th></th>").text('جۆری بەرهەم'));
           $('#header'+idOfModel).append($("<th></th>").text('ڕەنگ'));
           $('#header'+idOfModel).append($("<th></th>").text('پێوانە'));
           $('#header'+idOfModel).append($("<th></th>").text('ژمارە'));
@@ -446,10 +446,10 @@ block content
       for (let i = 0; i < table.length; i++) {
       //- console.log(table[i].childNodes[0].firstChild.id)
         if(document.getElementById(table[i].childNodes[0].childNodes[0].id).checked==true){
-          //- th جۆری بەرهەم
+          //- th بڕاندی بەرهەم
           //-               th ناوی بەرهەم
           //-               th ڕەنگ
-          //-               th شێوازی بەرهەم
+          //-               th جۆری بەرهەم
           //-               th پێوانە
           //-               th ژمارە
           //-               th.right کۆی گشتی

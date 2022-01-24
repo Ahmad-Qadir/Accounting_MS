@@ -27,9 +27,7 @@ block content
               th(scope='col') ژمارەی مۆبایل
               th(scope='col') ناوی کۆمپانیا
               th(scope='col') جۆری کڕیار
-              th(scope='col') قەرزی گەڕاوە
-              th(scope='col') قەرزی بردراو
-              th(scope='col') قەرزی ماوە
+              th(scope='col') بڕی قەرز
 
           tbody
             each item,i in profile
@@ -40,8 +38,6 @@ block content
                   td(style="text-align:center;")=item['phoneNumber']
                   td(style="text-align:center;")=item['companyName']
                   td(style="text-align:center;")=item['clientType']
-                  td(style="text-align:center;")="$ "+item['recoveredBalance']
-                  td(style="text-align:center;")="$ "+item['borrowedBalance']
                   td(style="text-align:center;")="$ "+item['remainedbalance']
 
   //- include ../Components/Footer

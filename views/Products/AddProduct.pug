@@ -19,7 +19,7 @@ block content
                 label ناوی بەرهەم
                 input.form-control(name="itemName" type='text' placeholder='' required)
               .form-group.col-md-2
-                label جۆری بەرهەم
+                label بڕاندی بەرهەم
                 input.form-control(name="itemModel" type='text' placeholder='' required)
               .form-group.col-md-2
                 label کۆمپانیای وەبەرهێن
@@ -37,7 +37,7 @@ block content
                   option(value="ئیران") ئیران
                   option(value="بریتانیا") بریتانیا
               .form-group.col-md-2
-                label یەکەی پێوانە
+                label پەکێج
                 select(name="unit" class="form-control")
                   option(value="کارتۆن") کارتۆن
                   option(value="دەرزەن") دەرزەن
@@ -46,7 +46,7 @@ block content
                   option(value="دانە") دانە
                   option(value="لیتر") لیتر
               .form-group.col-md-2
-                label یەکەی پێوانەی تاک
+                label یەکەی پێوانە
                 select(name="itemUnit" class="form-control")
                   each item,i in itemUnit
                       option(value=item['unitName'])=item['unitName']
@@ -59,7 +59,7 @@ block content
                   option(value="مائی و دهنی") مائی و دهنی
                   option(value="نایترۆ سلیلۆز") نایترۆ سلیلۆز
               .form-group.col-md-2
-                label کێش
+                label بڕی پێوانە
                 input.form-control(name="weight" type='Number' required)
               .form-group.col-md-2
                 label ڕەنگ
@@ -70,10 +70,7 @@ block content
                 label بەرواری بەسەرچوون
                 input.form-control(name="expireDate" type='date')
               .form-group.col-md-1
-                label بڕ
-                input.form-control(name="perPacket" type='number' placeholder='0' required)
-              .form-group.col-md-1
-                label کۆمەڵ
+                label بڕی پاکێج
                 input.form-control(name="packet" type='number' placeholder='0' required)
               .form-group.col-md-2
                 label شوێنی بەکارهێنان
@@ -84,7 +81,7 @@ block content
                   option(value="فلینكۆت") فلینكۆت
             .row
               .form-group.col-md-2
-                label تێجووی سەرەتایی
+                label نرخی هاتوو
                 input.form-control(name="camePrice" type='number' placeholder='0' required)
               .form-group.col-md-2
                 label مفرد

@@ -37,18 +37,18 @@ block content
         table(id="productTable").table.table-hover.table-lg.table-striped
           thead.thead-light
             tr(style="text-align:center; font-size:90%")
-              th(scope='col') جۆری بەرهەم
+              th(scope='col') بڕاندی بەرهەم
               th(scope='col') ناوی بەرهەم
               th(scope='col') وڵات
               th(scope='col') کۆمپانیای وەبەرهێن
               th(scope='col') پێوانەی گشتی
               th(scope='col') پێوانەی تاک
-              th(scope='col') شێوازی بەرهەم
+              th(scope='col') جۆری بەرهەم
               th(scope='col') شوێنی بەکارهێنان
-              th(scope='col') کێش
+              th(scope='col') بڕی پێوانە
               th(scope='col') ڕەنگ
               //- th(scope='col') فرۆشتن (تاک)
-              th(scope='col') کۆی گشتی
+              th(scope='col') بڕی بەردەست
               th(scope='col') کردارەکان 
           tbody
           //- tbody
@@ -131,10 +131,10 @@ block content
                                 tr
                                   th(scope='row' style="text-align:left;" width="25%") یەکە
                                   td=item['unit']
-                                  th(scope='row' style="text-align:left;" width="25%") جۆری بەرهەم
+                                  th(scope='row' style="text-align:left;" width="25%") بڕاندی بەرهەم
                                   td=item['itemType']
                                 tr
-                                  th(scope='row' style="text-align:left;" width="25%") کێش
+                                  th(scope='row' style="text-align:left;" width="25%") بڕی پێوانە
                                   td=item['weight']+" "+item['unit']
                                   th(scope='row' style="text-align:left;" width="25%") کێشی گشتی
                                   td=item['totalWeight']+" "+item['unit']
@@ -227,7 +227,6 @@ block content
                 object[0]= "<a class='btn btn-sm btn-info m-1' title='تۆماری بەرهەم' href='/Products/"+data+"/invoices' style='padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;'><span class='icon text-white-50'><i class='fas fa-file-invoice'></i></span></a>";
                 object[1]="<a class='btn btn-sm btn-warning m-1' href='/Products/"+data+"/Modification' title='نوێکردنەوەی بەرهەم' style='padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;'><span class='icon text-white-50'><i class='fas fa-pencil-alt'></i></span></a>";
                 object[2]="<a class='btn btn-sm btn-danger m-1' href='/Products/Remove/"+data+"'title='ڕەشکردنەوەی بەرهەم' style='padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;><span class='icon text-white-50'><i class='fas fa-trash-alt'></i></span></a>";
-                object[3]="<a class='btn btn-sm btn-primary m-1' href='/Products/"+data+"/NewRecover' title='گەڕانەوەی بەرهەم' style='padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;'><span class='icon text-white-50'><i class='fas fa-recycle'></i></span></a>";
                 return object;
               } 
             },

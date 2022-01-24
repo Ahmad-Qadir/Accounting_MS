@@ -55,9 +55,9 @@ block content
                     a.btn.btn-sm.btn-success.m-1(href="Profile/"+item['_id']+"/NewRequest" title="Add Invoice for "+item['clientName'])
                       span.icon.text-white-50
                         i.fas.fa-plus-square
-                    //- a(href=item['_id']+"/NewRecover" title="Recover profiles" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;").btn.btn-sm.btn-primary.mr-2
-                    //-     span.icon.text-white-50
-                    //-         i.fas.fa-recycle
+                    a.btn.btn-sm.btn-primary.m-1.disabled(href="/Products/"+item['_id']+"/NewRecover" title="گەڕانەوەی بەرهەم" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;")
+                      span.icon.text-white-50
+                        i.fas.fa-recycle
                     // Modal
                     .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id=`confirm-delete${i}`)
                       .modal-dialog.modal-dialog-centered.modal-s(role='document')

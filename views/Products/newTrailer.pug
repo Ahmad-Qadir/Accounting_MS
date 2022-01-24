@@ -101,10 +101,10 @@ block content
                     thead
                       tr
                         th.center #
-                        th جۆری بەرهەم
+                        th بڕاندی بەرهەم
                         th ناوی بەرهەم
                         th ڕەنگ
-                        th شێوازی بەرهەم
+                        th جۆری بەرهەم
                         th پێوانە
                         th وەکیل
                         th شرکە
@@ -114,7 +114,7 @@ block content
                         th ژمارە
                         th نرخی کڕین
                         th نرخی کۆمپانیا
-                        th.right کۆی گشتی
+                        th.right بڕی بەردەست
                     tbody(id="dataOfInvoiceTable")
                 .row
                   .col-lg-8.col-sm-8
@@ -141,7 +141,7 @@ block content
                 //-   input.form-control(type='text' id="shewayBarham"+i placeholder='ڕەنگی بەرهەم')
                 //-   //- input#button(type='button' onmousedown="doSearch(document.getElementById('search').value)" value='Find')
                 //- .col-md-2
-                //-   input.form-control(type='text' id="search"+i placeholder='جۆری بەرهەم')
+                //-   input.form-control(type='text' id="search"+i placeholder='بڕاندی بەرهەم')
 
               thead.thead-dark
                 .container(id="result")
@@ -225,10 +225,10 @@ block content
           $('#datas'+idOfModel).append($("<thead></thead>").attr('id','MainHeader'+idOfModel));
           $('#MainHeader'+idOfModel).append($("<tr></tr>").attr('style',"text-align:center").attr('id','header'+idOfModel));
           $('#header'+idOfModel).append($("<th></th>").text('#'));
-          $('#header'+idOfModel).append($("<th></th>").text('جۆری بەرهەم'));
+          $('#header'+idOfModel).append($("<th></th>").text('بڕاندی بەرهەم'));
           $('#header'+idOfModel).append($("<th></th>").text('ناوی بەرهەم'));
           $('#header'+idOfModel).append($("<th></th>").text('ڕەنگ'));
-          $('#header'+idOfModel).append($("<th></th>").text('شێوازی بەرهەم'));
+          $('#header'+idOfModel).append($("<th></th>").text('جۆری بەرهەم'));
           $('#header'+idOfModel).append($("<th></th>").text('پێوانە'));
           $('#header'+idOfModel).append($("<th></th>").text('وەکیل'));
           $('#header'+idOfModel).append($("<th></th>").text('شرکە'));

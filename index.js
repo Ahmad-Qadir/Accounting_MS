@@ -333,6 +333,26 @@ app.get('/updater', async (req, res) => {
 
 });
 
+
+
+app.get('/royal', async (req, res) => {
+    const user = await ProductsCollection.find({
+        manufacturerCompany: "الافق"
+    })
+
+    // for (let index = 0; index < user.length; index++) {
+    //     await ProductsCollection.findByIdAndUpdate({
+    //         _id: user[index]['_id']
+    //     }, {
+    //         itemModel: user[index]['itemModel']+" "+user[index]['itemName'],
+    //     });
+    // }
+
+
+    res.send(user)
+
+});
+
 //Error Handler
 process.on('uncaughtException', function (err) {
     console.error((new Date).toUTCString() + ' uncaughtException:', err.message)

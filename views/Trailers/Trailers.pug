@@ -29,20 +29,23 @@ block content
                                     table.table.table-hover.table-sm.dt-responsive.table-striped
                                         thead.thead-light
                                             tr(style="text-align:center; font-size:3 rem")
-                                                th(scope='col') جۆری بەرهەم
+                                                th(scope='col') #
+                                                th(scope='col') بڕاندی بەرهەم
                                                 th(scope='col') ناوی بەرهەم
                                                 th(scope='col') کۆمپانیای وەبەرهێن
                                                 th(scope='col') پێوانەی تاک
-                                                th(scope='col') شێوازی بەرهەم
+                                                th(scope='col') جۆری بەرهەم
                                                 th(scope='col') شوێنی بەکارهێنان
-                                                th(scope='col') کێش
+                                                th(scope='col') بڕی پێوانە
                                                 th(scope='col') نرخی هاتوو
                                                 th(scope='col') بڕی هاتوو
                                                 th(scope='col') ڕەنگ
-                                                th(scope='col') کۆی گشتی
+                                                th(scope='col') بڕی بەردەست
                                         tbody
                                             each data,j in item['items']
+                                                -var index=j+1
                                                 tr(style="font-weight:bold; font-size:2 rem")
+                                                    td(style="text-align:center;")=index
                                                     td(style="text-align:center;")=data['itemModel']
                                                     td(style="text-align:center;")=data['itemName']
                                                     td(style="text-align:center;")=data['manufacturerCompany']

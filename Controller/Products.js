@@ -114,7 +114,7 @@ exports.addNewItem = async (req, res, next) => {
                 weight: req.body.weight,
                 totalWeight: 0,
                 color: req.body.color,
-                packet: req.body.packet,
+                packet: 1,
                 camePrice: req.body.camePrice,
                 sellPriceMufrad: req.body.sellPriceMufrad,
                 sellPriceMahal: req.body.sellPriceMahal,
@@ -138,7 +138,7 @@ exports.addNewItem = async (req, res, next) => {
 
             const newItem = new RecordsCollection({
                 recordCode: uuid.v1(),
-                packet: req.body.packet,
+                packet: 1,
                 perPacket: req.body.perPacket,
                 status: "New Product",
                 trailerNumber: Trailer.length,
