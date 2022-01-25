@@ -44,6 +44,17 @@ append styles
     }
     .dropdown a:hover {background-color: #ddd;}
     .show {display: block;}
+
+    .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 20mm;
+        margin: 10mm auto;
+        border: 1px #D3D3D3 solid;
+        border-radius: 5px;
+        
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
 block content
   br
   .container
@@ -85,10 +96,8 @@ block content
                   p(id="dataofIncome") 0
           .container(id="printableArea").d-block.d-print-none
             .card.border.border-dark
-              .card-header.justify-content-between
-                //- strong.col-sm-10="ژمارەی تۆمار: "+invoiceID
-                //- span.col-sm-2
-                //-   strong فرۆشتن
+              .card-header(style='background-color: black;')
+              .card-body
                 .p-4.shadow-4.rounded-3(style='background-color: hsl(0, 0%, 94%);')
                   .container
                     .row.col-12
@@ -103,7 +112,7 @@ block content
                         //- div Email: info@dotnettec.com
                         //- div Phone: +964 750 000 00 00
                       .col-5
-                        img#icon(src='https://i.ibb.co/T1wGH2C/titan.jpg' width=200)
+                        img#icon(src='https://i.ibb.co/Jj7wYNW/titan-removebg-preview.png' width=250).mx-auto.d-block
                       .col-4
                         h2 Titan Service
                         br
@@ -113,27 +122,27 @@ block content
                         //- div Attn: Daniel Marek
                         //- div Email: robert@daniel.com
                         div="ژمارەی مۆبایل: "+profile[0]['phoneNumber']
-
-              .card-body
-                .table-responsive-sm.col-12
-                  table.table.table-striped(id="invoiceTable").table-bordered
+                hr
+                .table-responsive.col-12
+                  table.table.table-striped(id="invoiceTable").table-bordered.table-sm
                     thead
                       tr
-                        th.center #
-                        th(style="text-align:center; font-size:100%;font-weight:bold") بڕاندی بەرهەم
+                        th(style="width:2%").center #
                         th(style="text-align:center; font-size:100%;font-weight:bold") ناوی بەرهەم
                         th(style="text-align:center; font-size:100%;font-weight:bold") جۆری بەرهەم
-                        th(style="text-align:center; font-size:100%;font-weight:bold") ڕەنگ
+                        th(style="text-align:center; font-size:100%;font-weight:bold") جۆری بەرهەم
+                        th(style="text-align:center; font-size:100%;font-weight:bold;") ڕەنگ
                         th(style="text-align:center; font-size:100%;font-weight:bold") پێوانە
-                        th(style="text-align:center; font-size:100%;font-weight:bold") ژمارە
+                        th(style="text-align:center; font-size:100%;font-weight:bold; width:3%") ژمارە
                         th(style="text-align:center; font-size:100%;font-weight:bold").right نرخی تاک
                         th(style="text-align:center; font-size:100%;font-weight:bold").right کۆی گشتی
+                        th(style="text-align:center; font-size:100%;font-weight:bold; width:3%")
                     tbody(id="dataOfInvoiceTable")
                 .row
-                  .col-8
+                  .col-7
                     b تێبینی
                     textarea.form-control.rounded-0(rows='5' cols='80' id='note')
-                  .col-4.ml-auto
+                  .col-5.ml-auto
                     table.table.table-clear(id="totalPayment")
                       tbody
                         //- tr
@@ -158,7 +167,7 @@ block content
                             strong کۆی گشتی (دۆلار)
                           td.right
                             strong(id="finalPrice") 0
-              .card-footer.shadow-4.rounded-3(style='background-color: hsl(0, 0%, 94%);')
+                hr
                 .row 
                   .col-3 
                     span="ژمارەی تۆمار: "+invoiceID
@@ -170,29 +179,31 @@ block content
                     span="بەروار: "+dateTime.toLocaleString()
                   .col-5
                     span="ناونیشان: "+"هەولێر - گەڕەکی ڕاستی - کۆڵانی بەرامبەر کۆڵێژی ئەندازیاری"
-                  // Modal
-                  .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-payment')
-                    .modal-dialog.modal-dialog-centered.modal-s(role='document')
-                      .modal-content
-                        .modal-header دواخستنی پارەدان
+                // Modal
+                .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-payment')
+                  .modal-dialog.modal-dialog-centered.modal-s(role='document')
+                    .modal-content
+                      .modal-header دواخستنی پارەدان
 
-                        .modal-body 
-                          p بڕی پارەی دراو
-                            input.form-control(name="debut" type='number' value='0' id="paidmoney")
+                      .modal-body 
+                        p بڕی پارەی دراو
+                          input.form-control(name="debut" type='number' step='any' value='0' id="paidmoney")
+                      .modal-footer
+                        button.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
+                        a.btn.btn-success.btn-ok(onclick="payNowDebut()" data-dismiss='modal') رازیبوون
+                each item,i in productNames
+                  .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-product'+i)
+                    .modal-dialog.modal-dialog-centered.modal-fullscreen(role='document')
+                      .modal-content
+                        .modal-header=item
+                        thead.thead-dark
+                          .container(id="result")
+                        .modal-body(id='body-product'+i)
                         .modal-footer
                           button.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
-                          a.btn.btn-success.btn-ok(onclick="payNowDebut()" data-dismiss='modal') رازیبوون
-                  each item,i in productNames
-                    .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-product'+i)
-                      .modal-dialog.modal-dialog-centered.modal-fullscreen(role='document')
-                        .modal-content
-                          .modal-header=item
-                          thead.thead-dark
-                            .container(id="result")
-                          .modal-body(id='body-product'+i)
-                          .modal-footer
-                            button.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
-                            a.btn.btn-success.btn-ok(onclick="resultOfValidation(this)" data-dismiss='modal') زیادکردنی بەرهەم
+                          a.btn.btn-success.btn-ok(onclick="resultOfValidation(this)" data-dismiss='modal') زیادکردنی بەرهەم
+              .card-footer(style='background-color: black;')
+                
 
 
   script.
@@ -265,7 +276,7 @@ block content
             else
               $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['weight']+" "+data[i]['itemUnit']).attr('id',"unit"+idOfModel+i));
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','quantity'+idOfModel+i));
-            $('#quantity'+idOfModel+i).append($("<input></input>").attr('onclick','updateValue(this.parentNode.parentNode,event)').attr('type','number').attr('name','totalQuan').attr('class','form-control').attr('id','totalQuan'+idOfModel+i));
+            $('#quantity'+idOfModel+i).append($("<input></input>").attr('onclick','updateValue(this.parentNode.parentNode,event)').attr('type','number').attr('step','any').attr('name','totalQuan').attr('class','form-control').attr('id','totalQuan'+idOfModel+i));
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','priceRow'+idOfModel+i));
             $('#priceRow'+idOfModel+i).append($("<input></input>").attr('type','number').attr('name','priceOf').attr('id','priceOf'+idOfModel+i).attr('class','form-control').attr('value',data[i]['sellPriceMufrad']));
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','trailerRow'+idOfModel+i));

@@ -255,7 +255,7 @@ exports.NewInvoice = async (req, res, next) => {
 
                 //Prevent 
                 if (Trailer[0]['totalQuantity'] < totalRequestedPackets) {
-                    res.send("بەرهەمی " + Trailer[0]['productID']['itemName'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە");
+                    res.send("بەرهەمی " + Trailer[0]['productID']['itemName'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە لە بەرهەمی گەڕاوە");
                 } else {
                     //===============Records Collection=============
                     const newRecordtoHistory = new RecordsCollection({
@@ -322,7 +322,7 @@ exports.NewInvoice = async (req, res, next) => {
 
                 //Prevent 
                 if (Trailer[0]['totalQuantity'] < totalRequestedPackets) {
-                    res.status(402).send("بەرهەمی " + Trailer[0]['itemName'] + " " + Trailer[0]['color'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە");
+                    res.status(402).send("بەرهەمی " + Trailer[0]['itemName'] + " " + Trailer[0]['color'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە لە باری ژمارە" + element[9].split('-')[0]);
                 } else {
                     //===============Records Collection=============
                     const newRecordtoHistory = new RecordsCollection({
@@ -437,34 +437,34 @@ exports.NewInvoiceForDebut = async (req, res, next) => {
 }
 
 //Invoice Request UI
-exports.AddNewRequest = async (req, res, next) => {
-    try {
-        const Products = await ProductsCollection
-            .find({
-                id: req.params.id,
-                softdelete: false
-            })
-        const Trailers = await TrailerCollection
-            .find({
-                softdelete: false,
-                productID: req.params.id,
-            })
+// exports.AddNewRequest = async (req, res, next) => {
+//     try {
+//         const Products = await ProductsCollection
+//             .find({
+//                 id: req.params.id,
+//                 softdelete: false
+//             })
+//         const Trailers = await TrailerCollection
+//             .find({
+//                 softdelete: false,
+//                 productID: req.params.id,
+//             })
 
-        const Profiles = await ProfileCollection
-            .find({
-                softdelete: false,
-            })
+//         const Profiles = await ProfileCollection
+//             .find({
+//                 softdelete: false,
+//             })
 
-        res.render('Products/CustomerRequest', {
-            title: "Add New Request",
-            product: Products,
-            trailer: Trailers,
-            profiles: Profiles
-        })
-    } catch (error) {
-        next(error)
-    }
-}
+//         res.render('Products/CustomerRequest', {
+//             title: "Add New Request",
+//             product: Products,
+//             trailer: Trailers,
+//             profiles: Profiles
+//         })
+//     } catch (error) {
+//         next(error)
+//     }
+// }
 
 // !: Products
 //Get All Products
