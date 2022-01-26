@@ -68,7 +68,7 @@ block content
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm.text-white.m-1(type='button' onclick="payNow()")
           i.fas.fa-money-bill-alt.fa-sm.text-white-50
           |  پارەدانی گشتی
-        a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white.m-1(type='button' onclick="Qard()")
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white.m-1.disabled(type='button' onclick="Qard()")
           i.fas.fa-money-bill-alt.fa-sm.text-white-50
           |  قەرزکردن
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-warning.shadow-sm.text-white.m-1(type='button' data-toggle="modal" data-target="#confirm-payment")
@@ -382,11 +382,11 @@ block content
     //Pay All Money now
     function Qard(){
       objectData=document.getElementById("invoiceTable")
-
+     var subtotal=document.getElementById('total').innerHTML
       //Send to Database
         var data= $.ajax({
           type: 'POST',
-          url: "/Products/#{profile[0]['_id']}/Requests/Debut",
+          url: "/Products/#{profile[0]['_id']}/Requests/Debut/"+subtotal,
           dataType: 'JSON',
           data:getJSON(objectData),
           success: function(data){

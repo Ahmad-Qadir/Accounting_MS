@@ -272,7 +272,7 @@ exports.NewInvoice = async (req, res, next) => {
                         productID: Product[0]['_id'],
                         cutomerID: req.params.id,
                         htmlObject: req.body['tbody'],
-                        moneyStatus:"Paid"
+                        moneyStatus: "Paid"
                     });
                     await newRecordtoHistory.save();
                     var result = Product[0]['totalQuantity'] - totalRequestedPackets;
@@ -339,7 +339,7 @@ exports.NewInvoice = async (req, res, next) => {
                         productID: Product[0]['_id'],
                         cutomerID: req.params.id,
                         htmlObject: req.body['tbody'],
-                        moneyStatus:"Paid"
+                        moneyStatus: "Paid"
                     });
                     await newRecordtoHistory.save();
                     var result = Product[0]['totalQuantity'] - totalRequestedPackets;
@@ -459,7 +459,7 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                         productID: Product[0]['_id'],
                         cutomerID: req.params.id,
                         htmlObject: req.body['tbody'],
-                        moneyStatus:"Debut"
+                        moneyStatus: "Debut"
                     });
                     await newRecordtoHistory.save();
                     var result = Product[0]['totalQuantity'] - totalRequestedPackets;
@@ -477,9 +477,14 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                         }
                     });
 
+                    var Profile=await ProfileCollection.findOne({
+                        _id: req.params.id
+                    });
+
                     await ProfileCollection.findByIdAndUpdate({
                         _id: req.params.id
                     }, {
+                        remainedBalance: Profile['remainedBalance']+parseFloat(req.params.price),
                         updatedBy: req.user.username,
                         $push: {
                             invoiceID: newRecordtoHistory["_id"],
@@ -526,7 +531,7 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                         productID: Product[0]['_id'],
                         cutomerID: req.params.id,
                         htmlObject: req.body['tbody'],
-                        moneyStatus:"Debut"
+                        moneyStatus: "Debut"
                     });
                     await newRecordtoHistory.save();
                     var result = Product[0]['totalQuantity'] - totalRequestedPackets;
@@ -605,7 +610,7 @@ exports.NewInvoiceForDebut = async (req, res, next) => {
             updatedBy: req.user.username,
             note: req.body.note,
             cutomerID: req.params.id,
-            moneyStatus:"Return Money"
+            moneyStatus: "Return Money"
         });
         await newRecordtoHistory.save();
 
