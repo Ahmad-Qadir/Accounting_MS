@@ -165,18 +165,20 @@ exports.PrintAllInvoiceforCustomer = async (req, res, next) => {
     const Records = await HistoryClass
         .find({
             cutomerID: req.params.id
-        }).populate('productID')
+        }).populate('productID').aggregate([
+            { $group: { _id: { recordCode: "$recordCode" }, amount: { $sum: "$totalPrice" }, items: { $push: { weight: "$weight", itemName: "$itemName", itemModel: "$itemModel", totalQuantity: "$totalQuantity", camePrice: "$camePrice", itemUnit: "$itemUnit", itemType: "$itemType", manufacturerCompany: "$manufacturerCompany", color: "$color", remainedPacket: "$remainedPacket", remainedPerPacket: "$remainedPerPacket", usedIn: "$usedIn", totalQuantity: "$totalQuantity", createdAt: "$createdAt" } } } },
+        ])
 
-    const ProfileInformation = await HistoryClass
-        .find({
-            cutomerID: req.params.id
-        }).populate('cutomerID')
+    const ProfileInformation = await ProfileCollection
+        .findOne({
+            _id: req.params.id
+        })
 
     // res.json(Records)
-    res.render('Components/PrintInvoice', {
-        title: "تۆمارەکانی " + ProfileInformation[0]['cutomerID']['clientName'],
+    res.render('Profiles/PrintInvoice', {
+        title: "تۆمارەکانی " + ProfileInformation['clientName'],
         records: Records,
-        profile: ProfileInformation[0]
+        profile: ProfileInformation
     })
     // res.send(Invoices)
 
@@ -206,7 +208,7 @@ exports.AddNewRequest = async (req, res, next) => {
                 id: req.params.id,
                 softdelete: false
             }).distinct('itemModel')
-            
+
         const Profiles = await ProfileCollection
             .find({
                 _id: req.params.id,
@@ -246,7 +248,7 @@ exports.debtors = async (req, res, next) => {
 
         const Profiles = await ProfileCollection
             .find({
-                remainedbalance:{ "$ne": 0 }
+                remainedbalance: { "$ne": 0 }
             })
 
         res.render('Debtors/debtors', {
@@ -536,7 +538,7 @@ exports.CheckForTrailerInRequest = async (req, res, next) => {
 //                 trailerNumber: req.body.trailerNumber
 //             });
 
-//             //Prevent 
+//             //Prevent
 //             if (Trailer[0]['totalQuantity'] < req.body.perPacket) {
 //                 req.flash('danger', "There is no enough Product in Store there is only " + Trailer[0]['totalQuantity'] + " remains in this Trailer");
 //                 res.redirect(process.env.address + Product[0]['_id'] + '/NewRequest')

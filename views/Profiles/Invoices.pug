@@ -10,7 +10,7 @@ block content
           .col.md-6
             .search-box
               .input-group
-                input#search.form-control(type='text' placeholder='Search by Invoice ID')
+                input#search.form-control(type='text' placeholder='گەڕان بەپێی ژمارەی تۆمار')
       .span
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-danger.shadow-sm.text-white.m-2(href="/Profiles/Invoices/"+profile[0]['cutomerID']['_id'])
           i.fas.fa-file-invoice.fa-sm.text-white-50
@@ -29,7 +29,6 @@ block content
               th(scope='col' style="text-align:center; font-size:90%") ڕەنگ
               th(scope='col' style="text-align:center; font-size:90%") ىڕ
               th(scope='col' style="text-align:center; font-size:90%") باری ئێستا
-              th(scope='col' style="text-align:center; font-size:90%") بڕی فرۆشتن
               th(scope='col' style="text-align:center; font-size:90%") کۆی گشتی نرخ
               th(scope='col' style="text-align:center; font-size:90%") بارهەڵگر 
               th(scope='col' style="text-align:center; font-size:90%") تێبینی 
@@ -41,53 +40,88 @@ block content
             each item,i in invoices
               - var json = JSON.stringify(invoices);
               - var j=i;
-              tr
-                form(method='POST')
-                  td=item['recordCode']
-                  if item['productID']==undefined
-                    td پارەدان
-                    td(style="text-align:center;") 0
-                    td(style=`text-align:center;`) 0
-                    td(style="text-align:center;") 0
-                    td(style="text-align:center;")=item['status']
-                    td(style="text-align:center;") 0
-                    td(style="text-align:center;")="$ "+item['sellPrice'] * item['totalQuantity']
-                    td(style="text-align:center;") 0
-                    td(style="text-align:center;")=item['note']
-                    td(style="text-align:center;")=item['createdAt'].toLocaleString()
-                    td(style="text-align:center;")=item['addedBy']
-                    //- td=item['expireDate']
-                    td(style="text-align:center;")
-                      a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;"  href=address+"/Profiles/"+item['recordCode']+"/Print")
-                        span.icon.text-white-50
-                          i.fas.fa-print
-                  else 
-                    td=item['productID']['itemName']
-                    td(style="text-align:center;")=item['productID']['weight']+item['productID']['unit']
-                    td(style=`text-align:center; background-color:${item['productID']['color']}`)=item['productID']['color']
-                    td(style="text-align:center;")=item['totalQuantity']
-                    td(style="text-align:center;")=item['status']
-                    td(style="text-align:center;")="$ "+item['sellPrice']
-                    td(style="text-align:center;")="$ "+item['sellPrice'] * item['totalQuantity']
-                    td(style="text-align:center;")=item['trailerNumber']
-                    td(style="text-align:center;")=item['note']
-                    td(style="text-align:center;")=item['createdAt'].toLocaleString()
-                    td(style="text-align:center;")=item['addedBy']
-                    //- td=item['expireDate']
-                    td(style="text-align:center;")
-                      a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;"  href="/Profiles/"+item['recordCode']+"/Print")
-                        span.icon.text-white-50
-                          i.fas.fa-print
-                    //- a(href="/Invoices/"+item['recordCode']+"/NewRecover" title="گەڕانەوەی بەرهەم" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;").btn.btn-sm.btn-primary.mr-2
-                    //-   span.icon.text-white-50
-                    //-     i.fas.fa-recycle
-                //- a.btn.btn-sm.btn-info.mr-2(title="Product Invoices" id="currentbackup"+j href="/Products/"+item['_id']+"/invoices")
-                //-     span.icon.text-white-50
-                //-         i.fas.fa-print
-                //- a(target="_blank" title="Edit Product" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;").btn.btn-sm.btn-warning.mr-2
-                //-     span.icon.text-white-50
-                //-         i.fas.fa-pencil-alt
-                //- include ../Components/Footer
+              if item['moneyStatus']=="Debut"
+                tr.note.note-warning
+                  form(method='POST')
+                    td=item['recordCode']
+                    if item['productID']==undefined
+                      td پارەدان
+                      td(style="text-align:center;") 0
+                      td(style=`text-align:center;`) 0
+                      td(style="text-align:center;") 0
+                      td(style="text-align:center;")=item['status']
+                      td(style="text-align:center;")="$ "+item['totalPrice']
+                      td(style="text-align:center;") 0
+                      td(style="text-align:center;")=item['note']
+                      td(style="text-align:center;")=item['createdAt'].toLocaleString()
+                      td(style="text-align:center;")=item['addedBy']
+                      //- td=item['expireDate']
+                      td(style="text-align:center;")
+                        a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;"  href=address+"/Profiles/"+item['recordCode']+"/Print")
+                          span.icon.text-white-50
+                            i.fas.fa-print
+                    else 
+                      td=item['productID']['itemName']
+                      td(style="text-align:center;")=item['productID']['weight']+item['productID']['unit']
+                      td(style=`text-align:center; background-color:${item['productID']['color']}`)=item['productID']['color']
+                      td(style="text-align:center;")=item['totalQuantity']
+                      td(style="text-align:center;")=item['status']
+                      td(style="text-align:center;")="$ "+item['totalPrice']
+                      td(style="text-align:center;")=item['trailerNumber']
+                      td(style="text-align:center;")=item['note']
+                      td(style="text-align:center;")=item['createdAt'].toLocaleString()
+                      td(style="text-align:center;")=item['addedBy']
+                      //- td=item['expireDate']
+                      td(style="text-align:center;")
+                        a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Profiles/"+item['recordCode']+"/Print")
+                          span.icon.text-white-50
+                            i.fas.fa-print
+              else
+                tr
+                  form(method='POST')
+                    td=item['recordCode']
+                    if item['productID']==undefined
+                      td پارەدان
+                      td(style="text-align:center;") 0
+                      td(style=`text-align:center;`) 0
+                      td(style="text-align:center;") 0
+                      td(style="text-align:center;")=item['status']
+                      td(style="text-align:center;")="$ "+item['totalPrice']
+                      td(style="text-align:center;") 0
+                      td(style="text-align:center;")=item['note']
+                      td(style="text-align:center;")=item['createdAt'].toLocaleString()
+                      td(style="text-align:center;")=item['addedBy']
+                      //- td=item['expireDate']
+                      td(style="text-align:center;")
+                        a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;"  href=address+"/Profiles/"+item['recordCode']+"/Print")
+                          span.icon.text-white-50
+                            i.fas.fa-print
+                    else 
+                      td=item['productID']['itemName']
+                      td(style="text-align:center;")=item['productID']['weight']+item['productID']['unit']
+                      td(style=`text-align:center; background-color:${item['productID']['color']}`)=item['productID']['color']
+                      td(style="text-align:center;")=item['totalQuantity']
+                      td(style="text-align:center;")=item['status']
+                      td(style="text-align:center;")="$ "+item['totalPrice']
+                      td(style="text-align:center;")=item['trailerNumber']
+                      td(style="text-align:center;")=item['note']
+                      td(style="text-align:center;")=item['createdAt'].toLocaleString()
+                      td(style="text-align:center;")=item['addedBy']
+                      //- td=item['expireDate']
+                      td(style="text-align:center;")
+                        a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Profiles/"+item['recordCode']+"/Print")
+                          span.icon.text-white-50
+                            i.fas.fa-print
+                      //- a(href="/Invoices/"+item['recordCode']+"/NewRecover" title="گەڕانەوەی بەرهەم" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;").btn.btn-sm.btn-primary.mr-2
+                      //-   span.icon.text-white-50
+                      //-     i.fas.fa-recycle
+                      //- a.btn.btn-sm.btn-info.mr-2(title="Product Invoices" id="currentbackup"+j href="/Products/"+item['_id']+"/invoices")
+                      //-     span.icon.text-white-50
+                      //-         i.fas.fa-print
+                      //- a(target="_blank" title="Edit Product" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;").btn.btn-sm.btn-warning.mr-2
+                      //-     span.icon.text-white-50
+                      //-         i.fas.fa-pencil-alt
+                      //- include ../Components/Footer
   script.
     //- $(document).ready(function() {
     //-   $('#clientTable').DataTable({

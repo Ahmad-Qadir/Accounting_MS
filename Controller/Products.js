@@ -263,6 +263,7 @@ exports.NewInvoice = async (req, res, next) => {
                         totalQuantity: totalRequestedPackets,
                         status: "Customer Request",
                         sellPrice: _SellPrice,
+
                         totalPrice: _SellPrice * totalRequestedPackets,
                         trailerNumber: element[8].split('-')[0],
                         addedBy: req.user.username,
@@ -404,7 +405,9 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                 status: "Customer Request",
                 softdelete: false
             });
-
+        var Profile = await ProfileCollection.findOne({
+            _id: req.params.id
+        });
         var invoiceID = Records.length;
         for (let index = 0; index < RequestList.length; index++) {
             const element = RequestList[index];
@@ -430,6 +433,8 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                 itemUnit: element[5].split(" ")[1]
             });
 
+
+
             var totalRequestedPackets = element[6];
 
             var _SellPrice = parseFloat(element[7].replace(/[^0-9]/g, ''))
@@ -451,6 +456,7 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                         status: "Customer Request",
                         sellPrice: _SellPrice,
                         totalPrice: _SellPrice * totalRequestedPackets,
+                        oldDebut: Profile['remainedbalance'],
                         trailerNumber: element[8].split('-')[0],
                         addedBy: req.user.username,
                         updatedBy: req.user.username,
@@ -477,14 +483,9 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                         }
                     });
 
-                    var Profile=await ProfileCollection.findOne({
-                        _id: req.params.id
-                    });
-
                     await ProfileCollection.findByIdAndUpdate({
                         _id: req.params.id
                     }, {
-                        remainedBalance: Profile['remainedBalance']+parseFloat(req.params.price),
                         updatedBy: req.user.username,
                         $push: {
                             invoiceID: newRecordtoHistory["_id"],
@@ -523,6 +524,7 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                         totalQuantity: totalRequestedPackets,
                         status: "Customer Request",
                         sellPrice: _SellPrice,
+                        oldDebut: Profile['remainedbalance'],
                         totalPrice: _SellPrice * totalRequestedPackets,
                         trailerNumber: element[9].split('-')[0],
                         addedBy: req.user.username,
@@ -548,6 +550,8 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                             itemHistory: newRecordtoHistory["_id"],
                         }
                     });
+
+
                     await ProfileCollection.findByIdAndUpdate({
                         _id: req.params.id
                     }, {
@@ -579,6 +583,13 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
 
             }
         }
+
+        await ProfileCollection.findByIdAndUpdate({
+            _id: req.params.id
+        }, {
+            remainedbalance: Profile['remainedbalance'] + parseFloat(req.params.price),
+        });
+
         res.status(200).send("بە سەرکەوتوویی تۆمارکرا")
 
     } catch (error) {
@@ -606,6 +617,7 @@ exports.NewInvoiceForDebut = async (req, res, next) => {
             status: "Compensate",
             sellPrice: req.params.paid,
             totalQuantity: 1,
+            oldDebut: Profile['remainedbalance'],
             addedBy: req.user.username,
             updatedBy: req.user.username,
             note: req.body.note,
