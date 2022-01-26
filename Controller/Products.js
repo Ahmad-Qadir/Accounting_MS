@@ -271,7 +271,8 @@ exports.NewInvoice = async (req, res, next) => {
                         trailerID: Trailer[0]['_id'],
                         productID: Product[0]['_id'],
                         cutomerID: req.params.id,
-                        htmlObject: req.body['tbody']
+                        htmlObject: req.body['tbody'],
+                        moneyStatus:"Paid"
                     });
                     await newRecordtoHistory.save();
                     var result = Product[0]['totalQuantity'] - totalRequestedPackets;
@@ -337,7 +338,8 @@ exports.NewInvoice = async (req, res, next) => {
                         note: req.body.note,
                         productID: Product[0]['_id'],
                         cutomerID: req.params.id,
-                        htmlObject: req.body['tbody']
+                        htmlObject: req.body['tbody'],
+                        moneyStatus:"Paid"
                     });
                     await newRecordtoHistory.save();
                     var result = Product[0]['totalQuantity'] - totalRequestedPackets;
@@ -416,6 +418,7 @@ exports.NewInvoiceForDebut = async (req, res, next) => {
             updatedBy: req.user.username,
             note: req.body.note,
             cutomerID: req.params.id,
+            moneyStatus:"Return Money"
         });
         await newRecordtoHistory.save();
 

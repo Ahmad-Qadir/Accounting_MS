@@ -4,17 +4,18 @@ const itemHistorySchema = new mongoose.Schema({
     recordCode: String,
     packet: Number, //pakat
     perPacket: Number, // Quantity
-    totalQuantity:Number,
+    totalQuantity: Number,
     status: String,
     trailerNumber: Number,
-    camePrice:Number,
+    camePrice: Number,
     sellPriceMufrad: Number,
     sellPriceMahal: Number,
     sellPriceWasta: Number,
     sellPriceWakil: Number,
     sellPriceSharika: Number,
-    totalPrice:Number,
-    addedBy: { 
+    totalPrice: Number,
+    moneyStatus: String,
+    addedBy: {
         type: String
     },
     updatedBy: {
