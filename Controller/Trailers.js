@@ -45,7 +45,20 @@ exports.Trailers = async (req, res, next) => {
     try {
         const Trailers = await TrailersCollection
             .aggregate([
-                { $group: { _id: { trailerNumber: "$trailerNumber" }, count: { $sum: 1 }, amount: { $sum: "$totalPrice" }, items: { $push: { weight: "$weight", itemName: "$itemName", itemModel: "$itemModel", totalQuantity: "$totalQuantity", camePrice: "$camePrice", itemUnit: "$itemUnit", itemType: "$itemType", manufacturerCompany: "$manufacturerCompany", color: "$color", remainedPacket: "$remainedPacket", remainedPerPacket: "$remainedPerPacket", usedIn: "$usedIn", totalQuantity: "$totalQuantity", createdAt: "$createdAt" } } } },
+                {
+                    $group:
+                    {
+                        _id: { trailerNumber: "$trailerNumber" },
+                        count: { $sum: 1 },
+                        amount: { $sum: "$totalPrice" },
+                        items: {
+                            $push: { weight: "$weight", itemName: "$itemName", itemModel: "$itemModel", totalQuantity: "$totalQuantity", camePrice: "$camePrice", itemUnit: "$itemUnit", itemType: "$itemType", manufacturerCompany: "$manufacturerCompany", color: "$color", remainedPacket: "$remainedPacket", remainedPerPacket: "$remainedPerPacket", usedIn: "$usedIn", totalQuantity: "$totalQuantity", createdAt: "$createdAt" }
+                        }
+                    }
+                },
+                {
+                    $sort: { "_id": -1 },
+                }
             ])
 
         // res.json(Trailers)

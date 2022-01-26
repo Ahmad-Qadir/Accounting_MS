@@ -19,7 +19,7 @@ block content
                         h2(id="heading"+i).accordion-header
                             .row
                                 button.accordion-button(type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
-                                    .col-md-1="بارهەڵگری ژمارە: "+i
+                                    .col-md-1="بارهەڵگری ژمارە: "+item['_id']['trailerNumber']
                                     .col-md-2="کۆی بەرهەم: "+item['count']
                                     .col-md-3="تێچووی بارهەڵگر: "+item['amount']
                                     .col-md-4="بەروار: "+item['items'][0]['createdAt'].toLocaleString()
