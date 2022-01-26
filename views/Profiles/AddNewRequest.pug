@@ -46,14 +46,14 @@ append styles
     .show {display: block;}
 
     .page {
-        width: 210mm;
-        min-height: 297mm;
-        padding: 20mm;
-        margin: 10mm auto;
-        border: 1px #D3D3D3 solid;
-        border-radius: 5px;
-        
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      width: 210mm;
+      min-height: 297mm;
+      padding: 20mm;
+      margin: 10mm auto;
+      border: 1px #D3D3D3 solid;
+      border-radius: 5px;
+
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     }
 block content
   br
@@ -203,7 +203,7 @@ block content
                           button.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
                           a.btn.btn-success.btn-ok(onclick="resultOfValidation(this)" data-dismiss='modal') زیادکردنی بەرهەم
               .card-footer(style='background-color: black;')
-                
+
 
 
   script.
@@ -484,7 +484,6 @@ block content
                 .append($('<a>')).append($("<i>")
                   .attr("title",'Delete').attr('class',"delete fas fa-trash")
                 )
-              )
             );
             var subtotal=document.getElementById('total').innerHTML;
             document.getElementById('total').innerHTML=parseFloat(subtotal)+ parseFloat(document.getElementById("olddebut").innerHTML)+parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)
@@ -541,5 +540,6 @@ block content
       $(document).on("click", ".delete", function(){
         $(this).parents("tr").remove();
         document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.parentNode.childNodes[8].innerHTML)
+        document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.parentNode.childNodes[8].innerHTML)
         });
     });
