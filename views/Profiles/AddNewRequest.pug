@@ -491,7 +491,6 @@ block content
             );
             var subtotal=document.getElementById('total').innerHTML;
             document.getElementById('total').innerHTML=parseFloat(subtotal)+ parseFloat(document.getElementById("olddebut").innerHTML)+parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)
-            document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML)+parseFloat(parseFloat(document.getElementById("olddebut").innerHTML))
           }
           else{
             continue;
