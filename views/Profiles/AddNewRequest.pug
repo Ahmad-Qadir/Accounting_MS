@@ -484,13 +484,11 @@ block content
                 .append($('<a>')).append($("<i>")
                   .attr("title",'Delete').attr('class',"delete fas fa-trash red-text")
                 )
-              ).append($('<td>')
-                .append($('<a>')).append($("<i>")
-                  .attr("title",'Edit').attr('class',"edit fas fa-edit amber-text")
-                )
+              )
             );
             var subtotal=document.getElementById('total').innerHTML;
             document.getElementById('total').innerHTML=parseFloat(subtotal)+ parseFloat(document.getElementById("olddebut").innerHTML)+parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)
+            document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML)+parseFloat(parseFloat(document.getElementById("olddebut").innerHTML))
           }
           else{
             continue;
@@ -543,14 +541,6 @@ block content
       $(document).on("click", ".delete", function(){
         $(this).parents("tr").remove();
         document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.parentNode.childNodes[8].innerHTML)
-        document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.parentNode.childNodes[8].innerHTML)
         });
-        // Edit row on edit button click
-      $(document).on("click", ".edit", function(){		
-        $(this).parents("tr").find("td:not(:last-child)").each(function(){
-          $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
-        });		
-        document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.parentNode.childNodes[8].innerHTML)
-        document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.parentNode.childNodes[8].innerHTML)
     });
 
