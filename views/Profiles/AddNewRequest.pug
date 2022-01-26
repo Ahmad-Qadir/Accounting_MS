@@ -545,6 +545,7 @@ block content
       $(document).on("click", ".delete", function(){
         $(this).parents("tr").remove();
         document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.parentNode.childNodes[8].innerHTML)
+        document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.parentNode.childNodes[8].innerHTML)
         });
         // Edit row on edit button click
       $(document).on("click", ".edit", function(){		
@@ -552,5 +553,6 @@ block content
           $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
         });		
         document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.parentNode.childNodes[8].innerHTML)
+        document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.parentNode.childNodes[8].innerHTML)
     });
 
