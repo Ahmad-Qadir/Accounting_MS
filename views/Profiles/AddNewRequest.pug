@@ -46,14 +46,14 @@ append styles
     .show {display: block;}
 
     .page {
-        width: 210mm;
-        min-height: 297mm;
-        padding: 20mm;
-        margin: 10mm auto;
-        border: 1px #D3D3D3 solid;
-        border-radius: 5px;
-        
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      width: 210mm;
+      min-height: 297mm;
+      padding: 20mm;
+      margin: 10mm auto;
+      border: 1px #D3D3D3 solid;
+      border-radius: 5px;
+
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     }
 block content
   br
@@ -203,7 +203,7 @@ block content
                           button.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
                           a.btn.btn-success.btn-ok(onclick="resultOfValidation(this)" data-dismiss='modal') زیادکردنی بەرهەم
               .card-footer(style='background-color: black;')
-                
+
 
 
   script.
@@ -482,7 +482,11 @@ block content
                 .text(table[i].childNodes[8].firstChild.value).attr("style","display:none")
               ).append($('<td>')
                 .append($('<a>')).append($("<i>")
-                  .attr("title",'Delete').attr('class',"delete fas fa-trash")
+                  .attr("title",'Delete').attr('class',"delete fas fa-trash red-text")
+                )
+              ).append($('<td>')
+                .append($('<a>')).append($("<i>")
+                  .attr("title",'Edit').attr('class',"edit fas fa-edit amber-text")
                 )
               )
             );
@@ -542,4 +546,11 @@ block content
         $(this).parents("tr").remove();
         document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.parentNode.childNodes[8].innerHTML)
         });
+        // Edit row on edit button click
+      $(document).on("click", ".edit", function(){		
+        $(this).parents("tr").find("td:not(:last-child)").each(function(){
+          $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
+        });		
+        document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.parentNode.childNodes[8].innerHTML)
     });
+
