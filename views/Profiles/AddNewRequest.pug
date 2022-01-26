@@ -482,7 +482,11 @@ block content
                 .text(table[i].childNodes[8].firstChild.value).attr("style","display:none")
               ).append($('<td>')
                 .append($('<a>')).append($("<i>")
-                  .attr("title",'Delete').attr('class',"delete fas fa-trash")
+                  .attr("title",'Delete').attr('class',"delete fas fa-trash red-text")
+                )
+              ).append($('<td>')
+                .append($('<a>')).append($("<i>")
+                  .attr("title",'Edit').attr('class',"edit fas fa-edit amber-text")
                 )
             );
             var subtotal=document.getElementById('total').innerHTML;
@@ -542,4 +546,12 @@ block content
         document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.parentNode.childNodes[8].innerHTML)
         document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.parentNode.childNodes[8].innerHTML)
         });
+        // Edit row on edit button click
+      $(document).on("click", ".edit", function(){		
+        $(this).parents("tr").find("td:not(:last-child)").each(function(){
+          $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
+        });		
+        document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.parentNode.childNodes[8].innerHTML)
+        document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.parentNode.childNodes[8].innerHTML)
     });
+
