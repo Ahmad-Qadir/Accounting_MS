@@ -9,16 +9,16 @@ block content
         //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.mr-2(id="backup" onclick="backupAll()")
         //-   i.fas.fa-database.fa-sm.text-white-50
         //-   |  Backup Hotspots
-        //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white(href="/Profiles/AddNew")
-        //-   i.fas.fa-plus-square.fa-sm.text-white-50
-        //-   |  زیادکردنی کڕیاری نوێ
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white(onclick="printDiv('printableArea')")
+          i.fas.fa-print.fa-sm.text-white-50
+          |  چاپکردن
     .container
       != messages('message', locals)
       if errors
         each error, i in errors
           div(class="note note-danger") #{error.msg}
     .row
-      .container-fluid.table-responsive
+      .container-fluid.table-responsive(id="printableArea")
         table(id="clientTable").table.table-hover.table-sm.dt-responsive.table-striped
           thead.thead-light
             tr(style="text-align:center; font-size:3 rem")
@@ -33,28 +33,27 @@ block content
             each item,i in profile
               - var j=i+1
               tr(style="font-weight:bold; font-size:2 rem")
-                  td(style="text-align:center;")=j
-                  td=item['clientName']
-                  td(style="text-align:center;")=item['phoneNumber']
-                  td(style="text-align:center;")=item['companyName']
-                  td(style="text-align:center;")=item['clientType']
-                  td(style="text-align:center;")="$ "+item['remainedbalance']
+                td(style="text-align:center;")=j
+                td=item['clientName']
+                td(style="text-align:center;")=item['phoneNumber']
+                td(style="text-align:center;")=item['companyName']
+                td(style="text-align:center;")=item['clientType']
+                td(style="text-align:center;")="$ "+item['remainedbalance']
 
   //- include ../Components/Footer
   script.
     $(document).ready(function() {
       $('#clientTable').DataTable();
     } );
+      function printDiv(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
 
-    function deleteRow(r,GetArray) {
-      var row = r.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.rowIndex;
+        document.body.innerHTML = printContents;
 
-        $.ajax({
-          type: 'DELETE',
-          url: "#{address}/Profiles/"+GetArray[row-1]['_id'],
-          dataType: 'JSON'
-          })
-      document.getElementById("clientTable").deleteRow(row);
+        window.print();
+
+        document.body.innerHTML = originalContents;
       }
 
 

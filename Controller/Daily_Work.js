@@ -10,7 +10,7 @@ const RecordsCollection = require('../models/records');
 const ProfileCollection = require('../models/Profiles');
 const TrailerCollection = require('../models/Trailers');
 const DailyCollection = require('../models/Daily_Task');
-const address=process.env.address
+const address = process.env.address
 
 const {
     roles
@@ -51,38 +51,27 @@ exports.allowIfLoggedin = async (req, res, next) => {
 
 exports.AddnewTask = async (req, res, next) => {
     try {
-        const validationSchema = {
-            task: validator.string().required(),
-            money: validator.number().required(),
-            moneyType: validator.string().required(),
-            note: validator.string()
-        }
-        const resultOfValidator = validator.validate(req.body, validationSchema);
-        if (resultOfValidator.error) {
-            req.flash('danger', resultOfValidator.error.details[0].message);
-            res.redirect(process.env.address+"/NewDailyTask")
-        } else {
-            const Task = await DailyCollection({
-                task: req.body.task,
-                money: req.body.money,
-                moneyType: req.body.moneyType,
-                note: req.body.note,
-                createdBy: req.user.username
-            });
+        const Task = await DailyCollection({
+            task: req.body.task,
+            money: req.body.money,
+            moneyType: req.body.moneyType,
+            note: req.body.note,
+            createdBy: req.user.username
+        });
 
-            await Task.save();
+        await Task.save();
 
-            const newRecordtoHistory = new RecordsCollection({
-                status: req.body.task,
-                sellPrice:req.body.money,
-                totalPrice: req.body.money,
-                addedBy: req.user.username,
-                updatedBy: req.user.username,
-                note: req.body.note,
-            });
-            await newRecordtoHistory.save();
-            res.redirect('/Daily')
-        }
+        const newRecordtoHistory = new RecordsCollection({
+            status: req.body.task,
+            sellPrice: req.body.money,
+            totalPrice: req.body.money,
+            addedBy: req.user.username,
+            updatedBy: req.user.username,
+            note: req.body.note,
+        });
+        await newRecordtoHistory.save();
+        req.flash('success', "بە سەرکەوتویی تۆمارکرا");
+        res.redirect('/Daily')
     } catch (error) {
         next(error)
     }
@@ -116,7 +105,7 @@ exports.GetAllTasks = async (req, res, next) => {
         task: Task,
         user: req.user,
         totalMoneyOfDinar: totalMoneyOfDinar,
-        totalMoneyOfDolar:totalMoneyOfDolar
+        totalMoneyOfDolar: totalMoneyOfDolar
     })
 }
 

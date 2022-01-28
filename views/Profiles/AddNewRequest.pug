@@ -44,42 +44,11 @@ append styles
     }
     .dropdown a:hover {background-color: #ddd;}
     .show {display: block;}
-
     .page {
       width: 21cm;
       min-height: 29.7cm;
-      padding: 2cm;
-      margin: 1cm auto;
-      border: 1px #D3D3D3 solid;
-      border-radius: 5px;
       background: white;
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    }
-    .subpage {
-      padding: 1cm;
-      border: 5px red solid;
-      height: 256mm;
-      outline: 2cm #FFEAEA solid;
-    }
-    @page {
-      size: A4;
-      margin: 0;
-    }
-    body {
-      -webkit-print-color-adjust: exact !important;
-    }
-    @media print {
-      .page {
-        margin: 0;
-        border: initial;
-        border-radius: initial;
-        width: initial;
-        min-height: initial;
-        box-shadow: initial;
-        background-image: url('https://i.ibb.co/HhnspzY/Invoice-UI.jpg');
-        background-size: 200mm 280mm;
-        page-break-after: always;
-      }
     }
 block content
   br
@@ -120,7 +89,7 @@ block content
                         a(href="#" onclick="getModel(this,event);" title=item type='button' data-toggle="modal" data-target="#confirm-product"+i)=item
                 .form-group.col-md-2
                   p(id="dataofIncome") 0
-          .container(id="printableArea")
+          .container-fluid(id="printableArea")
             .card.border
               //- .card-header(style='background-color: black;')
               .card-body(id="targetedArea" style="background: url('https://i.ibb.co/HhnspzY/Invoice-UI.jpg'); background-size: 100% 280mm;")
@@ -138,10 +107,9 @@ block content
                         h6="لەلایان:"+user.username
                       .col-5
                         img#icon(src='https://i.ibb.co/KDWZgbV/titan-Copy.jpg' width=100).mx-auto.d-block
-
                 hr
                 div
-                  table.table-striped(id="invoiceTable" width: 100%; ).table-bordered.table-xs.table-responsive.col-12
+                  table(id="invoiceTable" width: 100% ).table-bordered.table-xs.table-responsive.col-12
                     thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
                       tr
                         th(style="width:3%").center #
@@ -169,7 +137,7 @@ block content
                         tr
                           td.left
                             strong(style="color:#f00") قەرزی پێشوو
-                          td(id="olddebut" style="color:#f00").right=profile[0]['remainedbalance']
+                          td(id="olddebut" style="color:#f00").right="$"+profile[0]['remainedbalance']
                         //- tr
                         //-   td.left
                         //-     strong داشکان
@@ -178,12 +146,12 @@ block content
                         tr
                           td.left
                             strong قەرزی ئێستا
-                          td.right(id="total") 0
+                          td.right(id="total")="$"+0
                         tr
                           td.left
                             strong کۆی گشتی (دۆلار)
                           td.right
-                            strong(id="finalPrice") 0
+                            strong(id="finalPrice")="$"+0 
                 hr
                 .row 
                   .col-4
@@ -193,7 +161,7 @@ block content
                     -var dateTime = date+' '+time;
                     span="بەروار: "+dateTime.toLocaleString()
                   .col-8
-                    span="ناونیشان: "+"هەولێر - گەڕەکی ڕاستی - کۆڵانی بەرامبەر کۆڵێژی ئەندازیاری"
+                    span="ناونیشان: "+"هەولێر - گەڕەکی عدالە - بەرامبەر بانکی زانکۆ"
                 // Modal
                 .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-payment')
                   .modal-dialog.modal-dialog-centered.modal-s(role='document')
@@ -522,9 +490,11 @@ block content
               //-   )
               //- )
             );
-            var subtotal=document.getElementById('total').innerHTML;
+            var subtotal=document.getElementById('total').innerHTML.match(/(\d+)/);
             document.getElementById('total').innerHTML=(parseFloat(subtotal)+parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)).toFixed(2)
-            document.getElementById('finalPrice').innerHTML=(parseFloat(document.getElementById('total').innerHTML)+parseFloat(parseFloat(document.getElementById("olddebut").innerHTML))).toFixed(2)
+            document.getElementById('total').innerHTML="$"+document.getElementById('total').innerHTML
+            document.getElementById('finalPrice').innerHTML=(parseFloat((document.getElementById('total').innerHTML).match(/(\d+)/))+parseFloat(parseFloat((document.getElementById("olddebut").innerHTML).match(/(\d+)/)))).toFixed(2)
+            document.getElementById('finalPrice').innerHTML="$"+document.getElementById('finalPrice').innerHTML
           }
           else{
             continue;
@@ -536,7 +506,9 @@ block content
     //Print Section
     function printDiv(divName) {
       var originalContents = document.body.innerHTML;
-      document.getElementById("targetedArea").setAttribute("style", "background: url('https://i.ibb.co/HhnspzY/Invoice-UI.jpg'); background-size: 200mm 280mm;");
+      //- 
+      document.getElementById("targetedArea").setAttribute("style", "background: url('https://i.ibb.co/HhnspzY/Invoice-UI.jpg'); background-size: 200mm 276mm;");
+      //- document.getElementById('targetedArea')
       var printContents = document.getElementById(divName).innerHTML;
       document.body.innerHTML = printContents;
       window.print();
@@ -573,12 +545,14 @@ block content
         })
     }
 
+
+
     $(document).ready(function(){
       // Delete row on delete button click
       $(document).on("click", ".delete", function(){
         $(this).parents("tr").remove();
-        document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.childNodes[8].innerHTML)
-        document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML)+parseFloat(parseFloat(document.getElementById("olddebut").innerHTML))
+        document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML.match(/(\d+)/))-parseFloat(this.parentNode.childNodes[8].innerHTML)
+        document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML.match(/(\d+)/))+parseFloat(parseFloat(document.getElementById("olddebut").innerHTML.match(/(\d+)/)))
         });
 
         // Edit row on edit button click

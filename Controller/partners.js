@@ -72,19 +72,19 @@ exports.GetPartners = async (req, res, next) => {
         const TotalIncome = await RecordsCollection.find({ status: "Customer Request" });
         const Requests = await RecordsCollection.find({ status: "Partner Request" });
 
-        // const TotalExpense = await DailyCollection.find({});
+        const TotalExpense = await RecordsCollection.find({ status: { $ne: "Recovered" } });
 
         var Income = 0
         for (let index = 0; index < TotalIncome.length; index++) {
             const element = TotalIncome[index];
-            Income = Income + element['totalQuantity'] * element['sellPrice'];
+            Income = Income + element['totalPrice'];
         }
 
-        // var Expense = 0
-        // for (let index = 0; index < TotalExpense.length; index++) {
-        //     const element = TotalExpense[index];
-        //     Expense = Expense + element['totalQuantity'] * element['sellPrice'];
-        // }
+        var Expense = 0
+        for (let index = 0; index < TotalExpense.length; index++) {
+            const element = TotalExpense[index];
+            Expense = Expense + element['totalPrice'];
+        }
 
         for (let index = 0; index < Partners.length; index++) {
             const element = Partners[index];
@@ -108,7 +108,7 @@ exports.GetPartners = async (req, res, next) => {
             });
         }
 
-        res.render('Partner/Partners', { title: "پشکدارەکان", partners: Partners, income: Income })
+        res.render('Partner/Partners', { title: "پشکدارەکان", partners: Partners, income: Income ,expense:Expense})
     } catch (error) {
         next(error)
     }

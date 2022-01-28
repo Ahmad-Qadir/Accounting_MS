@@ -1,6 +1,7 @@
 require('events').EventEmitter.defaultMaxListeners = Infinity
 const validator = require("joi");
 const config = require('config');
+var mongoose = require('mongoose');
 
 
 //Collections Section
@@ -53,46 +54,27 @@ exports.allowIfLoggedin = async (req, res, next) => {
 //Add New Customer
 exports.addNewCustomer = async (req, res, next) => {
     try {
-        const validationSchema = {
-            clientName: validator.string().required(),
-            phoneNumber: validator.string().required(),
-            secondPhoneNumber: validator.string(),
-            companyName: validator.string(),
-            clientType: validator.string().required(),
-            borrowedBalance: validator.number(),
-            recoveredBalance: validator.number(),
-            note: validator.string()
-        }
-        const resultOfValidator = validator.validate(req.body, validationSchema);
-        if (resultOfValidator.error) {
-            // req.flash('danger', resultOfValidator.error.details[0].message);
-            // res.redirect(default_Route + '/Register')
-            res.status(400).send({
-                message: resultOfValidator.error.details[0].message
-            });
+        const Account = await ProfileCollection.findOne({
+            clientName: req.body.clientName
+        });
+        if (Account) {
+            res.send("کڕیاری ناوبراو هەیە")
         } else {
-            const Account = await ProfileCollection.findOne({
-                clientName: req.body.clientName
+            const newUser = new ProfileCollection({
+                clientName: req.body.clientName,
+                phoneNumber: req.body.phoneNumber,
+                secondPhoneNumber: req.body.secondPhoneNumber,
+                companyName: req.body.companyName,
+                clientType: req.body.clientType,
+                borrowedBalance: 0,
+                recoveredBalance: 0,
+                remainedbalance: 0,
+                addedBy: req.user.username,
+                updatedBy: req.user.username,
+                note: "req.body.note"
             });
-            if (Account) {
-                res.send("User is exist")
-            } else {
-                const newUser = new ProfileCollection({
-                    clientName: req.body.clientName,
-                    phoneNumber: req.body.phoneNumber,
-                    secondPhoneNumber: req.body.secondPhoneNumber,
-                    companyName: req.body.companyName,
-                    clientType: req.body.clientType,
-                    borrowedBalance: 0,
-                    recoveredBalance: 0,
-                    remainedbalance: 0,
-                    addedBy: req.user.username,
-                    updatedBy: req.user.username,
-                    note: "req.body.note"
-                });
-                await newUser.save();
-                res.redirect('/Profiles')
-            }
+            await newUser.save();
+            res.redirect('/Profiles')
         }
     } catch (error) {
         res.send(error)
@@ -127,12 +109,47 @@ exports.GetAllCustomers = async (req, res, next) => {
 //Get Invoice for Specific Customer
 exports.GetAllInvoiceForCustomers = async (req, res, next) => {
     const Invoices = await HistoryClass
-        .find({
-            cutomerID: req.params.id
-        })
-        .sort({
-            "createdAt": -1
-        }).populate('productID')
+        .aggregate([
+            {
+                $group: {
+                    _id: { recordCode: "$recordCode" },
+                    amount: { $sum: "$totalPrice" },
+                    count: { $sum: 1 },
+                    items: {
+                        $push: { productID: "$productID", cutomerID: "$cutomerID",createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                    },
+                },
+            },
+            // {
+            //     $group: {
+            //         _id: "$recordCode",
+            //     },
+            // },
+            // {
+            //     $project: {
+            //         productID: "$productID"
+            //     },
+            // },
+            {
+                $sort: { "_id": -1 },
+            },
+            {
+                $match: {
+                    "items.cutomerID": mongoose.Types.ObjectId(req.params.id),
+                }
+            },
+            {
+                $lookup: {
+                    from: "items",
+                    localField: "items.productID",
+                    foreignField: "_id",
+                    as: "data",
+                },
+            },
+            // {
+            //     $unwind: "$data",
+            // },
+        ]);
 
     const Profile = await HistoryClass
         .find({
@@ -158,28 +175,55 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
 }
 
 
-
 //Get Invoice for Specific Customer
 exports.PrintAllInvoiceforCustomer = async (req, res, next) => {
     // console.log("hey")
     const Records = await HistoryClass
-        .find({
-            cutomerID: req.params.id
-        }).populate('productID').aggregate([
-            { $group: { _id: { recordCode: "$recordCode" }, amount: { $sum: "$totalPrice" }, items: { $push: { weight: "$weight", itemName: "$itemName", itemModel: "$itemModel", totalQuantity: "$totalQuantity", camePrice: "$camePrice", itemUnit: "$itemUnit", itemType: "$itemType", manufacturerCompany: "$manufacturerCompany", color: "$color", remainedPacket: "$remainedPacket", remainedPerPacket: "$remainedPerPacket", usedIn: "$usedIn", totalQuantity: "$totalQuantity", createdAt: "$createdAt" } } } },
-        ])
+        .aggregate([
+            // {
+            //     $group: {
+            //         _id: { recordCode: "$recordCode" },
+            //         amount: { $sum: "$totalPrice" },
+            //         count: { $sum: 1 },
+            //         // data: {
+            //         //     $push: { productID: "$productID", cutomerID: "$cutomerID" },
+            //         // },
+            //     },
+            // },
+            // {
+            //     $sort: { "_id": -1 },
+            // },
+            {
+                $match: {
+                    cutomerID: mongoose.Types.ObjectId(req.params.id),
+                }
+            },
+            {
+                $lookup: {
+                    from: "items",
+                    localField: "productID",
+                    foreignField: "_id",
+                    as: "data",
+                },
+            },
+            {
+                $unwind: "$data",
+            },
+        ]);
+
+    // var checker = await ProductsCollection.populate(Records, { path: "productID" });
 
     const ProfileInformation = await ProfileCollection
         .findOne({
             _id: req.params.id
         })
 
-    // res.json(Records)
-    res.render('Profiles/PrintInvoice', {
-        title: "تۆمارەکانی " + ProfileInformation['clientName'],
-        records: Records,
-        profile: ProfileInformation
-    })
+    res.json(Records)
+    // res.render('Profiles/PrintInvoice', {
+    //     title: "تۆمارەکانی " + ProfileInformation['clientName'],
+    //     records: Records,
+    //     profile: ProfileInformation
+    // })
     // res.send(Invoices)
 
 }

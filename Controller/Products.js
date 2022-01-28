@@ -256,6 +256,7 @@ exports.NewInvoice = async (req, res, next) => {
                 //Prevent 
                 if (Trailer[0]['totalQuantity'] < totalRequestedPackets) {
                     res.send("بەرهەمی " + Trailer[0]['productID']['itemName'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە لە بەرهەمی گەڕاوە");
+                    break;
                 } else {
                     //===============Records Collection=============
                     const newRecordtoHistory = new RecordsCollection({
@@ -324,7 +325,8 @@ exports.NewInvoice = async (req, res, next) => {
 
                 //Prevent 
                 if (Trailer[0]['totalQuantity'] < totalRequestedPackets) {
-                    res.status(402).send("بەرهەمی " + Trailer[0]['itemName'] + " " + Trailer[0]['color'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە لە باری ژمارە" + element[9].split('-')[0]);
+                    res.send("بەرهەمی " + Trailer[0]['itemName'] + " " + Trailer[0]['color'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە لە باری ژمارە" + element[9].split('-')[0]);
+                    break;
                 } else {
                     //===============Records Collection=============
                     const newRecordtoHistory = new RecordsCollection({
@@ -838,7 +840,7 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
 
 
         if (Trailer.length == 0)
-            var _TrailerNumber = 0;
+            var _TrailerNumber = 1;
         else if (Trailer[0]['trailerNumber'] == 0)
             var _TrailerNumber = 1;
         else

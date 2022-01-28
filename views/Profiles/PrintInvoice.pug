@@ -45,22 +45,22 @@ block content
                   .table-responsive-sm
                     table.table.table-striped(id="invoiceTable")
                       thead
-                        tr
+                        tr(style="text-align:center; font-size:100%;font-weight:bold")
                           th(style="width:2%").center #
-                          th(style="text-align:center; font-size:100%;font-weight:bold") ناوی بەرهەم
-                          th(style="text-align:center; font-size:100%;font-weight:bold") جۆری بەرهەم
-                          th(style="text-align:center; font-size:100%;font-weight:bold") جۆری بەرهەم
-                          th(style="text-align:center; font-size:100%;font-weight:bold;") ڕەنگ
-                          th(style="text-align:center; font-size:100%;font-weight:bold") پێوانە
-                          th(style="text-align:center; font-size:100%;font-weight:bold; width:3%") ژمارە
-                          th(style="text-align:center; font-size:100%;font-weight:bold").right نرخی تاک
-                          th(style="text-align:center; font-size:100%;font-weight:bold").right کۆی گشتی
+                          th ناوی بەرهەم
+                          th جۆری بەرهەم
+                          th جۆری بەرهەم
+                          th ڕەنگ
+                          th پێوانە
+                          th(style="width:3%") ژمارە
+                          th.right نرخی تاک
+                          th.right کۆی گشتی
                       tbody
                         - var j=i+1
-                          tr  
+                          tr((style="text-align:center; font-size:100%;font-weight:bold"))
                             if records[i]['productID']==undefined
                               td=j
-                              td(style="text-align:center; font-size:100%;font-weight:bold") پارەدان
+                              td پارەدان
                               td 
                               td 
                               td 
@@ -68,17 +68,17 @@ block content
                               td 
                               td 
                               td
-                              td(style="text-align:center; font-size:100%;font-weight:bold")="$ "+records[i]['totalPrice']
+                              td="$ "+records[i]['totalPrice']
                             else 
-                              td(style="text-align:center; font-size:100%;font-weight:bold")=j
-                              td(style="text-align:center; font-size:100%;font-weight:bold")=records[i]['productID']['itemModel']
-                              td(style="text-align:center; font-size:100%;font-weight:bold")=records[i]['productID']['itemName']
-                              td(style="text-align:center; font-size:100%;font-weight:bold")=records[i]['productID']['itemType']
-                              td(style="text-align:center; font-size:100%;font-weight:bold")=records[i]['productID']['color']
-                              td(style="text-align:center; font-size:100%;font-weight:bold")=records[i]['productID']['itemUnit']
-                              td(style="text-align:center; font-size:100%;font-weight:bold")=records[i]['totalQuantity']
-                              td(style="text-align:center; font-size:100%;font-weight:bold")="$ "+records[i]['sellPrice']
-                              td(style="text-align:center; font-size:100%;font-weight:bold")="$ "+records[i]['totalPrice']*records[i]['totalQuantity']
+                              td=j
+                              td=records[i]['productID']['itemModel']
+                              td=records[i]['productID']['itemName']
+                              td=records[i]['productID']['itemType']
+                              td=records[i]['productID']['color']
+                              td=records[i]['productID']['itemUnit']
+                              td=records[i]['totalQuantity']
+                              td="$ "+records[i]['sellPrice']
+                              td="$ "+records[i]['totalPrice']*records[i]['totalQuantity']
                   .row
                     .col-md-7
                       b تێبینی
