@@ -46,14 +46,40 @@ append styles
     .show {display: block;}
 
     .page {
-      width: 210mm;
-      min-height: 297mm;
-      padding: 20mm;
-      margin: 10mm auto;
+      width: 21cm;
+      min-height: 29.7cm;
+      padding: 2cm;
+      margin: 1cm auto;
       border: 1px #D3D3D3 solid;
       border-radius: 5px;
-
+      background: white;
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+    .subpage {
+      padding: 1cm;
+      border: 5px red solid;
+      height: 256mm;
+      outline: 2cm #FFEAEA solid;
+    }
+    @page {
+      size: A4;
+      margin: 0;
+    }
+    body {
+      -webkit-print-color-adjust: exact !important;
+    }
+    @media print {
+      .page {
+        margin: 0;
+        border: initial;
+        border-radius: initial;
+        width: initial;
+        min-height: initial;
+        box-shadow: initial;
+        background-image: url('https://i.ibb.co/HhnspzY/Invoice-UI.jpg');
+        background-size: 200mm 280mm;
+        page-break-after: always;
+      }
     }
 block content
   br
@@ -67,7 +93,7 @@ block content
           |  نوێکردنەوە
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm.text-white.m-1(type='button' onclick="payNow()")
           i.fas.fa-money-bill-alt.fa-sm.text-white-50
-          |  پارەدانی گشتی
+          |  پارەدان
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white.m-1(type='button' onclick="Qard()")
           i.fas.fa-money-bill-alt.fa-sm.text-white-50
           |  قەرزکردن
@@ -94,50 +120,41 @@ block content
                         a(href="#" onclick="getModel(this,event);" title=item type='button' data-toggle="modal" data-target="#confirm-product"+i)=item
                 .form-group.col-md-2
                   p(id="dataofIncome") 0
-          .container(id="printableArea").d-block.d-print-none
-            .card.border.border-dark
-              .card-header(style='background-color: black;')
-              .card-body
-                .p-4.shadow-4.rounded-3(style='background-color: hsl(0, 0%, 94%);')
+          .container(id="printableArea")
+            .card.border
+              //- .card-header(style='background-color: black;')
+              .card-body(id="targetedArea" style="background: url('https://i.ibb.co/HhnspzY/Invoice-UI.jpg'); background-size: 100% 280mm;")
+                .p-4.shadow-4.rounded-3
                   .container
                     .row.col-12
-                      .col-3
-                        h2 تیتان سێرڤس
+                      .col-7
+                        h2
+                          strong تیتان سێرڤس
                         br
-                        h6 لەلایان:
-                        div
-                          strong=user.username
-                        //- div Madalinskiego 8
-                        strong="بار: "+"فرۆشتن"
-                        //- div Email: info@dotnettec.com
-                        //- div Phone: +964 750 000 00 00
+                        h6="ژمارەی تۆمار: "+invoiceID
+                        h6="بۆ:"+profile[0]['companyName']+" / "+profile[0]['clientName']
+                        h6="ژمارەی مۆبایل: "+profile[0]['phoneNumber']
+                        h6="بار: "+"فرۆشتن"
+                        h6="لەلایان:"+user.username
                       .col-5
-                        img#icon(src='https://i.ibb.co/Jj7wYNW/titan-removebg-preview.png' width=250).mx-auto.d-block
-                      .col-4
-                        h2 Titan Service
-                        br
-                        h6 بۆ:
-                        div
-                          strong=profile[0]['companyName']+" / "+profile[0]['clientName']
-                        //- div Attn: Daniel Marek
-                        //- div Email: robert@daniel.com
-                        div="ژمارەی مۆبایل: "+profile[0]['phoneNumber']
+                        img#icon(src='https://i.ibb.co/KDWZgbV/titan-Copy.jpg' width=100).mx-auto.d-block
+
                 hr
-                .table-responsive.col-12
-                  table.table.table-striped(id="invoiceTable").table-bordered.table-sm
-                    thead
+                div
+                  table.table-striped(id="invoiceTable" width: 100%; ).table-bordered.table-xs.table-responsive.col-12
+                    thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
                       tr
-                        th(style="width:2%").center #
-                        th(style="text-align:center; font-size:100%;font-weight:bold") ناوی بەرهەم
-                        th(style="text-align:center; font-size:100%;font-weight:bold") جۆری بەرهەم
-                        th(style="text-align:center; font-size:100%;font-weight:bold") جۆری بەرهەم
-                        th(style="text-align:center; font-size:100%;font-weight:bold;") ڕەنگ
-                        th(style="text-align:center; font-size:100%;font-weight:bold") پێوانە
-                        th(style="text-align:center; font-size:100%;font-weight:bold; width:3%") ژمارە
-                        th(style="text-align:center; font-size:100%;font-weight:bold").right نرخی تاک
-                        th(style="text-align:center; font-size:100%;font-weight:bold").right کۆی گشتی
-                        th(style="text-align:center; font-size:100%;font-weight:bold; width:3%")
-                    tbody(id="dataOfInvoiceTable")
+                        th(style="width:3%").center #
+                        th(style="font-weight:bold;") ناوی بەرهەم
+                        th(style="") جۆری بەرهەم
+                        th(style="") جۆری بەرهەم
+                        th(style="") ڕەنگ
+                        th(style="width:7%") پێوانە
+                        th(style="width:3%") ژمارە
+                        th(style="width:10%").right نرخی تاک
+                        th(style="").right کۆی گشتی
+                        //- th(style="text-align:center; font-size:100%;font-weight:bold; width:3%")
+                    tbody(id="dataOfInvoiceTable" style="font-size: 12px;font-weight:bold;text-align:center;")
                 .row
                   .col-7
                     b تێبینی
@@ -151,8 +168,8 @@ block content
                         //-   td(id="subtotal").right 0
                         tr
                           td.left
-                            strong قەرزی پێشوو
-                          td(id="olddebut").right=profile[0]['remainedbalance']
+                            strong(style="color:#f00") قەرزی پێشوو
+                          td(id="olddebut" style="color:#f00").right=profile[0]['remainedbalance']
                         //- tr
                         //-   td.left
                         //-     strong داشکان
@@ -169,15 +186,13 @@ block content
                             strong(id="finalPrice") 0
                 hr
                 .row 
-                  .col-3 
-                    span="ژمارەی تۆمار: "+invoiceID
                   .col-4
                     -var today = new Date();
                     -var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
                     -var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
                     -var dateTime = date+' '+time;
                     span="بەروار: "+dateTime.toLocaleString()
-                  .col-5
+                  .col-8
                     span="ناونیشان: "+"هەولێر - گەڕەکی ڕاستی - کۆڵانی بەرامبەر کۆڵێژی ئەندازیاری"
                 // Modal
                 .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-payment')
@@ -202,7 +217,7 @@ block content
                         .modal-footer
                           button.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
                           a.btn.btn-success.btn-ok(onclick="resultOfValidation(this)" data-dismiss='modal') زیادکردنی بەرهەم
-              .card-footer(style='background-color: black;')
+              //- .card-footer(style='background-color: black;')
 
 
 
@@ -383,20 +398,20 @@ block content
     function Qard(){
       objectData=document.getElementById("invoiceTable")
       var subtotal=document.getElementById('total').innerHTML;
-      console.log(subtotal)
-        //Send to Database
-          var data= $.ajax({
-            type: 'POST',
-            url: "/Products/#{profile[0]['_id']}/Requests/Debut/"+subtotal,
-            dataType: 'JSON',
-            data:getJSON(objectData),
-            success: function(data){
-              $('#newRecord').append($("<div></div>").attr("class","note note-success").text(data.responseText));
-            },
-            error: function(err){
-              $('#newRecord').append($("<div></div>").attr("class","note note-danger").text(err.responseText));
-            }
-        })
+      //- console.log(subtotal)
+      //Send to Database
+        var data= $.ajax({
+          type: 'POST',
+          url: "/Products/#{profile[0]['_id']}/Requests/Debut/"+subtotal,
+          dataType: 'JSON',
+          data:getJSON(objectData),
+          success: function(data){
+            $('#newRecord').append($("<div></div>").attr("class","note note-success").text(data.responseText));
+          },
+          error: function(err){
+            $('#newRecord').append($("<div></div>").attr("class","note note-danger").text(err.responseText));
+          }
+      })
     }
 
     //Delete Table Content
@@ -474,14 +489,14 @@ block content
           //- console.log("Item Quantity"+table[i].childNodes[6].firstChild.value)
           //- console.log("Item Price"+table[i].childNodes[7].firstChild.value)
           //- console.log("Item Trailer"+table[i].childNodes[8].firstChild.value)
-          console.log(table[i].childNodes[7].firstChild.value+"and "+table[i].childNodes[9].innerHTML)
+          //- console.log(table[i].childNodes[7].firstChild.value+"and "+table[i].childNodes[9].innerHTML)
 
           document.getElementById("dataofIncome").innerHTML = parseFloat(document.getElementById("dataofIncome").innerHTML)+parseFloat(table[i].childNodes[7].firstChild.value)*parseFloat(table[i].childNodes[6].firstChild.value)-parseFloat(table[i].childNodes[9].innerHTML)*parseFloat(table[i].childNodes[6].firstChild.value)+"TAN"+Math.random().toString(36).substring(7);
 
           $("#invoiceTable").find('tbody')
             .append($('<tr>')
               .append($('<td>')
-                .text($('#invoiceTable>tbody>tr').length+1)
+                .text($('#invoiceTable>tbody>tr').length+1).attr('class','delete')
               ).append($('<td>')
                 .text(table[i].childNodes[1].innerHTML)
               ).append($('<td>')
@@ -500,19 +515,16 @@ block content
                 .text(parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value))
               ).append($('<td>')
                 .text(table[i].childNodes[8].firstChild.value).attr("style","display:none")
-              ).append($('<td>')
-                .append($('<a>')).append($("<i>")
-                  .attr("title",'Delete').attr('class',"delete fas fa-trash red-text")
-                )
-              ).append($('<td>')
-                .append($('<a>')).append($("<i>")
-                  .attr("title",'Edit').attr('class',"edit fas fa-edit amber-text disabled")
-                )
               )
+              //- .append($('<td>')
+              //-   .append($('<a>')).append($("<i>")
+              //-     .attr("title",'Edit').attr('class',"edit fas fa-edit amber-text disabled")
+              //-   )
+              //- )
             );
             var subtotal=document.getElementById('total').innerHTML;
-            document.getElementById('total').innerHTML=parseFloat(subtotal)+parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)
-            document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML)+parseFloat(parseFloat(document.getElementById("olddebut").innerHTML))
+            document.getElementById('total').innerHTML=(parseFloat(subtotal)+parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)).toFixed(2)
+            document.getElementById('finalPrice').innerHTML=(parseFloat(document.getElementById('total').innerHTML)+parseFloat(parseFloat(document.getElementById("olddebut").innerHTML))).toFixed(2)
           }
           else{
             continue;
@@ -523,8 +535,9 @@ block content
 
     //Print Section
     function printDiv(divName) {
-      var printContents = document.getElementById(divName).innerHTML;
       var originalContents = document.body.innerHTML;
+      document.getElementById("targetedArea").setAttribute("style", "background: url('https://i.ibb.co/HhnspzY/Invoice-UI.jpg'); background-size: 200mm 280mm;");
+      var printContents = document.getElementById(divName).innerHTML;
       document.body.innerHTML = printContents;
       window.print();
       document.body.innerHTML = originalContents;
@@ -554,7 +567,7 @@ block content
             "itemUnit":itemUnit
           },
           success: function(data){
-            console.log(data)
+            //- console.log(data)
 
             }
         })
@@ -564,7 +577,7 @@ block content
       // Delete row on delete button click
       $(document).on("click", ".delete", function(){
         $(this).parents("tr").remove();
-        document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.parentNode.childNodes[8].innerHTML)
+        document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML)-parseFloat(this.parentNode.childNodes[8].innerHTML)
         document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML)+parseFloat(parseFloat(document.getElementById("olddebut").innerHTML))
         });
 

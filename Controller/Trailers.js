@@ -52,7 +52,7 @@ exports.Trailers = async (req, res, next) => {
                         count: { $sum: 1 },
                         amount: { $sum: "$totalPrice" },
                         items: {
-                            $push: { weight: "$weight", itemName: "$itemName", itemModel: "$itemModel", totalQuantity: "$totalQuantity", camePrice: "$camePrice", itemUnit: "$itemUnit", itemType: "$itemType", manufacturerCompany: "$manufacturerCompany", color: "$color", remainedPacket: "$remainedPacket", remainedPerPacket: "$remainedPerPacket", usedIn: "$usedIn", totalQuantity: "$totalQuantity", createdAt: "$createdAt" }
+                            $push: { weight: "$weight", itemName: "$itemName", itemModel: "$itemModel", totalQuantity: "$totalQuantity", camePrice: "$camePrice", itemUnit: "$itemUnit", itemType: "$itemType", manufacturerCompany: "$manufacturerCompany", color: "$color", remainedPacket: "$remainedPacket", remainedPerPacket: "$remainedPerPacket", usedIn: "$usedIn", totalQuantity: "$totalQuantity", createdAt: "$createdAt", sellPrice: "$sellPrice" }
                         }
                     }
                 },

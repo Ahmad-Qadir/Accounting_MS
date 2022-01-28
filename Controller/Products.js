@@ -857,7 +857,7 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
         // console.log("Mahal: "+RequestList[0][8])
         // console.log("Mufrad: "+RequestList[0][9])
         // console.log("Wasta: "+RequestList[0][10])
-        // console.log("Total Quantity: "+RequestList[0][11])
+        // console.log("Quantity: "+RequestList[0][11])
         // console.log("Came Price: "+RequestList[0][12])
         // console.log("Sell Price: "+RequestList[0][13])
         // console.log("Total Price: "+RequestList[0][14])
@@ -893,6 +893,8 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
 
             var quantity = Product[0]['totalQuantity'] + parseFloat(element[11]);
 
+            // console.log(parseFloat(element[11]))
+            // console.log("")
             await ProductsCollection.findByIdAndUpdate({
                 "_id": Product[0]['_id']
             }, {
@@ -911,6 +913,7 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
                     itemHistory: newRecordtoHistory["_id"],
                 }
             });
+            // console.log((parseFloat(element[11]) * parseFloat(element[13])))
             const newTrailer = new TrailerCollection({
                 itemName: Product[0]['itemName'],
                 itemModel: Product[0]['itemModel'],
@@ -923,14 +926,15 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
                 usedIn: Product[0]['usedIn'],
                 color: Product[0]['color'],
                 weight: Product[0]['weight'],
-                totalWeight: Product[0]['totalWeight'] + (parseFloat(element[11]) * Product[0]['weight']),
-                camePrice: Product[0]['camePrice'],
+                totalWeight: (parseFloat(element[11]) * Product[0]['weight']),
+                camePrice: parseInt(element[12]),
+                sellPrice: parseInt(element[13]),
                 sellPriceWakil: parseFloat(element[6]),
                 sellPriceSharika: parseFloat(element[7]),
                 sellPriceMahal: parseFloat(element[8]),
                 sellPriceMufrad: parseFloat(element[9]),
                 sellPriceWasta: parseFloat(element[10]),
-                totalPrice: Product[0]['totalPrice'] + (parseFloat(element[11]) * parseFloat(element[13])),
+                totalPrice: (parseFloat(element[11]) * parseFloat(element[13])),
                 packet: parseFloat(element[11]) / Product[0]['packet'],
                 perPacket: parseFloat(element[11]) % Product[0]['packet'],
                 remainedPacket: parseFloat(element[11]) / Product[0]['packet'],
@@ -1236,7 +1240,7 @@ exports.SearchForProductsinCompany = async (req, res, next) => {
                 softdelete: false,
                 manufacturerCompany: CompanyName
             });
-        console.log(Product)
+        // console.log(Product)
         res.send(Product);
     } catch (error) {
         console.log(error)

@@ -114,7 +114,7 @@ block content
                         th ژمارە
                         th نرخی کڕین
                         th نرخی کۆمپانیا
-                        th.right بڕی بەردەست
+                        th.right کۆی نرخ
                     tbody(id="dataOfInvoiceTable")
                 .row
                   .col-lg-8.col-sm-8
@@ -125,9 +125,14 @@ block content
                       tbody
                         tr
                           td.left
-                            strong کۆی گشتی نرخ
+                            strong کۆی گشتی نرخ (بێ تێچوو)
                           td.right
                             strong(id="total") 0
+                        //- tr
+                        //-   td.left
+                        //-     strong کۆی گشتی
+                        //-   td.right
+                        //-     strong(id="final") 0
       each item,i in company
         //- if element['manufacturerCompany']==item['companyName']
         .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-product'+i)
@@ -155,30 +160,6 @@ block content
       document.getElementById("myDropdown").classList.toggle("show");
     }
 
-    
-    //- function doSearch(text,color="yellow") {
-      //- if (color!="transparent") {
-      //-   doSearch(document.getElementById('hid_search').value,"transparent"); 
-      //-   document.getElementById('hid_search').value = text; 
-      //-   }
-      //- if (window.find && window.getSelection) {
-      //-   document.designMode = "on";
-      //-   var sel = window.getSelection();
-      //-   sel.collapse(document.body, 0);
-
-      //-   while (window.find(text)) {
-      //-     document.execCommand("HiliteColor", false, color);
-      //-     sel.collapseToEnd();
-      //-   }
-      //-   document.designMode = "off";
-      //- } else if (document.body.createTextRange) {
-      //-   var textRange = document.body.createTextRange();
-      //-   while (textRange.findText(text)) {
-      //-     textRange.execCommand("BackColor", false, color);
-      //-     textRange.collapse(false);
-      //-   }
-      //- }
-      //- }
 
     window.onclick = function(event) {
       if (!event.target.matches('.custom-selection')) {
@@ -267,49 +248,8 @@ block content
             }
 
             $('#datas'+idOfModel).DataTable({
-                "paging": false
+              "paging": false
             });
-
-          //-   $("#search"+idOfModel).on("keyup", function() {
-          //-   var term = $(this).val().toLowerCase();
-          //-   $("table tr").each(function(){
-          //-     $row = $(this);
-          //-     var name = $row.find("td:nth-child(2)").text().toLowerCase();
-          //-     if(name.search(term) < 0){                
-          //-       $row.hide();
-          //-     } else{
-          //-       $row.show();
-          //-     }
-          //-   });
-          //- });
-
-          //- $("#nawibarham"+idOfModel).on("keyup", function() {
-          //-   var term = $(this).val().toLowerCase();
-          //-   $("table tr").each(function(){
-          //-     $row = $(this);
-          //-     var name = $row.find("td:nth-child(3)").text().toLowerCase();
-          //-     if(name.search(term) < 0){                
-          //-       $row.hide();
-          //-     } else{
-          //-       $row.show();
-          //-     }
-          //-   });
-          //- });
-
-          //- $("#shewayBarham"+idOfModel).on("keyup", function() {
-          //-   var term = $(this).val().toLowerCase();
-          //-   $("table tr").each(function(){
-          //-     $row = $(this);
-          //-     var name = $row.find("td:nth-child(4)").text().toLowerCase();
-          //-     if(name.search(term) < 0){                
-          //-       $row.hide();
-          //-     } else{
-          //-       $row.show();
-          //-     }
-          //-   });
-          //- });
-
-
           }
       })
     }
@@ -348,7 +288,7 @@ block content
               ).append($('<td>')
                 .text(table[i].childNodes[12].firstChild.value)
               ).append($("<td>")
-                .text(" ")
+                .text(" ").attr('id',"loop")
               ).append($('<td>')
                 .text(parseFloat(table[i].childNodes[11].firstChild.value)*parseFloat(table[i].childNodes[12].firstChild.value))
               )
@@ -408,7 +348,8 @@ block content
     function rearrangement(){
       var expense=parseFloat(document.getElementById('PriceOfExpense').value); //Expense Price
       var total=parseFloat(document.getElementById('total').innerHTML); //Total Price
-      var objectData=document.getElementById("invoiceTable")
+      var objectData=document.getElementById("invoiceTable");
+      var TotalValue = 0;
       if(isNaN(expense)){
         document.getElementById("PriceOfExpense").classList.add("btn-outline-danger")
         $('#newRecord').append($("<div></div>").attr("class","note note-danger mt-2").text("تکایە تێچووی بارهەڵگر پڕبکەوە"));
@@ -433,4 +374,10 @@ block content
 
         }
       }
+        //- $("tr #loop").each(function(index,value){
+        //-   currentRow = parseFloat($(this).text());
+        //-   TotalValue += currentRow
+        //- });
+        //- document.getElementById('final').innerHTML = TotalValue;
+
     }
