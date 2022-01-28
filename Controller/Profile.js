@@ -116,7 +116,7 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
                     amount: { $sum: "$totalPrice" },
                     count: { $sum: 1 },
                     items: {
-                        $push: { productID: "$productID", cutomerID: "$cutomerID",createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                        $push: { productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", addedBy: "$addedBy", sellPrice: "$sellPrice" },
                     },
                 },
             },
@@ -293,6 +293,8 @@ exports.debtors = async (req, res, next) => {
         const Profiles = await ProfileCollection
             .find({
                 remainedbalance: { "$ne": 0 }
+            }).sort({
+                remainedbalance: -1
             })
 
         res.render('Debtors/debtors', {

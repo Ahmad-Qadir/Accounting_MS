@@ -23,8 +23,8 @@ block content
           thead.thead-light
             tr(style="text-align:center; font-size:3 rem")
               th(scope='col') #
-              th(scope='col') ناو
-              th(scope='col') ژمارەی مۆبایل
+              //- th(scope='col') ناو
+              //- th(scope='col') ژمارەی مۆبایل
               th(scope='col') ناوی کۆمپانیا
               th(scope='col') جۆری کڕیار
               th(scope='col') بڕی قەرز
@@ -34,17 +34,17 @@ block content
               - var j=i+1
               tr(style="font-weight:bold; font-size:2 rem")
                 td(style="text-align:center;")=j
-                td=item['clientName']
-                td(style="text-align:center;")=item['phoneNumber']
+                //- td=item['clientName']
+                //- td(style="text-align:center;")=item['phoneNumber']
                 td(style="text-align:center;")=item['companyName']
                 td(style="text-align:center;")=item['clientType']
                 td(style="text-align:center;")="$ "+item['remainedbalance']
 
   //- include ../Components/Footer
   script.
-    //- $(document).ready(function() {
-    //-   $('#clientTable').DataTable();
-    //- } );
+    $(document).ready(function() {
+      $('#clientTable').DataTable();
+    } );
       function printDiv(divName) {
         var printContents = document.getElementById(divName).innerHTML;
         var originalContents = document.body.innerHTML;
