@@ -13,46 +13,96 @@ block content
               if errors
                 each error, i in errors
                   div(class="note note-danger") #{error.msg}
-            h2="نوێکردنەوەی زانیاریەکانی "+product[0]['itemName']
+            h2="نوێکردنەوەی زانیاریەکانی "+product[0]['itemModel']+" - "+product[0]['itemName']
             .row
-              .form-group.col-md-3
+              .form-group.col-md-2
                 label ناوی بەرهەم
-                input.form-control(name="itemName" type='text' placeholder='' value=product[0]['itemName'] disabled)
-              .form-group.col-md-3
+                input.form-control(name="itemName" type='text' placeholder='' required value=product[0]['itemName'])
+              .form-group.col-md-2
+                label بڕاندی بەرهەم
+                input.form-control(name="itemModel" type='text' placeholder='' required value=product[0]['itemModel'])
+              .form-group.col-md-2
                 label کۆمپانیای وەبەرهێن
-                select(name="manufacturerCompany" class="form-control" disabled)
-                  option(value=product[0]['manufacturerCompany'])=product[0]['manufacturerCompany']
-              .form-group.col-md-3
+                select(name="manufacturerCompany" class="form-control")
+                  option(value=product[0]['manufacturerCompany'] default)=product[0]['manufacturerCompany']
+                  each item,i in company
+                    option(value=item['companyName'])=item['companyName']
+              .form-group.col-md-2
+                label وڵات
+                select(name="countryCompany" class="form-control")
+                  option(value=product[0]['countryCompany'] default)=product[0]['countryCompany']
+                  option(value="اردن") اردن
+                  option(value="عیراق") عیراق
+                  option(value="توركیا") توركیا
+                  option(value="ایتالیا") ایتالیا
+                  option(value="چین") چین
+                  option(value="ئیران") ئیران
+                  option(value="بریتانیا") بریتانیا
+              .form-group.col-md-2
+                label جۆری بەرهەم
+                select(name="itemType" class="form-control")
+                  option(value=product[0]['itemType'] default)=product[0]['itemType']
+                  option(value="دهنی") دهنی
+                  option(value="مائی") مائی
+                  option(value="مائی و دهنی") مائی و دهنی
+                  option(value="نایترۆ سلیلۆز") نایترۆ سلیلۆز
+              .form-group.col-md-2
+                label ڕەنگ
+                select(name="color" class="form-control")
+                  option(value=product[0]['color'] default)=product[0]['color']
+                  each item,i in colors
+                    option(value=item)=item
+            .row
+              .form-group.col-md-2
                 label پەکێج
-                select(name="unit" class="form-control" disabled)
-                  option(value=product[0]['unit'])=product[0]['unit']
-              .form-group.col-md-3
+                select(name="unit" class="form-control")
+                  option(value=product[0]['unit'] default)=product[0]['unit']
+                  option(value="کارتۆن") کارتۆن
+                  option(value="دەرزەن") دەرزەن
+                  option(value="مەتر") مەتر
+                  option(value="کیلۆ") کیلۆ
+                  option(value="دانە") دانە
+                  option(value="لیتر") لیتر
+              .form-group.col-md-2
+                label یەکەی پێوانە
+                select(name="itemUnit" class="form-control")
+                  option(value=product[0]['itemUnit'] default)=product[0]['itemUnit']
+                  each item,i in itemUnit
+                    option(value=item['unitName'])=item['unitName']
+              .form-group.col-md-2
+                label بڕی پێوانە
+                input.form-control(name="weight" type='number' step='any' required value=product[0]['weight'])
+              .form-group.col-md-2
+                label بڕی پاکێج
+                input.form-control(name="perPacket" type='number' placeholder='0' required value=product[0]['perPacket'])
+              .form-group.col-md-2
                 label شوێنی بەکارهێنان
                 select(name="usedIn" class="form-control")
+                  option(value=product[0]['usedIn'] default)=product[0]['usedIn']
                   option(value="خارجی") خارجی
                   option(value="داخلی") داخلی
                   option(value="داخلی و خارجی") داخلی و خارجی
                   option(value="فلینكۆت") فلینكۆت
             .row
               .form-group.col-md-2
+                label نرخی هاتوو
+                input.form-control(name="camePrice" type='number' placeholder='0' required step='any' value=product[0]['camePrice'])
+              .form-group.col-md-2
                 label مفرد
-                input.form-control(name="sellPriceMufrad" type='number' step='any' placeholder='0' value=product[0]['sellPriceMufrad'])
+                input.form-control(name="sellPriceMufrad" type='number' placeholder='0' required step='any' value=product[0]['sellPriceMufrad'])
               .form-group.col-md-2
                 label محل
-                input.form-control(name="sellPriceMahal" type='number' step='any' placeholder='0' value=product[0]['sellPriceMahal'])
+                input.form-control(name="sellPriceMahal" type='number' placeholder='0' required step='any' value=product[0]['sellPriceMahal'])
               .form-group.col-md-2
                 label وەستا
-                input.form-control(name="sellPriceWasta" type='number' step='any' placeholder='0' value=product[0]['sellPriceWasta'])
+                input.form-control(name="sellPriceWasta" type='number' placeholder='0' required step='any' value=product[0]['sellPriceWasta'])
               .form-group.col-md-2
                 label وەکیل
-                input.form-control(name="sellPriceWakil" type='number' step='any' placeholder='0' value=product[0]['sellPriceWakil'])
+                input.form-control(name="sellPriceWakil" type='number' placeholder='0' required step='any' value=product[0]['sellPriceWakil'])
               .form-group.col-md-2
                 label شركه‌
-                input.form-control(name="sellPriceSharika" type='number' step='any' placeholder='0' value=product[0]['sellPriceSharika'])
-              .form-group.col-md-2
-                button.btn.btn-primary.mt-4(type='submit') نوێکردنەوە
-
-
+                input.form-control(name="sellPriceSharika" type='number' placeholder='0' required step='any' value=product[0]['sellPriceSharika'])
+            button.btn.btn-primary(type='submit') تۆمارکردن
 
 
 

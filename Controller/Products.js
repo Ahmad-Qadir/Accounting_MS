@@ -760,10 +760,28 @@ exports.EditProductUI = async (req, res, next) => {
             .find({
                 _id: req.params.id,
                 softdelete: false,
+            });
+
+        const Company = await CompanyCollection
+            .find({
+                softdelete: false,
+            })
+
+        const Color = await ProductsCollection
+            .find({
+                softdelete: false
+            }).distinct('color')
+
+        const ItemUnit = await ItemUnitCollection
+            .find({
+                softdelete: false,
             })
         res.render('Products/EditProduct', {
             title: "دەسکاریکردنی بەرهەمی " + Product[0]['itemName'],
-            product: Product
+            product: Product,
+            company: Company,
+            colors: Color,
+            itemUnit: ItemUnit
         })
     } catch (error) {
         next(error)
@@ -776,12 +794,26 @@ exports.EditProductOperation = async (req, res, next) => {
         await ProductsCollection.findByIdAndUpdate({
             _id: req.params.id
         }, {
-            sellPriceMufrad: req.body.sellPriceMufrad,
-            sellPriceMahal: req.body.sellPriceMahal,
-            sellPriceWasta: req.body.sellPriceWasta,
-            sellPriceWakil: req.body.sellPriceWakil,
-            sellPriceSharika: req.body.sellPriceSharika,
-            updatedBy: req.user.username,
+            itemName: req.body.itemName,
+                itemType: req.body.itemType,
+                itemModel: req.body.itemModel,
+                itemUnit: req.body.itemUnit,
+                unit: req.body.unit,
+                manufacturerCompany: req.body.manufacturerCompany,
+                companyCode: req.body.companyCode,
+                countryCompany: req.body.countryCompany,
+                usedIn: req.body.usedIn,
+                weight: req.body.weight,
+                color: req.body.color,
+                camePrice: req.body.camePrice,
+                sellPriceMufrad: req.body.sellPriceMufrad,
+                sellPriceMahal: req.body.sellPriceMahal,
+                sellPriceWasta: req.body.sellPriceWasta,
+                sellPriceWakil: req.body.sellPriceWakil,
+                sellPriceSharika: req.body.sellPriceSharika,
+                perPacket: req.body.perPacket,
+                updatedBy: req.user.username,
+                note: req.body.note
         });
 
         req.flash('success', "بەرهەمەکە بە سەرکەوتوویی نوێکرایەوە");
