@@ -93,7 +93,12 @@ exports.addNewItem = async (req, res, next) => {
         })
 
         const Product = await ProductsCollection.findOne({
-            itemName: req.body.itemName
+            itemName: req.body.itemName,
+            itemType: req.body.itemType,
+            itemModel: req.body.itemModel,
+            itemUnit: req.body.itemUnit,
+            unit: req.body.unit,
+            color: req.body.color,
         });
 
         if (Product) {
