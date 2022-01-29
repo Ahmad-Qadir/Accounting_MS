@@ -44,11 +44,13 @@ append styles
     }
     .dropdown a:hover {background-color: #ddd;}
     .show {display: block;}
-    .page {
+    @media print {
+    body{
       width: 21cm;
-      min-height: 29.7cm;
-      background: white;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      height: 29.7cm;
+      margin: 30mm 45mm 30mm 45mm; 
+      /* change the margins as you want them to be. */
+      } 
     }
 block content
   br

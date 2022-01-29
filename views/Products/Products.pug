@@ -59,6 +59,7 @@ block content
         //- },
         "processing": true,
         "serverSide": true,
+        "pageLength": 50,        
         "lengthMenu": [[10, 25, 50, 250], [10, 25, 50, 250]],
         "ajax": {url:"/Products/Parser",type:"POST"},
         'columns':
@@ -111,8 +112,8 @@ block content
         //- },
         //- "deferLoading": 20,
         "deferRender": true,
-        //- "searching": true,
-        //- "paging": true
+        "searching": true,
+        "paging": true
       });
     } );
       function deleteRow(r,GetArray) {
