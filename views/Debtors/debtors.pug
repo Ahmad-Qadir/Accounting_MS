@@ -23,8 +23,8 @@ block content
           thead.thead-light
             tr(style="text-align:center; font-size:3 rem")
               th(scope='col') #
-              //- th(scope='col') ناو
-              //- th(scope='col') ژمارەی مۆبایل
+              th(scope='col') ناو
+              th(scope='col') ژمارەی مۆبایل
               th(scope='col') ناوی کۆمپانیا
               th(scope='col') جۆری کڕیار
               th(scope='col') بڕی قەرز
@@ -33,9 +33,9 @@ block content
             each item,i in profile
               - var j=i+1
               tr(style="font-weight:bold; font-size:2 rem")
-                td(style="text-align:center;")=j
-                //- td=item['clientName']
-                //- td(style="text-align:center;")=item['phoneNumber']
+                td(style="text-align:center; width:3%")=j
+                td=item['clientName']
+                td(style="text-align:center;")=item['phoneNumber']
                 td(style="text-align:center;")=item['companyName']
                 td(style="text-align:center;")=item['clientType']
                 td(style="text-align:center;")="$ "+item['remainedbalance']
@@ -43,17 +43,22 @@ block content
   //- include ../Components/Footer
   script.
     $(document).ready(function() {
-      $('#clientTable').DataTable();
+      $('#clientTable').DataTable({
+        "pageLength": 100
+      });
     } );
       function printDiv(divName) {
-        var printContents = document.getElementById(divName).innerHTML;
         var originalContents = document.body.innerHTML;
+        $('table thead tr').find('td:eq(1),th:eq(1)').remove();
+        $('table thead tr').find('td:eq(1),th:eq(1)').remove();
+        $('table thead tr').find('td:eq(2),th:eq(2)').remove();
 
+        $('table tbody tr').find('td:eq(1),th:eq(1)').remove();
+        $('table tbody tr').find('td:eq(1),th:eq(1)').remove();
+        $('table tbody tr').find('td:eq(2),th:eq(2)').remove();
+        //- $('table tbody tr').find('td:eq(4),th:eq(4)').remove();
+        var printContents = document.getElementById(divName).innerHTML;
         document.body.innerHTML = printContents;
-
         window.print();
-
         document.body.innerHTML = originalContents;
       }
-
-

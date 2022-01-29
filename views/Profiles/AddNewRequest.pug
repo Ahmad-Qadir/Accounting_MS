@@ -101,7 +101,7 @@ block content
                           strong تیتان سێرڤس
                         br
                         h6="ژمارەی تۆمار: "+invoiceID
-                        h6="بۆ:"+profile[0]['companyName']+" / "+profile[0]['clientName']
+                        h6="بۆ:"+profile[0]['companyName']+" /کاک  "+profile[0]['clientName']
                         h6="ژمارەی مۆبایل: "+profile[0]['phoneNumber']
                         h6="بار: "+"فرۆشتن"
                         h6="لەلایان:"+user.username
@@ -114,8 +114,7 @@ block content
                       tr
                         th(style="width:3%").center #
                         th(style="font-weight:bold;") ناوی بەرهەم
-                        th(style="") جۆری بەرهەم
-                        th(style="") جۆری بەرهەم
+                        th(style="" colspan=2) جۆری بەرهەم
                         th(style="") ڕەنگ
                         th(style="width:7%") پێوانە
                         th(style="width:3%") ژمارە
@@ -124,9 +123,6 @@ block content
                         //- th(style="text-align:center; font-size:100%;font-weight:bold; width:3%")
                     tbody(id="dataOfInvoiceTable" style="font-size: 12px;font-weight:bold;text-align:center;")
                 .row
-                  .col-7
-                    b تێبینی
-                    textarea.form-control.rounded-0(rows='5' cols='80' id='note')
                   .col-5.ml-auto
                     table.table.table-clear(id="totalPayment")
                       tbody
@@ -137,7 +133,7 @@ block content
                         tr
                           td.left
                             strong(style="color:#f00") قەرزی پێشوو
-                          td(id="olddebut" style="color:#f00").right="$"+profile[0]['remainedbalance']
+                          td(id="olddebut" style="color:#f00").right="$"+profile[0]['remainedbalance'].toFixed(2)
                         //- tr
                         //-   td.left
                         //-     strong داشکان
@@ -152,6 +148,9 @@ block content
                             strong کۆی گشتی (دۆلار)
                           td.right
                             strong(id="finalPrice")="$"+0 
+                  .col-7
+                    b تێبینی
+                    textarea.form-control.rounded-0(rows='5' cols='80' id='note')
                 hr
                 .row 
                   .col-4
@@ -161,7 +160,7 @@ block content
                     -var dateTime = date+' '+time;
                     span="بەروار: "+dateTime.toLocaleString()
                   .col-8
-                    span="ناونیشان: "+"هەولێر - گەڕەکی عدالە - بەرامبەر بانکی زانکۆ"
+                    span="ناونیشان: "+"هەولێر - گەڕەکی عدالە - نزیک بانکی زانکۆ"
                 // Modal
                 .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-payment')
                   .modal-dialog.modal-dialog-centered.modal-s(role='document')
@@ -236,8 +235,8 @@ block content
           $('#header'+idOfModel).append($("<th></th>").text('جۆری بەرهەم'));
           $('#header'+idOfModel).append($("<th></th>").text('ڕەنگ'));
           $('#header'+idOfModel).append($("<th></th>").text('پێوانە'));
-          $('#header'+idOfModel).append($("<th></th>").text('ژمارە'));
-          $('#header'+idOfModel).append($("<th></th>").text('نرخ'));
+          $('#header'+idOfModel).append($("<th></th>").attr('style',"width:10%").text('ژمارە'));
+          $('#header'+idOfModel).append($("<th></th>").attr('style',"width:10%").text('نرخ'));
           $('#header'+idOfModel).append($("<th></th>").text('ژمارەی بارهەڵگر'));
           $('#header'+idOfModel).append($("<th></th>").text('نرخی هاتوو'));
           $('#datas'+idOfModel).append($("<tbody></tbody>").attr('id','MainBody'+idOfModel));
@@ -478,9 +477,9 @@ block content
               ).append($('<td>')
                 .text(table[i].childNodes[6].firstChild.value)
               ).append($('<td>')
-                .text(table[i].childNodes[7].firstChild.value)
+                .text("$"+parseFloat(table[i].childNodes[7].firstChild.value).toFixed(2))
               ).append($('<td>')
-                .text(parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value))
+                .text("$"+parseFloat(parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)).toFixed(2))
               ).append($('<td>')
                 .text(table[i].childNodes[8].firstChild.value).attr("style","display:none")
               )
@@ -493,7 +492,7 @@ block content
             var subtotal=document.getElementById('total').innerHTML.match(/(\d+)/);
             document.getElementById('total').innerHTML=(parseFloat(subtotal)+parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)).toFixed(2)
             document.getElementById('total').innerHTML="$"+document.getElementById('total').innerHTML
-            document.getElementById('finalPrice').innerHTML=(parseFloat((document.getElementById('total').innerHTML).match(/(\d+)/))+parseFloat(parseFloat((document.getElementById("olddebut").innerHTML).match(/(\d+)/)))).toFixed(2)
+            document.getElementById('finalPrice').innerHTML=(parseFloat((document.getElementById('total').innerHTML).match(/(\d+)/))+parseFloat(parseFloat((document.getElementById("olddebut").innerHTML).match(/(\d+)/))))
             document.getElementById('finalPrice').innerHTML="$"+document.getElementById('finalPrice').innerHTML
           }
           else{
@@ -551,8 +550,8 @@ block content
       // Delete row on delete button click
       $(document).on("click", ".delete", function(){
         $(this).parents("tr").remove();
-        document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML.match(/(\d+)/))-parseFloat(this.parentNode.childNodes[8].innerHTML)
-        document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML.match(/(\d+)/))+parseFloat(parseFloat(document.getElementById("olddebut").innerHTML.match(/(\d+)/)))
+        document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML.replace("$", ''))-parseFloat(this.parentNode.childNodes[8].innerHTML.replace("$", ''))
+        document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML.replace("$", ''))+parseFloat(parseFloat(document.getElementById("olddebut").innerHTML.replace("$", '')))
         });
 
         // Edit row on edit button click

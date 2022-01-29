@@ -245,7 +245,7 @@ exports.NewInvoice = async (req, res, next) => {
 
             var totalRequestedPackets = element[6];
 
-            var _SellPrice = parseFloat(element[7].replace(/[^0-9]/g, ''))
+            var _SellPrice = parseFloat(element[7].replace("$", ''))
             if (element[9].split('-')[0] == 0) {
                 const Trailer = await RecordsCollection.find({
                     productID: Product[0]['_id'],
@@ -264,9 +264,8 @@ exports.NewInvoice = async (req, res, next) => {
                         totalQuantity: totalRequestedPackets,
                         status: "Customer Request",
                         sellPrice: _SellPrice,
-
                         totalPrice: _SellPrice * totalRequestedPackets,
-                        trailerNumber: element[8].split('-')[0],
+                        trailerNumber: element[9].split('-')[0],
                         addedBy: req.user.username,
                         updatedBy: req.user.username,
                         note: req.body.note,
@@ -439,7 +438,7 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
 
             var totalRequestedPackets = element[6];
 
-            var _SellPrice = parseFloat(element[7].replace(/[^0-9]/g, ''))
+            var _SellPrice = parseFloat(element[7].replace("$", ''))
             if (element[9].split('-')[0] == 0) {
                 const Trailer = await RecordsCollection.find({
                     productID: Product[0]['_id'],
@@ -450,6 +449,7 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                 //Prevent 
                 if (Trailer[0]['totalQuantity'] < totalRequestedPackets) {
                     res.send("بەرهەمی " + Trailer[0]['productID']['itemName'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە لە بەرهەمی گەڕاوە");
+                    break;
                 } else {
                     //===============Records Collection=============
                     const newRecordtoHistory = new RecordsCollection({
@@ -459,7 +459,7 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                         sellPrice: _SellPrice,
                         totalPrice: _SellPrice * totalRequestedPackets,
                         oldDebut: Profile['remainedbalance'],
-                        trailerNumber: element[8].split('-')[0],
+                        trailerNumber: element[9].split('-')[0],
                         addedBy: req.user.username,
                         updatedBy: req.user.username,
                         note: req.body.note,
@@ -519,6 +519,7 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                 //Prevent 
                 if (Trailer[0]['totalQuantity'] < totalRequestedPackets) {
                     res.status(402).send("بەرهەمی " + Trailer[0]['itemName'] + " " + Trailer[0]['color'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە لە باری ژمارە" + element[9].split('-')[0]);
+                    break;
                 } else {
                     //===============Records Collection=============
                     const newRecordtoHistory = new RecordsCollection({
@@ -589,7 +590,7 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
         await ProfileCollection.findByIdAndUpdate({
             _id: req.params.id
         }, {
-            remainedbalance: Profile['remainedbalance'] + parseFloat(req.params.price),
+            remainedbalance: Profile['remainedbalance'] + parseFloat(req.params.price.replace("$", '')),
         });
 
         res.status(200).send("بە سەرکەوتوویی تۆمارکرا")
@@ -611,7 +612,7 @@ exports.NewInvoiceForDebut = async (req, res, next) => {
             });
 
         var invoiceID = Records.length;
-        const Prof = await ProfileCollection.find({
+        const Profile = await ProfileCollection.find({
             _id: req.params.id
         });
         const newRecordtoHistory = new RecordsCollection({
@@ -631,7 +632,7 @@ exports.NewInvoiceForDebut = async (req, res, next) => {
         await ProfileCollection.findByIdAndUpdate({
             _id: req.params.id
         }, {
-            remainedbalance: Prof[0]['remainedbalance'] - parseFloat(req.params.paid),
+            remainedbalance: Profile[0]['remainedbalance'] - parseFloat(req.params.paid),
             $push: {
                 invoiceID: newRecordtoHistory["_id"],
             }
