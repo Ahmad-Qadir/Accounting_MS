@@ -43,7 +43,7 @@ block content
                                                 th(scope='col') ڕەنگ
                                                 th(scope='col') کۆی نرخ
                                         tbody
-                                            each data,j in item['items']
+                                            each data,j in item['data']
                                                 -var index=j+1
                                                 tr(style="font-weight:bold; font-size:2 rem")
                                                     td(style="text-align:center;")=index
@@ -54,8 +54,8 @@ block content
                                                     td(style="text-align:center;")=data['itemType']
                                                     td(style="text-align:center;")=data['usedIn']
                                                     td(style="text-align:center;")=data['weight']
-                                                    td(style="text-align:center;")=data['camePrice']
-                                                    td(style="text-align:center;")=data['sellPrice']
-                                                    td(style="text-align:center;")=data['totalQuantity']
+                                                    td(style="text-align:center;")=item['items'][j]['camePrice']
+                                                    td(style="text-align:center;")=item['items'][j]['sellPrice']
+                                                    td(style="text-align:center;")=item['items'][j]['totalQuantity']
                                                     td(style="text-align:center;")=data['color']
-                                                    td(style="text-align:center;")=parseFloat(data['totalQuantity'])*parseFloat(data['camePrice'])
+                                                    td(style="text-align:center;")=parseFloat(item['items'][j]['totalQuantity'])*parseFloat(item['items'][j]['camePrice'])

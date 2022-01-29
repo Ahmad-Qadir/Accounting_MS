@@ -6,6 +6,7 @@ const {
 
 // ! Collections
 const TrailersCollection = require('../models/Trailers');
+const RecordsCollection = require('../models/records');
 
 // !: Basic Configuration
 //Authorization
@@ -43,23 +44,53 @@ exports.allowIfLoggedin = async (req, res, next) => {
 // !: Trailers
 exports.Trailers = async (req, res, next) => {
     try {
-        const Trailers = await TrailersCollection
+        // const Trailers = await TrailersCollection
+        //     .aggregate([
+        //         {
+        //             $group:
+        //             {
+        //                 _id: { trailerNumber: "$trailerNumber" },
+        //                 count: { $sum: 1 },
+        //                 amount: { $sum: "$totalPrice" },
+        //                 items: {
+        //                     $push: { weight: "$weight", itemName: "$itemName",remainedPerPacket: "$remainedPerPacket", itemModel: "$itemModel", totalQuantity: "$totalQuantity", camePrice: "$camePrice", itemUnit: "$itemUnit", itemType: "$itemType", manufacturerCompany: "$manufacturerCompany", color: "$color", remainedPacket: "$remainedPacket", remainedPerPacket: "$remainedPerPacket", usedIn: "$usedIn", totalQuantity: "$totalQuantity", createdAt: "$createdAt", sellPrice: "$sellPrice" }
+        //                 }
+        //             }
+        //         },
+        //         {
+        //             $sort: { "_id": -1 },
+        //         }
+        //     ])
+
+        const Trailers = await RecordsCollection
             .aggregate([
                 {
-                    $group:
-                    {
+                    $group: {
                         _id: { trailerNumber: "$trailerNumber" },
-                        count: { $sum: 1 },
                         amount: { $sum: "$totalPrice" },
+                        count: { $sum: 1 },
                         items: {
-                            $push: { weight: "$weight", itemName: "$itemName",remainedPerPacket: "$remainedPerPacket", itemModel: "$itemModel", totalQuantity: "$totalQuantity", camePrice: "$camePrice", itemUnit: "$itemUnit", itemType: "$itemType", manufacturerCompany: "$manufacturerCompany", color: "$color", remainedPacket: "$remainedPacket", remainedPerPacket: "$remainedPerPacket", usedIn: "$usedIn", totalQuantity: "$totalQuantity", createdAt: "$createdAt", sellPrice: "$sellPrice" }
-                        }
-                    }
+                            $push: { productID: "$productID", createdAt: "$createdAt", totalQuantity: "$totalQuantity", status: "$status", camePrice: "$camePrice", totalPrice: "$totalPrice", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                        },
+                    },
                 },
                 {
                     $sort: { "_id": -1 },
-                }
-            ])
+                },
+                {
+                    $match: {
+                        "items.status": "New Trailer",
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "items",
+                        localField: "items.productID",
+                        foreignField: "_id",
+                        as: "data",
+                    },
+                },
+            ]);
 
         // res.json(Trailers)
         // setTimeout(() => {

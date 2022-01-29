@@ -84,7 +84,9 @@ block content
   //- include ../Components/Footer
   script.
     $(document).ready(function() {
-      $('#clientTable').DataTable(
+      $('#clientTable').DataTable({
+        "pageLength": 50
+      }
       );
     } );
 

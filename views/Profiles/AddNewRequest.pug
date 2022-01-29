@@ -95,13 +95,13 @@ block content
                 .form-group.col-md-2
                   p(id="dataofIncome") 0
           .container-fluid(id="printableArea")
-            .card.border
+            .card.border(style="border: 5px solid #1794BA !important;" class="h-100")
               //- .card-header(style='background-color: black;')
               .card-body(id="targetedArea" style="background: url('https://i.ibb.co/HhnspzY/Invoice-UI.jpg'); background-size: 100% 280mm;")
-                .p-4.shadow-4.rounded-3
+                .p-4
                   .container
                     .row.col-12
-                      .col-7
+                      .col-6
                         h2
                           strong تیتان سێرڤس
                         br
@@ -110,11 +110,12 @@ block content
                         h6="ژمارەی مۆبایل: "+profile[0]['phoneNumber']
                         h6="بار: "+"فرۆشتن"
                         h6="لەلایان:"+user.username
-                      .col-5
-                        img#icon(src='https://i.ibb.co/KDWZgbV/titan-Copy.jpg' width=100).mx-auto.d-block
+                        h6="ژمارەی مۆبایل ی کۆمپانیا:07504153878"
+                      .col-6
+                        img#icon(src='https://i.ibb.co/9GPnfN5/titan-removebg-preview.png' width=300).mx-auto.d-block
                 hr
                 div
-                  table(id="invoiceTable" width: 100% ).table-bordered.table-xs.table-responsive.col-12
+                  table(id="invoiceTable").table-bordered.table-xs.table-responsive.col-12
                     thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
                       tr
                         th(style="width:3%").center #
@@ -129,13 +130,14 @@ block content
                     tbody(id="dataOfInvoiceTable" style="font-size: 12px;font-weight:bold;text-align:center;")
                 .row
                   .col-5.ml-auto
-                    table.table.table-clear(id="totalPayment")
+                    br
+                    table.table.table-bordered.table-xs(id="totalPayment")
                       tbody
                         //- tr
                         //-   td.left
                         //-     strong کۆی گشتی تۆمار
                         //-   td(id="subtotal").right 0
-                        tr
+                        tr(style="line-height: 10px;")
                           td.left
                             strong(style="color:#f00") قەرزی پێشوو
                           td(id="olddebut" style="color:#f00").right="$"+profile[0]['remainedbalance'].toFixed(2)
@@ -144,28 +146,30 @@ block content
                         //-     strong داشکان
                         //-   td.right
                         //-     input(type="number" id="discount" value="0")
-                        tr
+                        tr(style="line-height: 10px;")
                           td.left
                             strong قەرزی ئێستا
                           td.right(id="total")="$"+0
-                        tr
+                        tr(style="line-height: 10px;")
                           td.left
                             strong کۆی گشتی (دۆلار)
                           td.right
                             strong(id="finalPrice")="$"+0 
-                  .col-7
-                    b تێبینی
-                    textarea.form-control.rounded-0(rows='5' cols='80' id='note')
-                hr
-                .row 
-                  .col-4
-                    -var today = new Date();
-                    -var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-                    -var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                    -var dateTime = date+' '+time;
-                    span="بەروار: "+dateTime.toLocaleString()
-                  .col-8
-                    span="ناونیشان: "+"هەولێر - گەڕەکی عدالە - نزیک بانکی زانکۆ"
+                  //- .col-7
+                  //-   b تێبینی
+                  //-   textarea.form-control.rounded-0(rows='5' cols='80' id='note')
+                footer(style="position: fixed;padding: 10px 10px 0px 10px;bottom: 0;width: 100%;height: 30mm;")
+                  hr
+                  .row 
+                    .col-1
+                    .col-4
+                      -var today = new Date();
+                      -var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                      -var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                      -var dateTime = date+' '+time;
+                      span="    بەروار: "+dateTime.toLocaleString()
+                    .col-6
+                      span="ناونیشان: "+"هەولێر - گەڕەکی عدالە - نزیک بانکی زانکۆ"
                 // Modal
                 .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-payment')
                   .modal-dialog.modal-dialog-centered.modal-s(role='document')

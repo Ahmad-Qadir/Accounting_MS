@@ -120,16 +120,6 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
                     },
                 },
             },
-            // {
-            //     $group: {
-            //         _id: "$recordCode",
-            //     },
-            // },
-            // {
-            //     $project: {
-            //         productID: "$productID"
-            //     },
-            // },
             {
                 $sort: { "_id": -1 },
             },
@@ -146,9 +136,6 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
                     as: "data",
                 },
             },
-            // {
-            //     $unwind: "$data",
-            // },
         ]);
 
     const Profile = await HistoryClass
@@ -432,10 +419,11 @@ exports.PrintSelectedInvoice = async (req, res, next) => {
             }).populate('cutomerID')
 
         // res.json(Records)
-        res.render('Components/PrintInvoice', {
+        res.render('Profiles/PrintInvoice', {
             title: "تۆماری ژمارە " + req.params.invoiceID,
             records: Records,
-            profile: ProfileInformation[0]
+            profile: ProfileInformation[0],
+            invoiceID:req.params.invoiceID
         })
     } catch (error) {
         next(error)
