@@ -36,21 +36,22 @@ router.get('/MyAccount', EmployeeController.allowIfLoggedin, EmployeeController.
 // router.get('/Homepage',  Dashboard.allowIfLoggedin, Dashboard.getHomepage);
 
 //Products
+router.get('/NewProduct', Products.allowIfLoggedin, Products.grantAccess('createAny', 'products'), Products.AddNewProduct); // Add new Product
 router.post('/Product', Products.allowIfLoggedin, Products.grantAccess('createAny', 'products'), Products.addNewItem); // Add new Product
 router.get('/Products', Products.getProducts); // Get All Products
 router.get('/Products/:productName', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.getSpecificProducts); // Get Single Product
 router.get('/Products/:id/Invoices', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.getInvoiceofSpecificProduct); // Get Invoices of each Product
-router.get('/Products/:id/Modification', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.EditProductUI);
-router.post('/Products/:id/Update', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.EditProductOperation);
 router.post('/Products/Model', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.SearchForProductModel);
 router.get('/Products/Model/Company/:company', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.SearchForProductsinCompany);
 router.post('/Products/Parser', Products.GetProductswithSearch); // Get All Products
-
+// ! Update Products
+router.get('/Products/:id/Modification', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.EditProductUI);
+router.post('/Products/:id/Update', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.EditProductOperation);
+// ! Clone Products
 router.get('/Products/:id/Clone', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.CloneProductUI);
 router.post('/Products/Clone', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.CloneProduct);
 
 
-router.get('/NewProduct', Products.allowIfLoggedin, Products.grantAccess('createAny', 'products'), Products.AddNewProduct); // Add new Product
 // router.get('/:id/NewRequest', Products.AddNewRequest); // Add new Request per Product
 router.post('/Products/:id/Requests', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.NewInvoice); // Add new Request per Product
 router.post('/Products/:id/Requests/:paid', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.NewInvoiceForDebut); // Add new Request per Product

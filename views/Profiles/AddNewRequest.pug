@@ -60,13 +60,16 @@ block content
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-danger.shadow-sm.text-white.m-1(onclick="deleteAllContent()")
           i.fas.fa-sync-alt.fa-sm.text-white-50
           |  نوێکردنەوە
+        //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-warning.shadow-sm.text-white.m-1.edit
+        //-   i.fas.fa-pen.fa-sm.text-white-50
+        //-   |  دەسکاریکردن
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm.text-white.m-1(type='button' onclick="payNow()")
           i.fas.fa-money-bill-alt.fa-sm.text-white-50
           |  پارەدان
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white.m-1(type='button' onclick="Qard()")
           i.fas.fa-money-bill-alt.fa-sm.text-white-50
           |  قەرزکردن
-        a.d-none.d-sm-inline-block.btn.btn-sm.btn-warning.shadow-sm.text-white.m-1(type='button' data-toggle="modal" data-target="#confirm-payment")
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.m-1(type='button' data-toggle="modal" data-target="#confirm-payment")
           i.fas.fa-wallet.fa-sm.text-white-50
           |  دانەوەی پارە
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.m-1(type='button' data-toggle='modal' onclick="printDiv('printableArea')")
@@ -206,11 +209,6 @@ block content
         }
       }
     }
-
-    // The code to close the dropdown
-    //- $('myDropdown').click(function(e) {
-    //-   document.getElementById("myDropdown").classList.toggle("hide");
-    //- });
 
     // Get Model Table
     function getModel(val, event) {
@@ -438,25 +436,7 @@ block content
       var table=val.parentNode.parentNode.childNodes[2].childNodes[0].childNodes[1].childNodes[1].childNodes;
 
       for (let i = 0; i < table.length; i++) {
-      //- console.log(table[i].childNodes[0].firstChild.id)
         if(document.getElementById(table[i].childNodes[0].childNodes[0].id).checked==true){
-          //- th بڕاندی بەرهەم
-          //-               th ناوی بەرهەم
-          //-               th ڕەنگ
-          //-               th جۆری بەرهەم
-          //-               th پێوانە
-          //-               th ژمارە
-          //-               th.right کۆی گشتی
-          //- console.log(table[i].childNodes[0].childNodes[0].id)
-          //- console.log("Item Model"+table[i].childNodes[1].innerHTML)
-          //- console.log("Item Name"+table[i].childNodes[2].innerHTML)
-          //- console.log("Item Type"+table[i].childNodes[3].innerHTML)
-          //- console.log("Item Color"+table[i].childNodes[4].innerHTML)
-          //- console.log("Item Unit"+table[i].childNodes[5].innerHTML)
-          //- console.log("Item Quantity"+table[i].childNodes[6].firstChild.value)
-          //- console.log("Item Price"+table[i].childNodes[7].firstChild.value)
-          //- console.log("Item Trailer"+table[i].childNodes[8].firstChild.value)
-          //- console.log(table[i].childNodes[7].firstChild.value+"and "+table[i].childNodes[9].innerHTML)
 
           document.getElementById("dataofIncome").innerHTML = parseFloat(document.getElementById("dataofIncome").innerHTML)+parseFloat(table[i].childNodes[7].firstChild.value)*parseFloat(table[i].childNodes[6].firstChild.value)-parseFloat(table[i].childNodes[9].innerHTML)*parseFloat(table[i].childNodes[6].firstChild.value)+"TAN"+Math.random().toString(36).substring(7);
 
@@ -465,21 +445,21 @@ block content
               .append($('<td>')
                 .text($('#invoiceTable>tbody>tr').length+1).attr('class','delete')
               ).append($('<td>')
-                .text(table[i].childNodes[1].innerHTML)
+                .text(table[i].childNodes[1].innerHTML).attr("contenteditable",'true')
               ).append($('<td>')
-                .text(table[i].childNodes[2].innerHTML)
+                .text(table[i].childNodes[2].innerHTML).attr("contenteditable",'true')
               ).append($('<td>')
-                .text(table[i].childNodes[3].innerHTML)
+                .text(table[i].childNodes[3].innerHTML).attr("contenteditable",'true')
               ).append($('<td>')
-                .text(table[i].childNodes[4].innerHTML)
+                .text(table[i].childNodes[4].innerHTML).attr("contenteditable",'true')
               ).append($('<td>')
-                .text(table[i].childNodes[5].innerHTML)
+                .text(table[i].childNodes[5].innerHTML).attr("contenteditable",'true')
               ).append($('<td>')
-                .text(table[i].childNodes[6].firstChild.value)
+                .text(table[i].childNodes[6].firstChild.value).attr("contenteditable",'true')
               ).append($('<td>')
-                .text("$"+parseFloat(table[i].childNodes[7].firstChild.value).toFixed(2))
+                .text("$"+parseFloat(table[i].childNodes[7].firstChild.value).toFixed(2)).attr("contenteditable",'true')
               ).append($('<td>')
-                .text("$"+parseFloat(parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)).toFixed(2))
+                .text("$"+parseFloat(parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)).toFixed(2)).attr("contenteditable",'true')
               ).append($('<td>')
                 .text(table[i].childNodes[8].firstChild.value).attr("style","display:none")
               )
@@ -499,7 +479,6 @@ block content
             continue;
           }
       }
-
     }
 
     //Print Section
@@ -553,16 +532,3 @@ block content
         document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML.replace("$", ''))-parseFloat(this.parentNode.childNodes[8].innerHTML.replace("$", ''))
         document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML.replace("$", ''))+parseFloat(parseFloat(document.getElementById("olddebut").innerHTML.replace("$", '')))
         });
-
-        // Edit row on edit button click
-      $(document).on("click", ".edit", function(){		
-        $(this).parents("tr").find("td:not(:last-child)").each(function(){
-          $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
-        });	
-      $(this).parents("tr").find(".add, .edit").toggle();
-        $(".add-new").attr("disabled", "disabled");
-        });
-      });
-
-
-
