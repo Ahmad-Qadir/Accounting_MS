@@ -169,7 +169,6 @@ exports.addNewItem = async (req, res, next) => {
 }
 
 // !: Remove Product
-
 //Remove Product UI
 exports.RemoveProductUI = async (req, res, next) => {
     const Products = await ProductsCollection
@@ -823,6 +822,126 @@ exports.EditProductOperation = async (req, res, next) => {
     }
 }
 
+//Clone Products UI
+exports.CloneProductUI = async (req, res, next) => {
+    try {
+        const Product = await ProductsCollection
+            .find({
+                _id: req.params.id,
+                softdelete: false,
+            });
+
+        const Company = await CompanyCollection
+            .find({
+                softdelete: false,
+            })
+
+        const Color = await ProductsCollection
+            .find({
+                softdelete: false
+            }).distinct('color')
+
+        const ItemUnit = await ItemUnitCollection
+            .find({
+                softdelete: false,
+            })
+        res.render('Products/cloneProduct', {
+            title: "لەبەرگرتنەوەی " + Product[0]['itemName'],
+            product: Product, 
+            company: Company,
+            colors: Color,
+            itemUnit: ItemUnit
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+//Clone Product Operation
+exports.CloneProduct = async (req, res, next) => {
+    try {
+
+        const Trailer = await TrailerCollection.find({
+            status: "New Trailer",
+            softdelete: false
+        })
+
+        const Product = await ProductsCollection.findOne({
+            itemName: req.body.itemName,
+            itemType: req.body.itemType,
+            itemModel: req.body.itemModel,
+            itemUnit: req.body.itemUnit,
+            unit: req.body.unit,
+            color: req.body.color,
+        });
+
+        if (Product) {
+            req.flash('danger', "بەرهەمی ناوبراو بەردەستە");
+            res.redirect("/NewProduct")
+        } else {
+            const newProduct = new ProductsCollection({
+                itemName: req.body.itemName,
+                itemCode: uuid.v1(),
+                itemType: req.body.itemType,
+                itemModel: req.body.itemModel,
+                itemUnit: req.body.itemUnit,
+                unit: req.body.unit,
+                manufacturerCompany: req.body.manufacturerCompany,
+                companyCode: req.body.companyCode,
+                countryCompany: req.body.countryCompany,
+                usedIn: req.body.usedIn,
+                weight: req.body.weight,
+                totalWeight: 0,
+                color: req.body.color,
+                packet: 1,
+                camePrice: req.body.camePrice,
+                sellPriceMufrad: req.body.sellPriceMufrad,
+                sellPriceMahal: req.body.sellPriceMahal,
+                sellPriceWasta: req.body.sellPriceWasta,
+                sellPriceWakil: req.body.sellPriceWakil,
+                sellPriceSharika: req.body.sellPriceSharika,
+                totalPrice: 0,
+                perPacket: req.body.perPacket,
+                remainedPacket: 0,
+                remainedPerPacket: 0,
+                totalQuantity: 0,
+                status: "New Product",
+                expireDate: req.body.expireDate,
+                trailerNumber: Trailer.length,
+                addedBy: req.user.username,
+                updatedBy: req.user.username,
+                note: req.body.note
+            });
+            await newProduct.save();
+
+
+            const newItem = new RecordsCollection({
+                recordCode: uuid.v1(),
+                packet: 1,
+                perPacket: req.body.perPacket,
+                status: "New Product",
+                trailerNumber: Trailer.length,
+                addedBy: req.user.username,
+                updatedBy: req.user.username,
+                productID: newProduct['_id'],
+            });
+            await newItem.save();
+
+            await ProductsCollection.findByIdAndUpdate({
+                _id: newProduct['_id']
+            }, {
+                $push: {
+                    itemHistory: newItem["_id"],
+                }
+            });
+            req.flash('success', "بەرهەمی ناوبراو زیادکرا");
+            res.redirect("/Products")
+        }
+    } catch (error) {
+        next(error)
+    }
+}
+
 // ! Trailers
 //Add New Trailer UI
 exports.AddNewTrailer = async (req, res, next) => {
@@ -1270,7 +1389,6 @@ exports.SearchForProductModel = async (req, res, next) => {
     }
 }
 
-
 //Search for Products of Specific Company
 exports.SearchForProductsinCompany = async (req, res, next) => {
     try {
@@ -1286,7 +1404,6 @@ exports.SearchForProductsinCompany = async (req, res, next) => {
         console.log(error)
     }
 }
-
 
 exports.GetProductswithSearch = async (req, res, next) => {
     var searchStr = req.body.search.value;
