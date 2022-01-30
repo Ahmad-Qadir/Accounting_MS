@@ -116,7 +116,7 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
                     amount: { $sum: "$totalPrice" },
                     count: { $sum: 1 },
                     items: {
-                        $push: { productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                        $push: { trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", addedBy: "$addedBy", sellPrice: "$sellPrice" },
                     },
                 },
             },
@@ -167,19 +167,6 @@ exports.PrintAllInvoiceforCustomer = async (req, res, next) => {
     // console.log("hey")
     const Records = await HistoryClass
         .aggregate([
-            // {
-            //     $group: {
-            //         _id: { recordCode: "$recordCode" },
-            //         amount: { $sum: "$totalPrice" },
-            //         count: { $sum: 1 },
-            //         // data: {
-            //         //     $push: { productID: "$productID", cutomerID: "$cutomerID" },
-            //         // },
-            //     },
-            // },
-            // {
-            //     $sort: { "_id": -1 },
-            // },
             {
                 $match: {
                     cutomerID: mongoose.Types.ObjectId(req.params.id),
@@ -423,7 +410,7 @@ exports.PrintSelectedInvoice = async (req, res, next) => {
             title: "تۆماری ژمارە " + req.params.invoiceID,
             records: Records,
             profile: ProfileInformation[0],
-            invoiceID:req.params.invoiceID
+            invoiceID: req.params.invoiceID
         })
     } catch (error) {
         next(error)
