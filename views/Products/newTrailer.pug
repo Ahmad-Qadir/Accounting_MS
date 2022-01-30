@@ -242,7 +242,7 @@ block content
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['sellPriceMufrad']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['sellPriceWasta']));
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','quantity'+idOfModel+i));
-            $('#quantity'+idOfModel+i).append($("<input></input>").attr('type','number').attr('step','any').attr('name','totalQuan').attr('value','0').attr('class','form-control').attr('id','totalQuan'+idOfModel+i));
+            $('#quantity'+idOfModel+i).append($("<input></input>").attr('type','number').attr('step','any').attr('name','totalQuan').attr('placeholder','0').attr('class','form-control').attr('id','totalQuan'+idOfModel+i));
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','priceRow'+idOfModel+i));
             $('#priceRow'+idOfModel+i).append($("<input></input>").attr('type','number').attr('step','any').attr('name','priceOf').attr('id','priceOf'+idOfModel+i).attr('class','form-control').attr('value',data[i]['camePrice']));
             }
