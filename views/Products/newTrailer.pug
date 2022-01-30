@@ -75,7 +75,7 @@ block content
                   .dropdown
                     #myDropdown.dropdown-content
                       each item,i in company
-                        a(href="#" onclick="getModel(this,event);" title=item['companyName'] type='button' data-toggle="modal" data-target="#confirm-product"+i)=item['companyName']
+                        a(href="#" onclick="getModel(this,event);" title=item type='button' data-toggle="modal" data-target="#confirm-product"+i)=item
                 .form-group.col-md-4
                   label نرخی تێچووی بارهەڵگر
                   input(type="text" name="PriceOfExpense" class="form-control fstdropdown-select" id="PriceOfExpense")

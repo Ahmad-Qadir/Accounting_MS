@@ -95,7 +95,7 @@ require('./Controller/prod')
 
 
 app.get('/import', async (req, res) => {
-    fs.createReadStream("C:\\Users\\Ahmad\\Desktop\\metalsteel.csv")
+    fs.createReadStream("C:\\Users\\ahmed.q\\Desktop\\karsta.csv")
         .pipe(csv())
         .on('data', async function (row) {
             const newProduct = new ProductsCollection({
@@ -104,15 +104,15 @@ app.get('/import', async (req, res) => {
                 itemModel: row.itemModel,
                 itemUnit: row.itemUnit,
                 itemType: row.itemType,
+                brandType:row.brandType,
                 manufacturerCompany: row.manufacturerCompany,
                 companyCode: row.companyCode,
                 countryCompany: row.countryCompany,
                 unit: row.unit,
                 usedIn: row.usedIn,
-                weight: row.weight,
-                totalWeight: row.weight * row.perPacket,
+                weight: parseFloat(row.weight),
                 color: row.color,
-                packet: row.packet,
+                packet: 1,
                 perPacket: row.perPacket,
                 remainedPacket: 0,
                 remainedPerPacket: 0,
@@ -134,16 +134,16 @@ app.get('/import', async (req, res) => {
             });
             await newProduct.save();
             const newItem = new RecordsCollection({
-                packet: row.packet,
                 camePrice: row.camePrice,
                 sellPriceMufrad: row.sellPriceMufrad,
                 sellPriceMahal: row.sellPriceMahal,
                 sellPriceWasta: row.sellPriceWasta,
                 sellPriceWakil: row.sellPriceWakil,
                 sellPriceSharika: row.sellPriceSharika,
-                totalPrice: row.camePrice * row.perPacket,
-                perPacket: row.perPacket,
-                totalQuantity: row.perPacket,
+                totalPrice: 0,
+                packet: 0,
+                perPacket: 0,
+                totalQuantity: 0,
                 status: "New Product",
                 trailerNumber: 1,
                 addedBy: "Ahmad Qadir",

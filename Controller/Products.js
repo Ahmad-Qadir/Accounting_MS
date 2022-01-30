@@ -794,25 +794,24 @@ exports.EditProductOperation = async (req, res, next) => {
             _id: req.params.id
         }, {
             itemName: req.body.itemName,
-                itemType: req.body.itemType,
-                itemModel: req.body.itemModel,
-                itemUnit: req.body.itemUnit,
-                unit: req.body.unit,
-                manufacturerCompany: req.body.manufacturerCompany,
-                companyCode: req.body.companyCode,
-                countryCompany: req.body.countryCompany,
-                usedIn: req.body.usedIn,
-                weight: req.body.weight,
-                color: req.body.color,
-                camePrice: req.body.camePrice,
-                sellPriceMufrad: req.body.sellPriceMufrad,
-                sellPriceMahal: req.body.sellPriceMahal,
-                sellPriceWasta: req.body.sellPriceWasta,
-                sellPriceWakil: req.body.sellPriceWakil,
-                sellPriceSharika: req.body.sellPriceSharika,
-                perPacket: req.body.perPacket,
-                updatedBy: req.user.username,
-                note: req.body.note
+            itemType: req.body.itemType,
+            itemModel: req.body.itemModel,
+            itemUnit: req.body.itemUnit,
+            unit: req.body.unit,
+            manufacturerCompany: req.body.manufacturerCompany,
+            companyCode: req.body.companyCode,
+            countryCompany: req.body.countryCompany,
+            usedIn: req.body.usedIn,
+            weight: req.body.weight,
+            color: req.body.color,
+            camePrice: req.body.camePrice,
+            sellPriceMufrad: req.body.sellPriceMufrad,
+            sellPriceMahal: req.body.sellPriceMahal,
+            sellPriceWasta: req.body.sellPriceWasta,
+            sellPriceWakil: req.body.sellPriceWakil,
+            sellPriceSharika: req.body.sellPriceSharika,
+            updatedBy: req.user.username,
+            note: req.body.note
         });
 
         req.flash('success', "بەرهەمەکە بە سەرکەوتوویی نوێکرایەوە");
@@ -847,7 +846,7 @@ exports.CloneProductUI = async (req, res, next) => {
             })
         res.render('Products/cloneProduct', {
             title: "لەبەرگرتنەوەی " + Product[0]['itemName'],
-            product: Product, 
+            product: Product,
             company: Company,
             colors: Color,
             itemUnit: ItemUnit
@@ -964,10 +963,10 @@ exports.AddNewTrailer = async (req, res, next) => {
                 softdelete: false
             })
 
-        const Company = await CompanyCollection
+        const Company = await ProductsCollection
             .find({
-                softdelete: false,
-            })
+                softdelete: false
+            }).distinct('manufacturerCompany')
 
         res.render('Products/newTrailer', {
             title: "زیاد کردنی بار",
