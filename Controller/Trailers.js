@@ -7,6 +7,7 @@ const {
 // ! Collections
 const TrailersCollection = require('../models/Trailers');
 const RecordsCollection = require('../models/records');
+const ProductsCollection = require('../models/Product');
 
 // !: Basic Configuration
 //Authorization
@@ -70,7 +71,7 @@ exports.Trailers = async (req, res, next) => {
                         amount: { $sum: "$totalPrice" },
                         count: { $sum: 1 },
                         items: {
-                            $push: { productID: "$productID", createdAt: "$createdAt", totalQuantity: "$totalQuantity", status: "$status", camePrice: "$camePrice", totalPrice: "$totalPrice", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                            $push: { _id: "$_id", productID: "$productID", createdAt: "$createdAt", totalQuantity: "$totalQuantity", status: "$status", camePrice: "$camePrice", totalPrice: "$totalPrice", addedBy: "$addedBy", sellPrice: "$sellPrice" },
                         },
                     },
                 },
@@ -120,3 +121,150 @@ exports.PrintSelectedInvoice = async (req, res, next) => {
         next(error)
     }
 }
+
+//Print Selected Invoice
+exports.EditProductInTrailer = async (req, res, next) => {
+    try {
+
+
+        const Product = await RecordsCollection
+            .find({
+                trailerNumber: req.params.trailerNumber,
+                _id: req.params.id
+            }).populate('productID')
+
+        // res.json(Product)
+        res.render('Trailers/EditProduct', {
+            title: "دەسکاری کردنی باری ژمارە " + req.params.trailerNumber + " و بەرهەمی " + Product[0]['productID']['itemModel'],
+            product: Product,
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+//Update Products Operation
+exports.UpdateChangesinEditOfTrailer = async (req, res, next) => {
+    try {
+
+        const Record = await RecordsCollection.find({
+            _id: req.params.id
+        });
+
+        const Product = await ProductsCollection.find({
+            _id: Record[0]['productID']
+        });
+
+
+        await RecordsCollection.findByIdAndUpdate({
+            _id: req.params.id
+        }, {
+            totalQuantity: req.body.totalQuantity,
+            camePrice: req.body.camePrice,
+            sellPriceMufrad: req.body.sellPriceMufrad,
+            sellPriceMahal: req.body.sellPriceMahal,
+            sellPriceWasta: req.body.sellPriceWasta,
+            sellPriceWakil: req.body.sellPriceWakil,
+            sellPriceSharika: req.body.sellPriceSharika,
+            updatedBy: req.user.username,
+        });
+
+
+
+        await TrailersCollection.findOneAndUpdate({
+            trailerNumber: Record[0]['trailerNumber'],
+            productID: Record[0]['productID']
+        }, {
+            totalQuantity: req.body.totalQuantity,
+            camePrice: req.body.camePrice,
+            sellPriceMufrad: req.body.sellPriceMufrad,
+            sellPriceMahal: req.body.sellPriceMahal,
+            sellPriceWasta: req.body.sellPriceWasta,
+            sellPriceWakil: req.body.sellPriceWakil,
+            sellPriceSharika: req.body.sellPriceSharika,
+            updatedBy: req.user.username,
+            totalPrice: parseFloat(req.body.sellPriceMufrad) * parseFloat(req.body.totalQuantity)
+        });
+
+
+
+
+        await ProductsCollection.findOneAndUpdate({
+            _id: Record[0]['productID']
+        }, {
+            totalQuantity: parseFloat(Product[0]['totalQuantity']) + parseFloat(req.body.totalQuantity),
+            updatedBy: req.user.username,
+        });
+
+
+        res.send(Trailer)
+        // req.flash('success', "بەرهەمەکە بە سەرکەوتوویی نوێکرایەوە");
+        // res.redirect("/Trailers")
+    } catch (error) {
+        next(error)
+    }
+}
+
+
+//Update Products Operation
+exports.DeleteTrailer = async (req, res, next) => {
+    try {
+
+        const Record = await RecordsCollection.find({
+            _id: req.params.id
+        });
+
+        const Product = await ProductsCollection.find({
+            _id: Record[0]['productID']
+        });
+
+
+        await RecordsCollection.findByIdAndUpdate({
+            _id: req.params.id
+        }, {
+            totalQuantity: req.body.totalQuantity,
+            camePrice: req.body.camePrice,
+            sellPriceMufrad: req.body.sellPriceMufrad,
+            sellPriceMahal: req.body.sellPriceMahal,
+            sellPriceWasta: req.body.sellPriceWasta,
+            sellPriceWakil: req.body.sellPriceWakil,
+            sellPriceSharika: req.body.sellPriceSharika,
+            updatedBy: req.user.username,
+        });
+
+
+
+        await TrailersCollection.findOneAndUpdate({
+            trailerNumber: Record[0]['trailerNumber'],
+            productID: Record[0]['productID']
+        }, {
+            totalQuantity: req.body.totalQuantity,
+            camePrice: req.body.camePrice,
+            sellPriceMufrad: req.body.sellPriceMufrad,
+            sellPriceMahal: req.body.sellPriceMahal,
+            sellPriceWasta: req.body.sellPriceWasta,
+            sellPriceWakil: req.body.sellPriceWakil,
+            sellPriceSharika: req.body.sellPriceSharika,
+            updatedBy: req.user.username,
+            totalPrice: parseFloat(req.body.sellPriceMufrad) * parseFloat(req.body.totalQuantity)
+        });
+
+
+
+
+        await ProductsCollection.findOneAndUpdate({
+            _id: Record[0]['productID']
+        }, {
+            totalQuantity: parseFloat(Product[0]['totalQuantity']) + parseFloat(req.body.totalQuantity),
+            updatedBy: req.user.username,
+        });
+
+
+        res.send(Trailer)
+        // req.flash('success', "بەرهەمەکە بە سەرکەوتوویی نوێکرایەوە");
+        // res.redirect("/Trailers")
+    } catch (error) {
+        next(error)
+    }
+}
+
+

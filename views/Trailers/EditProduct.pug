@@ -1,0 +1,43 @@
+include ../Components/Header
+block content
+  br
+  .container
+    // Page Heading
+    .d-sm-flex.align-items-left.justify-content-between.mb-4
+    .jumbotron
+      .row
+        .container-fluid.table-responsive
+          form(method='POST' action="/Trailers/Modification/"+product[0]['_id']+"/Updates")
+            .container
+              != messages('message', locals)
+              if errors
+                each error, i in errors
+                  div(class="note note-danger") #{error.msg}
+            h2="نوێکردنەوەی زانیاریەکانی "+product[0]['productID']['itemModel']+" - "+product[0]['productID']['itemName']+" - "+product[0]['productID']['itemType']+" - "+product[0]['productID']['color']+" - "+product[0]['productID']['itemUnit']
+            .row
+              .form-group.col-md-1
+                label نرخی هاتوو
+                input.form-control(name="camePrice" type='number' placeholder='0' required step='any' value=product[0]['camePrice'])
+              .form-group.col-md-1
+                label بڕی هاتوو
+                input.form-control(name="totalQuantity" type='number' placeholder='0' required step='any' value=product[0]['totalQuantity'])
+              .form-group.col-md-2
+                label مفرد
+                input.form-control(name="sellPriceMufrad" type='number' placeholder='0' required step='any' value=product[0]['productID']['sellPriceMufrad'])
+              .form-group.col-md-2
+                label محل
+                input.form-control(name="sellPriceMahal" type='number' placeholder='0' required step='any' value=product[0]['productID']['sellPriceMahal'])
+              .form-group.col-md-2
+                label وەستا
+                input.form-control(name="sellPriceWasta" type='number' placeholder='0' required step='any' value=product[0]['productID']['sellPriceWasta'])
+              .form-group.col-md-2
+                label وەکیل
+                input.form-control(name="sellPriceWakil" type='number' placeholder='0' required step='any' value=product[0]['productID']['sellPriceWakil'])
+              .form-group.col-md-2
+                label شركه‌
+                input.form-control(name="sellPriceSharika" type='number' placeholder='0' required step='any' value=product[0]['productID']['sellPriceSharika'])
+            button.btn.btn-primary(type='submit') تۆمارکردن
+
+
+
+

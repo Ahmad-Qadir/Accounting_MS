@@ -66,13 +66,13 @@ block content
                                         tbody
                                             tr(style="line-height: 10px;")
                                                 td.left
-                                                    strong قەرزی ئێستا
+                                                    strong کۆی گشتی (بێ تێچوو)
                                                 td.right(id="total")="$"+records[0]['totalPrice']
-                                            tr(style="line-height: 10px;")
-                                                td.left
-                                                    strong کۆی گشتی (دۆلار)
-                                                td.right
-                                                    strong(id="finalPrice")="$"+(records[0]['oldDebut']+records[0]['totalPrice'])
+                                            //- tr(style="line-height: 10px;")
+                                            //-     td.left
+                                            //-         strong کۆی گشتی (دۆلار)
+                                            //-     td.right
+                                            //-         strong(id="finalPrice")="$"+(records[0]['oldDebut']+records[0]['totalPrice'])
     script.
         //Print Section
         function printDiv(divName) {
