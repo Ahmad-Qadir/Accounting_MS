@@ -1468,7 +1468,8 @@ exports.GetProductswithSearch = async (req, res, next) => {
             // console.log(req.body.length);
             ProductsCollection.find(searchStr, 'itemName itemModel countryCompany manufacturerCompany unit itemUnit itemType usedIn weight color sellPriceMufrad totalQuantity', {
                 'skip': Number(req.body.start),
-                'limit': Number(req.body.length)
+                'limit': Number(req.body.length),
+                'sort': { 'itemModel': -1 }
             }, function (err, results) {
                 if (err) {
                     console.log('error while getting results' + err);
