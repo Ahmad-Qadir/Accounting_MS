@@ -25,7 +25,7 @@ block content
                 label کۆمپانیای وەبەرهێن
                 select(name="manufacturerCompany" class="form-control")
                   each item,i in company
-                      option(value=item['companyName'])=item['companyName']
+                    option(value=item['companyName'])=item['companyName']
               .form-group.col-md-2
                 label وڵات
                 select(name="countryCompany" class="form-control")
@@ -47,7 +47,7 @@ block content
                 label ڕەنگ
                 select(name="color" class="form-control")
                   each item,i in colors
-                      option(value=item)=item
+                    option(value=item)=item
             .row
               .form-group.col-md-2
                 label پەکێج
@@ -62,7 +62,7 @@ block content
                 label یەکەی پێوانە
                 select(name="itemUnit" class="form-control")
                   each item,i in itemUnit
-                      option(value=item['unitName'])=item['unitName']
+                    option(value=item['unitName'])=item['unitName']
               .form-group.col-md-2
                 label بڕی پێوانە
                 input.form-control(name="weight" type='number' step='any' required)
@@ -85,24 +85,28 @@ block content
                 input.form-control(name="camePrice" type='number' placeholder='0' required step='any')
               .form-group.col-md-2
                 label مفرد
-                input.form-control(name="sellPriceMufrad" type='number' placeholder='0' required step='any')
+                input.form-control(id="sellPriceMufrad" name="sellPriceMufrad" type='number' placeholder='0' required step='any' onkeyup="myFunction(this)")
               .form-group.col-md-2
                 label محل
-                input.form-control(name="sellPriceMahal" type='number' placeholder='0' required step='any')
+                input.form-control(id="sellPriceMahal" name="sellPriceMahal" type='number' placeholder='0' required step='any' onkeyup="myNextFunction(this)")
               .form-group.col-md-2
                 label وەستا
-                input.form-control(name="sellPriceWasta" type='number' placeholder='0' required step='any')
+                input.form-control(id="sellPriceWasta" name="sellPriceWasta" type='number' placeholder='0' required step='any')
               .form-group.col-md-2
                 label وەکیل
-                input.form-control(name="sellPriceWakil" type='number' placeholder='0' required step='any')
+                input.form-control(id="sellPriceWakil" name="sellPriceWakil" type='number' placeholder='0' required step='any')
               .form-group.col-md-2
                 label شركه‌
-                input.form-control(name="sellPriceSharika" type='number' placeholder='0' required step='any')
-          
+                input.form-control(id="sellPriceSharika" name="sellPriceSharika" type='number' placeholder='0' required step='any')
+
             button.btn.btn-primary.mt-2(type='submit') تۆمارکردن
-
-
-
-
-
-
+    script.
+      function myFunction(input){
+        var elementValue = input.value;
+        document.getElementById("sellPriceWasta").value = parseFloat(elementValue);
+      }
+      function myNextFunction(input){
+        var elementValue = input.value;
+        document.getElementById("sellPriceSharika").value = parseFloat(elementValue);
+        document.getElementById("sellPriceWakil").value = parseFloat(elementValue);
+      }
