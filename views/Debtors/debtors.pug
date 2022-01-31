@@ -6,9 +6,6 @@ block content
     .d-sm-flex.align-items-left.justify-content-between.mb-4
       h1.h3.mb-0.text-gray-800=title
       .span
-        //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.mr-2(id="backup" onclick="backupAll()")
-        //-   i.fas.fa-database.fa-sm.text-white-50
-        //-   |  Backup Hotspots
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white(onclick="printDiv('printableArea')")
           i.fas.fa-print.fa-sm.text-white-50
           |  چاپکردن
@@ -28,7 +25,7 @@ block content
               th(scope='col') ناوی کۆمپانیا
               th(scope='col') جۆری کڕیار
               th(scope='col') بڕی قەرز
-
+              th(scope='col') تۆمارەکان
           tbody
             each item,i in profile
               - var j=i+1
@@ -39,7 +36,10 @@ block content
                 td(style="text-align:center;")=item['companyName']
                 td(style="text-align:center;")=item['clientType']
                 td(style="text-align:center;")="$ "+item['remainedbalance']
-
+                td(style="text-align:center;")
+                  a.btn.btn-sm.btn-info.m-1(title="profiles Invoices" href="/profiles/"+item['_id']+"/Debut/invoices")
+                    span.icon.text-white-50
+                      i.fas.fa-file-invoice
   //- include ../Components/Footer
   script.
     $(document).ready(function() {
@@ -52,10 +52,12 @@ block content
         $('table thead tr').find('td:eq(1),th:eq(1)').remove();
         $('table thead tr').find('td:eq(1),th:eq(1)').remove();
         $('table thead tr').find('td:eq(2),th:eq(2)').remove();
+        $('table thead tr').find('td:eq(3),th:eq(3)').remove();
 
         $('table tbody tr').find('td:eq(1),th:eq(1)').remove();
         $('table tbody tr').find('td:eq(1),th:eq(1)').remove();
         $('table tbody tr').find('td:eq(2),th:eq(2)').remove();
+        $('table tbody tr').find('td:eq(3),th:eq(3)').remove();
         //- $('table tbody tr').find('td:eq(4),th:eq(4)').remove();
         var printContents = document.getElementById(divName).innerHTML;
         document.body.innerHTML = printContents;

@@ -23,6 +23,10 @@ block content
                                     .col-md-2="کۆی بەرهەم: "+item['count']
                                     .col-md-3="تێچووی بارهەڵگر: "+item['amount']
                                     .col-md-4="بەروار: "+item['items'][0]['createdAt'].toLocaleString()
+                                    .col-md-2 
+                                        a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;"  href=address+"/Trailers/"+item['_id']['trailerNumber']+"/Invoices")
+                                            span.icon.text-white-50
+                                                i.fas.fa-print
                         .accordion-collapse.collapse.hide(aria-labelledby="heading"+i data-mdb-parent='#accordionExample' id="collapse"+i)
                             .accordion-body
                                 .container-fluid.table-responsive
@@ -39,9 +43,11 @@ block content
                                                 th(scope='col') بڕی پێوانە
                                                 th(scope='col') نرخی هاتوو
                                                 th(scope='col') نرخی کۆمپانیا
-                                                th(scope='col') بڕی بەردەست
+                                                th(scope='col') نرخی جیاوازی
+                                                th(scope='col') بڕی هاتوو
                                                 th(scope='col') ڕەنگ
-                                                th(scope='col') کۆی نرخ
+                                                th(scope='col') کۆی نرخ(بێ تێچوو)
+                                                th(scope='col') کۆی گشتی
                                         tbody
                                             each data,j in item['data']
                                                 -var index=j+1
@@ -56,6 +62,9 @@ block content
                                                     td(style="text-align:center;")=data['weight']
                                                     td(style="text-align:center;")=item['items'][j]['camePrice']
                                                     td(style="text-align:center;")=item['items'][j]['sellPrice']
+                                                    td(style="text-align:center;")=(item['items'][j]['sellPrice']-item['items'][j]['camePrice']).toFixed(2)
                                                     td(style="text-align:center;")=item['items'][j]['totalQuantity']
                                                     td(style="text-align:center;")=data['color']
-                                                    td(style="text-align:center;")=parseFloat(item['items'][j]['totalQuantity'])*parseFloat(item['items'][j]['camePrice'])
+                                                    td(style="text-align:center;")=(parseFloat(item['items'][j]['totalQuantity'])*parseFloat(item['items'][j]['camePrice'])).toFixed(2)
+                                                    td(style="text-align:center;")=(parseFloat(item['items'][j]['totalQuantity'])*parseFloat(item['items'][j]['sellPrice'])).toFixed(2)
+

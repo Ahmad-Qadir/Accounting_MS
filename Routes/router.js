@@ -14,7 +14,7 @@ const Records = require('../Controller/Records');
 const Company = require('../Controller/Company');
 const Daily = require('../Controller/Daily_Work');
 const ItemUnit = require('../Controller/ItemUnit');
-const Trailers = require('../Controller/Trailers'); 
+const Trailers = require('../Controller/Trailers');
 const Partners = require('../Controller/partners');
 
 
@@ -92,6 +92,8 @@ router.get('/NewDailyTask', Daily.allowIfLoggedin, Daily.grantAccess('readAny', 
 router.post('/Profile', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.addNewCustomer); // Add new Profile
 router.get('/Profiles', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.GetAllCustomers); // Get All Customers Profile
 router.get('/Profiles/:id/invoices', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.GetAllInvoiceForCustomers); // Get All invoice for specific Profile
+router.get('/Profiles/:id/Debut/invoices', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.GetAllDebutInvoiceForCustomers); // Get All invoice for specific Profile
+
 router.get('/Profile/:id/NewRequest', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.AddNewRequest); // Add new Request per Customer
 router.get('/Profiles/:invoiceID/Print', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.PrintSelectedInvoice); // Print Invoice
 router.get('/Profiles/AddNew', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.CreateNewProfile);
@@ -104,11 +106,12 @@ router.delete('/Profiles/:id', Profiles.allowIfLoggedin, Profiles.grantAccess('r
 router.get('/Profiles/Debtors', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.debtors); // Get All Debtors
 
 //Item Unit
-router.post('/Products/ItemUnit',  ItemUnit.AddNewItemUnit); // Get All Customers Profile
+router.post('/Products/ItemUnit', ItemUnit.AddNewItemUnit); // Get All Customers Profile
 
 
 //Trailers
 router.get('/Trailers', Trailers.Trailers); // Get All Trailers
+router.get('/Trailers/:trailerNumber/Invoices', Trailers.PrintSelectedInvoice); // Get All Trailers
 
 
 

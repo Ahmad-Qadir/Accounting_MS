@@ -1,0 +1,87 @@
+include ../Components/Header
+block content
+    br
+    .container
+        // Page Heading
+        .d-sm-flex.align-items-left.justify-content-between.mb-4
+            h1.h3.mb-0.text-gray-800=title
+            .span
+                //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-danger.shadow-sm.text-white.m-1(onclick="deleteAllContent()")
+                //-   i.fas.fa-sync-alt.fa-sm.text-white-50
+                //-   |  نوێکردنەوە
+                //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-warning.shadow-sm.text-white.m-1.edit
+                //-   i.fas.fa-pen.fa-sm.text-white-50
+                //-   |  دەسکاریکردن
+                //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm.text-white.m-1(type='button' onclick="payNow()")
+                //-   i.fas.fa-money-bill-alt.fa-sm.text-white-50
+                //-   |  پارەدان
+                //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white.m-1(type='button' onclick="Qard()")
+                //-   i.fas.fa-money-bill-alt.fa-sm.text-white-50
+                //-   |  قەرزکردن
+                //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.m-1(type='button' data-toggle="modal" data-target="#confirm-payment")
+                //-   i.fas.fa-wallet.fa-sm.text-white-50
+                //-   |  دانەوەی پارە
+                a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.m-1(type='button' data-toggle='modal' onclick="printDiv('printableArea')")
+                    i.fas.fa-print.fa-sm.text-white-50
+                    |  چاپکردن
+        .container(id="newRecord")
+        .jumbotron
+            .row
+                .container-fluid(id="printableArea")
+                    .card.border(style="border: 5px solid #1794BA !important;" class="h-100")
+                        //- .card-header(style='background-color: black;')
+                        .card-body(id="targetedArea" style="background: url('https://i.ibb.co/HhnspzY/Invoice-UI.jpg'); background-size: 100% 280mm;")
+                            .p-4
+                                h1="بەرهەمەکانی "+ records[0]['productID']['manufacturerCompany']
+                            div
+                                table(id="invoiceTable").table-bordered.table-xs.table-responsive.col-12
+                                    thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
+                                        tr
+                                            th(style="width:3%").center #
+                                            th(style="font-weight:bold;") ناوی بەرهەم
+                                            th(style="" colspan=2) جۆری بەرهەم
+                                            th(style="") ڕەنگ
+                                            th(style="width:7%") پێوانە
+                                            th(style="width:3%") ژمارە
+                                            th(style="width:10%").right نرخی تاک
+                                            th(style="").right کۆی گشتی
+                                            //- th(style="text-align:center; font-size:100%;font-weight:bold; width:3%")
+                                    tbody(id="dataOfInvoiceTable" style="font-size: 12px;font-weight:bold;text-align:center;")
+                                        each item,i in records
+                                            - var j=i+1;
+                                                tr 
+                                                    td=j
+                                                    td=item['productID']['itemModel']
+                                                    td(style="text-align:center;")=item['productID']['itemName']
+                                                    td(style="text-align:center;")=item['productID']['itemType']
+                                                    td(style="text-align:center;")=item['productID']['color']
+                                                    td(style="text-align:center;")=item['productID']['itemUnit']
+                                                    td(style="text-align:center;")=item['totalQuantity']
+                                                    td(style="text-align:center;")="$ "+item['camePrice']
+                                                    td(style="text-align:center;")="$ "+item['totalPrice']
+                            .row
+                                .col-5.ml-auto
+                                    br
+                                    table.table.table-bordered.table-xs(id="totalPayment")
+                                        tbody
+                                            tr(style="line-height: 10px;")
+                                                td.left
+                                                    strong قەرزی ئێستا
+                                                td.right(id="total")="$"+records[0]['totalPrice']
+                                            tr(style="line-height: 10px;")
+                                                td.left
+                                                    strong کۆی گشتی (دۆلار)
+                                                td.right
+                                                    strong(id="finalPrice")="$"+(records[0]['oldDebut']+records[0]['totalPrice'])
+    script.
+        //Print Section
+        function printDiv(divName) {
+            var originalContents = document.body.innerHTML;
+            //- 
+            document.getElementById("targetedArea").setAttribute("style", "background: url('https://i.ibb.co/HhnspzY/Invoice-UI.jpg'); background-size: 200mm 276mm;");
+            //- document.getElementById('targetedArea')
+            var printContents = document.getElementById(divName).innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }

@@ -100,3 +100,23 @@ exports.Trailers = async (req, res, next) => {
         next(error)
     }
 }
+
+
+//Print Selected Invoice
+exports.PrintSelectedInvoice = async (req, res, next) => {
+    try {
+        const Records = await RecordsCollection
+            .find({
+                trailerNumber: req.params.trailerNumber,
+            }).populate('productID')
+
+        // res.json(Records)
+        res.render('Trailers/PrintTrailer', {
+            title: "باری ژمارە " + req.params.trailerNumber,
+            records: Records,
+            invoiceID: req.params.trailerNumber
+        })
+    } catch (error) {
+        next(error)
+    }
+}

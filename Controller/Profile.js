@@ -161,6 +161,64 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
 
 }
 
+//Get Debut Invoice for Specific Customer
+exports.GetAllDebutInvoiceForCustomers = async (req, res, next) => {
+    const Invoices = await HistoryClass
+        .aggregate([
+            {
+                $group: {
+                    _id: { recordCode: "$recordCode" },
+                    amount: { $sum: "$totalPrice" },
+                    count: { $sum: 1 },
+                    items: {
+                        $push: { trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                    },
+                },
+            },
+            {
+                $sort: { "_id": -1 },
+            },
+            {
+                $match: {
+                    "items.cutomerID": mongoose.Types.ObjectId(req.params.id),
+                    "moneyStatus": "Debut"
+                }
+            },
+            {
+                $lookup: {
+                    from: "items",
+                    localField: "items.productID",
+                    foreignField: "_id",
+                    as: "data",
+                },
+            },
+        ]);
+
+    const Profile = await HistoryClass
+        .find({
+            cutomerID: req.params.id
+        })
+        .sort({
+            "createdAt": -1
+        }).populate('cutomerID')
+
+    if (Invoices == "") {
+        req.flash('danger', "کڕیاری داواکراو هیج تۆماڕێکی نیە");
+        res.redirect("/Profiles/Debtors")
+    } else {
+        res.render("Profiles/Invoices", {
+            title: "تۆمارەکان",
+            invoices: Invoices,
+            profile: Profile,
+            address: address
+        })
+    }
+    // res.send(Invoices)
+
+}
+
+
+
 
 //Get Invoice for Specific Customer
 exports.PrintAllInvoiceforCustomer = async (req, res, next) => {

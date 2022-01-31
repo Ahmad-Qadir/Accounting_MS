@@ -22,6 +22,7 @@ const TrailerSchema = new mongoose.Schema({
     totalPrice: Number,
     status: String,
     expireDate: Date,
+    cost: Number,
     camePrice: Number,
     sellPrice: Number,
     sellPriceMufrad: Number,
