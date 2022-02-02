@@ -1023,6 +1023,7 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
         for (let index = 0; index < RequestList.length; index++) {
             const element = RequestList[index];
 
+
             const Product = await ProductsCollection.find({
                 itemModel: element[1],
                 itemName: element[2],
@@ -1474,7 +1475,8 @@ exports.GetProductswithSearch = async (req, res, next) => {
             ProductsCollection.find(searchStr, 'itemName itemModel countryCompany manufacturerCompany unit itemUnit itemType usedIn weight color sellPriceMufrad totalQuantity', {
                 'skip': Number(req.body.start),
                 'limit': Number(req.body.length),
-                'sort': { 'itemModel': -1 }
+                'sort': { 'itemModel': -1 },
+                'softdelete': "false"
             }, function (err, results) {
                 if (err) {
                     console.log('error while getting results' + err);

@@ -112,9 +112,10 @@ router.post('/Products/ItemUnit', ItemUnit.AddNewItemUnit); // Get All Customers
 //Trailers
 router.get('/Trailers', Trailers.Trailers); // Get All Trailers
 router.get('/Trailers/:trailerNumber/Invoices', Trailers.PrintSelectedInvoice); // Get All Trailers
-router.get('/Trailers/Modification/:trailerNumber/:id', Trailers.EditProductInTrailer); // Get All Trailers
-router.post('/Trailers/Modification/:id/Updates',Trailers.allowIfLoggedin, Trailers.grantAccess('readAny', 'profile'), Trailers.UpdateChangesinEditOfTrailer); // Get All Trailers
-router.get('/Trailers/Delete/:trailerNumber/:id', Trailers.DeleteTrailer); // Get All Trailers
+router.get('/Trailers/Modification/:trailerNumber/:id', Trailers.allowIfLoggedin, Trailers.grantAccess('readAny', 'profile'), Trailers.EditProductInTrailer); // Get All Trailers
+router.post('/Trailers/Modification/:id/Updates', Trailers.allowIfLoggedin, Trailers.grantAccess('readAny', 'profile'), Trailers.UpdateChangesinEditOfTrailer); // Get All Trailers
+router.get('/Trailers/Delete/:trailerNumber/:id', Trailers.allowIfLoggedin, Trailers.grantAccess('readAny', 'profile'), Trailers.DeleteItemInTrailer); // Get All Trailers
+router.get('/Trailers/DeleteTrailer/:trailerNumber', Trailers.DeleteTrailer); // Get All Trailers
 
 
 

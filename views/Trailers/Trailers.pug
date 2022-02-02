@@ -76,9 +76,9 @@ block content
                                                     td(style="text-align:center;")=(parseFloat(item['items'][j]['totalQuantity'])*parseFloat(item['items'][j]['camePrice'])).toFixed(2)
                                                     td(style="text-align:center;")=(parseFloat(item['items'][j]['totalQuantity'])*parseFloat(item['items'][j]['sellPrice'])).toFixed(2)
                                                     td(style="text-align:center;")
-                                                        a.btn.btn-sm.btn-warning.m-2.disabled( title="نوێکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Trailers/Modification/"+item['_id']['trailerNumber']+"/"+item['items'][j]['_id'])
+                                                        a.btn.btn-sm.btn-warning.m-2( title="نوێکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Trailers/Modification/"+item['_id']['trailerNumber']+"/"+item['items'][j]['_id'])
                                                             span.icon.text-white-50
                                                                 i.fas.fa-pencil-alt
-                                                        a.btn.btn-sm.btn-danger.m-2.disabled( title="ڕەشکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Trailers/Delete/"+item['_id']['trailerNumber']+"/"+item['items'][j]['_id'])
+                                                        a.btn.btn-sm.btn-danger.m-2( title="ڕەشکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Trailers/Delete/"+item['_id']['trailerNumber']+"/"+item['items'][j]['_id'])
                                                             span.icon.text-white-50
                                                                 i.fas.fa-trash

@@ -71,7 +71,7 @@ exports.Trailers = async (req, res, next) => {
                         amount: { $sum: "$totalPrice" },
                         count: { $sum: 1 },
                         items: {
-                            $push: { _id: "$_id", productID: "$productID", createdAt: "$createdAt", totalQuantity: "$totalQuantity", status: "$status", camePrice: "$camePrice", totalPrice: "$totalPrice", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                            $push: { _id: "$_id", softdelete: "$softdelete", productID: "$productID", createdAt: "$createdAt", totalQuantity: "$totalQuantity", status: "$status", camePrice: "$camePrice", totalPrice: "$totalPrice", addedBy: "$addedBy", sellPrice: "$sellPrice" },
                         },
                     },
                 },
@@ -81,6 +81,7 @@ exports.Trailers = async (req, res, next) => {
                 {
                     $match: {
                         "items.status": "New Trailer",
+                        "items.softdelete": "false"
                     }
                 },
                 {
@@ -150,9 +151,9 @@ exports.UpdateChangesinEditOfTrailer = async (req, res, next) => {
             _id: req.params.id
         });
 
-        const Product = await ProductsCollection.find({
-            _id: Record[0]['productID']
-        });
+        // const Product = await ProductsCollection.find({
+        //     _id: Record[0]['productID']
+        // });
 
 
         await RecordsCollection.findByIdAndUpdate({
@@ -186,19 +187,150 @@ exports.UpdateChangesinEditOfTrailer = async (req, res, next) => {
         });
 
 
+        const Product = await ProductsCollection.find({
+            _id: Record[0]['productID']
+        });
 
+        if (parseFloat(req.body.totalQuantity) > Record[0]['totalQuantity']) {
+            const temp = parseFloat(req.body.totalQuantity) - Record[0]['totalQuantity'];
+            await ProductsCollection.findOneAndUpdate({
+                _id: Record[0]['productID']
+            }, {
+                camePrice: req.body.camePrice,
+                sellPriceMufrad: req.body.sellPriceMufrad,
+                sellPriceMahal: req.body.sellPriceMahal,
+                sellPriceWasta: req.body.sellPriceWasta,
+                sellPriceWakil: req.body.sellPriceWakil,
+                sellPriceSharika: req.body.sellPriceSharika,
+                totalQuantity: parseFloat(Product[0]['totalQuantity']) + temp,
+                updatedBy: req.user.username,
+            });
+
+            const NewProduct = await ProductsCollection.find({
+                _id: Record[0]['productID']
+            });
+
+            await ProductsCollection.findByIdAndUpdate({
+                "_id": Product[0]['_id']
+            }, {
+                remainedPacket: parseFloat(NewProduct[0]['totalQuantity'] / Product[0]['perPacket']),
+                remainedPerPacket: NewProduct[0]['totalQuantity'] % Product[0]['perPacket'],
+                // totalPrice: NewProduct[0]['totalQuantity'] * NewProduct['sellPrice'],
+                // totalWeight: Product[0]['totalWeight'] + NewProduct[0]['totalQuantity'],
+            });
+
+
+        } else if (parseFloat(req.body.totalQuantity) == Record[0]['totalQuantity']) {
+
+            await ProductsCollection.findOneAndUpdate({
+                _id: Record[0]['productID']
+            }, {
+                camePrice: req.body.camePrice,
+                sellPriceMufrad: req.body.sellPriceMufrad,
+                sellPriceMahal: req.body.sellPriceMahal,
+                sellPriceWasta: req.body.sellPriceWasta,
+                sellPriceWakil: req.body.sellPriceWakil,
+                sellPriceSharika: req.body.sellPriceSharika,
+                updatedBy: req.user.username,
+            });
+        }
+
+        else {
+            const temp = Record[0]['totalQuantity'] - parseFloat(req.body.totalQuantity);
+            await ProductsCollection.findOneAndUpdate({
+                _id: Record[0]['productID']
+            }, {
+                camePrice: req.body.camePrice,
+                sellPriceMufrad: req.body.sellPriceMufrad,
+                sellPriceMahal: req.body.sellPriceMahal,
+                sellPriceWasta: req.body.sellPriceWasta,
+                sellPriceWakil: req.body.sellPriceWakil,
+                sellPriceSharika: req.body.sellPriceSharika,
+                totalQuantity: parseFloat(Product[0]['totalQuantity']) - temp,
+                updatedBy: req.user.username,
+            });
+
+            const NewProduct = await ProductsCollection.find({
+                _id: Record[0]['productID']
+            });
+
+            await ProductsCollection.findByIdAndUpdate({
+                _id: Product[0]['_id']
+            }, {
+                remainedPacket: parseFloat(NewProduct[0]['totalQuantity'] / Product[0]['perPacket']),
+                remainedPerPacket: NewProduct[0]['totalQuantity'] % Product[0]['perPacket'],
+                // totalPrice: Product[0]['totalPrice'] + NewProduct[0]['totalQuantity'],
+                // totalWeight: Product[0]['totalWeight'] + NewProduct[0]['totalQuantity'],
+            });
+
+        }
+
+        // res.send(Trailer)
+        req.flash('success', "بەرهەمەکە بە سەرکەوتوویی نوێکرایەوە");
+        res.redirect("/Trailers")
+    } catch (error) {
+        next(error)
+    }
+}
+
+
+//Update Products Operation
+exports.DeleteItemInTrailer = async (req, res, next) => {
+    try {
+        const Record = await RecordsCollection.find({
+            _id: req.params.id
+        });
+
+        // await RecordsCollection.findByIdAndUpdate({
+        //     _id: req.params.id
+        // }, {
+        //     totalQuantity: req.body.totalQuantity,
+        //     camePrice: req.body.camePrice,
+        //     sellPriceMufrad: req.body.sellPriceMufrad,
+        //     sellPriceMahal: req.body.sellPriceMahal,
+        //     sellPriceWasta: req.body.sellPriceWasta,
+        //     sellPriceWakil: req.body.sellPriceWakil,
+        //     sellPriceSharika: req.body.sellPriceSharika,
+        //     updatedBy: req.user.username,
+        // });
+
+        await RecordsCollection.findOneAndUpdate({
+            _id: req.params.id
+        }, {
+            softdelete: true
+        });
+
+        await TrailersCollection.deleteOne({
+            trailerNumber: req.params.trailerNumber,
+            productID: Record[0]['productID']
+        });
+
+
+        const Product = await ProductsCollection.find({
+            _id: Record[0]['productID']
+        });
 
         await ProductsCollection.findOneAndUpdate({
             _id: Record[0]['productID']
         }, {
-            totalQuantity: parseFloat(Product[0]['totalQuantity']) + parseFloat(req.body.totalQuantity),
+            totalQuantity: parseFloat(Product[0]['totalQuantity']) - Record[0]['totalQuantity'],
             updatedBy: req.user.username,
         });
 
+        const NewProduct = await ProductsCollection.find({
+            _id: Record[0]['productID']
+        });
 
-        res.send(Trailer)
-        // req.flash('success', "بەرهەمەکە بە سەرکەوتوویی نوێکرایەوە");
-        // res.redirect("/Trailers")
+        await ProductsCollection.findByIdAndUpdate({
+            "_id": Product[0]['_id']
+        }, {
+            remainedPacket: parseFloat(NewProduct[0]['totalQuantity'] / Product[0]['perPacket']),
+            remainedPerPacket: NewProduct[0]['totalQuantity'] % Product[0]['perPacket'],
+        });
+
+        req.flash('success', "بەرهەمەکە بە سەرکەوتوویی ڕەشکرایەوە");
+        res.redirect("/Trailers")
+
     } catch (error) {
         next(error)
     }
@@ -210,27 +342,20 @@ exports.DeleteTrailer = async (req, res, next) => {
     try {
 
         const Record = await RecordsCollection.find({
-            _id: req.params.id
+            trailerNumber: req.params.trailerNumber,
+            status: "New Trailer"
         });
 
-        const Product = await ProductsCollection.find({
-            _id: Record[0]['productID']
-        });
-
+        // const Product = await ProductsCollection.find({
+        //     _id: Record[0]['productID']
+        // });
 
         await RecordsCollection.findByIdAndUpdate({
-            _id: req.params.id
+            trailerNumber: req.params.trailerNumber,
+            status: "New Trailer"
         }, {
-            totalQuantity: req.body.totalQuantity,
-            camePrice: req.body.camePrice,
-            sellPriceMufrad: req.body.sellPriceMufrad,
-            sellPriceMahal: req.body.sellPriceMahal,
-            sellPriceWasta: req.body.sellPriceWasta,
-            sellPriceWakil: req.body.sellPriceWakil,
-            sellPriceSharika: req.body.sellPriceSharika,
-            updatedBy: req.user.username,
+            softdelete: true,
         });
-
 
 
         await TrailersCollection.findOneAndUpdate({
@@ -251,20 +376,22 @@ exports.DeleteTrailer = async (req, res, next) => {
 
 
 
-        await ProductsCollection.findOneAndUpdate({
-            _id: Record[0]['productID']
-        }, {
-            totalQuantity: parseFloat(Product[0]['totalQuantity']) + parseFloat(req.body.totalQuantity),
-            updatedBy: req.user.username,
-        });
 
 
-        res.send(Trailer)
+
+
+        // await ProductsCollection.findOneAndUpdate({
+        //     _id: Record[0]['productID']
+        // }, {
+        //     totalQuantity: parseFloat(Product[0]['totalQuantity']) + parseFloat(req.body.totalQuantity),
+        //     updatedBy: req.user.username,
+        // });
+
+
+        res.send(Record)
         // req.flash('success', "بەرهەمەکە بە سەرکەوتوویی نوێکرایەوە");
         // res.redirect("/Trailers")
     } catch (error) {
         next(error)
     }
 }
-
-
