@@ -18,7 +18,6 @@ const ItemUnitCollection = require('../models/ItemUnit');
 
 const address = process.env.address
 
-// !: Basic Configuration
 //Authorization
 exports.grantAccess = function (action, resource) {
     return async (req, res, next) => {
@@ -54,7 +53,6 @@ exports.allowIfLoggedin = async (req, res, next) => {
     }
 }
 
-// !: Products
 // TODO: Checked and Worked Properly
 //Add New Product UI
 exports.AddNewProduct = async (req, res, next) => {
@@ -725,7 +723,6 @@ exports.getInvoiceofSpecificProduct = async (req, res, next) => {
     }
 }
 
-
 // TODO: Checked and Worked Properly
 //Update Products UI
 exports.EditProductUI = async (req, res, next) => {
@@ -1169,31 +1166,10 @@ exports.GetProductswithSearch = async (req, res, next) => {
     var recordsTotal = 0;
     var recordsFiltered = 0;
 
-    // const results = await ProductsCollection.find(searchStr);
-    // recordsTotal = await ProductsCollection.count({});
-    // recordsFiltered = results.length;
-
-    // var data = JSON.stringify({
-    //     "draw": req.body.draw,
-    //     "recordsFiltered": recordsFiltered,
-    //     "recordsTotal": recordsTotal,
-    //     "data": results
-    // });
-    // res.send(data);
-
-    // setTimeout(() => {
-    //     console.log(results)
-    // }, 1000);
-
-    // console.log(ched)
     ProductsCollection.count({}, function (err, c) {
         recordsTotal = c;
-        // console.log(c);
         ProductsCollection.count(searchStr, function (err, c) {
             recordsFiltered = c;
-            // console.log(c);
-            // console.log(req.body.start);
-            // console.log(req.body.length);
             ProductsCollection.find(searchStr, 'itemName itemModel countryCompany manufacturerCompany unit itemUnit itemType usedIn weight color sellPriceMufrad totalQuantity', {
                 'skip': Number(req.body.start),
                 'limit': Number(req.body.length),
@@ -1216,6 +1192,23 @@ exports.GetProductswithSearch = async (req, res, next) => {
     });
 
 
+}
+
+// TODO: Checked and Worked Properly
+//Search for Products of Specific Company
+exports.SearchForProductsinCompany = async (req, res, next) => {
+    try {
+        var CompanyName = req.params.company;
+        const Product = await ProductsCollection
+            .find({
+                softdelete: false,
+                manufacturerCompany: CompanyName
+            });
+        // console.log(Product)
+        res.send(Product);
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 
@@ -1472,20 +1465,6 @@ exports.SearchForProductModel = async (req, res, next) => {
     }
 }
 
-//Search for Products of Specific Company
-exports.SearchForProductsinCompany = async (req, res, next) => {
-    try {
-        var CompanyName = req.params.company;
-        const Product = await ProductsCollection
-            .find({
-                softdelete: false,
-                manufacturerCompany: CompanyName
-            });
-        // console.log(Product)
-        res.send(Product);
-    } catch (error) {
-        console.log(error)
-    }
-}
+
 
 

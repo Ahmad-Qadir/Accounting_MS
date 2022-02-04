@@ -13,13 +13,9 @@ const swaggerUi = require("swagger-ui-express");
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-
-
-
-
-const fs = require('fs')
-const csv = require('csv-parser')
-var uuid = require('uuid');
+// const fs = require('fs')
+// const csv = require('csv-parser')
+// var uuid = require('uuid');
 
 var bodyParser = require('body-parser')
 
@@ -94,77 +90,77 @@ const CompanyCollection = require('./models/Companies');
 require('./Controller/prod')
 
 
-app.get('/import', async (req, res) => {
-    fs.createReadStream("C:\\Users\\ahmed.q\\Desktop\\karsta.csv")
-        .pipe(csv())
-        .on('data', async function (row) {
-            const newProduct = new ProductsCollection({
-                itemName: row.itemName,
-                itemCode: uuid.v1(),
-                itemModel: row.itemModel,
-                itemUnit: row.itemUnit,
-                itemType: row.itemType,
-                brandType:row.brandType,
-                manufacturerCompany: row.manufacturerCompany,
-                companyCode: row.companyCode,
-                countryCompany: row.countryCompany,
-                unit: row.unit,
-                usedIn: row.usedIn,
-                weight: parseFloat(row.weight),
-                color: row.color,
-                packet: 1,
-                perPacket: row.perPacket,
-                remainedPacket: 0,
-                remainedPerPacket: 0,
-                totalQuantity: 0,
-                status: "New Product",
-                expireDate: Date.now(),
-                camePrice: row.camePrice,
-                sellPriceMufrad: row.sellPriceMufrad,
-                sellPriceMahal: row.sellPriceMahal,
-                sellPriceWasta: row.sellPriceWasta,
-                sellPriceWakil: row.sellPriceWakil,
-                sellPriceSharika: row.sellPriceSharika,
-                totalPrice: row.camePrice * row.perPacket,
-                trailerNumber: 1,
-                addedBy: "Ahmad Qadir",
-                updatedBy: "Ahmad Qadir",
-                note: ".",
-                softdelete: "false"
-            });
-            await newProduct.save();
-            const newItem = new RecordsCollection({
-                camePrice: row.camePrice,
-                sellPriceMufrad: row.sellPriceMufrad,
-                sellPriceMahal: row.sellPriceMahal,
-                sellPriceWasta: row.sellPriceWasta,
-                sellPriceWakil: row.sellPriceWakil,
-                sellPriceSharika: row.sellPriceSharika,
-                totalPrice: 0,
-                packet: 0,
-                perPacket: 0,
-                totalQuantity: 0,
-                status: "New Product",
-                trailerNumber: 1,
-                addedBy: "Ahmad Qadir",
-                updatedBy: "Ahmad Qadir",
-                note: ".",
-                softdelete: "false",
-                productID: newProduct['_id'],
-            });
-            await newItem.save();
-            await ProductsCollection.findByIdAndUpdate({
-                _id: newProduct['_id']
-            }, {
-                itemHistory: newItem["_id"]
-            });
+// app.get('/import', async (req, res) => {
+//     fs.createReadStream("C:\\Users\\ahmed.q\\Desktop\\karsta.csv")
+//         .pipe(csv())
+//         .on('data', async function (row) {
+//             const newProduct = new ProductsCollection({
+//                 itemName: row.itemName,
+//                 itemCode: uuid.v1(),
+//                 itemModel: row.itemModel,
+//                 itemUnit: row.itemUnit,
+//                 itemType: row.itemType,
+//                 brandType:row.brandType,
+//                 manufacturerCompany: row.manufacturerCompany,
+//                 companyCode: row.companyCode,
+//                 countryCompany: row.countryCompany,
+//                 unit: row.unit,
+//                 usedIn: row.usedIn,
+//                 weight: parseFloat(row.weight),
+//                 color: row.color,
+//                 packet: 1,
+//                 perPacket: row.perPacket,
+//                 remainedPacket: 0,
+//                 remainedPerPacket: 0,
+//                 totalQuantity: 0,
+//                 status: "New Product",
+//                 expireDate: Date.now(),
+//                 camePrice: row.camePrice,
+//                 sellPriceMufrad: row.sellPriceMufrad,
+//                 sellPriceMahal: row.sellPriceMahal,
+//                 sellPriceWasta: row.sellPriceWasta,
+//                 sellPriceWakil: row.sellPriceWakil,
+//                 sellPriceSharika: row.sellPriceSharika,
+//                 totalPrice: row.camePrice * row.perPacket,
+//                 trailerNumber: 1,
+//                 addedBy: "Ahmad Qadir",
+//                 updatedBy: "Ahmad Qadir",
+//                 note: ".",
+//                 softdelete: "false"
+//             });
+//             await newProduct.save();
+//             const newItem = new RecordsCollection({
+//                 camePrice: row.camePrice,
+//                 sellPriceMufrad: row.sellPriceMufrad,
+//                 sellPriceMahal: row.sellPriceMahal,
+//                 sellPriceWasta: row.sellPriceWasta,
+//                 sellPriceWakil: row.sellPriceWakil,
+//                 sellPriceSharika: row.sellPriceSharika,
+//                 totalPrice: 0,
+//                 packet: 0,
+//                 perPacket: 0,
+//                 totalQuantity: 0,
+//                 status: "New Product",
+//                 trailerNumber: 1,
+//                 addedBy: "Ahmad Qadir",
+//                 updatedBy: "Ahmad Qadir",
+//                 note: ".",
+//                 softdelete: "false",
+//                 productID: newProduct['_id'],
+//             });
+//             await newItem.save();
+//             await ProductsCollection.findByIdAndUpdate({
+//                 _id: newProduct['_id']
+//             }, {
+//                 itemHistory: newItem["_id"]
+//             });
 
-        })
-        .on('end', function () {
-            res.send("end")
-            // TODO: SAVE users data to another file
-        })
-})
+//         })
+//         .on('end', function () {
+//             res.send("end")
+//             // TODO: SAVE users data to another file
+//         })
+// })
 
 //Getting Access Token
 app.use(async (req, res, next) => {
@@ -288,70 +284,49 @@ app.get('/', async (req, res) => {
 });
 
 
-app.get('/remover', async (req, res) => {
-    var checker = await ProductsCollection.updateMany({
-    }, {
-        remainedPacket: 0,
-        remainedPerPacket: 0,
-        totalQuantity: 0
-    });
-    res.send(checker)
-});
+// app.get('/remover', async (req, res) => {
+//     var checker = await ProductsCollection.updateMany({
+//     }, {
+//         remainedPacket: 0,
+//         remainedPerPacket: 0,
+//         totalQuantity: 0
+//     });
+//     res.send(checker)
+// });
 
-app.get('/removerOfCust', async (req, res) => {
-    var checker = await ProfileCollection.updateMany({
-    }, {
-        borrowedBalance: 0,
-        recoveredBalance: 0,
-        remainedbalance: 0,
-        invoiceID: []
-    });
-    res.send(checker)
-});
+// app.get('/removerOfCust', async (req, res) => {
+//     var checker = await ProfileCollection.updateMany({
+//     }, {
+//         borrowedBalance: 0,
+//         recoveredBalance: 0,
+//         remainedbalance: 0,
+//         invoiceID: []
+//     });
+//     res.send(checker)
+// });
 
-app.get('/updater', async (req, res) => {
-    fs.createReadStream("C:\\Users\\Ahmad\\Desktop\\qarz.csv")
-        .pipe(csv())
-        .on('data', async function (row) {
+// app.get('/updater', async (req, res) => {
+//     fs.createReadStream("C:\\Users\\Ahmad\\Desktop\\qarz.csv")
+//         .pipe(csv())
+//         .on('data', async function (row) {
 
-            const user = await ProfileCollection.findOne({
-                clientName: row.clientName,
-                companyName: row.companyName
-            })
-            var checker = await ProfileCollection.findByIdAndUpdate({
-                _id: user['_id']
-            }, {
-                borrowedBalance: parseFloat(row.borrowedBalance),
-                recoveredBalance: parseFloat(row.recoveredBalance),
-                remainedbalance: parseFloat(row.remainedbalance),
-            });
-        })
-        .on('end', function () {
-            res.send("end")
-            // TODO: SAVE users data to another file
-        })
+//             const user = await ProfileCollection.findOne({
+//                 clientName: row.clientName,
+//                 companyName: row.companyName
+//             })
+//             var checker = await ProfileCollection.findByIdAndUpdate({
+//                 _id: user['_id']
+//             }, {
+//                 borrowedBalance: parseFloat(row.borrowedBalance),
+//                 recoveredBalance: parseFloat(row.recoveredBalance),
+//                 remainedbalance: parseFloat(row.remainedbalance),
+//             });
+//         })
+//         .on('end', function () {
+//             res.send("end")
+//         })
+// });
 
-});
-
-
-
-app.get('/royal', async (req, res) => {
-    const user = await ProductsCollection.find({
-        manufacturerCompany: "الافق"
-    })
-
-    // for (let index = 0; index < user.length; index++) {
-    //     await ProductsCollection.findByIdAndUpdate({
-    //         _id: user[index]['_id']
-    //     }, {
-    //         itemModel: user[index]['itemModel']+" "+user[index]['itemName'],
-    //     });
-    // }
-
-
-    res.send(user)
-
-});
 
 //Error Handler
 process.on('uncaughtException', function (err) {
