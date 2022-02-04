@@ -116,7 +116,7 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
                     amount: { $sum: "$totalPrice" },
                     count: { $sum: 1 },
                     items: {
-                        $push: { trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                        $push: { softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
                     },
                 },
             },
@@ -126,6 +126,7 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
             {
                 $match: {
                     "items.cutomerID": mongoose.Types.ObjectId(req.params.id),
+                    "items.softdelete": "false"
                 }
             },
             {

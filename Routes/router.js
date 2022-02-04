@@ -70,6 +70,13 @@ router.post('/Invoices/Print', Records.allowIfLoggedin, Records.grantAccess('rea
 
 //Records
 router.get('/Records', Records.allowIfLoggedin, Records.grantAccess('readAny', 'records'), Records.Records); // Records
+router.get('/Records/Delete/:recordcode/:productid', Records.allowIfLoggedin, Records.grantAccess('readAny', 'records'), Records.DeletIteminInvoice); // Records
+router.get('/Records/Modification/:recordcode/:productid', Records.allowIfLoggedin, Records.grantAccess('readAny', 'records'), Records.Records); // Records
+
+
+
+
+
 
 //Company
 router.get('/Company/:companyName', Company.allowIfLoggedin, Company.grantAccess('readAny', 'company'), Company.CheckForCompanyProducts);
@@ -115,7 +122,7 @@ router.get('/Trailers/:trailerNumber/Invoices', Trailers.PrintSelectedInvoice); 
 router.get('/Trailers/Modification/:trailerNumber/:id', Trailers.allowIfLoggedin, Trailers.grantAccess('readAny', 'profile'), Trailers.EditProductInTrailer); // Get All Trailers
 router.post('/Trailers/Modification/:id/Updates', Trailers.allowIfLoggedin, Trailers.grantAccess('readAny', 'profile'), Trailers.UpdateChangesinEditOfTrailer); // Get All Trailers
 router.get('/Trailers/Delete/:trailerNumber/:id', Trailers.allowIfLoggedin, Trailers.grantAccess('readAny', 'profile'), Trailers.DeleteItemInTrailer); // Get All Trailers
-router.get('/Trailers/DeleteTrailer/:trailerNumber', Trailers.DeleteTrailer); // Get All Trailers
+// router.get('/Trailers/DeleteTrailer/:trailerNumber', Trailers.DeleteTrailer); // Get All Trailers
 
 
 

@@ -61,7 +61,11 @@ exports.AddnewTask = async (req, res, next) => {
 
         await Task.save();
 
+
+        const lengthOfTask = await DailyCollection.find({});
+
         const newRecordtoHistory = new RecordsCollection({
+            recordCode: lengthOfTask.length,
             status: req.body.task,
             sellPrice: req.body.money,
             totalPrice: req.body.money,

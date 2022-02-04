@@ -25,7 +25,7 @@ block content
             .accordion-item
               h2(id="heading"+i).accordion-header
                 .row
-                  button.accordion-button(type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i).note.note-warning
+                  button.btn-outline-warning.accordion-button(type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
                     div="تۆماری ژمارە: "+item['_id']['recordCode']
                     .col-md-2="کۆی بەرهەم: "+item['count']
                     .col-md-3="تێچووی تۆمار: "+item['amount']
@@ -44,7 +44,7 @@ block content
                           th ناوی بەرهەم
                           th بڕی پێوانە
                           th ڕەنگ
-                          th ىڕ
+                          th بڕ
                           th باری ئێستا
                           th کۆی گشتی نرخ
                           th بارهەڵگر 
@@ -79,6 +79,13 @@ block content
                               td(style="text-align:center;")=item['items'][k]['note']
                               td(style="text-align:center;")=item['items'][k]['createdAt'].toLocaleString()
                               td(style="text-align:center;")=item['items'][k]['addedBy']
+                              td(style="text-align:center;")
+                                a.btn.btn-sm.btn-warning.m-2( title="نوێکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Records/Modification/"+item['_id']['recordCode']+"/"+product['_id'])
+                                  span.icon.text-white-50
+                                    i.fas.fa-pencil-alt
+                                a.btn.btn-sm.btn-danger.m-2( title="ڕەشکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Records/Delete/"+item['_id']['recordCode']+"/"+product['_id'])
+                                  span.icon.text-white-50
+                                    i.fas.fa-trash
           else                          
             .accordion-item
               h2(id="heading"+i).accordion-header
@@ -102,7 +109,7 @@ block content
                           th ناوی بەرهەم
                           th بڕی پێوانە
                           th ڕەنگ
-                          th ىڕ
+                          th بڕ
                           th باری ئێستا
                           th کۆی گشتی نرخ
                           th بارهەڵگر 
@@ -137,3 +144,10 @@ block content
                               td(style="text-align:center;")=item['items'][k]['note']
                               td(style="text-align:center;")=item['items'][k]['createdAt'].toLocaleString()
                               td(style="text-align:center;")=item['items'][k]['addedBy']
+                              td(style="text-align:center;")
+                                a.btn.btn-sm.btn-warning.m-2( title="نوێکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Records/Modification/"+item['_id']['recordCode']+"/"+product['_id'])
+                                  span.icon.text-white-50
+                                    i.fas.fa-pencil-alt
+                                a.btn.btn-sm.btn-danger.m-2( title="ڕەشکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Records/Delete/"+item['_id']['recordCode']+"/"+product['_id'])
+                                  span.icon.text-white-50
+                                    i.fas.fa-trash

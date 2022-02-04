@@ -273,7 +273,6 @@ exports.UpdateChangesinEditOfTrailer = async (req, res, next) => {
     }
 }
 
-
 //Update Products Operation
 exports.DeleteItemInTrailer = async (req, res, next) => {
     try {
@@ -336,8 +335,8 @@ exports.DeleteItemInTrailer = async (req, res, next) => {
     }
 }
 
-
-//Update Products Operation
+// ! not finished
+//Update Products Operation 
 exports.DeleteTrailer = async (req, res, next) => {
     try {
 
