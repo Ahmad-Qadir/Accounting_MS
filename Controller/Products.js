@@ -871,7 +871,9 @@ exports.CloneProduct = async (req, res, next) => {
             itemModel: req.body.itemModel,
             itemUnit: req.body.itemUnit,
             unit: req.body.unit,
+            unit: req.body.unit,
             color: req.body.color,
+            weight: req.body.weight,
         });
 
         if (Product) {
@@ -1066,7 +1068,7 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
                 remainedPerPacket: quantity % Product[0]['perPacket'],
                 totalQuantity: quantity,
                 totalPrice: Product[0]['totalPrice'] + (parseFloat(element[11]) * parseFloat(element[13])),
-                totalWeight: Product[0]['totalWeight'] + (parseFloat(element[11]) * Product[0]['weight']),
+                // totalWeight: Product[0]['totalWeight'] + (parseFloat(element[11]) * Product[0]['weight']),
                 sellPriceWakil: parseFloat(element[6]),
                 sellPriceSharika: parseFloat(element[7]),
                 sellPriceMahal: parseFloat(element[8]),
@@ -1090,7 +1092,7 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
                 usedIn: Product[0]['usedIn'],
                 color: Product[0]['color'],
                 weight: Product[0]['weight'],
-                totalWeight: (parseFloat(element[11]) * Product[0]['weight']),
+                // totalWeight: (parseFloat(element[11]) * Product[0]['weight']),
                 camePrice: parseInt(element[12]),
                 sellPrice: parseInt(element[13]),
                 sellPriceWakil: parseFloat(element[6]),

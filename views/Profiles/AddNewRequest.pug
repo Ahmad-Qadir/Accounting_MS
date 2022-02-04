@@ -139,8 +139,8 @@ block content
                         //-   td(id="subtotal").right 0
                         tr(style="line-height: 10px;")
                           td.left
-                            strong(style="color:#f00") قەرزی پێشوو
-                          td(id="olddebut" style="color:#f00").right="$"+profile[0]['remainedbalance'].toFixed(2)
+                            strong قەرزی پێشوو
+                          td(id="olddebut").right="$"+profile[0]['remainedbalance'].toFixed(2)
                         //- tr
                         //-   td.left
                         //-     strong داشکان
@@ -161,15 +161,16 @@ block content
                 footer(style="position: fixed;padding: 10px 10px 0px 10px;bottom: 0;width: 100%;height: 30mm;")
                   hr
                   .row 
-                    .col-1
                     .col-4
                       -var today = new Date();
                       -var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
                       -var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
                       -var dateTime = date+' '+time;
                       span="    بەروار: "+dateTime.toLocaleString()
-                    .col-6
+                    .col-5
                       span="ناونیشان: "+"هەولێر - گەڕەکی عدالە - نزیک بانکی زانکۆ"
+                    .col-2 
+                      span="07504153878+07504964908"
                 // Modal
                 .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-payment')
                   .modal-dialog.modal-dialog-centered.modal-s(role='document')
@@ -233,7 +234,8 @@ block content
           $('#body-product'+idOfModel).append($("<table></table>").attr("id","datas"+idOfModel).attr('class',"table table-hover table-lg table-striped container-fluid table-responsive table-bordered"));
           $('#datas'+idOfModel).append($("<thead></thead>").attr('id','MainHeader'+idOfModel));
           $('#MainHeader'+idOfModel).append($("<tr></tr>").attr('style',"text-align:center").attr('id','header'+idOfModel));
-          $('#header'+idOfModel).append($("<th></th>").text('#'));
+          $('#header'+idOfModel).append($("<th></th>").attr('id',"selectAll"+idOfModel));
+          $('#selectAll'+idOfModel).append($("<input></input>").attr('id','selected'+idOfModel).attr('type','checkbox').attr('style','zoom: 1.5;'));
           $('#header'+idOfModel).append($("<th></th>").text('بڕاندی بەرهەم'));
           $('#header'+idOfModel).append($("<th></th>").text('ناوی بەرهەم'));
           $('#header'+idOfModel).append($("<th></th>").text('جۆری بەرهەم'));
@@ -422,18 +424,7 @@ block content
         tbody
       };
     }
-    // Check For Packets
-    //- $( "#perPacket" ).change(function() {
-    //-   var requestedPacket=document.getElementById("perPacket").value;
-    //-   var remainedPacket=document.getElementById("remained").value;
-    //-   if(parseFloat(remainedPacket)<parseFloat(requestedPacket)){
-    //-     document.getElementById("perPacket").classList.add("btn-outline-danger")
-    //-     $('#result').append($("<div></div>").attr("class","note note-danger mb-1").text("ناتوانیت بڕی دیاریکراو زیاتربێت لە بەرهەمی بەردەست لە باری دیاریکراو"));
-    //-   }else{
-    //-     document.getElementById('result').remove()
-    //-     document.getElementById("perPacket").classList.remove("btn-outline-danger")
-    //-   }
-    //- });
+
 
 
 
@@ -539,3 +530,54 @@ block content
         document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML.replace("$", ''))+parseFloat(parseFloat(document.getElementById("olddebut").innerHTML.replace("$", '')))
         });
     })
+
+    $(document).on("click", "td", function(e) {
+      var data = $(this).attr('id').match(/\d+/)[0];
+      //- var value=$(this)
+      //- $("#check").prop("checked", true);
+
+      document.getElementById("checkstatus"+data).checked = true;
+
+      //- var requestedPacket=document.getElementById("totalQuan"+data).value;
+      //- var remainedPacket=document.getElementById("trailerNumbers"+data).value;
+      //- console.log("requestedPacket="+requestedPacket)
+      //- console.log("remainedPacket="+remainedPacket)
+
+      //- if(parseFloat(remainedPacket)<parseFloat(requestedPacket)){
+      //-   console.log("hey")
+      //-   document.getElementById("totalQuan"+data).classList.add("btn-outline-danger")
+      //-   //- $('#result').append($("<div></div>").attr("class","note note-danger mb-1").text("ناتوانیت بڕی دیاریکراو زیاتربێت لە بەرهەمی بەردەست لە باری دیاریکراو"));
+      //- }else{
+      //-   //- document.getElementById('result').remove()
+      //-   document.getElementById("totalQuan"+data).classList.remove("btn-outline-danger")
+      //- }
+    }); 
+
+    $(document).on("click", "td", function(e) {
+      var data = $(this).attr('id').match(/\d+/)[0];
+      //- var value=$(this)
+      //- $("#check").prop("checked", true);
+
+      document.getElementById("checkstatus"+data).checked = true;
+
+      //- var requestedPacket=document.getElementById("totalQuan"+data).value;
+      //- var remainedPacket=document.getElementById("trailerNumbers"+data).value;
+      //- console.log("requestedPacket="+requestedPacket)
+      //- console.log("remainedPacket="+remainedPacket)
+
+      //- if(parseFloat(remainedPacket)<parseFloat(requestedPacket)){
+      //-   console.log("hey")
+      //-   document.getElementById("totalQuan"+data).classList.add("btn-outline-danger")
+      //-   //- $('#result').append($("<div></div>").attr("class","note note-danger mb-1").text("ناتوانیت بڕی دیاریکراو زیاتربێت لە بەرهەمی بەردەست لە باری دیاریکراو"));
+      //- }else{
+      //-   //- document.getElementById('result').remove()
+      //-   document.getElementById("totalQuan"+data).classList.remove("btn-outline-danger")
+      //- }
+    }); 
+
+
+    // Check For Packets
+    //- $( "#perPacket" ).change(function() {
+
+    //- });
+    
