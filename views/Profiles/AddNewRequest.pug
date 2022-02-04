@@ -110,7 +110,7 @@ block content
                         h6="ژمارەی مۆبایل: "+profile[0]['phoneNumber']
                         h6="بار: "+"فرۆشتن"
                         h6="لەلایان:"+user.username
-                        h6="ژمارەی مۆبایل ی کۆمپانیا:07504153878"
+                        h6=" ژمارەی مۆبایل ی کۆمپانیا:07504153878 // 7504964908"
                       .col-6
                         img#icon(src='https://i.ibb.co/9GPnfN5/titan-removebg-preview.png' width=300).mx-auto.d-block
                 hr
@@ -161,16 +161,15 @@ block content
                 footer(style="position: fixed;padding: 10px 10px 0px 10px;bottom: 0;width: 100%;height: 30mm;")
                   hr
                   .row 
-                    .col-4
-                      -var today = new Date();
-                      -var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-                      -var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                      -var dateTime = date+' '+time;
-                      span="    بەروار: "+dateTime.toLocaleString()
                     .col-5
+                        -var today = new Date();
+                        -var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                        -var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                        -var dateTime = date+' '+time;
+                        span="    بەروار: "+dateTime.toLocaleString()
+                    .col-7
                       span="ناونیشان: "+"هەولێر - گەڕەکی عدالە - نزیک بانکی زانکۆ"
-                    .col-2 
-                      span="07504153878+07504964908"
+                    
                 // Modal
                 .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-payment')
                   .modal-dialog.modal-dialog-centered.modal-s(role='document')
@@ -531,12 +530,35 @@ block content
         });
     })
 
-    $(document).on("click", "td", function(e) {
-      var data = $(this).attr('id').match(/\d+/)[0];
+    //- $(document).on("click", "td", function(e) {
+    //-   var data = $(this).attr('id').match(/\d+/)[0];
+    //-   //- var value=$(this)
+    //-   //- $("#check").prop("checked", true);
+
+    //-   document.getElementById("checkstatus"+data).checked = true;
+
+    //-   //- var requestedPacket=document.getElementById("totalQuan"+data).value;
+    //-   //- var remainedPacket=document.getElementById("trailerNumbers"+data).value;
+    //-   //- console.log("requestedPacket="+requestedPacket)
+    //-   //- console.log("remainedPacket="+remainedPacket)
+
+    //-   //- if(parseFloat(remainedPacket)<parseFloat(requestedPacket)){
+    //-   //-   console.log("hey")
+    //-   //-   document.getElementById("totalQuan"+data).classList.add("btn-outline-danger")
+    //-   //-   //- $('#result').append($("<div></div>").attr("class","note note-danger mb-1").text("ناتوانیت بڕی دیاریکراو زیاتربێت لە بەرهەمی بەردەست لە باری دیاریکراو"));
+    //-   //- }else{
+    //-   //-   //- document.getElementById('result').remove()
+    //-   //-   document.getElementById("totalQuan"+data).classList.remove("btn-outline-danger")
+    //-   //- }
+    //- }); 
+
+    //- $(document).on("click", "td", function(e) {
+    //-   var data = $(this).attr('id').match(/\d+/)[0];
       //- var value=$(this)
       //- $("#check").prop("checked", true);
+      //- console.log(data)
 
-      document.getElementById("checkstatus"+data).checked = true;
+      //- document.getElementById("checkstatus"+data).checked = true;
 
       //- var requestedPacket=document.getElementById("totalQuan"+data).value;
       //- var remainedPacket=document.getElementById("trailerNumbers"+data).value;
@@ -551,29 +573,7 @@ block content
       //-   //- document.getElementById('result').remove()
       //-   document.getElementById("totalQuan"+data).classList.remove("btn-outline-danger")
       //- }
-    }); 
-
-    $(document).on("click", "td", function(e) {
-      var data = $(this).attr('id').match(/\d+/)[0];
-      //- var value=$(this)
-      //- $("#check").prop("checked", true);
-
-      document.getElementById("checkstatus"+data).checked = true;
-
-      //- var requestedPacket=document.getElementById("totalQuan"+data).value;
-      //- var remainedPacket=document.getElementById("trailerNumbers"+data).value;
-      //- console.log("requestedPacket="+requestedPacket)
-      //- console.log("remainedPacket="+remainedPacket)
-
-      //- if(parseFloat(remainedPacket)<parseFloat(requestedPacket)){
-      //-   console.log("hey")
-      //-   document.getElementById("totalQuan"+data).classList.add("btn-outline-danger")
-      //-   //- $('#result').append($("<div></div>").attr("class","note note-danger mb-1").text("ناتوانیت بڕی دیاریکراو زیاتربێت لە بەرهەمی بەردەست لە باری دیاریکراو"));
-      //- }else{
-      //-   //- document.getElementById('result').remove()
-      //-   document.getElementById("totalQuan"+data).classList.remove("btn-outline-danger")
-      //- }
-    }); 
+    //- }); 
 
 
     // Check For Packets

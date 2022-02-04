@@ -55,6 +55,7 @@ exports.allowIfLoggedin = async (req, res, next) => {
 }
 
 // !: Products
+// TODO: Checked and Worked Properly
 //Add New Product UI
 exports.AddNewProduct = async (req, res, next) => {
     try {
@@ -83,6 +84,7 @@ exports.AddNewProduct = async (req, res, next) => {
     }
 }
 
+// TODO: Checked and Worked Properly
 //Add New Product Operation
 exports.addNewItem = async (req, res, next) => {
     try {
@@ -90,7 +92,9 @@ exports.addNewItem = async (req, res, next) => {
         const Trailer = await TrailerCollection.find({
             status: "New Trailer",
             softdelete: false
-        })
+        }).sort({
+            "createdAt": -1
+        });
 
         const Product = await ProductsCollection.findOne({
             itemName: req.body.itemName,
@@ -99,6 +103,7 @@ exports.addNewItem = async (req, res, next) => {
             itemUnit: req.body.itemUnit,
             unit: req.body.unit,
             color: req.body.color,
+            weight: req.body.weight,
         });
 
         if (Product) {
@@ -133,7 +138,7 @@ exports.addNewItem = async (req, res, next) => {
                 totalQuantity: 0,
                 status: "New Product",
                 expireDate: req.body.expireDate,
-                trailerNumber: Trailer.length,
+                trailerNumber: Trailer[0]['trailerNumber'],
                 addedBy: req.user.username,
                 updatedBy: req.user.username,
                 note: req.body.note
@@ -146,9 +151,11 @@ exports.addNewItem = async (req, res, next) => {
                 packet: 1,
                 perPacket: req.body.perPacket,
                 status: "New Product",
-                trailerNumber: Trailer.length,
+                trailerNumber: Trailer[0]['trailerNumber'],
                 addedBy: req.user.username,
                 updatedBy: req.user.username,
+                totalQuantity: 0,
+                totalPrice: 0,
                 productID: newProduct['_id'],
             });
             await newItem.save();
@@ -160,7 +167,6 @@ exports.addNewItem = async (req, res, next) => {
                     itemHistory: newItem["_id"],
                 }
             });
-
             res.redirect("/Products")
         }
     } catch (error) {
@@ -168,7 +174,7 @@ exports.addNewItem = async (req, res, next) => {
     }
 }
 
-// !: Remove Product
+// TODO: Checked and Worked Properly
 //Remove Product UI
 exports.RemoveProductUI = async (req, res, next) => {
     const Products = await ProductsCollection
@@ -184,13 +190,11 @@ exports.RemoveProductUI = async (req, res, next) => {
 
 //Remove Selected Product
 exports.RemoveProduct = async (req, res, next) => {
-    const Products = await ProductsCollection
-        .findOneAndUpdate({
-            _id: req.params.id
-        }, {
-            softdelete: true
-        })
 
+    const Products = await ProductsCollection
+        .findOne({
+            _id: req.params.id
+        })
 
     const deletedItem = new RecordsCollection({
         packet: Products['packet'],
@@ -206,6 +210,14 @@ exports.RemoveProduct = async (req, res, next) => {
         productID: Products['_id'],
     });
     await deletedItem.save();
+
+    setTimeout(async () => {
+        await ProductsCollection
+            .deleteOne({
+                _id: req.params.id
+            })
+    }, 5000);
+
     req.flash('success', "بەرهەمەکە بە سەرکەوتوویی ڕەشکرایەوە");
     res.redirect("/Products")
 }
@@ -213,16 +225,17 @@ exports.RemoveProduct = async (req, res, next) => {
 // !: Invoices
 //Invoice Request Operation
 exports.NewInvoice = async (req, res, next) => {
-
     try {
         var RequestList = req.body['tbody'];
-        const Records = await RecordsCollection
-            .find({
-                status: "Customer Request",
-                softdelete: false
-            });
 
-        var invoiceID = Records.length;
+        const Records = await RecordsCollection.find({
+            status: "Customer Request",
+            softdelete: false
+        }).sort({
+            "createdAt": -1
+        });
+
+        var invoiceID = Records[0]['recordCode'];
         for (let index = 0; index < RequestList.length; index++) {
             const element = RequestList[index];
             // console.log("Item Model:" + element[1])
@@ -236,8 +249,6 @@ exports.NewInvoice = async (req, res, next) => {
             // console.log("Total Price:"+element[8])
             // console.log("Item Trailer:"+element[9])
 
-
-
             const Product = await ProductsCollection.find({
                 itemModel: element[1],
                 itemName: element[2],
@@ -248,8 +259,8 @@ exports.NewInvoice = async (req, res, next) => {
             });
 
             var totalRequestedPackets = element[6];
-
-            var _SellPrice = parseFloat(element[7].replace("$", ''))
+            var _SellPrice = parseFloat(element[7].replace("$", ''));
+            
             if (element[9].split('-')[0] == 0) {
                 const Trailer = await RecordsCollection.find({
                     productID: Product[0]['_id'],
@@ -289,7 +300,7 @@ exports.NewInvoice = async (req, res, next) => {
                         totalQuantity: result,
                         updatedBy: req.user.username,
                         totalPrice: Product[0]['totalPrice'] - (totalRequestedPackets * _SellPrice),
-                        totalWeight: Product[0]['totalWeight'] - (totalRequestedPackets * Product[0]['weight']),
+                        // totalWeight: Product[0]['totalWeight'] - (totalRequestedPackets * Product[0]['weight']),
                         $push: {
                             itemHistory: newRecordtoHistory["_id"],
                         }
@@ -338,10 +349,12 @@ exports.NewInvoice = async (req, res, next) => {
                         status: "Customer Request",
                         sellPrice: _SellPrice,
                         totalPrice: _SellPrice * totalRequestedPackets,
+                        oldDebut: Profile['remainedbalance'],
                         trailerNumber: element[9].split('-')[0],
                         addedBy: req.user.username,
                         updatedBy: req.user.username,
                         note: req.body.note,
+                        trailerID: Trailer[0]['_id'],
                         productID: Product[0]['_id'],
                         cutomerID: req.params.id,
                         htmlObject: req.body['tbody'],
@@ -357,7 +370,7 @@ exports.NewInvoice = async (req, res, next) => {
                         totalQuantity: result,
                         updatedBy: req.user.username,
                         totalPrice: Product[0]['totalPrice'] - (totalRequestedPackets * _SellPrice),
-                        totalWeight: Product[0]['totalWeight'] - (totalRequestedPackets * Product[0]['weight']),
+                        // totalWeight: Product[0]['totalWeight'] - (totalRequestedPackets * Product[0]['weight']),
                         $push: {
                             itemHistory: newRecordtoHistory["_id"],
                         }
@@ -383,7 +396,7 @@ exports.NewInvoice = async (req, res, next) => {
                         totalQuantity: numbeOfPacketsinTrailer,
                         updatedBy: req.user.username,
                         totalPrice: Trailer[0]['totalPrice'] - (totalRequestedPackets * _SellPrice),
-                        totalWeight: Trailer[0]['totalWeight'] - (totalRequestedPackets * Trailer[0]['weight']),
+                        // totalWeight: Trailer[0]['totalWeight'] - (totalRequestedPackets * Trailer[0]['weight']),
                         $push: {
                             invoiceID: newRecordtoHistory["_id"],
                         }
@@ -410,10 +423,12 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                 status: "Customer Request",
                 softdelete: false
             });
+
         var Profile = await ProfileCollection.findOne({
             _id: req.params.id
         });
         var invoiceID = Records.length;
+
         for (let index = 0; index < RequestList.length; index++) {
             const element = RequestList[index];
             // console.log("Item Model:" + element[1])
@@ -427,8 +442,6 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
             // console.log("Total Price:"+element[8])
             // console.log("Item Trailer:"+element[9])
 
-
-
             const Product = await ProductsCollection.find({
                 itemModel: element[1],
                 itemName: element[2],
@@ -437,8 +450,6 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                 weight: parseFloat(element[5].split(" ")[0]),
                 itemUnit: element[5].split(" ")[1]
             });
-
-
 
             var totalRequestedPackets = element[6];
 
@@ -863,14 +874,15 @@ exports.CloneProduct = async (req, res, next) => {
         const Trailer = await TrailerCollection.find({
             status: "New Trailer",
             softdelete: false
-        })
+        }).sort({
+            "createdAt": -1
+        });
 
         const Product = await ProductsCollection.findOne({
             itemName: req.body.itemName,
             itemType: req.body.itemType,
             itemModel: req.body.itemModel,
             itemUnit: req.body.itemUnit,
-            unit: req.body.unit,
             unit: req.body.unit,
             color: req.body.color,
             weight: req.body.weight,
@@ -908,7 +920,7 @@ exports.CloneProduct = async (req, res, next) => {
                 totalQuantity: 0,
                 status: "New Product",
                 expireDate: req.body.expireDate,
-                trailerNumber: Trailer.length,
+                trailerNumber: Trailer[0]['trailerNumber'],
                 addedBy: req.user.username,
                 updatedBy: req.user.username,
                 note: req.body.note
@@ -921,9 +933,11 @@ exports.CloneProduct = async (req, res, next) => {
                 packet: 1,
                 perPacket: req.body.perPacket,
                 status: "New Product",
-                trailerNumber: Trailer.length,
+                trailerNumber: Trailer[0]['trailerNumber'],
                 addedBy: req.user.username,
                 updatedBy: req.user.username,
+                totalQuantity: 0,
+                totalPrice: 0,
                 productID: newProduct['_id'],
             });
             await newItem.save();
@@ -1412,6 +1426,8 @@ exports.SearchForProductsinCompany = async (req, res, next) => {
     }
 }
 
+
+// TODO: Checked and Worked Properly
 exports.GetProductswithSearch = async (req, res, next) => {
     var searchStr = req.body.search.value;
 
@@ -1478,7 +1494,6 @@ exports.GetProductswithSearch = async (req, res, next) => {
                 'skip': Number(req.body.start),
                 'limit': Number(req.body.length),
                 'sort': { 'itemModel': -1 },
-                'softdelete': "false"
             }, function (err, results) {
                 if (err) {
                     console.log('error while getting results' + err);

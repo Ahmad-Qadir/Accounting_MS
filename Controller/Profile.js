@@ -265,14 +265,14 @@ exports.PrintAllInvoiceforCustomer = async (req, res, next) => {
 exports.AddNewRequest = async (req, res, next) => {
     try {
 
-        const Records = await HistoryClass
-            .find({
-                status: "Customer Request",
-                softdelete: false
-            });
+        const Records = await HistoryClass.find({
+            status: "Customer Request",
+            softdelete: false
+        }).sort({
+            "createdAt": -1
+        });
 
-
-        var invoiceID = Records.length;
+        var invoiceID = Records[0]['recordCode'];
 
         const Products = await ProductsCollection
             .find({

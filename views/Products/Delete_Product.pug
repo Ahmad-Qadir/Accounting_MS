@@ -13,12 +13,12 @@ block content
               if errors
                 each error, i in errors
                   div(class="note note-danger") #{error.msg}
-            h2="ڕەشکردنەوەی بەرهەمی "+product[0]['itemName']
+            h2="ڕەشکردنەوەی بەرهەمی "+product[0]['itemModel']+" - "+product[0]['itemName']
             .row
               .modal-content
                 //- .modal-header=product[0]['itemName']
                 .modal-body ئایا دڵنیای لە ڕەشکردنەوەی بەرهەمی 
-                  b=product[0]['itemName']
+                  b=product[0]['itemModel']+" - "+product[0]['itemName']
                 .modal-footer
                   a.btn.btn-default(type='button' href="/Products") گەڕانەوە
                   button.btn.btn-danger.btn-ok(type='submit') ڕەشکردنەوە
