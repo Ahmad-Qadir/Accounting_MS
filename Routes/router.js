@@ -39,7 +39,7 @@ router.get('/MyAccount', EmployeeController.allowIfLoggedin, EmployeeController.
 router.get('/NewProduct', Products.allowIfLoggedin, Products.grantAccess('createAny', 'products'), Products.AddNewProduct); // Add new Product
 router.post('/Product', Products.allowIfLoggedin, Products.grantAccess('createAny', 'products'), Products.addNewItem); // Add new Product
 router.get('/Products', Products.getProducts); // Get All Products
-router.get('/Products/:productName', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.getSpecificProducts); // Get Single Product
+// router.get('/Products/:productName', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.getSpecificProducts); // Get Single Product
 router.get('/Products/:id/Invoices', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.getInvoiceofSpecificProduct); // Get Invoices of each Product
 router.post('/Products/Model', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.SearchForProductModel);
 router.get('/Products/Model/Company/:company', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.SearchForProductsinCompany);
@@ -58,7 +58,7 @@ router.post('/Products/:id/Requests/:paid', Products.allowIfLoggedin, Products.g
 router.post('/Products/:id/Requests/Debut/:price', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.NewInvoiceOfNoPrice); // Add new Request per Product
 router.post('/Products/RemoveProduct/:id', Products.allowIfLoggedin, Products.grantAccess('deleteAny', 'products'), Products.RemoveProduct); // Add new Request per Product
 router.get('/Products/Remove/:id', Products.allowIfLoggedin, Products.grantAccess('deleteAny', 'products'), Products.RemoveProductUI); // Add new Request per Product
-router.post('/Products/NewTrailer', Products.allowIfLoggedin, Products.grantAccess('createAny', 'products'), Products.AppendNewTrailertoProduct)
+router.post('/Products/NewTrailer/:cost', Products.allowIfLoggedin, Products.grantAccess('createAny', 'products'), Products.AppendNewTrailertoProduct)
 router.get('/NewTrailer', Products.allowIfLoggedin, Products.grantAccess('createAny', 'products'), Products.AddNewTrailer); // Add new Request per Product
 
 

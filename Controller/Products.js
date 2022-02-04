@@ -222,11 +222,13 @@ exports.RemoveProduct = async (req, res, next) => {
     res.redirect("/Products")
 }
 
+// TODO: Checked and Worked Properly
 // !: Invoices
 //Invoice Request Operation
 exports.NewInvoice = async (req, res, next) => {
     try {
         var RequestList = req.body['tbody'];
+        var checkLength = 0;
 
         const Records = await RecordsCollection.find({
             status: "Customer Request",
@@ -235,7 +237,11 @@ exports.NewInvoice = async (req, res, next) => {
             "createdAt": -1
         });
 
-        var invoiceID = Records[0]['recordCode'];
+        var Profile = await ProfileCollection.findOne({
+            _id: req.params.id
+        });
+
+        var invoiceID = parseFloat(Records[0]['recordCode']) + 1;
         for (let index = 0; index < RequestList.length; index++) {
             const element = RequestList[index];
             // console.log("Item Model:" + element[1])
@@ -260,7 +266,7 @@ exports.NewInvoice = async (req, res, next) => {
 
             var totalRequestedPackets = element[6];
             var _SellPrice = parseFloat(element[7].replace("$", ''));
-            
+
             if (element[9].split('-')[0] == 0) {
                 const Trailer = await RecordsCollection.find({
                     productID: Product[0]['_id'],
@@ -270,7 +276,7 @@ exports.NewInvoice = async (req, res, next) => {
 
                 //Prevent 
                 if (Trailer[0]['totalQuantity'] < totalRequestedPackets) {
-                    res.send("بەرهەمی " + Trailer[0]['productID']['itemName'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە لە بەرهەمی گەڕاوە");
+                    res.send("بەرهەمی " + Trailer[0]['itemName'] + " " + Trailer[0]['color'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە لە باری ژمارە" + element[9].split('-')[0]);
                     break;
                 } else {
                     //===============Records Collection=============
@@ -280,6 +286,7 @@ exports.NewInvoice = async (req, res, next) => {
                         status: "Customer Request",
                         sellPrice: _SellPrice,
                         totalPrice: _SellPrice * totalRequestedPackets,
+                        oldDebut: Profile['remainedbalance'],
                         trailerNumber: element[9].split('-')[0],
                         addedBy: req.user.username,
                         updatedBy: req.user.username,
@@ -291,20 +298,19 @@ exports.NewInvoice = async (req, res, next) => {
                         moneyStatus: "Paid"
                     });
                     await newRecordtoHistory.save();
+
                     var result = Product[0]['totalQuantity'] - totalRequestedPackets;
+
                     await ProductsCollection.findByIdAndUpdate({
                         _id: Product[0]['_id']
                     }, {
-                        remainedPacket: parseInt(result / Product[0]['perPacket']),
-                        remainedPerPacket: result % Product[0]['perPacket'],
                         totalQuantity: result,
                         updatedBy: req.user.username,
-                        totalPrice: Product[0]['totalPrice'] - (totalRequestedPackets * _SellPrice),
-                        // totalWeight: Product[0]['totalWeight'] - (totalRequestedPackets * Product[0]['weight']),
                         $push: {
                             itemHistory: newRecordtoHistory["_id"],
                         }
                     });
+
 
                     await ProfileCollection.findByIdAndUpdate({
                         _id: req.params.id
@@ -318,16 +324,16 @@ exports.NewInvoice = async (req, res, next) => {
 
                     var numbeOfPacketsinTrailer = Trailer[0]['totalQuantity'] - totalRequestedPackets;
 
-                    await RecordsCollection.findByIdAndUpdate({
+                    await TrailerCollection.findByIdAndUpdate({
                         _id: Trailer[0]['_id']
                     }, {
-                        remainedPacket: numbeOfPacketsinTrailer / Product[0]['perPacket'],
-                        remainedPerPacket: numbeOfPacketsinTrailer % Product[0]['perPacket'],
                         totalQuantity: numbeOfPacketsinTrailer,
                         updatedBy: req.user.username,
-                        totalPrice: Trailer[0]['totalPrice'] - (totalRequestedPackets * _SellPrice),
+                        $push: {
+                            invoiceID: newRecordtoHistory["_id"],
+                        }
                     });
-
+                    checkLength++;
                 }
 
             }
@@ -361,20 +367,20 @@ exports.NewInvoice = async (req, res, next) => {
                         moneyStatus: "Paid"
                     });
                     await newRecordtoHistory.save();
+
                     var result = Product[0]['totalQuantity'] - totalRequestedPackets;
+
                     await ProductsCollection.findByIdAndUpdate({
                         _id: Product[0]['_id']
                     }, {
-                        remainedPacket: parseFloat(result / Product[0]['perPacket']),
-                        remainedPerPacket: result % Product[0]['perPacket'],
                         totalQuantity: result,
                         updatedBy: req.user.username,
-                        totalPrice: Product[0]['totalPrice'] - (totalRequestedPackets * _SellPrice),
-                        // totalWeight: Product[0]['totalWeight'] - (totalRequestedPackets * Product[0]['weight']),
                         $push: {
                             itemHistory: newRecordtoHistory["_id"],
                         }
                     });
+
+
                     await ProfileCollection.findByIdAndUpdate({
                         _id: req.params.id
                     }, {
@@ -387,48 +393,49 @@ exports.NewInvoice = async (req, res, next) => {
 
                     var numbeOfPacketsinTrailer = Trailer[0]['totalQuantity'] - totalRequestedPackets;
 
-
                     await TrailerCollection.findByIdAndUpdate({
                         _id: Trailer[0]['_id']
                     }, {
-                        remainedPacket: numbeOfPacketsinTrailer / Product[0]['perPacket'],
-                        remainedPerPacket: numbeOfPacketsinTrailer % Product[0]['perPacket'],
                         totalQuantity: numbeOfPacketsinTrailer,
                         updatedBy: req.user.username,
-                        totalPrice: Trailer[0]['totalPrice'] - (totalRequestedPackets * _SellPrice),
-                        // totalWeight: Trailer[0]['totalWeight'] - (totalRequestedPackets * Trailer[0]['weight']),
                         $push: {
                             invoiceID: newRecordtoHistory["_id"],
                         }
                     });
-
+                    checkLength++;
                 }
 
             }
         }
-        res.status(200).send("بە سەرکەوتوویی تۆمارکرا")
+        setTimeout(() => {
+            if (RequestList.length == checkLength)
+                res.status(200).send("بە سەرکەوتوویی تۆمارکرا")
+        }, 2000);
 
     } catch (error) {
         console.log(error)
     }
 }
 
+// TODO: Checked and Worked Properly
 //Invoice Request Operation
 exports.NewInvoiceOfNoPrice = async (req, res, next) => {
-
     try {
         var RequestList = req.body['tbody'];
-        const Records = await RecordsCollection
-            .find({
-                status: "Customer Request",
-                softdelete: false
-            });
+        var checkLength = 0;
+
+        const Records = await RecordsCollection.find({
+            status: "Customer Request",
+            softdelete: false
+        }).sort({
+            "createdAt": -1
+        });
 
         var Profile = await ProfileCollection.findOne({
             _id: req.params.id
         });
-        var invoiceID = Records.length;
 
+        var invoiceID = parseFloat(Records[0]['recordCode']) + 1;
         for (let index = 0; index < RequestList.length; index++) {
             const element = RequestList[index];
             // console.log("Item Model:" + element[1])
@@ -452,8 +459,8 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
             });
 
             var totalRequestedPackets = element[6];
+            var _SellPrice = parseFloat(element[7].replace("$", ''));
 
-            var _SellPrice = parseFloat(element[7].replace("$", ''))
             if (element[9].split('-')[0] == 0) {
                 const Trailer = await RecordsCollection.find({
                     productID: Product[0]['_id'],
@@ -463,7 +470,7 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
 
                 //Prevent 
                 if (Trailer[0]['totalQuantity'] < totalRequestedPackets) {
-                    res.send("بەرهەمی " + Trailer[0]['productID']['itemName'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە لە بەرهەمی گەڕاوە");
+                    res.send("بەرهەمی " + Trailer[0]['itemName'] + " " + Trailer[0]['color'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە لە باری ژمارە" + element[9].split('-')[0]);
                     break;
                 } else {
                     //===============Records Collection=============
@@ -482,23 +489,22 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                         productID: Product[0]['_id'],
                         cutomerID: req.params.id,
                         htmlObject: req.body['tbody'],
-                        moneyStatus: "Debut"
+                        moneyStatus: "Paid"
                     });
                     await newRecordtoHistory.save();
+
                     var result = Product[0]['totalQuantity'] - totalRequestedPackets;
+
                     await ProductsCollection.findByIdAndUpdate({
                         _id: Product[0]['_id']
                     }, {
-                        remainedPacket: parseInt(result / Product[0]['perPacket']),
-                        remainedPerPacket: result % Product[0]['perPacket'],
                         totalQuantity: result,
                         updatedBy: req.user.username,
-                        totalPrice: Product[0]['totalPrice'] - (totalRequestedPackets * _SellPrice),
-                        totalWeight: Product[0]['totalWeight'] - (totalRequestedPackets * Product[0]['weight']),
                         $push: {
                             itemHistory: newRecordtoHistory["_id"],
                         }
                     });
+
 
                     await ProfileCollection.findByIdAndUpdate({
                         _id: req.params.id
@@ -512,16 +518,16 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
 
                     var numbeOfPacketsinTrailer = Trailer[0]['totalQuantity'] - totalRequestedPackets;
 
-                    await RecordsCollection.findByIdAndUpdate({
+                    await TrailerCollection.findByIdAndUpdate({
                         _id: Trailer[0]['_id']
                     }, {
-                        remainedPacket: numbeOfPacketsinTrailer / Product[0]['perPacket'],
-                        remainedPerPacket: numbeOfPacketsinTrailer % Product[0]['perPacket'],
                         totalQuantity: numbeOfPacketsinTrailer,
                         updatedBy: req.user.username,
-                        totalPrice: Trailer[0]['totalPrice'] - (totalRequestedPackets * _SellPrice),
+                        $push: {
+                            invoiceID: newRecordtoHistory["_id"],
+                        }
                     });
-
+                    checkLength++;
                 }
 
             }
@@ -533,7 +539,7 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
 
                 //Prevent 
                 if (Trailer[0]['totalQuantity'] < totalRequestedPackets) {
-                    res.status(402).send("بەرهەمی " + Trailer[0]['itemName'] + " " + Trailer[0]['color'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە لە باری ژمارە" + element[9].split('-')[0]);
+                    res.send("بەرهەمی " + Trailer[0]['itemName'] + " " + Trailer[0]['color'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە لە باری ژمارە" + element[9].split('-')[0]);
                     break;
                 } else {
                     //===============Records Collection=============
@@ -542,28 +548,27 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                         totalQuantity: totalRequestedPackets,
                         status: "Customer Request",
                         sellPrice: _SellPrice,
-                        oldDebut: Profile['remainedbalance'],
                         totalPrice: _SellPrice * totalRequestedPackets,
+                        oldDebut: Profile['remainedbalance'],
                         trailerNumber: element[9].split('-')[0],
                         addedBy: req.user.username,
                         updatedBy: req.user.username,
                         note: req.body.note,
+                        trailerID: Trailer[0]['_id'],
                         productID: Product[0]['_id'],
                         cutomerID: req.params.id,
                         htmlObject: req.body['tbody'],
-                        moneyStatus: "Debut"
+                        moneyStatus: "Paid"
                     });
                     await newRecordtoHistory.save();
+
                     var result = Product[0]['totalQuantity'] - totalRequestedPackets;
+
                     await ProductsCollection.findByIdAndUpdate({
                         _id: Product[0]['_id']
                     }, {
-                        remainedPacket: parseFloat(result / Product[0]['perPacket']),
-                        remainedPerPacket: result % Product[0]['perPacket'],
                         totalQuantity: result,
                         updatedBy: req.user.username,
-                        totalPrice: Product[0]['totalPrice'] - (totalRequestedPackets * _SellPrice),
-                        totalWeight: Product[0]['totalWeight'] - (totalRequestedPackets * Product[0]['weight']),
                         $push: {
                             itemHistory: newRecordtoHistory["_id"],
                         }
@@ -582,25 +587,24 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
 
                     var numbeOfPacketsinTrailer = Trailer[0]['totalQuantity'] - totalRequestedPackets;
 
-
                     await TrailerCollection.findByIdAndUpdate({
                         _id: Trailer[0]['_id']
                     }, {
-                        remainedPacket: numbeOfPacketsinTrailer / Product[0]['perPacket'],
-                        remainedPerPacket: numbeOfPacketsinTrailer % Product[0]['perPacket'],
                         totalQuantity: numbeOfPacketsinTrailer,
                         updatedBy: req.user.username,
-                        totalPrice: Trailer[0]['totalPrice'] - (totalRequestedPackets * _SellPrice),
-                        totalWeight: Trailer[0]['totalWeight'] - (totalRequestedPackets * Trailer[0]['weight']),
                         $push: {
                             invoiceID: newRecordtoHistory["_id"],
                         }
                     });
-
+                    checkLength++;
                 }
 
             }
         }
+        setTimeout(() => {
+            if (RequestList.length == checkLength)
+                res.status(200).send("بە سەرکەوتوویی تۆمارکرا")
+        }, 2000);
 
         await ProfileCollection.findByIdAndUpdate({
             _id: req.params.id
@@ -608,33 +612,34 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
             remainedbalance: Profile['remainedbalance'] + parseFloat(req.params.price.replace("$", '')),
         });
 
-        res.status(200).send("بە سەرکەوتوویی تۆمارکرا")
-
     } catch (error) {
         console.log(error)
     }
 }
 
+// TODO: Checked and Worked Properly
 //Invoice Request Operation
 exports.NewInvoiceForDebut = async (req, res, next) => {
-
     try {
-        var RequestList = req.body['tbody'];
-        const Records = await RecordsCollection
-            .find({
-                status: "Customer Request",
-                softdelete: false
-            });
+        const Records = await RecordsCollection.find({
+            status: "Compensate",
+            softdelete: false
+        }).sort({
+            "createdAt": -1
+        });
 
-        var invoiceID = Records.length;
-        const Profile = await ProfileCollection.find({
+        var Profile = await ProfileCollection.find({
             _id: req.params.id
         });
+
+        var invoiceID = parseFloat(Records[0]['recordCode']) + 1;
+
         const newRecordtoHistory = new RecordsCollection({
             recordCode: invoiceID,
             status: "Compensate",
             sellPrice: req.params.paid,
-            totalQuantity: 1,
+            totalPrice: req.params.paid,
+            totalQuantity: 0,
             oldDebut: Profile['remainedbalance'],
             addedBy: req.user.username,
             updatedBy: req.user.username,
@@ -661,36 +666,7 @@ exports.NewInvoiceForDebut = async (req, res, next) => {
     }
 }
 
-//Invoice Request UI
-// exports.AddNewRequest = async (req, res, next) => {
-//     try {
-//         const Products = await ProductsCollection
-//             .find({
-//                 id: req.params.id,
-//                 softdelete: false
-//             })
-//         const Trailers = await TrailerCollection
-//             .find({
-//                 softdelete: false,
-//                 productID: req.params.id,
-//             })
-
-//         const Profiles = await ProfileCollection
-//             .find({
-//                 softdelete: false,
-//             })
-
-//         res.render('Products/CustomerRequest', {
-//             title: "Add New Request",
-//             product: Products,
-//             trailer: Trailers,
-//             profiles: Profiles
-//         })
-//     } catch (error) {
-//         next(error)
-//     }
-// }
-
+// TODO: Checked and Worked Properly   
 // !: Products
 //Get All Products
 exports.getProducts = async (req, res, next) => {
@@ -710,21 +686,7 @@ exports.getProducts = async (req, res, next) => {
     })
 }
 
-//Get Spedicif Products
-exports.getSpecificProducts = async (req, res, next) => {
-    // console.log(req.body)
-    const Product = await ProductsCollection
-        .find({
-            itemName: req.body.itemName,
-            itemModel: req.body.itemModel,
-            weight: req.body.weight,
-            itemType: req.body.itemType,
-            color: req.body.color
-        }).populate("itemHistory");
-
-    res.send(Product);
-}
-
+// TODO: Checked and Worked Properly
 //Get All Invoices of Specific Product
 exports.getInvoiceofSpecificProduct = async (req, res, next) => {
     const Products = await RecordsCollection
@@ -763,6 +725,8 @@ exports.getInvoiceofSpecificProduct = async (req, res, next) => {
     }
 }
 
+
+// TODO: Checked and Worked Properly
 //Update Products UI
 exports.EditProductUI = async (req, res, next) => {
     try {
@@ -798,6 +762,7 @@ exports.EditProductUI = async (req, res, next) => {
     }
 }
 
+// TODO: Checked and Worked Properly
 //Update Products Operation
 exports.EditProductOperation = async (req, res, next) => {
     try {
@@ -821,10 +786,10 @@ exports.EditProductOperation = async (req, res, next) => {
             sellPriceWasta: req.body.sellPriceWasta,
             sellPriceWakil: req.body.sellPriceWakil,
             sellPriceSharika: req.body.sellPriceSharika,
+            perPacket: req.body.perPacket,
             updatedBy: req.user.username,
             note: req.body.note
         });
-
         req.flash('success', "بەرهەمەکە بە سەرکەوتوویی نوێکرایەوە");
         res.redirect("/Products")
     } catch (error) {
@@ -832,6 +797,7 @@ exports.EditProductOperation = async (req, res, next) => {
     }
 }
 
+// TODO: Checked and Worked Properly
 //Clone Products UI
 exports.CloneProductUI = async (req, res, next) => {
     try {
@@ -867,6 +833,7 @@ exports.CloneProductUI = async (req, res, next) => {
     }
 }
 
+// TODO: Checked and Worked Properly
 //Clone Product Operation
 exports.CloneProduct = async (req, res, next) => {
     try {
@@ -957,6 +924,7 @@ exports.CloneProduct = async (req, res, next) => {
     }
 }
 
+// TODO: Checked and Worked Properly
 // ! Trailers
 //Add New Trailer UI
 exports.AddNewTrailer = async (req, res, next) => {
@@ -967,6 +935,7 @@ exports.AddNewTrailer = async (req, res, next) => {
         }).sort({
             "createdAt": -1
         });
+
         if (Trailer.length == 0)
             var invoiceID = 0;
         else if (Trailer[0]['trailerNumber'] == 0)
@@ -998,9 +967,9 @@ exports.AddNewTrailer = async (req, res, next) => {
     }
 }
 
+// TODO: Checked and Worked Properly
 //Add New Trailer Operation
 exports.AppendNewTrailertoProduct = async (req, res, next) => {
-
     try {
         var RequestList = req.body['tbody'];
         const Trailer = await TrailerCollection.find({
@@ -1010,7 +979,6 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
             "createdAt": -1
         });
 
-
         if (Trailer.length == 0)
             var _TrailerNumber = 1;
         else if (Trailer[0]['trailerNumber'] == 0)
@@ -1019,7 +987,6 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
             var _TrailerNumber = Trailer[0]['trailerNumber'] + 1;
 
         var record = uuid.v1();
-
         // console.log("ID: "+RequestList[0][0])                   
         // console.log("Product Model: "+RequestList[0][1])
         // console.log("Product Name: "+RequestList[0][2])
@@ -1039,7 +1006,6 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
         for (let index = 0; index < RequestList.length; index++) {
             const element = RequestList[index];
 
-
             const Product = await ProductsCollection.find({
                 itemModel: element[1],
                 itemName: element[2],
@@ -1049,7 +1015,6 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
                 itemUnit: element[5].split(" ")[1]
             });
 
-
             const newRecordtoHistory = new RecordsCollection({
                 recordCode: record,
                 totalQuantity: parseFloat(element[11]),
@@ -1057,6 +1022,7 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
                 camePrice: parseFloat(element[12]),
                 sellPrice: parseFloat(element[13]),
                 totalPrice: parseFloat(element[12]) * parseFloat(element[11]),
+                cost: req.params.cost,
                 sellPriceWakil: parseFloat(element[6]),
                 sellPriceSharika: parseFloat(element[7]),
                 sellPriceMahal: parseFloat(element[8]),
@@ -1078,10 +1044,10 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
             await ProductsCollection.findByIdAndUpdate({
                 "_id": Product[0]['_id']
             }, {
-                remainedPacket: parseFloat(quantity / Product[0]['perPacket']),
-                remainedPerPacket: quantity % Product[0]['perPacket'],
+                // remainedPacket: parseFloat(quantity / Product[0]['perPacket']),
+                // remainedPerPacket: quantity % Product[0]['perPacket'],
                 totalQuantity: quantity,
-                totalPrice: Product[0]['totalPrice'] + (parseFloat(element[11]) * parseFloat(element[13])),
+                // totalPrice: Product[0]['totalPrice'] + (parseFloat(element[11]) * parseFloat(element[13])),
                 // totalWeight: Product[0]['totalWeight'] + (parseFloat(element[11]) * Product[0]['weight']),
                 sellPriceWakil: parseFloat(element[6]),
                 sellPriceSharika: parseFloat(element[7]),
@@ -1093,6 +1059,7 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
                     itemHistory: newRecordtoHistory["_id"],
                 }
             });
+
             // console.log((parseFloat(element[11]) * parseFloat(element[13])))
             const newTrailer = new TrailerCollection({
                 itemName: Product[0]['itemName'],
@@ -1114,18 +1081,18 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
                 sellPriceMahal: parseFloat(element[8]),
                 sellPriceMufrad: parseFloat(element[9]),
                 sellPriceWasta: parseFloat(element[10]),
-                totalPrice: (parseFloat(element[11]) * parseFloat(element[13])),
-                packet: parseFloat(element[11]) / Product[0]['packet'],
-                perPacket: parseFloat(element[11]) % Product[0]['packet'],
-                remainedPacket: parseFloat(element[11]) / Product[0]['packet'],
-                remainedPerPacket: parseFloat(element[11]) % Product[0]['packet'],
+                // totalPrice: (parseFloat(element[11]) * parseFloat(element[13])),
+                // packet: parseFloat(element[11]) / Product[0]['packet'],
+                // perPacket: parseFloat(element[11]) % Product[0]['packet'],
+                // remainedPacket: parseFloat(element[11]) / Product[0]['packet'],
+                // remainedPerPacket: parseFloat(element[11]) % Product[0]['packet'],
                 totalQuantity: parseFloat(element[11]),
                 status: "New Trailer",
-                expireDate: Product[0]['expireDate'],
+                // expireDate: Product[0]['expireDate'],
                 trailerNumber: _TrailerNumber,
                 addedBy: req.user.username,
                 updatedBy: req.user.username,
-                note: req.params.note,
+                // note: req.params.note,
                 productID: Product[0]['_id'],
             });
             await newTrailer.save();
@@ -1144,6 +1111,7 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
     }
 }
 
+// TODO: Checked and Worked Properly
 //Check For Product Price In Trailer
 exports.CheckForProductPriceInTrailer = async (req, res, next) => {
     try {
@@ -1162,6 +1130,100 @@ exports.CheckForProductPriceInTrailer = async (req, res, next) => {
         next(error)
     }
 }
+
+// TODO: Checked and Worked Properly
+exports.GetProductswithSearch = async (req, res, next) => {
+    var searchStr = req.body.search.value;
+
+    if (searchStr) {
+        var regex = new RegExp(searchStr, "i")
+        searchStr = {
+            $or: [{
+                'itemName': regex
+            }, {
+                'itemModel': regex
+            }, {
+                'manufacturerCompany': regex
+            }, {
+                'countryCompany': regex
+            }, {
+                'unit': regex
+            }, {
+                'itemUnit': regex
+            }, {
+                'itemType': regex
+            }, {
+                'usedIn': regex
+            }, {
+                'color': regex
+            }, {
+                'status': regex
+            }]
+        };
+
+
+    } else {
+        searchStr = {};
+    }
+
+    var recordsTotal = 0;
+    var recordsFiltered = 0;
+
+    // const results = await ProductsCollection.find(searchStr);
+    // recordsTotal = await ProductsCollection.count({});
+    // recordsFiltered = results.length;
+
+    // var data = JSON.stringify({
+    //     "draw": req.body.draw,
+    //     "recordsFiltered": recordsFiltered,
+    //     "recordsTotal": recordsTotal,
+    //     "data": results
+    // });
+    // res.send(data);
+
+    // setTimeout(() => {
+    //     console.log(results)
+    // }, 1000);
+
+    // console.log(ched)
+    ProductsCollection.count({}, function (err, c) {
+        recordsTotal = c;
+        // console.log(c);
+        ProductsCollection.count(searchStr, function (err, c) {
+            recordsFiltered = c;
+            // console.log(c);
+            // console.log(req.body.start);
+            // console.log(req.body.length);
+            ProductsCollection.find(searchStr, 'itemName itemModel countryCompany manufacturerCompany unit itemUnit itemType usedIn weight color sellPriceMufrad totalQuantity', {
+                'skip': Number(req.body.start),
+                'limit': Number(req.body.length),
+                'sort': { 'itemModel': -1 },
+            }, function (err, results) {
+                if (err) {
+                    console.log('error while getting results' + err);
+                    return;
+                }
+                var data = JSON.stringify({
+                    "draw": req.body.draw,
+                    "recordsFiltered": recordsFiltered,
+                    "recordsTotal": recordsTotal,
+                    "data": results
+                });
+                res.send(data);
+            });
+
+        });
+    });
+
+
+}
+
+
+
+
+
+
+
 
 // ! Recover Product
 //Add New Invoice for Recovered Items
@@ -1427,91 +1489,3 @@ exports.SearchForProductsinCompany = async (req, res, next) => {
 }
 
 
-// TODO: Checked and Worked Properly
-exports.GetProductswithSearch = async (req, res, next) => {
-    var searchStr = req.body.search.value;
-
-    if (searchStr) {
-        var regex = new RegExp(searchStr, "i")
-        searchStr = {
-            $or: [{
-                'itemName': regex
-            }, {
-                'itemModel': regex
-            }, {
-                'manufacturerCompany': regex
-            }, {
-                'countryCompany': regex
-            }, {
-                'unit': regex
-            }, {
-                'itemUnit': regex
-            }, {
-                'itemType': regex
-            }, {
-                'usedIn': regex
-            }, {
-                'color': regex
-            }, {
-                'status': regex
-            }]
-        };
-
-
-    } else {
-        searchStr = {};
-    }
-
-    var recordsTotal = 0;
-    var recordsFiltered = 0;
-
-    // const results = await ProductsCollection.find(searchStr);
-    // recordsTotal = await ProductsCollection.count({});
-    // recordsFiltered = results.length;
-
-    // var data = JSON.stringify({
-    //     "draw": req.body.draw,
-    //     "recordsFiltered": recordsFiltered,
-    //     "recordsTotal": recordsTotal,
-    //     "data": results
-    // });
-    // res.send(data);
-
-    // setTimeout(() => {
-    //     console.log(results)
-    // }, 1000);
-
-    // console.log(ched)
-    ProductsCollection.count({}, function (err, c) {
-        recordsTotal = c;
-        // console.log(c);
-        ProductsCollection.count(searchStr, function (err, c) {
-            recordsFiltered = c;
-            // console.log(c);
-            // console.log(req.body.start);
-            // console.log(req.body.length);
-            ProductsCollection.find(searchStr, 'itemName itemModel countryCompany manufacturerCompany unit itemUnit itemType usedIn weight color sellPriceMufrad totalQuantity', {
-                'skip': Number(req.body.start),
-                'limit': Number(req.body.length),
-                'sort': { 'itemModel': -1 },
-            }, function (err, results) {
-                if (err) {
-                    console.log('error while getting results' + err);
-                    return;
-                }
-                var data = JSON.stringify({
-                    "draw": req.body.draw,
-                    "recordsFiltered": recordsFiltered,
-                    "recordsTotal": recordsTotal,
-                    "data": results
-                });
-                res.send(data);
-            });
-
-        });
-    });
-
-
-}
-
-//TODO==================================

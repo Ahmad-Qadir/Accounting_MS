@@ -304,10 +304,11 @@ block content
     function payNow(){
       objectData=document.getElementById("invoiceTable")
       var note=document.getElementById("note").value
+      var cost=document.getElementById("PriceOfExpense").value
       //Send to Database
         var data= $.ajax({
           type: 'POST',
-          url: "/Products/NewTrailer",
+          url: "/Products/NewTrailer/"+cost,
           dataType: 'JSON',
           data:getJSON(objectData),
           success: function(data){
@@ -356,24 +357,24 @@ block content
       }else{
         var table=objectData.tBodies[0].rows;
         for(var i=0;i<objectData.tBodies[0].rows.length;i++){
-          console.log(table[i].cells[0].textContent)
-          console.log(table[i].cells[1].textContent)
-          console.log(table[i].cells[2].textContent)
-          console.log(table[i].cells[3].textContent)
-          console.log(table[i].cells[4].textContent)
-          console.log(table[i].cells[5].textContent)
-          console.log(table[i].cells[6].textContent)
-          console.log(table[i].cells[7].textContent)
-          console.log(table[i].cells[8].textContent)
-          console.log(table[i].cells[9].textContent)  //SellPriceMufrad
-          console.log(table[i].cells[10].textContent)
-          console.log(table[i].cells[11].textContent)
-          console.log(table[i].cells[12].textContent) //Came Price
+          //- console.log(table[i].cells[0].textContent)
+          //- console.log(table[i].cells[1].textContent)
+          //- console.log(table[i].cells[2].textContent)
+          //- console.log(table[i].cells[3].textContent)
+          //- console.log(table[i].cells[4].textContent)
+          //- console.log(table[i].cells[5].textContent)
+          //- console.log(table[i].cells[6].textContent)
+          //- console.log(table[i].cells[7].textContent)
+          //- console.log(table[i].cells[8].textContent)
+          //- console.log(table[i].cells[9].textContent)  //SellPriceMufrad
+          //- console.log(table[i].cells[10].textContent)
+          //- console.log(table[i].cells[11].textContent)
+          //- console.log(table[i].cells[12].textContent) //Came Price
           if(expense>1)
-            console.log(table[i].cells[13].textContent=((expense/total)*parseFloat(table[i].cells[9].textContent)+parseFloat(table[i].cells[12].textContent)).toFixed(2)) //Company Price
+            table[i].cells[13].textContent=((expense/total)*parseFloat(table[i].cells[9].textContent)+parseFloat(table[i].cells[12].textContent)).toFixed(2) //Company Price
           else
-            console.log(table[i].cells[13].textContent=table[i].cells[12].textContent)
-          console.log(table[i].cells[14].textContent)
+            table[i].cells[13].textContent=table[i].cells[12].textContent
+          //- console.log(table[i].cells[14].textContent)
 
         }
       }

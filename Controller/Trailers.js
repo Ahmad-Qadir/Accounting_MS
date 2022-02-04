@@ -71,7 +71,7 @@ exports.Trailers = async (req, res, next) => {
                         amount: { $sum: "$totalPrice" },
                         count: { $sum: 1 },
                         items: {
-                            $push: { _id: "$_id", softdelete: "$softdelete", productID: "$productID", createdAt: "$createdAt", totalQuantity: "$totalQuantity", status: "$status", camePrice: "$camePrice", totalPrice: "$totalPrice", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                            $push: { _id: "$_id", cost: "$cost", softdelete: "$softdelete", productID: "$productID", createdAt: "$createdAt", totalQuantity: "$totalQuantity", status: "$status", camePrice: "$camePrice", totalPrice: "$totalPrice", addedBy: "$addedBy", sellPrice: "$sellPrice" },
                         },
                     },
                 },
@@ -166,6 +166,7 @@ exports.UpdateChangesinEditOfTrailer = async (req, res, next) => {
             sellPriceWasta: req.body.sellPriceWasta,
             sellPriceWakil: req.body.sellPriceWakil,
             sellPriceSharika: req.body.sellPriceSharika,
+            totalPrice:parseFloat(req.body.camePrice) * parseFloat(req.body.totalQuantity),
             updatedBy: req.user.username,
         });
 
@@ -183,7 +184,7 @@ exports.UpdateChangesinEditOfTrailer = async (req, res, next) => {
             sellPriceWakil: req.body.sellPriceWakil,
             sellPriceSharika: req.body.sellPriceSharika,
             updatedBy: req.user.username,
-            totalPrice: parseFloat(req.body.sellPriceMufrad) * parseFloat(req.body.totalQuantity)
+            totalPrice: parseFloat(req.body.camePrice) * parseFloat(req.body.totalQuantity)
         });
 
 

@@ -272,7 +272,7 @@ exports.AddNewRequest = async (req, res, next) => {
             "createdAt": -1
         });
 
-        var invoiceID = Records[0]['recordCode'];
+        var invoiceID = parseFloat(Records[0]['recordCode']) + 1;
 
         const Products = await ProductsCollection
             .find({

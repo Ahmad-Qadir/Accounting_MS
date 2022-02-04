@@ -34,36 +34,32 @@ block content
               .form-group.col-md-2
                 label پەکێج
                 input.form-control(name="unit" type='text' value=product[0]['productID']['unit'] disabled)
-              .form-group.col-md-2
+              .form-group.col-md-1
                 label یەکەی پێوانە
                 input.form-control(name="unit" type='text' value=product[0]['productID']['itemUnit'] disabled)
+              .form-group.col-md-1
+                label بڕی پێوانە
+                input.form-control(name="weight" type='text' value=product[0]['productID']['weight'] disabled)
             .row
               .form-group.col-md-3
                 label شێوەی بەرهەم
                 input.form-control(name="itemType" type='text' value=product[0]['productID']['itemType'] disabled)
               .form-group.col-md-3
-                label بڕی پێوانە
-                input.form-control(name="weight" type='text' value=product[0]['productID']['weight'] disabled)
-              .form-group.col-md-3
                 label ڕەنگ
                 input.form-control(name="color" type='text' value=product[0]['productID']['color'] disabled)
-              //- .form-group.col-md-3
-              //-   label بەرواری بەسەرچوون
-              //-   input.form-control(name="expireDate" type='text' value=product[0]['productID']['expireDate'].toLocaleString() disabled)
-            .row
-              .form-group.col-md-3
-                label بڕ
-                input.form-control(name="perPacket" type='text' value=product[0]['productID']['perPacket'] disabled)
-              .form-group.col-md-3
-                label کۆمەڵ
-                input.form-control(name="packet" type='text' value=product[0]['productID']['packet'] disabled)
-              .form-group.col-md-3
-                label تێجووی سەرەتایی
-                input.form-control(name="camePrice" type='text' value=product[0]['productID']['camePrice'] disabled)
-              .form-group.col-md-3
+              .form-group.col-md-2
                 label شوێنی بەکارهێنان
                 input.form-control(name="usedIn" type='text' value=product[0]['productID']['usedIn'] disabled)
+              .form-group.col-md-2
+                label کۆمەڵ
+                input.form-control(name="packet" type='text' value=product[0]['productID']['perPacket'] disabled)
+              .form-group.col-md-2
+                label ژمارەی بار
+                input.form-control(name="trailerNumber" type='text' value=product[0]['productID']['trailerNumber'] disabled)
             .row
+              .form-group.col-md-2
+                label تێجووی سەرەتایی
+                input.form-control(name="camePrice" type='text' value=product[0]['productID']['camePrice'] disabled)
               .form-group.col-md-2
                 label مفرد
                 input.form-control(name="sellPriceMufrad" type='text' value=product[0]['productID']['sellPriceMufrad'] disabled)
@@ -79,9 +75,6 @@ block content
               .form-group.col-md-2
                 label شركه
                 input.form-control(name="sellPriceSharika" type='text' value=product[0]['productID']['sellPriceSharika'] disabled)
-              .form-group.col-md-2
-                label ژمارەی بار
-                input.form-control(name="trailerNumber" type='text' value=product[0]['productID']['trailerNumber'] disabled)
       .card-footer.text-muted="دوا نوێکردنەوە لەلایان "+productInfo[0]['updatedBy'] + " لە بەرواری "+productInfo[0]["updatedAt"].toLocaleString()
     hr
     h2 تۆماری بەرهەم
