@@ -126,7 +126,6 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
             {
                 $match: {
                     "items.cutomerID": mongoose.Types.ObjectId(req.params.id),
-                    "items.softdelete": "false"
                 }
             },
             {

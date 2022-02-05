@@ -149,18 +149,19 @@ exports.ShowSelectedDateOfInvoicesOperation = async (req, res, next) => {
 exports.EditProductInInvoice = async (req, res, next) => {
     try {
 
+        const Record = await RecordsCollection.find({
+            recordCode: req.params.recordcode,
+            status: "Customer Request",
+            // productID: req.params.productid
+        });
 
-        const Product = await RecordsCollection
-            .find({
-                trailerNumber: req.params.trailerNumber,
-                _id: req.params.id
-            }).populate('productID')
+        res.send(Record)
 
         // res.json(Product)
-        res.render('Trailers/EditProduct', {
-            title: "دەسکاری کردنی باری ژمارە " + req.params.trailerNumber + " و بەرهەمی " + Product[0]['productID']['itemModel'],
-            product: Product,
-        })
+        // res.render('Trailers/EditProduct', {
+        //     title: "دەسکاری کردنی باری ژمارە " + req.params.trailerNumber + " و بەرهەمی " + Product[0]['productID']['itemModel'],
+        //     product: Product,
+        // })
     } catch (error) {
         next(error)
     }
@@ -179,7 +180,7 @@ exports.UpdateChangesinEditOfTrailer = async (req, res, next) => {
         // });
 
 
-        await RecordsCollection.findByIdAndUpdate({
+        await RecordsCollection.dele({
             _id: req.params.id
         }, {
             totalQuantity: req.body.totalQuantity,
@@ -302,46 +303,45 @@ exports.DeletIteminInvoice = async (req, res, next) => {
 
         const Record = await RecordsCollection.find({
             recordCode: req.params.recordcode,
-            status: "Customer Request"
+            status: "Customer Request",
+            productID: req.params.productid
         });
 
-        const Trailer = await TrailersCollection.find({
-            trailerNumber: Record[0]['trailerNumber'],
-            productID: Record[0]['productID']
-        });
+        res.send(Record)
 
-        const Product = await ProductsCollection.find({
-            _id: Record[0]['productID']
-        });
+        // const Trailer = await TrailersCollection.find({
+        //     trailerNumber: Record[0]['trailerNumber'],
+        //     productID: req.params.productid
+        // });
 
-        await RecordsCollection.findOneAndUpdate({
-            _id: Record[0]['_id'],
-        }, {
-            softdelete: true
-        })
+        // const Product = await ProductsCollection.find({
+        //     productID: req.params.productid
+        // });
 
-        const returnedPackets = Record[0]['totalQuantity'] + Product[0]['totalQuantity'];
-        const returnedPacketsForTrailer = Record[0]['totalQuantity'] + Trailer[0]['totalQuantity']
+        // const returnedPackets = Record[0]['totalQuantity'] + Product[0]['totalQuantity'];
+        // const returnedPacketsForTrailer = Record[0]['totalQuantity'] + Trailer[0]['totalQuantity']
 
-        const checked = await ProductsCollection.findByIdAndUpdate({
-            "_id": Product[0]['_id']
-        }, {
-            remainedPacket: returnedPackets / Product[0]['perPacket'],
-            remainedPerPacket: returnedPackets % Product[0]['perPacket'],
-            totalQuantity: returnedPackets
-        });
+        // await ProductsCollection.findByIdAndUpdate({
+        //     _id: req.params.productid
+        // }, {
+        //     totalQuantity: returnedPackets
+        // });
 
 
-        await TrailersCollection.findByIdAndUpdate({
-            "_id": Trailer[0]['_id']
-        }, {
-            remainedPacket: returnedPacketsForTrailer / Product[0]['perPacket'],
-            remainedPerPacket: returnedPacketsForTrailer % Product[0]['perPacket'],
-            totalQuantity: returnedPacketsForTrailer
-        });
+        // await TrailersCollection.findByIdAndUpdate({
+        //     "_id": Trailer[0]['_id']
+        // }, {
+        //     totalQuantity: returnedPacketsForTrailer
+        // });
 
-        req.flash('success', "بەرهەمەکە بە سەرکەوتوویی ڕەشکرایەوە");
-        res.redirect("/profiles/61e62337b2b5d6aa162e461d/invoices")
+        // setTimeout(async () => {
+        //     await RecordsCollection.deleteOne({
+        //         _id: Record[0]['_id'],
+        //     })
+        // }, 1000);
+
+        // req.flash('success', "بەرهەمەکە بە سەرکەوتوویی ڕەشکرایەوە");
+        // res.redirect("/Profiles")
 
     } catch (error) {
         next(error)

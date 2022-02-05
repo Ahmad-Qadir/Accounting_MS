@@ -71,7 +71,8 @@ router.post('/Invoices/Print', Records.allowIfLoggedin, Records.grantAccess('rea
 //Records
 router.get('/Records', Records.allowIfLoggedin, Records.grantAccess('readAny', 'records'), Records.Records); // Records
 router.get('/Records/Delete/:recordcode/:productid', Records.allowIfLoggedin, Records.grantAccess('readAny', 'records'), Records.DeletIteminInvoice); // Records
-router.get('/Records/Modification/:recordcode/:productid', Records.allowIfLoggedin, Records.grantAccess('readAny', 'records'), Records.Records); // Records
+router.get('/Records/Modification/:recordcode/:productid', Records.allowIfLoggedin, Records.grantAccess('readAny', 'records'), Records.EditProductInInvoice); // Records
+// router.get('/Records/Modification/:recordcode/:productid', Records.allowIfLoggedin, Records.grantAccess('readAny', 'records'), Records.Records); // Records
 
 
 
