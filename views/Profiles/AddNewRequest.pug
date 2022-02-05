@@ -244,6 +244,7 @@ block content
           $('#header'+idOfModel).append($("<th></th>").attr('style',"width:10%").text('نرخ'));
           $('#header'+idOfModel).append($("<th></th>").text('ژمارەی بارهەڵگر'));
           $('#header'+idOfModel).append($("<th></th>").text('نرخی هاتوو'));
+          $('#header'+idOfModel).append($("<th></th>").text('ID'));
           $('#datas'+idOfModel).append($("<tbody></tbody>").attr('id','MainBody'+idOfModel));
           //- 
           for (let i = 0; i < data.length; i++) {
@@ -270,6 +271,7 @@ block content
             $('#trailerRow'+idOfModel+i).append($("<select></select>").attr('name','trailerNumber').attr('id','trailerNumbers'+idOfModel+i).attr('class','form-control'));
             $('#trailerNumbers'+idOfModel+i).append($("<option></option>").attr('value',data[i]['trailerNumber']).text(data[i]['trailerNumber']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['camePrice']));
+            $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['_id']));
             }
             $('#datas'+idOfModel).DataTable({
               "paging": false
@@ -280,22 +282,30 @@ block content
 
     // Update Value Regarding the Item Name
     function updateValue(val, event) {
-      var itemModel=val.childNodes[1].innerHTML;
-      var itemName=val.childNodes[2].innerHTML;
-      var itemType=val.childNodes[3].innerHTML;
-      var color=val.childNodes[4].innerHTML;
-      var itemUnit=val.childNodes[5].innerHTML;
-      var quantity=val.childNodes[6].firstChild.id;
+      //- var itemModel=val.childNodes[1].innerHTML;
+      //- var itemName=val.childNodes[2].innerHTML;
+      //- var itemType=val.childNodes[3].innerHTML;
+      //- var color=val.childNodes[4].innerHTML;
+      //- var itemUnit=val.childNodes[5].innerHTML;
+      //- var quantity=val.childNodes[6].firstChild.id;
       var priceOf=val.childNodes[7].firstChild.id;
       var trailerNumber=val.childNodes[8].firstChild.id;
       //- document.getElementById("productName").value = val;
       event.preventDefault();
 
 
+      //- console.log(itemModel)
+      //- console.log(itemName)
+      //- console.log(itemType)
+      //- console.log(color)
+      //- console.log(itemUnit)
+      //- console.log(val.childNodes[10].innerHTML)
+
+
 
       var data=$.ajax({
         type: 'GET',
-        url: "/Profiles/"+itemModel+"/"+itemName+"/"+itemType+"/"+color+"/"+itemUnit,
+        url: "/Profiles/"+val.childNodes[10].innerHTML,
         dataType: 'JSON',
         success: function(data){
           $("#"+trailerNumber).empty()

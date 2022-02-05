@@ -104,13 +104,13 @@ router.get('/Profiles/:id/Debut/invoices', Profiles.allowIfLoggedin, Profiles.gr
 router.get('/Profile/:id/NewRequest', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.AddNewRequest); // Add new Request per Customer
 router.get('/Profiles/:invoiceID/Print', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.PrintSelectedInvoice); // Print Invoice
 router.get('/Profiles/AddNew', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.CreateNewProfile);
-router.get('/Profiles/:itemModel/:itemName/:itemType/:color/:itemUnit', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.CheckForTrailerInRequest);
+router.get('/Profiles/:id', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.CheckForTrailerInRequest);
 router.get('/Profiles/Customer/Types', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.ShowCustomerType);
 router.get('/Profiles/Customer/NewTypes', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.NewCustomerType);
 router.post('/Profiles/Customer/NewTypes', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.NewCustomerTypeOperation);
 router.get('/Profiles/Invoices/:id', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.PrintAllInvoiceforCustomer); // Get All invoice for specific Profile
 router.delete('/Profiles/:id', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.RemoveProfile); // Get All invoice for specific Profile
-router.get('/Profiles/Debtors', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.debtors); // Get All Debtors
+router.get('/Debtors', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.debtors); // Get All Debtors
 
 //Item Unit
 router.post('/Products/ItemUnit', ItemUnit.AddNewItemUnit); // Get All Customers Profile

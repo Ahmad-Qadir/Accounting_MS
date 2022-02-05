@@ -13,9 +13,9 @@ const swaggerUi = require("swagger-ui-express");
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-// const fs = require('fs')
-// const csv = require('csv-parser')
-// var uuid = require('uuid');
+const fs = require('fs')
+const csv = require('csv-parser')
+var uuid = require('uuid');
 
 var bodyParser = require('body-parser')
 
@@ -90,77 +90,149 @@ const CompanyCollection = require('./models/Companies');
 require('./Controller/prod')
 
 
-// app.get('/import', async (req, res) => {
-//     fs.createReadStream("C:\\Users\\ahmed.q\\Desktop\\karsta.csv")
-//         .pipe(csv())
-//         .on('data', async function (row) {
-//             const newProduct = new ProductsCollection({
-//                 itemName: row.itemName,
-//                 itemCode: uuid.v1(),
-//                 itemModel: row.itemModel,
-//                 itemUnit: row.itemUnit,
-//                 itemType: row.itemType,
-//                 brandType:row.brandType,
-//                 manufacturerCompany: row.manufacturerCompany,
-//                 companyCode: row.companyCode,
-//                 countryCompany: row.countryCompany,
-//                 unit: row.unit,
-//                 usedIn: row.usedIn,
-//                 weight: parseFloat(row.weight),
-//                 color: row.color,
-//                 packet: 1,
-//                 perPacket: row.perPacket,
-//                 remainedPacket: 0,
-//                 remainedPerPacket: 0,
-//                 totalQuantity: 0,
-//                 status: "New Product",
-//                 expireDate: Date.now(),
-//                 camePrice: row.camePrice,
-//                 sellPriceMufrad: row.sellPriceMufrad,
-//                 sellPriceMahal: row.sellPriceMahal,
-//                 sellPriceWasta: row.sellPriceWasta,
-//                 sellPriceWakil: row.sellPriceWakil,
-//                 sellPriceSharika: row.sellPriceSharika,
-//                 totalPrice: row.camePrice * row.perPacket,
-//                 trailerNumber: 1,
-//                 addedBy: "Ahmad Qadir",
-//                 updatedBy: "Ahmad Qadir",
-//                 note: ".",
-//                 softdelete: "false"
-//             });
-//             await newProduct.save();
-//             const newItem = new RecordsCollection({
-//                 camePrice: row.camePrice,
-//                 sellPriceMufrad: row.sellPriceMufrad,
-//                 sellPriceMahal: row.sellPriceMahal,
-//                 sellPriceWasta: row.sellPriceWasta,
-//                 sellPriceWakil: row.sellPriceWakil,
-//                 sellPriceSharika: row.sellPriceSharika,
-//                 totalPrice: 0,
-//                 packet: 0,
-//                 perPacket: 0,
-//                 totalQuantity: 0,
-//                 status: "New Product",
-//                 trailerNumber: 1,
-//                 addedBy: "Ahmad Qadir",
-//                 updatedBy: "Ahmad Qadir",
-//                 note: ".",
-//                 softdelete: "false",
-//                 productID: newProduct['_id'],
-//             });
-//             await newItem.save();
-//             await ProductsCollection.findByIdAndUpdate({
-//                 _id: newProduct['_id']
-//             }, {
-//                 itemHistory: newItem["_id"]
-//             });
+app.get('/import', async (req, res) => {
+    fs.createReadStream("C:\\Users\\Ahmad\\Desktop\\kota.csv")
+        .pipe(csv())
+        .on('data', async function (row) {
+            const newProduct = new ProductsCollection({
+                itemName: row.itemName,
+                itemCode: uuid.v1(),
+                itemModel: row.itemModel,
+                itemUnit: row.itemUnit,
+                itemType: row.itemType,
+                brandType: row.brandType,
+                manufacturerCompany: row.manufacturerCompany,
+                companyCode: row.companyCode,
+                countryCompany: row.countryCompany,
+                unit: row.unit,
+                usedIn: row.usedIn,
+                weight: parseFloat(row.weight),
+                color: row.color,
+                packet: 1,
+                perPacket: row.perPacket,
+                // remainedPacket: 0,
+                // remainedPerPacket: 0,
+                totalQuantity: row.totalQuantity,
+                status: "New Product",
+                expireDate: Date.now(),
+                camePrice: row.camePrice,
+                sellPriceMufrad: row.sellPriceMufrad,
+                sellPriceMahal: row.sellPriceMahal,
+                sellPriceWasta: row.sellPriceWasta,
+                sellPriceWakil: row.sellPriceWakil,
+                sellPriceSharika: row.sellPriceSharika,
+                totalPrice: row.camePrice * row.perPacket,
+                trailerNumber: 1,
+                addedBy: "Ahmad Qadir",
+                updatedBy: "Ahmad Qadir",
+                note: ".",
+                softdelete: "false"
+            });
+            await newProduct.save();
+            const newItem = new RecordsCollection({
+                camePrice: row.camePrice,
+                sellPriceMufrad: row.sellPriceMufrad,
+                sellPriceMahal: row.sellPriceMahal,
+                sellPriceWasta: row.sellPriceWasta,
+                sellPriceWakil: row.sellPriceWakil,
+                sellPriceSharika: row.sellPriceSharika,
+                totalPrice: 0,
+                packet: 0,
+                perPacket: 0,
+                totalQuantity: 0,
+                status: "New Product",
+                trailerNumber: 1,
+                addedBy: "Ahmad Qadir",
+                updatedBy: "Ahmad Qadir",
+                note: ".",
+                softdelete: "false",
+                productID: newProduct['_id'],
+            });
+            await newItem.save();
+            
 
-//         })
-//         .on('end', function () {
-//             res.send("end")
-//             // TODO: SAVE users data to another file
-//         })
-// })
+            const newRecordtoHistory = new RecordsCollection({
+                recordCode: "imported",
+                totalQuantity: parseFloat(row.totalQuantity),
+                status: "New Trailer",
+                sellPrice:row.sellPriceMufrad,
+                totalPrice: parseFloat(row.camePrice) * parseFloat(row.totalQuantity),
+                // cost: req.params.cost,
+                camePrice: row.camePrice,
+                sellPriceMufrad: row.sellPriceMufrad,
+                sellPriceMahal: row.sellPriceMahal,
+                sellPriceWasta: row.sellPriceWasta,
+                sellPriceWakil: row.sellPriceWakil,
+                sellPriceSharika: row.sellPriceSharika,
+                trailerNumber: 16,
+                addedBy: "Ahmad Qadir",
+                updatedBy: "Ahmad Qadir",
+                note: ".",
+                softdelete: "false",
+                productID: newProduct['_id'],
+            });
+            await newRecordtoHistory.save();
+
+            const newTrailer = new TrailerCollection({
+                itemName: newProduct['itemName'],
+                itemModel: newProduct['itemModel'],
+                itemType: newProduct['itemType'], //[boyax-adawat]
+                itemUnit: newProduct['itemUnit'],
+                manufacturerCompany: newProduct['manufacturerCompany'],
+                companyCode: newProduct['companyCode'],
+                countryCompany: newProduct['countryCompany'],
+                unit: newProduct['unit'],
+                usedIn: newProduct['usedIn'],
+                color: newProduct['color'],
+                weight: newProduct['weight'],
+                // totalWeight: (parseFloat(element[11]) * newProduct['weight']),
+                camePrice: row.camePrice,
+                sellPrice:row.sellPriceMufrad,
+                sellPriceMufrad: row.sellPriceMufrad,
+                sellPriceMahal: row.sellPriceMahal,
+                sellPriceWasta: row.sellPriceWasta,
+                sellPriceWakil: row.sellPriceWakil,
+                sellPriceSharika: row.sellPriceSharika,
+                // totalPrice: (parseFloat(element[11]) * parseFloat(element[13])),
+                // packet: parseFloat(element[11]) / newProduct['packet'],
+                // perPacket: parseFloat(element[11]) % newProduct['packet'],
+                // remainedPacket: parseFloat(element[11]) / newProduct['packet'],
+                // remainedPerPacket: parseFloat(element[11]) % newProduct['packet'],
+                totalQuantity: parseFloat(row.totalQuantity),
+                status: "New Trailer",
+                // expireDate: newProduct['expireDate'],
+                trailerNumber: 16,
+                addedBy: "Ahmad Qadir",
+                updatedBy: "Ahmad Qadir",
+                note: ".",
+                softdelete: "false",
+                productID: newProduct['_id'],
+            });
+            await newTrailer.save();
+            await TrailerCollection.findByIdAndUpdate({
+                "_id": newTrailer['_id']
+            }, {
+                $push: {
+                    invoiceID: newRecordtoHistory["_id"],
+                }
+            });
+            await ProductsCollection.findByIdAndUpdate({
+                _id: newProduct['_id']
+            }, {
+                itemHistory: newItem["_id"]
+            });
+            await ProductsCollection.findByIdAndUpdate({
+                _id: newProduct['_id']
+            }, {
+                itemHistory: newRecordtoHistory["_id"]
+            });
+
+        })
+        .on('end', function () {
+            res.send("end")
+            // TODO: SAVE users data to another file
+        })
+})
 
 //Getting Access Token
 app.use(async (req, res, next) => {

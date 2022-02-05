@@ -556,13 +556,7 @@ exports.CheckForTrailerInRequest = async (req, res, next) => {
     try {
         const Products = await ProductsCollection
             .find({
-                itemName: req.params.itemName,
-                softdelete: false,
-                itemType: req.params.itemType,
-                color: req.params.color,
-                itemModel: req.params.itemModel,
-                itemUnit: req.params.itemUnit.split(" ")[1],
-                weight: req.params.itemUnit.split(" ")[0],
+                _id:req.params.id
             })
         const Trailers = await TrailerCollection
             .find({
