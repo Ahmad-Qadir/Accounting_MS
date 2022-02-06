@@ -307,41 +307,41 @@ exports.DeletIteminInvoice = async (req, res, next) => {
             productID: req.params.productid
         });
 
-        res.send(Record)
+        // res.send(Record)
 
-        // const Trailer = await TrailersCollection.find({
-        //     trailerNumber: Record[0]['trailerNumber'],
-        //     productID: req.params.productid
-        // });
+        const Trailer = await TrailersCollection.find({
+            trailerNumber: Record[0]['trailerNumber'],
+            productID: req.params.productid
+        });
 
-        // const Product = await ProductsCollection.find({
-        //     productID: req.params.productid
-        // });
+        const Product = await ProductsCollection.find({
+            productID: req.params.productid
+        });
 
-        // const returnedPackets = Record[0]['totalQuantity'] + Product[0]['totalQuantity'];
-        // const returnedPacketsForTrailer = Record[0]['totalQuantity'] + Trailer[0]['totalQuantity']
+        const returnedPackets = Record[0]['totalQuantity'] + Product[0]['totalQuantity'];
+        const returnedPacketsForTrailer = Record[0]['totalQuantity'] + Trailer[0]['totalQuantity']
 
-        // await ProductsCollection.findByIdAndUpdate({
-        //     _id: req.params.productid
-        // }, {
-        //     totalQuantity: returnedPackets
-        // });
+        await ProductsCollection.findByIdAndUpdate({
+            _id: req.params.productid
+        }, {
+            totalQuantity: returnedPackets
+        });
 
 
-        // await TrailersCollection.findByIdAndUpdate({
-        //     "_id": Trailer[0]['_id']
-        // }, {
-        //     totalQuantity: returnedPacketsForTrailer
-        // });
+        await TrailersCollection.findByIdAndUpdate({
+            "_id": Trailer[0]['_id']
+        }, {
+            totalQuantity: returnedPacketsForTrailer
+        });
 
-        // setTimeout(async () => {
-        //     await RecordsCollection.deleteOne({
-        //         _id: Record[0]['_id'],
-        //     })
-        // }, 1000);
+        setTimeout(async () => {
+            await RecordsCollection.deleteOne({
+                _id: Record[0]['_id'],
+            })
+        }, 1000);
 
-        // req.flash('success', "بەرهەمەکە بە سەرکەوتوویی ڕەشکرایەوە");
-        // res.redirect("/Profiles")
+        req.flash('success', "بەرهەمەکە بە سەرکەوتوویی ڕەشکرایەوە");
+        res.redirect("/Profiles")
 
     } catch (error) {
         next(error)

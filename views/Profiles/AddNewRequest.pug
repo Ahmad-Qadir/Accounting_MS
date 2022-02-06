@@ -162,14 +162,14 @@ block content
                   hr
                   .row 
                     .col-5
-                        -var today = new Date();
-                        -var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-                        -var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                        -var dateTime = date+' '+time;
-                        span="    بەروار: "+dateTime.toLocaleString()
+                      -var today = new Date();
+                      -var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                      -var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                      -var dateTime = date+' '+time;
+                      span="    بەروار: "+dateTime.toLocaleString()
                     .col-7
                       span="ناونیشان: "+"هەولێر - گەڕەکی عدالە - نزیک بانکی زانکۆ"
-                    
+
                 // Modal
                 .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-payment')
                   .modal-dialog.modal-dialog-centered.modal-s(role='document')
@@ -447,25 +447,25 @@ block content
           document.getElementById("dataofIncome").innerHTML = parseFloat(document.getElementById("dataofIncome").innerHTML)+parseFloat(table[i].childNodes[7].firstChild.value)*parseFloat(table[i].childNodes[6].firstChild.value)-parseFloat(table[i].childNodes[9].innerHTML)*parseFloat(table[i].childNodes[6].firstChild.value)+"TAN"+Math.random().toString(36).substring(7);
 
           $("#invoiceTable").find('tbody')
-            .append($('<tr>')
+            .append($('<tr>').attr("id","itemNumber"+i)
               .append($('<td>')
                 .text($('#invoiceTable>tbody>tr').length+1).attr('class','delete')
               ).append($('<td>')
-                .text(table[i].childNodes[1].innerHTML).attr("contenteditable",'true')
+                .text(table[i].childNodes[1].innerHTML)
               ).append($('<td>')
-                .text(table[i].childNodes[2].innerHTML).attr("contenteditable",'true')
+                .text(table[i].childNodes[2].innerHTML)
               ).append($('<td>')
-                .text(table[i].childNodes[3].innerHTML).attr("contenteditable",'true')
+                .text(table[i].childNodes[3].innerHTML)
               ).append($('<td>')
-                .text(table[i].childNodes[4].innerHTML).attr("contenteditable",'true')
+                .text(table[i].childNodes[4].innerHTML)
               ).append($('<td>')
-                .text(table[i].childNodes[5].innerHTML).attr("contenteditable",'true')
+                .text(table[i].childNodes[5].innerHTML)
               ).append($('<td>')
-                .text(table[i].childNodes[6].firstChild.value).attr("contenteditable",'true')
+                .text(table[i].childNodes[6].firstChild.value).attr("contenteditable",'true').attr("id","quantityNumber"+i)
               ).append($('<td>')
-                .text("$"+parseFloat(table[i].childNodes[7].firstChild.value).toFixed(2)).attr("contenteditable",'true')
+                .text("$"+parseFloat(table[i].childNodes[7].firstChild.value).toFixed(2)).attr("contenteditable",'true').attr("id","priceNumber"+i)
               ).append($('<td>')
-                .text("$"+parseFloat(parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)).toFixed(2)).attr("contenteditable",'true')
+                .text("$"+parseFloat(parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)).toFixed(2)).attr('id',"macPrice"+i)
               ).append($('<td>')
                 .text(table[i].childNodes[8].firstChild.value).attr("style","display:none")
               )
@@ -538,6 +538,15 @@ block content
         document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML.replace("$", ''))-parseFloat(this.parentNode.childNodes[8].innerHTML.replace("$", ''))
         document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML.replace("$", ''))+parseFloat(parseFloat(document.getElementById("olddebut").innerHTML.replace("$", '')))
         });
+          $('#invoiceTable').on('click', 'tbody tr', function(event) {
+            var idnumber=$(this).attr('id').replace(/[^0-9]/g,'')
+            var Price=document.getElementById('priceNumber'+idnumber).innerHTML.replace("$","");
+            var Quantity=document.getElementById('quantityNumber'+idnumber).innerHTML;
+            var OldMaxPrice=document.getElementById('macPrice'+idnumber).innerHTML.replace("$","");
+            document.getElementById('macPrice'+idnumber).innerHTML=parseFloat(Price)*parseFloat(Quantity)
+            document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML.replace("$",""))-parseFloat(OldMaxPrice)+(parseFloat(Price)*parseFloat(Quantity))
+            document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML.replace("$", ''))+parseFloat(parseFloat(document.getElementById("olddebut").innerHTML.replace("$", '')))
+          });
     })
 
     //- $(document).on("click", "td", function(e) {
@@ -564,25 +573,25 @@ block content
 
     //- $(document).on("click", "td", function(e) {
     //-   var data = $(this).attr('id').match(/\d+/)[0];
-      //- var value=$(this)
-      //- $("#check").prop("checked", true);
-      //- console.log(data)
+    //- var value=$(this)
+    //- $("#check").prop("checked", true);
+    //- console.log(data)
 
-      //- document.getElementById("checkstatus"+data).checked = true;
+    //- document.getElementById("checkstatus"+data).checked = true;
 
-      //- var requestedPacket=document.getElementById("totalQuan"+data).value;
-      //- var remainedPacket=document.getElementById("trailerNumbers"+data).value;
-      //- console.log("requestedPacket="+requestedPacket)
-      //- console.log("remainedPacket="+remainedPacket)
+    //- var requestedPacket=document.getElementById("totalQuan"+data).value;
+    //- var remainedPacket=document.getElementById("trailerNumbers"+data).value;
+    //- console.log("requestedPacket="+requestedPacket)
+    //- console.log("remainedPacket="+remainedPacket)
 
-      //- if(parseFloat(remainedPacket)<parseFloat(requestedPacket)){
-      //-   console.log("hey")
-      //-   document.getElementById("totalQuan"+data).classList.add("btn-outline-danger")
-      //-   //- $('#result').append($("<div></div>").attr("class","note note-danger mb-1").text("ناتوانیت بڕی دیاریکراو زیاتربێت لە بەرهەمی بەردەست لە باری دیاریکراو"));
-      //- }else{
-      //-   //- document.getElementById('result').remove()
-      //-   document.getElementById("totalQuan"+data).classList.remove("btn-outline-danger")
-      //- }
+    //- if(parseFloat(remainedPacket)<parseFloat(requestedPacket)){
+    //-   console.log("hey")
+    //-   document.getElementById("totalQuan"+data).classList.add("btn-outline-danger")
+    //-   //- $('#result').append($("<div></div>").attr("class","note note-danger mb-1").text("ناتوانیت بڕی دیاریکراو زیاتربێت لە بەرهەمی بەردەست لە باری دیاریکراو"));
+    //- }else{
+    //-   //- document.getElementById('result').remove()
+    //-   document.getElementById("totalQuan"+data).classList.remove("btn-outline-danger")
+    //- }
     //- }); 
 
 
@@ -590,4 +599,3 @@ block content
     //- $( "#perPacket" ).change(function() {
 
     //- });
-    
