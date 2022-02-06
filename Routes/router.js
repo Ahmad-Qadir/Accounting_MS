@@ -67,6 +67,10 @@ router.put('/Invoices/:invoiceID/:customerid/Recover', Products.allowIfLoggedin,
 router.get('/Invoice/:invoiceID/:productName', Records.allowIfLoggedin, Records.grantAccess('readAny', 'invoice'), Records.SearchForSpecificInvoice); // Add new Request
 router.get('/Invoices/query', Records.allowIfLoggedin, Records.grantAccess('readAny', 'invoice'), Records.ShowSelectedDateOfInvoices); // Add new Request
 router.post('/Invoices/Print', Records.allowIfLoggedin, Records.grantAccess('readAny', 'invoice'), Records.ShowSelectedDateOfInvoicesOperation); // Add new Request
+router.get('/Invoices/Delete/:recordcode', Records.allowIfLoggedin, Records.grantAccess('readAny', 'invoice'), Records.DeleteSelectedInvoice); // Add new Request
+
+
+
 
 //Records
 router.get('/Records', Records.allowIfLoggedin, Records.grantAccess('readAny', 'records'), Records.Records); // Records

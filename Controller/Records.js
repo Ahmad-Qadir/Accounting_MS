@@ -8,6 +8,7 @@ const {
 const RecordsCollection = require('../models/records');
 const ProductsCollection = require('../models/Product');
 const TrailersCollection = require('../models/Trailers');
+const ProfileCollection = require('../models/Profiles');
 
 // !: Basic Configuration
 //Authorization
@@ -348,3 +349,97 @@ exports.DeletIteminInvoice = async (req, res, next) => {
     }
 }
 
+
+//Update Products Operation
+exports.DeleteSelectedInvoice = async (req, res, next) => {
+    try {
+
+        const Record = await RecordsCollection.find({
+            recordCode: req.params.recordcode,
+            status: "Customer Request",
+        });
+
+        var Profile = await ProfileCollection.findOne({
+            _id: Record[0]['cutomerID']
+        });
+
+        for (let index = 0; index < Record.length; index++) {
+            const element = Record[index];
+
+            if (element['moneyStatus'] == "Paid") {
+                const Product = await ProductsCollection.findOne({
+                    _id: element['productID']
+                });
+
+                const Trailer = await TrailersCollection.findOne({
+                    trailerNumber: element['trailerNumber'],
+                    productID: element['productID']
+                });
+
+                const returnedPackets = element['totalQuantity'] + Product['totalQuantity'];
+                await ProductsCollection.findByIdAndUpdate({
+                    _id: element['productID']
+                }, {
+                    totalQuantity: returnedPackets
+                });
+
+                const returnedPacketsForTrailer = element['totalQuantity'] + Trailer['totalQuantity']
+                await TrailersCollection.findByIdAndUpdate({
+                    "_id": Trailer['_id']
+                }, {
+                    totalQuantity: returnedPacketsForTrailer
+                });
+
+
+                setTimeout(async () => {
+                    await RecordsCollection.deleteMany({
+                        recordCode: req.params.recordcode,
+                        status: "Customer Request",
+                    })
+                }, 1000);
+            } else {
+                const Product = await ProductsCollection.findOne({
+                    _id: element['productID']
+                });
+
+                const Trailer = await TrailersCollection.findOne({
+                    trailerNumber: element['trailerNumber'],
+                    productID: element['productID']
+                });
+
+                const returnedPackets = element['totalQuantity'] + Product['totalQuantity'];
+                await ProductsCollection.findByIdAndUpdate({
+                    _id: element['productID']
+                }, {
+                    totalQuantity: returnedPackets
+                });
+
+                const returnedPacketsForTrailer = element['totalQuantity'] + Trailer['totalQuantity']
+                await TrailersCollection.findByIdAndUpdate({
+                    "_id": Trailer['_id']
+                }, {
+                    totalQuantity: returnedPacketsForTrailer
+                });
+
+                await ProfileCollection.findByIdAndUpdate({
+                    _id: req.params.id
+                }, {
+                    remainedbalance: Profile['remainedbalance'] + parseFloat(element['totalPrice']),
+                });
+
+                setTimeout(async () => {
+                    await RecordsCollection.deleteMany({
+                        recordCode: req.params.recordcode,
+                        status: "Customer Request",
+                    })
+                }, 1000);
+            }
+        }
+
+        req.flash('success', "تۆمارەکە بە سەرکەوتوویی ڕەشکرایەوە");
+        res.redirect("/Profiles")
+
+    } catch (error) {
+        next(error)
+    }
+}
