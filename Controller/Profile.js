@@ -555,7 +555,7 @@ exports.CheckForTrailerInRequest = async (req, res, next) => {
     try {
         const Products = await ProductsCollection
             .find({
-                _id:req.params.id
+                _id: req.params.id
             })
         const Trailers = await TrailerCollection
             .find({

@@ -145,7 +145,7 @@ exports.ShowSelectedDateOfInvoicesOperation = async (req, res, next) => {
     res.send(Records)
 }
 
-
+// TODO: Checked and Worked Properly
 //Print Selected Invoice
 exports.EditProductInInvoice = async (req, res, next) => {
     try {
@@ -153,16 +153,18 @@ exports.EditProductInInvoice = async (req, res, next) => {
         const Record = await RecordsCollection.find({
             recordCode: req.params.recordcode,
             status: "Customer Request",
-            // productID: req.params.productid
+            productID: req.params.productid
         });
 
-        res.send(Record)
+        const Product = await ProductsCollection.find({
+            _id: Record[0]['productID']
+        });
 
-        // res.json(Product)
-        // res.render('Trailers/EditProduct', {
-        //     title: "دەسکاری کردنی باری ژمارە " + req.params.trailerNumber + " و بەرهەمی " + Product[0]['productID']['itemModel'],
-        //     product: Product,
-        // })
+        res.render('Records/Editinvoice', {
+            title: "دەسکاری کردنی باری ژمارە " + req.params.trailerNumber + " و بەرهەمی " + Product[0]['itemModel'],
+            product: Product,
+            record: Record
+        })
     } catch (error) {
         next(error)
     }
@@ -172,127 +174,125 @@ exports.EditProductInInvoice = async (req, res, next) => {
 exports.UpdateChangesinEditOfTrailer = async (req, res, next) => {
     try {
 
-        const Record = await RecordsCollection.find({
+        const Record = await RecordsCollection.findOne({
             _id: req.params.id
         });
 
-        // const Product = await ProductsCollection.find({
-        //     _id: Record[0]['productID']
-        // });
+        const Product = await ProductsCollection.findOne({
+            _id: Record['productID']
+        });
+
+        const Trailer = await TrailersCollection.findOne({
+            trailerNumber: Record['trailerNumber'],
+            productID: Record['productID']
+        });
 
 
-        await RecordsCollection.dele({
-            _id: req.params.id
-        }, {
-            totalQuantity: req.body.totalQuantity,
-            camePrice: req.body.camePrice,
-            sellPriceMufrad: req.body.sellPriceMufrad,
-            sellPriceMahal: req.body.sellPriceMahal,
-            sellPriceWasta: req.body.sellPriceWasta,
-            sellPriceWakil: req.body.sellPriceWakil,
-            sellPriceSharika: req.body.sellPriceSharika,
-            updatedBy: req.user.username,
+        const Profile = await ProfileCollection.findOne({
+            _id: Record['cutomerID']
         });
 
 
 
-        await TrailersCollection.findOneAndUpdate({
-            trailerNumber: Record[0]['trailerNumber'],
-            productID: Record[0]['productID']
-        }, {
-            totalQuantity: req.body.totalQuantity,
-            camePrice: req.body.camePrice,
-            sellPriceMufrad: req.body.sellPriceMufrad,
-            sellPriceMahal: req.body.sellPriceMahal,
-            sellPriceWasta: req.body.sellPriceWasta,
-            sellPriceWakil: req.body.sellPriceWakil,
-            sellPriceSharika: req.body.sellPriceSharika,
-            updatedBy: req.user.username,
-            totalPrice: parseFloat(req.body.sellPriceMufrad) * parseFloat(req.body.totalQuantity)
-        });
 
 
-        const Product = await ProductsCollection.find({
-            _id: Record[0]['productID']
-        });
 
-        if (parseFloat(req.body.totalQuantity) > Record[0]['totalQuantity']) {
-            const temp = parseFloat(req.body.totalQuantity) - Record[0]['totalQuantity'];
-            await ProductsCollection.findOneAndUpdate({
-                _id: Record[0]['productID']
+
+
+
+        if (parseFloat(req.body.totalQuantity) > Record['totalQuantity']) {
+            await RecordsCollection.findOneAndUpdate({
+                _id: req.params.id
             }, {
-                camePrice: req.body.camePrice,
-                sellPriceMufrad: req.body.sellPriceMufrad,
-                sellPriceMahal: req.body.sellPriceMahal,
-                sellPriceWasta: req.body.sellPriceWasta,
-                sellPriceWakil: req.body.sellPriceWakil,
-                sellPriceSharika: req.body.sellPriceSharika,
-                totalQuantity: parseFloat(Product[0]['totalQuantity']) + temp,
+                sellPrice: req.body.sellPrice,
+                totalQuantity: req.body.totalQuantity,
+                totalPrice: req.body.detail,
                 updatedBy: req.user.username,
             });
 
-            const NewProduct = await ProductsCollection.find({
-                _id: Record[0]['productID']
-            });
-
+            const returnedPackets = Record['totalQuantity'] - Product['totalQuantity'];
             await ProductsCollection.findByIdAndUpdate({
-                "_id": Product[0]['_id']
+                _id: Record['productID']
             }, {
-                remainedPacket: parseFloat(NewProduct[0]['totalQuantity'] / Product[0]['perPacket']),
-                remainedPerPacket: NewProduct[0]['totalQuantity'] % Product[0]['perPacket'],
-                // totalPrice: NewProduct[0]['totalQuantity'] * NewProduct['sellPrice'],
-                // totalWeight: Product[0]['totalWeight'] + NewProduct[0]['totalQuantity'],
+                totalQuantity: returnedPackets
+            });
+
+            const returnedPacketsForTrailer = Record['totalQuantity'] - Trailer['totalQuantity']
+            await TrailersCollection.findByIdAndUpdate({
+                "_id": Trailer['_id']
+            }, {
+                totalQuantity: returnedPacketsForTrailer
             });
 
 
-        } else if (parseFloat(req.body.totalQuantity) == Record[0]['totalQuantity']) {
+            const NumberOfPackets = Record['totalQuantity'] - req.params.totalQuantity;
 
-            await ProductsCollection.findOneAndUpdate({
-                _id: Record[0]['productID']
+            if (Record['moneyStatus'] == "Debut") {
+                await ProfileCollection.findByIdAndUpdate({
+                    _id: Record['cutomerID']
+                }, {
+                    remainedbalance: Profile['remainedbalance'] + parseFloat(NumberOfPackets * req.body.sellPrice),
+                });
+            }
+
+        } else if (parseFloat(req.body.totalQuantity) == Record['totalQuantity']) {
+
+            await RecordsCollection.findOneAndUpdate({
+                _id: req.params.id
             }, {
-                camePrice: req.body.camePrice,
-                sellPriceMufrad: req.body.sellPriceMufrad,
-                sellPriceMahal: req.body.sellPriceMahal,
-                sellPriceWasta: req.body.sellPriceWasta,
-                sellPriceWakil: req.body.sellPriceWakil,
-                sellPriceSharika: req.body.sellPriceSharika,
+                sellPrice: req.body.sellPrice,
+                totalPrice: req.body.detail,
                 updatedBy: req.user.username,
             });
+
+
+            if (Record['moneyStatus'] == "Debut") {
+                await ProfileCollection.findByIdAndUpdate({
+                    _id: Record['cutomerID']
+                }, {
+                    remainedbalance: Profile['remainedbalance'] - parseFloat(Record['totalPrice']) + parseFloat(req.body.detail),
+                });
+            }
+
+        } else {
+            await RecordsCollection.findOneAndUpdate({
+                _id: req.params.id
+            }, {
+                sellPrice: req.body.sellPrice,
+                totalQuantity: req.body.totalQuantity,
+                totalPrice: req.body.detail,
+                updatedBy: req.user.username,
+            });
+
+            const returnedPackets = Record['totalQuantity'] + Product['totalQuantity'];
+            await ProductsCollection.findByIdAndUpdate({
+                _id: Record['productID']
+            }, {
+                totalQuantity: returnedPackets
+            });
+
+            const returnedPacketsForTrailer = Record['totalQuantity'] + Trailer['totalQuantity']
+            await TrailersCollection.findByIdAndUpdate({
+                "_id": Trailer['_id']
+            }, {
+                totalQuantity: returnedPacketsForTrailer
+            });
+
+            const NumberOfPackets = Record['totalQuantity'] - req.params.totalQuantity;
+
+            if (Record['moneyStatus'] == "Debut") {
+                await ProfileCollection.findByIdAndUpdate({
+                    _id: Record['cutomerID']
+                }, {
+                    remainedbalance: Profile['remainedbalance'] - parseFloat(NumberOfPackets * req.body.sellPrice),
+                });
+            }
         }
 
-        else {
-            const temp = Record[0]['totalQuantity'] - parseFloat(req.body.totalQuantity);
-            await ProductsCollection.findOneAndUpdate({
-                _id: Record[0]['productID']
-            }, {
-                camePrice: req.body.camePrice,
-                sellPriceMufrad: req.body.sellPriceMufrad,
-                sellPriceMahal: req.body.sellPriceMahal,
-                sellPriceWasta: req.body.sellPriceWasta,
-                sellPriceWakil: req.body.sellPriceWakil,
-                sellPriceSharika: req.body.sellPriceSharika,
-                totalQuantity: parseFloat(Product[0]['totalQuantity']) - temp,
-                updatedBy: req.user.username,
-            });
 
-            const NewProduct = await ProductsCollection.find({
-                _id: Record[0]['productID']
-            });
 
-            await ProductsCollection.findByIdAndUpdate({
-                _id: Product[0]['_id']
-            }, {
-                remainedPacket: parseFloat(NewProduct[0]['totalQuantity'] / Product[0]['perPacket']),
-                remainedPerPacket: NewProduct[0]['totalQuantity'] % Product[0]['perPacket'],
-                // totalPrice: Product[0]['totalPrice'] + NewProduct[0]['totalQuantity'],
-                // totalWeight: Product[0]['totalWeight'] + NewProduct[0]['totalQuantity'],
-            });
-
-        }
-
-        // res.send(Trailer)
-        req.flash('success', "بەرهەمەکە بە سەرکەوتوویی نوێکرایەوە");
-        res.redirect("/Trailers")
+        // req.flash('success', "بەرهەمەکە بە سەرکەوتوویی نوێکرایەوە");
+        // res.redirect("/Trailers")
     } catch (error) {
         next(error)
     }
@@ -349,7 +349,7 @@ exports.DeletIteminInvoice = async (req, res, next) => {
     }
 }
 
-
+// TODO: Checked and Worked Properly
 //Update Products Operation
 exports.DeleteSelectedInvoice = async (req, res, next) => {
     try {

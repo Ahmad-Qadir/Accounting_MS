@@ -1,0 +1,34 @@
+include ../Components/Header
+block content
+    br
+    .container
+        // Page Heading
+        .d-sm-flex.align-items-left.justify-content-between.mb-4
+        .jumbotron
+            .row
+                .container-fluid.table-responsive
+                    form(method='POST' action="/Records/Modification/"+record[0]['_id']+"/updates")
+                        h2="نوێکردنەوەی زانیاریەکانی "+product[0]['itemModel']+" - "+product[0]['itemName']+" - "+product[0]['itemType']+" - "+product[0]['color']+" - "+product[0]['itemUnit']
+                        .row
+                            .form-group.col-md-2
+                                label نرخی فرۆشتن
+                                input.form-control(id="totalPrice" name="totalPrice" type='number' placeholder='0' required step='any' value=record[0]['sellPrice'])
+                            .form-group.col-md-2
+                                label بڕ
+                                input.form-control(id="totalQuantity" name="totalQuantity" type='number' placeholder='0' required step='any' value=record[0]['totalQuantity'])
+                            .form-group.col-md-2
+                                label کۆی گشتی نرخ
+                                input.form-control(id="detail" name="detail" readOnly type='number' value=record[0]['totalPrice'])
+                            .form-group.col-md-1.mt-4
+                                button.btn.btn-primary(type='submit') تۆمارکردن
+    script.
+        $(document).ready(function(){
+            // Check For Packets
+            $( "#totalPrice" ).change(function() {
+                document.getElementById('detail').value=parseFloat(document.getElementById('totalQuantity').value)*parseFloat(document.getElementById('totalPrice').value)
+            });
+            $( "#totalQuantity" ).change(function() {
+                document.getElementById('detail').value=parseFloat(document.getElementById('totalQuantity').value)*parseFloat(document.getElementById('totalPrice').value)
+            });
+        });
+        
