@@ -19,10 +19,10 @@ block content
         //-     i.fas.fa-plus-square.fa-sm.text-white-50
         //-     |  Add New Product
     .row
-      #accordionExample.accordion
-        each item,i in invoices
-          - console.log("=============================")
-
+      h3 فرۆشتن
+      hr
+      each item,i in invoices
+        #accordionExample.accordion
           //- if item['items'][0]['moneyStatus']=="Debut"
           //-   .accordion-item
           //-     h2(id="heading"+i).accordion-header

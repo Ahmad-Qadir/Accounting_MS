@@ -1219,21 +1219,61 @@ exports.SearchForProductsinCompany = async (req, res, next) => {
 
 
 // ! Recover Product
+// TODO: Checked and Worked Properly
 //Add New Invoice for Recovered Items
 exports.AddNewRecover = async (req, res, next) => {
     try {
+        const Records = await RecordsCollection.find({
+            status: "Recovered",
+            softdelete: false
+        }).sort({
+            "createdAt": -1
+        });
+
+        if (Records == "")
+            var invoiceID = 1;
+        else
+            var invoiceID = parseFloat(Records[0]['recordCode']) + 1;
+
+
         const Products = await ProductsCollection
             .find({
-                _id: req.params.id,
+                id: req.params.id,
                 softdelete: false
             })
+
+        const ProductNames = await ProductsCollection
+            .find({
+                id: req.params.id,
+                softdelete: false
+            }).distinct('itemModel')
+
         const Profiles = await ProfileCollection
-            .find({})
-        res.render('Products/AddNewRecover', {
-            title: "گەڕانەوە بۆ " + Products[0]['itemName'],
-            product: Products,
+            .find({
+                _id: req.params.id,
+                // softdelete: false,
+            })
+        const Trailers = await TrailerCollection
+            .find({
+                softdelete: false,
+                productID: req.params.id,
+            })
+        const Company = await CompanyCollection
+            .find({
+                softdelete: false,
+            })
+
+        res.render('Profiles/AddNewRecover', {
+            title: "گەڕانەوە بۆ " + Profiles[0]['clientName'],
+            profile: Profiles,
+            productNames: ProductNames,
+            products: Products,
+            trailers: Trailers,
+            invoiceID: invoiceID,
+            company: Company,
+            time: Date(),
             user: req.user,
-            profiles: Profiles
+            address: address
         })
     } catch (error) {
         next(error)
@@ -1241,113 +1281,296 @@ exports.AddNewRecover = async (req, res, next) => {
 }
 
 exports.RecoveredSoldProducts = async (req, res, next) => {
-    const Product = await ProductsCollection.find({
-        _id: req.params.id
-    });
+
     try {
-        var totalRecoveredPackets = parseFloat(req.body.perPacket);
+        var RequestList = req.body['tbody'];
+        var checkLength = 0;
 
-        const Recovered = await RecordsCollection
-            .find({
-                softdelete: false,
-                productID: Product[0]["_id"],
-                status: "Recovered"
-            })
-        if (Recovered != "") {
+        const Records = await RecordsCollection.find({
+            status: "Recovered",
+            softdelete: false
+        }).sort({
+            "createdAt": -1
+        });
 
-            await RecordsCollection.findByIdAndUpdate({
-                _id: Recovered[0]['_id']
-            }, {
-                totalQuantity: Recovered[0]['totalQuantity'] + totalRecoveredPackets,
-                updatedBy: req.user.username,
-                totalPrice: Product[0]['totalPrice'] + (totalRecoveredPackets * Product[0]['sellPriceMufrad']),
+        var Profile = await ProfileCollection.findOne({
+            _id: req.params.id
+        });
+
+        if (Records == "")
+            var invoiceID = 1;
+        else
+            var invoiceID = parseFloat(Records[0]['recordCode']) + 1;
+
+
+        for (let index = 0; index < RequestList.length; index++) {
+            const element = RequestList[index];
+            // console.log("Item Model:" + element[1])
+            // console.log("Item Name:" + element[2])
+            // console.log("Item Type:" + element[3])
+            // console.log("Item Color:" + element[4])
+            // console.log("Item Weight:" + element[5].split(" ")[0])
+            // console.log("Item Unit:" + element[5].split(" ")[1])
+            // console.log("Item Number:"+element[6])
+            // console.log("Sell Price:"+element[7])
+            // console.log("Total Price:"+element[8])
+            // console.log("Item Trailer:"+element[9])
+
+            const Product = await ProductsCollection.find({
+                itemModel: element[1],
+                itemName: element[2],
+                itemType: element[3],
+                color: element[4],
+                weight: parseFloat(element[5].split(" ")[0]),
+                itemUnit: element[5].split(" ")[1]
             });
 
-            //Prevent 
-            var result = Product[0]['totalQuantity'] + totalRecoveredPackets;
+            var totalRequestedPackets = parseFloat(element[6]);
+            var _SellPrice = parseFloat(element[7].replace("$", ''));
 
-            await ProductsCollection.findByIdAndUpdate({
-                _id: req.params.id
-            }, {
-                remainedPacket: parseFloat(result / Product[0]['perPacket']),
-                remainedPerPacket: result % Product[0]['perPacket'],
-                totalQuantity: result,
-                updatedBy: req.user.username,
-                totalPrice: Product[0]['totalPrice'] + (result * Product[0]['sellPriceMufrad']),
-                totalWeight: Product[0]['totalWeight'] + (result * Product[0]['weight']),
-            });
-
-            await ProfileCollection.findByIdAndUpdate({
-                _id: req.body.cutomerID
-            }, {
-                updatedBy: req.user.username,
-                $push: {
-                    invoiceID: Recovered[0]["_id"],
-                }
-            });
-            req.flash('success', "بەرهەمەکە بە سەرکەوتوویی گەڕێندرایەوە");
-            res.redirect('/Products')
-        } else {
-            const newRecordtoHistory = new RecordsCollection({
-                recordCode: uuid.v1(),
-                itemName: Product[0]['itemName'],
-                itemCode: Product[0]["itemCode"],
-                manufacturerCompany: Product[0]["manufacturerCompany"],
-                companyCode: Product[0]["companyCode"],
-                countryCompany: Product[0]["countryCompany"],
-                unit: Product[0]["unit"],
-                itemType: Product[0]["itemType"],
-                usedIn: Product[0]["usedIn"],
-                weight: Product[0]["weight"],
-                totalWeight: totalRecoveredPackets * Product[0]["weight"],
-                color: Product[0]["color"],
-                price: Product[0]["price"],
-                colorCode: Product[0]["colorCode"],
-                camePrice: Product[0]["camePrice"],
-                sellPriceMufrad: Product[0]["sellPriceMufrad"],
-                sellPriceMahal: Product[0]["sellPriceMahal"],
-                sellPriceWasta: Product[0]["sellPriceWasta"],
-                sellPriceWakil: Product[0]["sellPriceWakil"],
-                sellPriceSharika: Product[0]["sellPriceSharika"],
-                totalPrice: Product[0]["sellPriceMufrad"] * totalRecoveredPackets,
-                totalQuantity: totalRecoveredPackets,
-                status: "Recovered",
-                expireDate: Product[0]["expireDate"],
+            const Trailer = await TrailerCollection.find({
+                productID: Product[0]['_id'],
                 trailerNumber: 0,
-                addedBy: req.user.username,
-                updatedBy: req.user.username,
-                note: req.body.note,
-                cutomerID: req.body.cutomerID,
-                productID: req.params.id,
-            });
-            await newRecordtoHistory.save();
-
-
-            //Prevent 
-            var result = Product[0]['totalQuantity'] + totalRecoveredPackets;
-
-            await ProductsCollection.findByIdAndUpdate({
-                _id: req.params.id
-            }, {
-                remainedPacket: parseFloat(result / Product[0]['perPacket']),
-                remainedPerPacket: result % Product[0]['perPacket'],
-                totalQuantity: result,
-                updatedBy: req.user.username,
-                totalPrice: Product[0]['totalPrice'] + (result * Product[0]['sellPriceMufrad']),
-                totalWeight: Product[0]['totalWeight'] + (result * Product[0]['weight']),
+                status: "Recovered"
             });
 
-            await ProfileCollection.findByIdAndUpdate({
-                _id: req.body.cutomerID
-            }, {
-                updatedBy: req.user.username,
-                $push: {
-                    invoiceID: newRecordtoHistory["_id"],
-                }
-            });
-            req.flash('success', "بەرهەمەکە بە سەرکەوتوویی گەڕێندرایەوە");
-            res.redirect('/Products')
+            if (Trailer == "") {
+                // console.log((parseFloat(element[11]) * parseFloat(element[13])))
+                const newTrailer = new TrailerCollection({
+                    itemName: Product[0]['itemName'],
+                    itemModel: Product[0]['itemModel'],
+                    itemType: Product[0]['itemType'], //[boyax-adawat]
+                    itemUnit: Product[0]['itemUnit'],
+                    manufacturerCompany: Product[0]['manufacturerCompany'],
+                    companyCode: Product[0]['companyCode'],
+                    countryCompany: Product[0]['countryCompany'],
+                    unit: Product[0]['unit'],
+                    usedIn: Product[0]['usedIn'],
+                    color: Product[0]['color'],
+                    weight: Product[0]['weight'],
+                    camePrice: Product[0]['camePrice'],
+                    sellPrice: Product[0]['sellPrice'],
+                    sellPriceWakil: Product[0]['sellPriceWakil'],
+                    sellPriceSharika: Product[0]['sellPriceSharika'],
+                    sellPriceMahal: Product[0]['sellPriceMahal'],
+                    sellPriceMufrad: Product[0]['sellPriceMufrad'],
+                    sellPriceWasta: Product[0]['sellPriceWasta'],
+                    totalQuantity: totalRequestedPackets,
+                    status: "Recovered",
+                    trailerNumber: 0,
+                    addedBy: req.user.username,
+                    updatedBy: req.user.username,
+                    // note: req.params.note,
+                    productID: Product[0]['_id'],
+                });
+                await newTrailer.save();
+
+
+
+                //===============Records Collection=============
+                const newRecordtoHistory = new RecordsCollection({
+                    recordCode: invoiceID,
+                    totalQuantity: totalRequestedPackets,
+                    status: "Recovered",
+                    sellPrice: _SellPrice,
+                    totalPrice: _SellPrice * totalRequestedPackets,
+                    oldDebut: Profile['remainedbalance'],
+                    trailerNumber: 0,
+                    addedBy: req.user.username,
+                    updatedBy: req.user.username,
+                    note: req.body.note,
+                    trailerID: newTrailer['_id'],
+                    productID: Product[0]['_id'],
+                    cutomerID: req.params.id,
+                    htmlObject: req.body['tbody'],
+                });
+
+                await newRecordtoHistory.save();
+
+
+                await ProductsCollection.findByIdAndUpdate({
+                    _id: Product[0]['_id']
+                }, {
+                    totalQuantity: Product[0]['totalQuantity'] + totalRequestedPackets
+                });
+
+            } else {
+                //===============Records Collection=============
+                const newRecordtoHistory = new RecordsCollection({
+                    recordCode: invoiceID,
+                    totalQuantity: totalRequestedPackets,
+                    status: "Recovered",
+                    sellPrice: _SellPrice,
+                    totalPrice: _SellPrice * totalRequestedPackets,
+                    oldDebut: Profile['remainedbalance'],
+                    trailerNumber: 0,
+                    addedBy: req.user.username,
+                    updatedBy: req.user.username,
+                    note: req.body.note,
+                    trailerID: Trailer[0]['_id'],
+                    productID: Product[0]['_id'],
+                    cutomerID: req.params.id,
+                    htmlObject: req.body['tbody'],
+                });
+                await newRecordtoHistory.save();
+
+
+                await ProductsCollection.findByIdAndUpdate({
+                    _id: Product[0]['_id']
+                }, {
+                    totalQuantity: Product[0]['totalQuantity'] + totalRequestedPackets
+                });
+
+            }
+
+
+            //     var result = Product[0]['totalQuantity'] - totalRequestedPackets;
+
+            //     await ProductsCollection.findByIdAndUpdate({
+            //         _id: Product[0]['_id']
+            //     }, {
+            //         totalQuantity: result,
+            //         updatedBy: req.user.username,
+            //         $push: {
+            //             itemHistory: newRecordtoHistory["_id"],
+            //         }
+            //     });
+
+
+            //     await ProfileCollection.findByIdAndUpdate({
+            //         _id: req.params.id
+            //     }, {
+            //         updatedBy: req.user.username,
+            //         $push: {
+            //             invoiceID: newRecordtoHistory["_id"],
+            //         }
+            //     });
+
+
+            //     var numbeOfPacketsinTrailer = Trailer[0]['totalQuantity'] - totalRequestedPackets;
+
+            //     await TrailerCollection.findByIdAndUpdate({
+            //         _id: Trailer[0]['_id']
+            //     }, {
+            //         totalQuantity: numbeOfPacketsinTrailer,
+            //         updatedBy: req.user.username,
+            //         $push: {
+            //             invoiceID: newRecordtoHistory["_id"],
+            //         }
+            //     });
         }
+
+        // setTimeout(() => {
+        //     if (RequestList.length == checkLength)
+        //         res.status(200).send("بە سەرکەوتوویی تۆمارکرا")
+        // }, 2000);
+
+        // const Product = await ProductsCollection.find({
+        //     _id: req.params.id
+        // });
+        // var totalRecoveredPackets = parseFloat(req.body.perPacket);
+
+        // const Recovered = await RecordsCollection
+        //     .find({
+        //         softdelete: false,
+        //         productID: Product[0]["_id"],
+        //         status: "Recovered"
+        //     })
+        // if (Recovered != "") {
+
+        //     await RecordsCollection.findByIdAndUpdate({
+        //         _id: Recovered[0]['_id']
+        //     }, {
+        //         totalQuantity: Recovered[0]['totalQuantity'] + totalRecoveredPackets,
+        //         updatedBy: req.user.username,
+        //         totalPrice: Product[0]['totalPrice'] + (totalRecoveredPackets * Product[0]['sellPriceMufrad']),
+        //     });
+
+        //     //Prevent 
+        //     var result = Product[0]['totalQuantity'] + totalRecoveredPackets;
+
+        //     await ProductsCollection.findByIdAndUpdate({
+        //         _id: req.params.id
+        //     }, {
+        //         remainedPacket: parseFloat(result / Product[0]['perPacket']),
+        //         remainedPerPacket: result % Product[0]['perPacket'],
+        //         totalQuantity: result,
+        //         updatedBy: req.user.username,
+        //         totalPrice: Product[0]['totalPrice'] + (result * Product[0]['sellPriceMufrad']),
+        //         totalWeight: Product[0]['totalWeight'] + (result * Product[0]['weight']),
+        //     });
+
+        //     await ProfileCollection.findByIdAndUpdate({
+        //         _id: req.body.cutomerID
+        //     }, {
+        //         updatedBy: req.user.username,
+        //         $push: {
+        //             invoiceID: Recovered[0]["_id"],
+        //         }
+        //     });
+        //     req.flash('success', "بەرهەمەکە بە سەرکەوتوویی گەڕێندرایەوە");
+        //     res.redirect('/Products')
+        // } else {
+        //     const newRecordtoHistory = new RecordsCollection({
+        //         recordCode: uuid.v1(),
+        //         itemName: Product[0]['itemName'],
+        //         itemCode: Product[0]["itemCode"],
+        //         manufacturerCompany: Product[0]["manufacturerCompany"],
+        //         companyCode: Product[0]["companyCode"],
+        //         countryCompany: Product[0]["countryCompany"],
+        //         unit: Product[0]["unit"],
+        //         itemType: Product[0]["itemType"],
+        //         usedIn: Product[0]["usedIn"],
+        //         weight: Product[0]["weight"],
+        //         totalWeight: totalRecoveredPackets * Product[0]["weight"],
+        //         color: Product[0]["color"],
+        //         price: Product[0]["price"],
+        //         colorCode: Product[0]["colorCode"],
+        //         camePrice: Product[0]["camePrice"],
+        //         sellPriceMufrad: Product[0]["sellPriceMufrad"],
+        //         sellPriceMahal: Product[0]["sellPriceMahal"],
+        //         sellPriceWasta: Product[0]["sellPriceWasta"],
+        //         sellPriceWakil: Product[0]["sellPriceWakil"],
+        //         sellPriceSharika: Product[0]["sellPriceSharika"],
+        //         totalPrice: Product[0]["sellPriceMufrad"] * totalRecoveredPackets,
+        //         totalQuantity: totalRecoveredPackets,
+        //         status: "Recovered",
+        //         expireDate: Product[0]["expireDate"],
+        //         trailerNumber: 0,
+        //         addedBy: req.user.username,
+        //         updatedBy: req.user.username,
+        //         note: req.body.note,
+        //         cutomerID: req.body.cutomerID,
+        //         productID: req.params.id,
+        //     });
+        //     await newRecordtoHistory.save();
+
+
+        //     //Prevent 
+        //     var result = Product[0]['totalQuantity'] + totalRecoveredPackets;
+
+        //     await ProductsCollection.findByIdAndUpdate({
+        //         _id: req.params.id
+        //     }, {
+        //         remainedPacket: parseFloat(result / Product[0]['perPacket']),
+        //         remainedPerPacket: result % Product[0]['perPacket'],
+        //         totalQuantity: result,
+        //         updatedBy: req.user.username,
+        //         totalPrice: Product[0]['totalPrice'] + (result * Product[0]['sellPriceMufrad']),
+        //         totalWeight: Product[0]['totalWeight'] + (result * Product[0]['weight']),
+        //     });
+
+        //     await ProfileCollection.findByIdAndUpdate({
+        //         _id: req.body.cutomerID
+        //     }, {
+        //         updatedBy: req.user.username,
+        //         $push: {
+        //             invoiceID: newRecordtoHistory["_id"],
+        //         }
+        //     });
+        //     req.flash('success', "بەرهەمەکە بە سەرکەوتوویی گەڕێندرایەوە");
+        //     res.redirect('/Products')
+        // }
 
 
 
