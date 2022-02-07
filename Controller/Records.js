@@ -150,10 +150,10 @@ exports.UpdateChangesinEditOfTrailer = async (req, res, next) => {
             _id: Record['productID']
         });
 
-        const Trailer = await TrailersCollection.findOne({
-            trailerNumber: Record['trailerNumber'],
-            productID: Record['productID']
-        });
+        // const Trailer = await TrailersCollection.findOne({
+        //     trailerNumber: Record['trailerNumber'],
+        //     productID: Record['productID']
+        // });
 
 
         const Profile = await ProfileCollection.findOne({
@@ -180,11 +180,11 @@ exports.UpdateChangesinEditOfTrailer = async (req, res, next) => {
                 totalQuantity: Product['totalQuantity'] - NumberOfPackets
             });
 
-            await TrailersCollection.findByIdAndUpdate({
-                "_id": Trailer['_id']
-            }, {
-                totalQuantity: Trailer['totalQuantity'] - NumberOfPackets
-            });
+            // await TrailersCollection.findByIdAndUpdate({
+            //     "_id": Trailer['_id']
+            // }, {
+            //     totalQuantity: Trailer['totalQuantity'] - NumberOfPackets
+            // });
 
 
             if (Record['moneyStatus'] == "Debut") {
@@ -230,11 +230,11 @@ exports.UpdateChangesinEditOfTrailer = async (req, res, next) => {
                 totalQuantity: Product['totalQuantity'] + NumberOfPackets
             });
 
-            await TrailersCollection.findByIdAndUpdate({
-                "_id": Trailer['_id']
-            }, {
-                totalQuantity: Trailer['totalQuantity'] + NumberOfPackets
-            });
+            // await TrailersCollection.findByIdAndUpdate({
+            //     "_id": Trailer['_id']
+            // }, {
+            //     totalQuantity: Trailer['totalQuantity'] + NumberOfPackets
+            // });
 
             if (Record['moneyStatus'] == "Debut") {
                 await ProfileCollection.findByIdAndUpdate({
@@ -267,10 +267,10 @@ exports.DeletIteminInvoice = async (req, res, next) => {
             _id: Record['productID']
         });
 
-        const Trailer = await TrailersCollection.findOne({
-            trailerNumber: Record['trailerNumber'],
-            productID: Record['productID']
-        });
+        // const Trailer = await TrailersCollection.findOne({
+        //     trailerNumber: Record['trailerNumber'],
+        //     productID: Record['productID']
+        // });
 
         const Profile = await ProfileCollection.findOne({
             _id: Record['cutomerID']
@@ -287,11 +287,11 @@ exports.DeletIteminInvoice = async (req, res, next) => {
             totalQuantity: Product['totalQuantity'] + Record['totalQuantity']
         });
 
-        await TrailersCollection.findByIdAndUpdate({
-            "_id": Trailer['_id']
-        }, {
-            totalQuantity: Trailer['totalQuantity'] + Record['totalQuantity']
-        });
+        // await TrailersCollection.findByIdAndUpdate({
+        //     "_id": Trailer['_id']
+        // }, {
+        //     totalQuantity: Trailer['totalQuantity'] + Record['totalQuantity']
+        // });
 
         if (Record['moneyStatus'] == "Debut") {
             await ProfileCollection.findByIdAndUpdate({

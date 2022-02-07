@@ -265,8 +265,6 @@ exports.NewInvoice = async (req, res, next) => {
         }
 
         setTimeout(async () => {
-            console.log(checkLength)
-            console.log(RequestList.length)
 
             if (checkLength == RequestList.length) {
                 for (let index = 0; index < RequestList.length; index++) {
@@ -400,8 +398,6 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
         }
 
         setTimeout(async () => {
-            console.log(checkLength)
-            console.log(RequestList.length)
 
             if (checkLength == RequestList.length) {
                 for (let index = 0; index < RequestList.length; index++) {
@@ -479,9 +475,7 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
 
                     }
                 }
-                res.send("بە سەرکەوتوویی تۆمارکرا")
-
-                console.log(req.params.price.replace("$", ''))
+                res.status(200).send("بە سەرکەوتوویی تۆمارکرا")
 
                 await ProfileCollection.findByIdAndUpdate({
                     _id: req.params.id
@@ -489,9 +483,7 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                     remainedbalance: Profile['remainedbalance'] + parseFloat(req.params.price.replace("$", '')),
                 });
             } else {
-                console.log(req.params.price.replace("$", ''))
-
-                res.send("بە سەرکەوتوویی تۆمارنەکرا")
+                res.status(202).send("بە سەرکەوتوویی تۆمارنەکرا")
             }
         }, 2000);
 
@@ -1281,6 +1273,11 @@ exports.RecoveredSoldProducts = async (req, res, next) => {
 
                 await newRecordtoHistory.save();
 
+                await ProductsCollection.findByIdAndUpdate({
+                    _id: Product[0]['_id']
+                }, {
+                    totalQuantity: Product[0]['totalQuantity'] + totalRequestedPackets
+                });
 
 
 

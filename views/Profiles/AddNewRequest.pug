@@ -281,27 +281,8 @@ block content
 
     // Update Value Regarding the Item Name
     function updateValue(val, event) {
-      //- var itemModel=val.childNodes[1].innerHTML;
-      //- var itemName=val.childNodes[2].innerHTML;
-      //- var itemType=val.childNodes[3].innerHTML;
-      //- var color=val.childNodes[4].innerHTML;
-      //- var itemUnit=val.childNodes[5].innerHTML;
-      //- var quantity=val.childNodes[6].firstChild.id;
       var priceOf=val.childNodes[7].firstChild.id;
-      //- var trailerNumber=val.childNodes[8].firstChild.id;
-      //- document.getElementById("productName").value = val;
       event.preventDefault();
-
-      //- console.log(trailerNumber)
-
-
-      //- console.log(itemModel)
-      //- console.log(itemName)
-      //- console.log(itemType)
-      //- console.log(color)
-      //- console.log(itemUnit)
-      //- console.log(val.childNodes[10].innerHTML)
-
 
 
       var data=$.ajax({
@@ -309,9 +290,6 @@ block content
         url: "/Profiles/"+val.childNodes[10].innerHTML,
         dataType: 'JSON',
         success: function(data){
-          //- $("#"+trailerNumber).empty();
-          //- document.getElementById(trailerNumber).value=data[0]['totalQuantity']
-          //- console.log(data)
           if("#{profile[0]['clientType']}"=="مفرد"){
             document.getElementById(priceOf).value = data[0]['sellPriceMufrad'];
           }else if("#{profile[0]['clientType']}"=="محل"){
@@ -323,25 +301,8 @@ block content
           }else if("#{profile[0]['clientType']}"=="شركه‌"){
             document.getElementById(priceOf).value = data[0]['sellPriceSharika'];
           }
-          //- for (let i = 0; i < data.length; i++) {
-          //-   if(parseFloat(data[i]['totalQuantity'])==0){
-          //-     continue;
-          //-   }else{
-          //-     if(data[i]['status']=="Recovered"){
-          //-       $("#"+trailerNumber).append($("<option></option>").attr("value",data[i]['trailerNumber']).text(data[i]['trailerNumber']+"-----ماوە:"+data[i]['totalQuantity']+"(گەڕاوە)"));
-          //-     }else{
-          //-       $("#"+trailerNumber).append($("<option></option>").attr("value",data[i]['trailerNumber']).text(data[i]['trailerNumber']+"-----ماوە:"+data[i]['totalQuantity']));
-          //-     //- document.getElementById(priceOf).value = data[i]['camePrice'];
-
-          //-     }
-          //-   }
-          //-   }
           }
       });
-
-      //============================
-
-      //============================
     }
 
     // Auto Find Datas in Input Form
@@ -371,10 +332,12 @@ block content
           url: "/Products/#{profile[0]['_id']}/Requests",
           dataType: 'JSON',
           data:getJSON(objectData),
-          success: function(data){
+          success: function(data,xhr){
+            $('#newRecord').empty();
             $('#newRecord').append($("<div></div>").attr("class","note note-success").text(data.responseText));
           },
-          error: function(err){
+          error: function(err,xhr){
+            $('#newRecord').empty();
             $('#newRecord').append($("<div></div>").attr("class","note note-danger").text(err.responseText));
           }
       })
@@ -391,10 +354,12 @@ block content
           url: "/Products/#{profile[0]['_id']}/Requests/Debut/"+subtotal,
           dataType: 'JSON',
           data:getJSON(objectData),
-          success: function(data){
+          success: function(data,xhr){
+            $('#newRecord').empty();
             $('#newRecord').append($("<div></div>").attr("class","note note-success").text(data.responseText));
           },
-          error: function(err){
+          error: function(err,xhr){
+            $('#newRecord').empty();
             $('#newRecord').append($("<div></div>").attr("class","note note-danger").text(err.responseText));
           }
       })
@@ -510,7 +475,6 @@ block content
       var itemUnit=val.childNodes[5].innerHTML;
       var quantity=val.childNodes[6].firstChild.id;
       var priceOf=val.childNodes[7].firstChild.id;
-      var trailerNumber=val.childNodes[8].firstChild.id;
       event.preventDefault();
 
         var data=$.ajax({
@@ -562,52 +526,6 @@ block content
           //-   var idnumber=$(this).attr('id').replace(/[^0-9]/g,'')
           //- });
     })
-
-    //- $(document).on("click", "td", function(e) {
-    //-   var data = $(this).attr('id').match(/\d+/)[0];
-    //-   //- var value=$(this)
-    //-   //- $("#check").prop("checked", true);
-
-    //-   document.getElementById("checkstatus"+data).checked = true;
-
-    //-   //- var requestedPacket=document.getElementById("totalQuan"+data).value;
-    //-   //- var remainedPacket=document.getElementById("trailerNumbers"+data).value;
-    //-   //- console.log("requestedPacket="+requestedPacket)
-    //-   //- console.log("remainedPacket="+remainedPacket)
-
-    //-   //- if(parseFloat(remainedPacket)<parseFloat(requestedPacket)){
-    //-   //-   console.log("hey")
-    //-   //-   document.getElementById("totalQuan"+data).classList.add("btn-outline-danger")
-    //-   //-   //- $('#result').append($("<div></div>").attr("class","note note-danger mb-1").text("ناتوانیت بڕی دیاریکراو زیاتربێت لە بەرهەمی بەردەست لە باری دیاریکراو"));
-    //-   //- }else{
-    //-   //-   //- document.getElementById('result').remove()
-    //-   //-   document.getElementById("totalQuan"+data).classList.remove("btn-outline-danger")
-    //-   //- }
-    //- }); 
-
-    //- $(document).on("click", "td", function(e) {
-    //-   var data = $(this).attr('id').match(/\d+/)[0];
-    //- var value=$(this)
-    //- $("#check").prop("checked", true);
-    //- console.log(data)
-
-    //- document.getElementById("checkstatus"+data).checked = true;
-
-    //- var requestedPacket=document.getElementById("totalQuan"+data).value;
-    //- var remainedPacket=document.getElementById("trailerNumbers"+data).value;
-    //- console.log("requestedPacket="+requestedPacket)
-    //- console.log("remainedPacket="+remainedPacket)
-
-    //- if(parseFloat(remainedPacket)<parseFloat(requestedPacket)){
-    //-   console.log("hey")
-    //-   document.getElementById("totalQuan"+data).classList.add("btn-outline-danger")
-    //-   //- $('#result').append($("<div></div>").attr("class","note note-danger mb-1").text("ناتوانیت بڕی دیاریکراو زیاتربێت لە بەرهەمی بەردەست لە باری دیاریکراو"));
-    //- }else{
-    //-   //- document.getElementById('result').remove()
-    //-   document.getElementById("totalQuan"+data).classList.remove("btn-outline-danger")
-    //- }
-    //- }); 
-
 
     // Check For Packets
     //- $( "#perPacket" ).change(function() {

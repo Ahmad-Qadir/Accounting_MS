@@ -124,35 +124,35 @@ block content
                         each product,k in item['data']
                           //- - console.log(x+"//Invoice:"+item['items'][x]['productID'])
                           //- - console.log(k+"//Product:"+product['_id'])
-                          //- if item['items'][x]['productID'].equals(product['_id'])
-                          tr
-                            td=x
-                            //- if product==undefined
-                            //-   td پارەدان
-                            //-   td(style="text-align:center;") 0
-                            //-   td(style=`text-align:center;`) 0
-                            //-   td(style="text-align:center;") 0
-                            //-   td(style="text-align:center;")=item['items'][k]['status']
-                            //-   td(style="text-align:center;")="$ "+item['items'][k]['totalPrice']
-                            //-   td(style="text-align:center;") 0
-                            //-   td(style="text-align:center;")=item['items'][k]['note']
-                            //-   td(style="text-align:center;")=item['items'][k]['createdAt'].toLocaleString()
-                            //-   td(style="text-align:center;")=item['items'][k]['addedBy']
-                            //- else
-                            td=product['itemName']
-                            td(style="text-align:center;")=product['weight']+product['unit']
-                            td(style="text-align:center;")=product['color']
-                            td(style="text-align:center;")=item['items'][x]['totalQuantity']
-                            td(style="text-align:center;")=item['items'][x]['status']
-                            td(style="text-align:center;")="$ "+item['items'][x]['totalPrice']
-                            td(style="text-align:center;")=item['items'][x]['trailerNumber']
-                            td(style="text-align:center;")=item['items'][x]['note']
-                            td(style="text-align:center;")=item['items'][x]['createdAt'].toLocaleString()
-                            td(style="text-align:center;")=item['items'][x]['addedBy']
-                            td(style="text-align:center;")
-                              a.btn.btn-sm.btn-warning.m-2( title="نوێکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Records/Modification/"+item['_id']['recordCode']+"/"+item['items'][x]['productID'])
-                                span.icon.text-white-50
-                                  i.fas.fa-pencil-alt
-                              a.btn.btn-sm.btn-danger.m-2( title="ڕەشکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Records/Delete/"+item['_id']['recordCode']+"/"+item['items'][x]['productID'])
-                                span.icon.text-white-50
-                                  i.fas.fa-trash
+                          if item['items'][x]['productID'].equals(product['_id'])
+                            tr
+                              td=x
+                              //- if product==undefined
+                              //-   td پارەدان
+                              //-   td(style="text-align:center;") 0
+                              //-   td(style=`text-align:center;`) 0
+                              //-   td(style="text-align:center;") 0
+                              //-   td(style="text-align:center;")=item['items'][k]['status']
+                              //-   td(style="text-align:center;")="$ "+item['items'][k]['totalPrice']
+                              //-   td(style="text-align:center;") 0
+                              //-   td(style="text-align:center;")=item['items'][k]['note']
+                              //-   td(style="text-align:center;")=item['items'][k]['createdAt'].toLocaleString()
+                              //-   td(style="text-align:center;")=item['items'][k]['addedBy']
+                              //- else
+                              td=product['itemName']
+                              td(style="text-align:center;")=product['weight']+product['unit']
+                              td(style="text-align:center;")=product['color']
+                              td(style="text-align:center;")=item['items'][x]['totalQuantity']
+                              td(style="text-align:center;")=item['items'][x]['status']
+                              td(style="text-align:center;")="$ "+item['items'][x]['totalPrice']
+                              td(style="text-align:center;")=item['items'][x]['trailerNumber']
+                              td(style="text-align:center;")=item['items'][x]['note']
+                              td(style="text-align:center;")=item['items'][x]['createdAt'].toLocaleString()
+                              td(style="text-align:center;")=item['items'][x]['addedBy']
+                              td(style="text-align:center;")
+                                a.btn.btn-sm.btn-warning.m-2( title="نوێکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Records/Modification/"+item['_id']['recordCode']+"/"+item['items'][x]['productID'])
+                                  span.icon.text-white-50
+                                    i.fas.fa-pencil-alt
+                                a.btn.btn-sm.btn-danger.m-2( title="ڕەشکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Records/Delete/"+item['_id']['recordCode']+"/"+item['items'][x]['productID'])
+                                  span.icon.text-white-50
+                                    i.fas.fa-trash
