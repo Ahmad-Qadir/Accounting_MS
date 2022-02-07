@@ -227,7 +227,8 @@ exports.NewInvoice = async (req, res, next) => {
     try {
         var RequestList = req.body['tbody'];
         var checkLength = 0;
-
+        var preparation = [];
+        var count = 0;
         const Records = await RecordsCollection.find({
             status: "Customer Request",
             softdelete: false
@@ -240,20 +241,10 @@ exports.NewInvoice = async (req, res, next) => {
         });
 
         var invoiceID = parseFloat(Records[0]['recordCode']) + 1;
-        for (let index = 0; index < RequestList.length; index++) {
-            const element = RequestList[index];
-            // console.log("Item Model:" + element[1])
-            // console.log("Item Name:" + element[2])
-            // console.log("Item Type:" + element[3])
-            // console.log("Item Color:" + element[4])
-            // console.log("Item Weight:" + element[5].split(" ")[0])
-            // console.log("Item Unit:" + element[5].split(" ")[1])
-            // console.log("Item Number:"+element[6])
-            // console.log("Sell Price:"+element[7])
-            // console.log("Total Price:"+element[8])
-            // console.log("Item Trailer:"+element[9])
 
-            const Product = await ProductsCollection.find({
+        for (let k = 0; k < RequestList.length; k++) {
+            const element = RequestList[k];
+            const Product = await ProductsCollection.findOne({
                 itemModel: element[1],
                 itemName: element[2],
                 itemType: element[3],
@@ -265,149 +256,99 @@ exports.NewInvoice = async (req, res, next) => {
             var totalRequestedPackets = element[6];
             var _SellPrice = parseFloat(element[7].replace("$", ''));
 
-            if (element[9].split('-')[0] == 0) {
-                const Trailer = await RecordsCollection.find({
-                    productID: Product[0]['_id'],
-                    trailerNumber: 0,
-                    status: "Recovered"
-                }).populate("productID");
-
-                //Prevent 
-                if (Trailer[0]['totalQuantity'] < totalRequestedPackets) {
-                    res.send("بەرهەمی " + Trailer[0]['itemName'] + " " + Trailer[0]['color'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە لە باری ژمارە" + element[9].split('-')[0]);
-                    break;
-                } else {
-                    //===============Records Collection=============
-                    const newRecordtoHistory = new RecordsCollection({
-                        recordCode: invoiceID,
-                        totalQuantity: totalRequestedPackets,
-                        status: "Customer Request",
-                        sellPrice: _SellPrice,
-                        totalPrice: _SellPrice * totalRequestedPackets,
-                        oldDebut: Profile['remainedbalance'],
-                        trailerNumber: element[9].split('-')[0],
-                        addedBy: req.user.username,
-                        updatedBy: req.user.username,
-                        note: req.body.note,
-                        trailerID: Trailer[0]['_id'],
-                        productID: Product[0]['_id'],
-                        cutomerID: req.params.id,
-                        htmlObject: req.body['tbody'],
-                        moneyStatus: "Paid"
-                    });
-                    await newRecordtoHistory.save();
-
-                    var result = Product[0]['totalQuantity'] - totalRequestedPackets;
-
-                    await ProductsCollection.findByIdAndUpdate({
-                        _id: Product[0]['_id']
-                    }, {
-                        totalQuantity: result,
-                        updatedBy: req.user.username,
-                        $push: {
-                            itemHistory: newRecordtoHistory["_id"],
-                        }
-                    });
-
-
-                    await ProfileCollection.findByIdAndUpdate({
-                        _id: req.params.id
-                    }, {
-                        updatedBy: req.user.username,
-                        $push: {
-                            invoiceID: newRecordtoHistory["_id"],
-                        }
-                    });
-
-
-                    var numbeOfPacketsinTrailer = Trailer[0]['totalQuantity'] - totalRequestedPackets;
-
-                    await TrailerCollection.findByIdAndUpdate({
-                        _id: Trailer[0]['_id']
-                    }, {
-                        totalQuantity: numbeOfPacketsinTrailer,
-                        updatedBy: req.user.username,
-                        $push: {
-                            invoiceID: newRecordtoHistory["_id"],
-                        }
-                    });
-                    checkLength++;
-                }
-
-            }
-            else {
-                const Trailer = await TrailerCollection.find({
-                    productID: Product[0]['_id'],
-                    trailerNumber: element[9].split('-')[0]
-                });
-
-                //Prevent 
-                if (Trailer[0]['totalQuantity'] < totalRequestedPackets) {
-                    res.send("بەرهەمی " + Trailer[0]['itemName'] + " " + Trailer[0]['color'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە لە باری ژمارە" + element[9].split('-')[0]);
-                    break;
-                } else {
-                    //===============Records Collection=============
-                    const newRecordtoHistory = new RecordsCollection({
-                        recordCode: invoiceID,
-                        totalQuantity: totalRequestedPackets,
-                        status: "Customer Request",
-                        sellPrice: _SellPrice,
-                        totalPrice: _SellPrice * totalRequestedPackets,
-                        oldDebut: Profile['remainedbalance'],
-                        trailerNumber: element[9].split('-')[0],
-                        addedBy: req.user.username,
-                        updatedBy: req.user.username,
-                        note: req.body.note,
-                        trailerID: Trailer[0]['_id'],
-                        productID: Product[0]['_id'],
-                        cutomerID: req.params.id,
-                        htmlObject: req.body['tbody'],
-                        moneyStatus: "Paid"
-                    });
-                    await newRecordtoHistory.save();
-
-                    var result = Product[0]['totalQuantity'] - totalRequestedPackets;
-
-                    await ProductsCollection.findByIdAndUpdate({
-                        _id: Product[0]['_id']
-                    }, {
-                        totalQuantity: result,
-                        updatedBy: req.user.username,
-                        $push: {
-                            itemHistory: newRecordtoHistory["_id"],
-                        }
-                    });
-
-
-                    await ProfileCollection.findByIdAndUpdate({
-                        _id: req.params.id
-                    }, {
-                        updatedBy: req.user.username,
-                        $push: {
-                            invoiceID: newRecordtoHistory["_id"],
-                        }
-                    });
-
-
-                    var numbeOfPacketsinTrailer = Trailer[0]['totalQuantity'] - totalRequestedPackets;
-
-                    await TrailerCollection.findByIdAndUpdate({
-                        _id: Trailer[0]['_id']
-                    }, {
-                        totalQuantity: numbeOfPacketsinTrailer,
-                        updatedBy: req.user.username,
-                        $push: {
-                            invoiceID: newRecordtoHistory["_id"],
-                        }
-                    });
-                    checkLength++;
-                }
-
+            if (Product['totalQuantity'] < totalRequestedPackets) {
+                preparation[count] = Product;
+                count++;
+            } else {
+                checkLength++;
             }
         }
-        setTimeout(() => {
-            if (RequestList.length == checkLength)
-                res.status(200).send("بە سەرکەوتوویی تۆمارکرا")
+
+        setTimeout(async () => {
+            console.log(checkLength)
+            console.log(RequestList.length)
+
+            if (checkLength == RequestList.length) {
+                for (let index = 0; index < RequestList.length; index++) {
+                    const element = RequestList[index];
+                    // console.log("Item Model:" + element[1])
+                    // console.log("Item Name:" + element[2])
+                    // console.log("Item Type:" + element[3])
+                    // console.log("Item Color:" + element[4])
+                    // console.log("Item Weight:" + element[5].split(" ")[0])
+                    // console.log("Item Unit:" + element[5].split(" ")[1])
+                    // console.log("Item Number:"+element[6])
+                    // console.log("Sell Price:"+element[7])
+                    // console.log("Total Price:"+element[8])
+                    // console.log("Item Trailer:"+element[9])
+
+                    const Product = await ProductsCollection.findOne({
+                        itemModel: element[1],
+                        itemName: element[2],
+                        itemType: element[3],
+                        color: element[4],
+                        weight: parseFloat(element[5].split(" ")[0]),
+                        itemUnit: element[5].split(" ")[1]
+                    });
+
+                    var totalRequestedPackets = element[6];
+                    var _SellPrice = parseFloat(element[7].replace("$", ''));
+
+
+
+
+                    //Prevent 
+                    if (Product['totalQuantity'] < totalRequestedPackets) {
+                        res.send("بەرهەمی " + Product['itemModel'] + " " + Product['itemName'] + "تەنها " + Product['totalQuantity'] + " ماوە");
+                        break;
+                    } else {
+                        //===============Records Collection=============
+                        const newRecordtoHistory = new RecordsCollection({
+                            recordCode: invoiceID,
+                            totalQuantity: totalRequestedPackets,
+                            status: "Customer Request",
+                            sellPrice: _SellPrice,
+                            totalPrice: _SellPrice * totalRequestedPackets,
+                            oldDebut: Profile['remainedbalance'],
+                            addedBy: req.user.username,
+                            updatedBy: req.user.username,
+                            note: req.body.note,
+                            productID: Product['_id'],
+                            cutomerID: req.params.id,
+                            htmlObject: req.body['tbody'],
+                            moneyStatus: "Paid"
+                        });
+                        await newRecordtoHistory.save();
+
+                        var result = Product['totalQuantity'] - totalRequestedPackets;
+
+                        await ProductsCollection.findByIdAndUpdate({
+                            _id: Product['_id']
+                        }, {
+                            totalQuantity: result,
+                            updatedBy: req.user.username,
+                            $push: {
+                                itemHistory: newRecordtoHistory["_id"],
+                            }
+                        });
+
+
+                        await ProfileCollection.findByIdAndUpdate({
+                            _id: req.params.id
+                        }, {
+                            updatedBy: req.user.username,
+                            $push: {
+                                invoiceID: newRecordtoHistory["_id"],
+                            }
+                        });
+
+                    }
+                }
+                res.send("بە سەرکەوتوویی تۆمارکرا")
+            } else {
+
+                res.send("بە سەرکەوتوویی تۆمارنەکرا")
+            }
         }, 2000);
 
     } catch (error) {
@@ -421,7 +362,8 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
     try {
         var RequestList = req.body['tbody'];
         var checkLength = 0;
-
+        var preparation = [];
+        var count = 0;
         const Records = await RecordsCollection.find({
             status: "Customer Request",
             softdelete: false
@@ -434,20 +376,10 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
         });
 
         var invoiceID = parseFloat(Records[0]['recordCode']) + 1;
-        for (let index = 0; index < RequestList.length; index++) {
-            const element = RequestList[index];
-            // console.log("Item Model:" + element[1])
-            // console.log("Item Name:" + element[2])
-            // console.log("Item Type:" + element[3])
-            // console.log("Item Color:" + element[4])
-            // console.log("Item Weight:" + element[5].split(" ")[0])
-            // console.log("Item Unit:" + element[5].split(" ")[1])
-            // console.log("Item Number:"+element[6])
-            // console.log("Sell Price:"+element[7])
-            // console.log("Total Price:"+element[8])
-            // console.log("Item Trailer:"+element[9])
 
-            const Product = await ProductsCollection.find({
+        for (let k = 0; k < RequestList.length; k++) {
+            const element = RequestList[k];
+            const Product = await ProductsCollection.findOne({
                 itemModel: element[1],
                 itemName: element[2],
                 itemType: element[3],
@@ -459,156 +391,109 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
             var totalRequestedPackets = element[6];
             var _SellPrice = parseFloat(element[7].replace("$", ''));
 
-            if (element[9].split('-')[0] == 0) {
-                const Trailer = await RecordsCollection.find({
-                    productID: Product[0]['_id'],
-                    trailerNumber: 0,
-                    status: "Recovered"
-                }).populate("productID");
-
-                //Prevent 
-                if (Trailer[0]['totalQuantity'] < totalRequestedPackets) {
-                    res.send("بەرهەمی " + Trailer[0]['itemName'] + " " + Trailer[0]['color'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە لە باری ژمارە" + element[9].split('-')[0]);
-                    break;
-                } else {
-                    //===============Records Collection=============
-                    const newRecordtoHistory = new RecordsCollection({
-                        recordCode: invoiceID,
-                        totalQuantity: totalRequestedPackets,
-                        status: "Customer Request",
-                        sellPrice: _SellPrice,
-                        totalPrice: _SellPrice * totalRequestedPackets,
-                        oldDebut: Profile['remainedbalance'],
-                        trailerNumber: element[9].split('-')[0],
-                        addedBy: req.user.username,
-                        updatedBy: req.user.username,
-                        note: req.body.note,
-                        trailerID: Trailer[0]['_id'],
-                        productID: Product[0]['_id'],
-                        cutomerID: req.params.id,
-                        htmlObject: req.body['tbody'],
-                        moneyStatus: "Paid"
-                    });
-                    await newRecordtoHistory.save();
-
-                    var result = Product[0]['totalQuantity'] - totalRequestedPackets;
-
-                    await ProductsCollection.findByIdAndUpdate({
-                        _id: Product[0]['_id']
-                    }, {
-                        totalQuantity: result,
-                        updatedBy: req.user.username,
-                        $push: {
-                            itemHistory: newRecordtoHistory["_id"],
-                        }
-                    });
-
-
-                    await ProfileCollection.findByIdAndUpdate({
-                        _id: req.params.id
-                    }, {
-                        updatedBy: req.user.username,
-                        $push: {
-                            invoiceID: newRecordtoHistory["_id"],
-                        }
-                    });
-
-
-                    var numbeOfPacketsinTrailer = Trailer[0]['totalQuantity'] - totalRequestedPackets;
-
-                    await TrailerCollection.findByIdAndUpdate({
-                        _id: Trailer[0]['_id']
-                    }, {
-                        totalQuantity: numbeOfPacketsinTrailer,
-                        updatedBy: req.user.username,
-                        $push: {
-                            invoiceID: newRecordtoHistory["_id"],
-                        }
-                    });
-                    checkLength++;
-                }
-
-            }
-            else {
-                const Trailer = await TrailerCollection.find({
-                    productID: Product[0]['_id'],
-                    trailerNumber: element[9].split('-')[0]
-                });
-
-                //Prevent 
-                if (Trailer[0]['totalQuantity'] < totalRequestedPackets) {
-                    res.send("بەرهەمی " + Trailer[0]['itemName'] + " " + Trailer[0]['color'] + " تەنها " + Trailer[0]['totalQuantity'] + " ماوە لە باری ژمارە" + element[9].split('-')[0]);
-                    break;
-                } else {
-                    //===============Records Collection=============
-                    const newRecordtoHistory = new RecordsCollection({
-                        recordCode: invoiceID,
-                        totalQuantity: totalRequestedPackets,
-                        status: "Customer Request",
-                        sellPrice: _SellPrice,
-                        totalPrice: _SellPrice * totalRequestedPackets,
-                        oldDebut: Profile['remainedbalance'],
-                        trailerNumber: element[9].split('-')[0],
-                        addedBy: req.user.username,
-                        updatedBy: req.user.username,
-                        note: req.body.note,
-                        trailerID: Trailer[0]['_id'],
-                        productID: Product[0]['_id'],
-                        cutomerID: req.params.id,
-                        htmlObject: req.body['tbody'],
-                        moneyStatus: "Paid"
-                    });
-                    await newRecordtoHistory.save();
-
-                    var result = Product[0]['totalQuantity'] - totalRequestedPackets;
-
-                    await ProductsCollection.findByIdAndUpdate({
-                        _id: Product[0]['_id']
-                    }, {
-                        totalQuantity: result,
-                        updatedBy: req.user.username,
-                        $push: {
-                            itemHistory: newRecordtoHistory["_id"],
-                        }
-                    });
-
-
-                    await ProfileCollection.findByIdAndUpdate({
-                        _id: req.params.id
-                    }, {
-                        updatedBy: req.user.username,
-                        $push: {
-                            invoiceID: newRecordtoHistory["_id"],
-                        }
-                    });
-
-
-                    var numbeOfPacketsinTrailer = Trailer[0]['totalQuantity'] - totalRequestedPackets;
-
-                    await TrailerCollection.findByIdAndUpdate({
-                        _id: Trailer[0]['_id']
-                    }, {
-                        totalQuantity: numbeOfPacketsinTrailer,
-                        updatedBy: req.user.username,
-                        $push: {
-                            invoiceID: newRecordtoHistory["_id"],
-                        }
-                    });
-                    checkLength++;
-                }
-
+            if (Product['totalQuantity'] < totalRequestedPackets) {
+                preparation[count] = Product;
+                count++;
+            } else {
+                checkLength++;
             }
         }
-        setTimeout(() => {
-            if (RequestList.length == checkLength)
-                res.status(200).send("بە سەرکەوتوویی تۆمارکرا")
-        }, 2000);
 
-        await ProfileCollection.findByIdAndUpdate({
-            _id: req.params.id
-        }, {
-            remainedbalance: Profile['remainedbalance'] + parseFloat(req.params.price.replace("$", '')),
-        });
+        setTimeout(async () => {
+            console.log(checkLength)
+            console.log(RequestList.length)
+
+            if (checkLength == RequestList.length) {
+                for (let index = 0; index < RequestList.length; index++) {
+                    const element = RequestList[index];
+                    // console.log("Item Model:" + element[1])
+                    // console.log("Item Name:" + element[2])
+                    // console.log("Item Type:" + element[3])
+                    // console.log("Item Color:" + element[4])
+                    // console.log("Item Weight:" + element[5].split(" ")[0])
+                    // console.log("Item Unit:" + element[5].split(" ")[1])
+                    // console.log("Item Number:"+element[6])
+                    // console.log("Sell Price:"+element[7])
+                    // console.log("Total Price:"+element[8])
+                    // console.log("Item Trailer:"+element[9])
+
+                    const Product = await ProductsCollection.findOne({
+                        itemModel: element[1],
+                        itemName: element[2],
+                        itemType: element[3],
+                        color: element[4],
+                        weight: parseFloat(element[5].split(" ")[0]),
+                        itemUnit: element[5].split(" ")[1]
+                    });
+
+                    var totalRequestedPackets = element[6];
+                    var _SellPrice = parseFloat(element[7].replace("$", ''));
+
+
+
+
+                    //Prevent 
+                    if (Product['totalQuantity'] < totalRequestedPackets) {
+                        res.send("بەرهەمی " + Product['itemModel'] + " " + Product['itemName'] + "تەنها " + Product['totalQuantity'] + " ماوە");
+                        break;
+                    } else {
+                        //===============Records Collection=============
+                        const newRecordtoHistory = new RecordsCollection({
+                            recordCode: invoiceID,
+                            totalQuantity: totalRequestedPackets,
+                            status: "Customer Request",
+                            sellPrice: _SellPrice,
+                            totalPrice: _SellPrice * totalRequestedPackets,
+                            oldDebut: Profile['remainedbalance'],
+                            addedBy: req.user.username,
+                            updatedBy: req.user.username,
+                            note: req.body.note,
+                            productID: Product['_id'],
+                            cutomerID: req.params.id,
+                            htmlObject: req.body['tbody'],
+                            moneyStatus: "Debut"
+                        });
+                        await newRecordtoHistory.save();
+
+                        var result = Product['totalQuantity'] - totalRequestedPackets;
+
+                        await ProductsCollection.findByIdAndUpdate({
+                            _id: Product['_id']
+                        }, {
+                            totalQuantity: result,
+                            updatedBy: req.user.username,
+                            $push: {
+                                itemHistory: newRecordtoHistory["_id"],
+                            }
+                        });
+
+
+                        await ProfileCollection.findByIdAndUpdate({
+                            _id: req.params.id
+                        }, {
+                            updatedBy: req.user.username,
+                            $push: {
+                                invoiceID: newRecordtoHistory["_id"],
+                            }
+                        });
+
+                    }
+                }
+                res.send("بە سەرکەوتوویی تۆمارکرا")
+
+                console.log(req.params.price.replace("$", ''))
+
+                await ProfileCollection.findByIdAndUpdate({
+                    _id: req.params.id
+                }, {
+                    remainedbalance: Profile['remainedbalance'] + parseFloat(req.params.price.replace("$", '')),
+                });
+            } else {
+                console.log(req.params.price.replace("$", ''))
+
+                res.send("بە سەرکەوتوویی تۆمارنەکرا")
+            }
+        }, 2000);
 
     } catch (error) {
         console.log(error)

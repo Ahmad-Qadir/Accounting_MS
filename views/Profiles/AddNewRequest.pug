@@ -242,7 +242,7 @@ block content
           $('#header'+idOfModel).append($("<th></th>").text('پێوانە'));
           $('#header'+idOfModel).append($("<th></th>").attr('style',"width:10%").text('ژمارە'));
           $('#header'+idOfModel).append($("<th></th>").attr('style',"width:10%").text('نرخ'));
-          $('#header'+idOfModel).append($("<th></th>").text('ژمارەی بارهەڵگر'));
+          $('#header'+idOfModel).append($("<th></th>").text('بڕی بەردەست'));
           $('#header'+idOfModel).append($("<th></th>").text('نرخی هاتوو'));
           $('#header'+idOfModel).append($("<th></th>").text('ID'));
           $('#datas'+idOfModel).append($("<tbody></tbody>").attr('id','MainBody'+idOfModel));
@@ -268,8 +268,7 @@ block content
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','priceRow'+idOfModel+i));
             $('#priceRow'+idOfModel+i).append($("<input></input>").attr('type','number').attr('name','priceOf').attr('id','priceOf'+idOfModel+i).attr('class','form-control').attr('value',data[i]['sellPriceMufrad']));
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','trailerRow'+idOfModel+i));
-            $('#trailerRow'+idOfModel+i).append($("<select></select>").attr('name','trailerNumber').attr('id','trailerNumbers'+idOfModel+i).attr('class','form-control'));
-            $('#trailerNumbers'+idOfModel+i).append($("<option></option>").attr('value',data[i]['trailerNumber']).text(data[i]['trailerNumber']));
+            $('#trailerRow'+idOfModel+i).append($("<input></input>").attr('type','number').attr('name','trailerNum').attr('class','form-control').attr('id','trailerNum'+idOfModel+i).attr('value',data[i]['totalQuantity']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['camePrice']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['_id']));
             }
@@ -289,9 +288,11 @@ block content
       //- var itemUnit=val.childNodes[5].innerHTML;
       //- var quantity=val.childNodes[6].firstChild.id;
       var priceOf=val.childNodes[7].firstChild.id;
-      var trailerNumber=val.childNodes[8].firstChild.id;
+      //- var trailerNumber=val.childNodes[8].firstChild.id;
       //- document.getElementById("productName").value = val;
       event.preventDefault();
+
+      //- console.log(trailerNumber)
 
 
       //- console.log(itemModel)
@@ -308,30 +309,33 @@ block content
         url: "/Profiles/"+val.childNodes[10].innerHTML,
         dataType: 'JSON',
         success: function(data){
-          $("#"+trailerNumber).empty()
-          for (let i = 0; i < data.length; i++) {
-            if(parseFloat(data[i]['totalQuantity'])==0){
-              continue;
-            }else{
-              if(data[i]['status']=="Recovered"){
-                $("#"+trailerNumber).append($("<option></option>").attr("value",data[i]['trailerNumber']).text(data[i]['trailerNumber']+"-----ماوە:"+data[i]['totalQuantity']+"(گەڕاوە)"));
-              }else{
-                $("#"+trailerNumber).append($("<option></option>").attr("value",data[i]['trailerNumber']).text(data[i]['trailerNumber']+"-----ماوە:"+data[i]['totalQuantity']));
-              //- document.getElementById(priceOf).value = data[i]['camePrice'];
-                if("#{profile[0]['clientType']}"=="مفرد"){
-                  document.getElementById(priceOf).value = data[i]['sellPriceMufrad'];
-                }else if("#{profile[0]['clientType']}"=="محل"){
-                  document.getElementById(priceOf).value = data[i]['sellPriceMahal'];
-                }else if("#{profile[0]['clientType']}"=="وەستا"){
-                  document.getElementById(priceOf).value = data[i]['sellPriceWasta'];
-                }else if("#{profile[0]['clientType']}"=="وەکیل"){
-                  document.getElementById(priceOf).value = data[i]['sellPriceWakil'];
-                }else if("#{profile[0]['clientType']}"=="شركه‌"){
-                  document.getElementById(priceOf).value = data[i]['sellPriceSharika'];
-                }
-              }
-            }
-            }
+          //- $("#"+trailerNumber).empty();
+          //- document.getElementById(trailerNumber).value=data[0]['totalQuantity']
+          //- console.log(data)
+          if("#{profile[0]['clientType']}"=="مفرد"){
+            document.getElementById(priceOf).value = data[0]['sellPriceMufrad'];
+          }else if("#{profile[0]['clientType']}"=="محل"){
+            document.getElementById(priceOf).value = data[0]['sellPriceMahal'];
+          }else if("#{profile[0]['clientType']}"=="وەستا"){
+            document.getElementById(priceOf).value = data[0]['sellPriceWasta'];
+          }else if("#{profile[0]['clientType']}"=="وەکیل"){
+            document.getElementById(priceOf).value = data[0]['sellPriceWakil'];
+          }else if("#{profile[0]['clientType']}"=="شركه‌"){
+            document.getElementById(priceOf).value = data[0]['sellPriceSharika'];
+          }
+          //- for (let i = 0; i < data.length; i++) {
+          //-   if(parseFloat(data[i]['totalQuantity'])==0){
+          //-     continue;
+          //-   }else{
+          //-     if(data[i]['status']=="Recovered"){
+          //-       $("#"+trailerNumber).append($("<option></option>").attr("value",data[i]['trailerNumber']).text(data[i]['trailerNumber']+"-----ماوە:"+data[i]['totalQuantity']+"(گەڕاوە)"));
+          //-     }else{
+          //-       $("#"+trailerNumber).append($("<option></option>").attr("value",data[i]['trailerNumber']).text(data[i]['trailerNumber']+"-----ماوە:"+data[i]['totalQuantity']));
+          //-     //- document.getElementById(priceOf).value = data[i]['camePrice'];
+
+          //-     }
+          //-   }
+          //-   }
           }
       });
 
@@ -466,8 +470,6 @@ block content
                 .text("$"+parseFloat(table[i].childNodes[7].firstChild.value).toFixed(2)).attr("contenteditable",'true').attr("id","priceNumber"+i)
               ).append($('<td>')
                 .text("$"+parseFloat(parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)).toFixed(2)).attr('id',"macPrice"+i)
-              ).append($('<td>')
-                .text(table[i].childNodes[8].firstChild.value).attr("style","display:none")
               )
               //- .append($('<td>')
               //-   .append($('<a>')).append($("<i>")

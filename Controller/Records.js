@@ -319,6 +319,7 @@ exports.DeleteSelectedInvoice = async (req, res, next) => {
             status: "Customer Request",
         });
 
+
         var Profile = await ProfileCollection.findOne({
             _id: Record[0]['cutomerID']
         });
@@ -331,10 +332,10 @@ exports.DeleteSelectedInvoice = async (req, res, next) => {
                     _id: element['productID']
                 });
 
-                const Trailer = await TrailersCollection.findOne({
-                    trailerNumber: element['trailerNumber'],
-                    productID: element['productID']
-                });
+                // const Trailer = await TrailersCollection.findOne({
+                //     trailerNumber: element['trailerNumber'],
+                //     productID: element['productID']
+                // });
 
                 const returnedPackets = element['totalQuantity'] + Product['totalQuantity'];
                 await ProductsCollection.findByIdAndUpdate({
@@ -343,12 +344,12 @@ exports.DeleteSelectedInvoice = async (req, res, next) => {
                     totalQuantity: returnedPackets
                 });
 
-                const returnedPacketsForTrailer = element['totalQuantity'] + Trailer['totalQuantity']
-                await TrailersCollection.findByIdAndUpdate({
-                    "_id": Trailer['_id']
-                }, {
-                    totalQuantity: returnedPacketsForTrailer
-                });
+                // const returnedPacketsForTrailer = element['totalQuantity'] + Trailer['totalQuantity']
+                // await TrailersCollection.findByIdAndUpdate({
+                //     "_id": Trailer['_id']
+                // }, {
+                //     totalQuantity: returnedPacketsForTrailer
+                // });
 
 
                 setTimeout(async () => {
@@ -362,10 +363,10 @@ exports.DeleteSelectedInvoice = async (req, res, next) => {
                     _id: element['productID']
                 });
 
-                const Trailer = await TrailersCollection.findOne({
-                    trailerNumber: element['trailerNumber'],
-                    productID: element['productID']
-                });
+                // const Trailer = await TrailersCollection.findOne({
+                //     trailerNumber: element['trailerNumber'],
+                //     productID: element['productID']
+                // });
 
                 const returnedPackets = element['totalQuantity'] + Product['totalQuantity'];
                 await ProductsCollection.findByIdAndUpdate({
@@ -374,17 +375,17 @@ exports.DeleteSelectedInvoice = async (req, res, next) => {
                     totalQuantity: returnedPackets
                 });
 
-                const returnedPacketsForTrailer = element['totalQuantity'] + Trailer['totalQuantity']
-                await TrailersCollection.findByIdAndUpdate({
-                    "_id": Trailer['_id']
-                }, {
-                    totalQuantity: returnedPacketsForTrailer
-                });
+                // const returnedPacketsForTrailer = element['totalQuantity'] + Trailer['totalQuantity']
+                // await TrailersCollection.findByIdAndUpdate({
+                //     "_id": Trailer['_id']
+                // }, {
+                //     totalQuantity: returnedPacketsForTrailer
+                // });
 
                 await ProfileCollection.findByIdAndUpdate({
-                    _id: req.params.id
+                    _id: Record[0]['cutomerID']
                 }, {
-                    remainedbalance: Profile['remainedbalance'] + parseFloat(element['totalPrice']),
+                    remainedbalance: Profile['remainedbalance'] - parseFloat(element['totalPrice']),
                 });
 
                 setTimeout(async () => {

@@ -87,7 +87,7 @@ exports.CreateNewProfile = async (req, res, next) => {
         .find({
             softdelete: false
         })
-    res.render("Profiles/addProfile", {
+    res.render("Profiles/AddProfile", {
         title: "زیادکردنی كڕیاری نوێ",
         types: CustomerType
     })
@@ -590,12 +590,12 @@ exports.CheckForTrailerInRequest = async (req, res, next) => {
             .find({
                 _id: req.params.id
             })
-        const Trailers = await TrailerCollection
-            .find({
-                softdelete: false,
-                productID: Products[0]["_id"],
-                status: "New Trailer"
-            })
+        // const Trailers = await TrailerCollection
+        //     .find({
+        //         softdelete: false,
+        //         productID: Products[0]["_id"],
+        //         status: "New Trailer"
+        //     })
         const Recovered = await HistoryClass
             .find({
                 productID: Products[0]["_id"],
@@ -605,10 +605,10 @@ exports.CheckForTrailerInRequest = async (req, res, next) => {
 
 
         if (Recovered == "") {
-            res.send(Trailers)
+            res.send(Products)
         } else {
-            Trailers.push(Recovered[0])
-            res.send(Trailers)
+            Products.push(Recovered[0])
+            res.send(Products)
         }
 
     } catch (error) {
