@@ -1568,8 +1568,8 @@ exports.RecoveredSoldProducts = async (req, res, next) => {
         //             invoiceID: newRecordtoHistory["_id"],
         //         }
         //     });
-        //     req.flash('success', "بەرهەمەکە بە سەرکەوتوویی گەڕێندرایەوە");
-        //     res.redirect('/Products')
+        req.flash('success', "بەرهەمەکە بە سەرکەوتوویی گەڕێندرایەوە");
+        res.redirect('/Profiles')
         // }
 
 
