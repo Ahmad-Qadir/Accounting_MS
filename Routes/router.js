@@ -92,7 +92,7 @@ router.get('/Companies', Company.allowIfLoggedin, Company.grantAccess('readAny',
 // router.post('/Products/:id/NewTrailer', Products.AppendNewTrailertoProduct); // Add new Trailer for This Product
 // router.post('/Products/:id/Invoice', Products.AddNewInvoiceForCustomer) // Add new Invoice for each Customer
 router.get('/Products/:id/NewRecover', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.AddNewRecover); // Add new Request
-router.post('/Products/:id/Recovered', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.RecoveredSoldProducts) // Recover old Invoice for each Customer
+router.post('/Products/:id/:price/Recovered', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.RecoveredSoldProducts) // Recover old Invoice for each Customer
 
 //Task
 router.post('/Daily', Daily.allowIfLoggedin, Daily.grantAccess('readAny', 'products'), Daily.AddnewTask) // Add New Task in Daily

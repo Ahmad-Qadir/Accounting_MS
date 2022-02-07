@@ -360,11 +360,11 @@ block content
     //Pay All Money now
     function payNow(){
       objectData=document.getElementById("invoiceTable")
-
+      var price=document.getElementById("total").innerHTML
       //Send to Database
         var data= $.ajax({
           type: 'POST',
-          url: "/Products/#{profile[0]['_id']}/Recovered",
+          url: "/Products/#{profile[0]['_id']}/"+price+"/Recovered",
           dataType: 'JSON',
           data:getJSON(objectData),
           success: function(data){
