@@ -1188,6 +1188,14 @@ exports.RecoveredSoldProducts = async (req, res, next) => {
             var invoiceID = parseFloat(Records[0]['recordCode']) + 1;
 
 
+
+        await ProfileCollection.findByIdAndUpdate({
+            _id: req.params.id
+        }, {
+            remainedbalance: Profile['remainedbalance'] - parseFloat(req.params.price.replace("$", '')),
+        });
+
+
         for (let index = 0; index < RequestList.length; index++) {
             const element = RequestList[index];
             // console.log("Item Model:" + element[1])
@@ -1218,6 +1226,7 @@ exports.RecoveredSoldProducts = async (req, res, next) => {
                 trailerNumber: 0,
                 status: "Recovered"
             });
+
 
             if (Trailer == "") {
                 // console.log((parseFloat(element[11]) * parseFloat(element[13])))
@@ -1273,11 +1282,7 @@ exports.RecoveredSoldProducts = async (req, res, next) => {
                 await newRecordtoHistory.save();
 
 
-                await ProductsCollection.findByIdAndUpdate({
-                    _id: Product[0]['_id']
-                }, {
-                    totalQuantity: Product[0]['totalQuantity'] + totalRequestedPackets
-                });
+
 
             } else {
                 //===============Records Collection=============
@@ -1453,8 +1458,7 @@ exports.RecoveredSoldProducts = async (req, res, next) => {
         //             invoiceID: newRecordtoHistory["_id"],
         //         }
         //     });
-        req.flash('success', "بەرهەمەکە بە سەرکەوتوویی گەڕێندرایەوە");
-        res.redirect('/Profiles')
+        res.send("بەرهەمەکە بە سەرکەوتوویی گەڕێندرایەوە");
         // }
 
 
