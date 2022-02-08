@@ -4,13 +4,14 @@ block content
   .container-fluid
     // Page Heading
     .d-sm-flex.align-items-left.justify-content-between.mb-4
-      h1.h3.mb-0.text-gray-800=title
+      .row 
+        h1.h3.mb-0.text-gray-800.col-md-12=title
+        p.col-md-6(id="totalQard") 
       .span
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white(onclick="printDiv('printableArea')")
           i.fas.fa-print.fa-sm.text-white-50
           |  چاپکردن
-      .span
-        p(id="totalQard")
+      
 
     .container
       != messages('message', locals)
@@ -56,7 +57,7 @@ block content
           TotalValue += currentRow
         });
 
-        document.getElementById('totalQard').innerHTML=TotalValue
+        document.getElementById('totalQard').innerHTML="کۆی قەرزەکان:  "+TotalValue
     } );
       function printDiv(divName) {
         var originalContents = document.body.innerHTML;
