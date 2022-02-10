@@ -69,6 +69,9 @@ block content
                     a.btn.btn-sm.btn-primary.m-1(href="/Products/"+item['_id']+"/NewRecover" title="گەڕانەوەی بەرهەم" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;")
                       span.icon.text-white-50
                         i.fas.fa-recycle
+                    a.d-none.d-sm-inline-block.btn.btn-sm.btn-warning.shadow-sm.text-white.m-1(type='button' data-toggle="modal" data-target="#confirm-payment")
+                      span.icon.text-white-50
+                        i.fas.fa-wallet.fa-sm.text-white-50
                     // Modal
                     .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id=`confirm-delete${i}`)
                       .modal-dialog.modal-dialog-centered.modal-s(role='document')
@@ -80,6 +83,17 @@ block content
                           .modal-footer
                             button.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
                             a.btn.btn-danger.btn-ok(id="objID"+i data-dismiss='modal' onclick='deleteRow(this,'+json+')') ڕەشکردنەوە
+                    // Modal
+                    .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-payment')
+                      .modal-dialog.modal-dialog-centered.modal-s(role='document')
+                        .modal-content
+                          .modal-header دواخستنی پارەدان
+                          .modal-body 
+                            p بڕی پارەی دراو
+                              input.form-control(name="debut" type='number' step='any' value='0' id="paidmoney")
+                          .modal-footer
+                            button.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
+                            a.btn.btn-success.btn-ok(onclick="payNowDebut()" data-dismiss='modal') رازیبوون
 
   //- include ../Components/Footer
   script.
