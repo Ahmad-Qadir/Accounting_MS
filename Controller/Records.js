@@ -50,20 +50,17 @@ exports.Records = async (req, res, next) => {
         const Records = await RecordsCollection.find({}).populate("productID").sort({
             "createdAt": -1
         }).limit(20);
-        const TotalExpenses = await RecordsCollection.find({
-            status: {
-                $nin: ["Customer Request"]
-            }
-        }).populate("productID");
-        const TotalIncome = await RecordsCollection.find({
-            status: "Customer Request"
-        }).populate("productID");
+
+        const Profiles = await RecordsCollection.find({}).populate("cutomerID").sort({
+            "createdAt": -1
+        }).limit(20);
 
         // res.send(Records[0]['productID']['itemName'])
         res.render('Records/Records', {
             title: "تۆمارەکان",
             records: Records,
-            user: req.user
+            user: req.user,
+            profiles: Profiles
         })
     } catch (error) {
         next(error)

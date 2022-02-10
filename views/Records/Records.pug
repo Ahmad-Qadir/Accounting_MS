@@ -15,12 +15,13 @@ block content
         table(id="productTable").table.table-hover.table-sm.dt-responsive.table-striped
           thead.thead-light
             tr
+              //- th(scope='col' style="font-size:90%") ژمارەی تۆمار
               th(scope='col' style="font-size:90%") بەرهەم
               th(scope='col' style="text-align:center; font-size:90%") بڕ/دانە
               th(scope='col' style="text-align:center; font-size:90%") کۆی گشتی $
               th(scope='col' style="text-align:center; font-size:90%") فەرمانبەر
               th(scope='col' style="text-align:center; font-size:90%") بەروار
-              th(scope='col' style="text-align:center; font-size:90%") تێبینی
+              th(scope='col' style="text-align:center; font-size:90%") کڕیار
               th(scope='col' style="text-align:center; font-size:90%") چالاکی 
               th(scope='col' style="text-align:center; font-size:90%") 
 
@@ -30,13 +31,17 @@ block content
               - var j=i;
               - var time = new Date();
               tr
+                //- td(style="text-align:center;")=item['recordCode']
                 if item['productID']==undefined
                   td
                   td(style="text-align:center;")
                   td(style="text-align:center;")="$ "+ item['sellPrice']
                   td(style="text-align:center;")=item['addedBy']
                   td(style="text-align:center;")=item['createdAt'].toLocaleString()
-                  td(style="text-align:center;")=item['note']
+                  if profiles[i]['cutomerID']==undefined 
+                    td(style="text-align:center;")
+                  else 
+                    td(style="text-align:center;")=profiles[i]['cutomerID']['clientName']+"/"+profiles[i]['cutomerID']['companyName']
                   if item['status']=="Deleted Product"
                     td(style="text-align:center;") ڕەشکردنەوە
                     td(style="text-align:center;")
@@ -83,7 +88,10 @@ block content
                   td(style="text-align:center;")="$ "+item['totalPrice']
                   td(style="text-align:center;")=item['addedBy']
                   td(style="text-align:center;")=item['createdAt'].toLocaleString()
-                  td(style="text-align:center;")=item['note']
+                  if profiles[i]['cutomerID']==undefined 
+                    td(style="text-align:center;")
+                  else 
+                    td(style="text-align:center;")=profiles[i]['cutomerID']['clientName']+"/"+profiles[i]['cutomerID']['companyName']
                   if item['status']=="Deleted Product"
                     td(style="text-align:center;") ڕەشکردنەوە
                     td(style="text-align:center;")
