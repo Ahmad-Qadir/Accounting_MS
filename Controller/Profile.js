@@ -108,56 +108,24 @@ exports.GetAllCustomers = async (req, res, next) => {
 // ! User Invoices
 //Get Invoice for Specific Customer
 exports.GetAllInvoiceForCustomers = async (req, res, next) => {
-    const Invoices = await HistoryClass
-        .aggregate([
+    const Invoices = await HistoryClass.aggregate(
+        [
             {
                 $group: {
-                    _id: { recordCode: "$recordCode" },
+                    _id: { recordCode: '$recordCode', status: "$status" },
                     amount: { $sum: "$totalPrice" },
-                    count: { $sum: 1 },
                     items: {
                         $push: { softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
                     },
                 },
-            },
-            {
-                $sort: { "_id": -1 },
-            },
-            {
-                $match: {
-                    "items.cutomerID": mongoose.Types.ObjectId(req.params.id),
-                    "items.status": "Customer Request"
-                }
-            },
-            {
-                $lookup: {
-                    from: "items",
-                    localField: "items.productID",
-                    foreignField: "_id",
-                    as: "data",
-                },
-            },
-        ]);
 
-    const _RecoveredInvoices = await HistoryClass
-        .aggregate([
-            {
-                $group: {
-                    _id: { recordCode: "$recordCode" },
-                    amount: { $sum: "$totalPrice" },
-                    count: { $sum: 1 },
-                    items: {
-                        $push: { softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
-                    },
-                },
             },
             {
                 $sort: { "_id": -1 },
             },
             {
                 $match: {
-                    "items.cutomerID": mongoose.Types.ObjectId(req.params.id),
-                    "items.status": "Recovered"
+                    "items.cutomerID": mongoose.Types.ObjectId(req.params.id)
                 }
             },
             {
@@ -183,11 +151,11 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
         res.redirect("/Profiles")
     } else {
         res.render("Profiles/Invoices", {
-            title: "Customer Invoice",
+            title: "تۆماری " + Profile[0]['cutomerID']['clientName'],
             invoices: Invoices,
             profile: Profile,
             address: address,
-            recovered: _RecoveredInvoices
+            // recovered: _RecoveredInvoices
         })
     }
     // res.send(Invoices)

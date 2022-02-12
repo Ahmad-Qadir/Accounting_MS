@@ -149,13 +149,13 @@ app.get('/import', async (req, res) => {
                 productID: newProduct['_id'],
             });
             await newItem.save();
-            
+
 
             const newRecordtoHistory = new RecordsCollection({
                 recordCode: "imported",
                 totalQuantity: parseFloat(row.totalQuantity),
                 status: "New Trailer",
-                sellPrice:row.sellPriceMufrad,
+                sellPrice: row.sellPriceMufrad,
                 totalPrice: parseFloat(row.camePrice) * parseFloat(row.totalQuantity),
                 // cost: req.params.cost,
                 camePrice: row.camePrice,
@@ -187,7 +187,7 @@ app.get('/import', async (req, res) => {
                 weight: newProduct['weight'],
                 // totalWeight: (parseFloat(element[11]) * newProduct['weight']),
                 camePrice: row.camePrice,
-                sellPrice:row.sellPriceMufrad,
+                sellPrice: row.sellPriceMufrad,
                 sellPriceMufrad: row.sellPriceMufrad,
                 sellPriceMahal: row.sellPriceMahal,
                 sellPriceWasta: row.sellPriceWasta,
@@ -359,8 +359,6 @@ app.get('/', async (req, res) => {
 // app.get('/remover', async (req, res) => {
 //     var checker = await ProductsCollection.updateMany({
 //     }, {
-//         remainedPacket: 0,
-//         remainedPerPacket: 0,
 //         totalQuantity: 0
 //     });
 //     res.send(checker)
@@ -377,27 +375,23 @@ app.get('/', async (req, res) => {
 //     res.send(checker)
 // });
 
-// app.get('/updater', async (req, res) => {
-//     fs.createReadStream("C:\\Users\\Ahmad\\Desktop\\qarz.csv")
-//         .pipe(csv())
-//         .on('data', async function (row) {
+app.get('/updater', async (req, res) => {
+    fs.createReadStream("C:\\Users\\Ahmad\\Desktop\\1122.csv")
+        .pipe(csv())
+        .on('data', async function (row) {
 
-//             const user = await ProfileCollection.findOne({
-//                 clientName: row.clientName,
-//                 companyName: row.companyName
-//             })
-//             var checker = await ProfileCollection.findByIdAndUpdate({
-//                 _id: user['_id']
-//             }, {
-//                 borrowedBalance: parseFloat(row.borrowedBalance),
-//                 recoveredBalance: parseFloat(row.recoveredBalance),
-//                 remainedbalance: parseFloat(row.remainedbalance),
-//             });
-//         })
-//         .on('end', function () {
-//             res.send("end")
-//         })
-// });
+            var checker = await ProductsCollection.findByIdAndUpdate({
+                _id: row.oid
+            }, {
+                // borrowedBalance: parseFloat(row.borrowedBalance),
+                // recoveredBalance: parseFloat(row.recoveredBalance),
+                totalQuantity: parseFloat(row.totalQuantity),
+            });
+        })
+        .on('end', function () {
+            res.send("end")
+        })
+});
 
 
 //Error Handler
