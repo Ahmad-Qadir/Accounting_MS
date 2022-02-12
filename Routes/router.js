@@ -67,7 +67,7 @@ router.put('/Invoices/:invoiceID/:customerid/Recover', Products.allowIfLoggedin,
 router.get('/Invoice/:invoiceID/:productName', Records.allowIfLoggedin, Records.grantAccess('readAny', 'invoice'), Records.SearchForSpecificInvoice); // Add new Request
 router.get('/Invoices/query', Records.allowIfLoggedin, Records.grantAccess('readAny', 'invoice'), Records.ShowSelectedDateOfInvoices); // Add new Request
 router.post('/Invoices/Print', Records.allowIfLoggedin, Records.grantAccess('readAny', 'invoice'), Records.ShowSelectedDateOfInvoicesOperation); // Add new Request
-router.get('/Invoices/Delete/:recordcode', Records.allowIfLoggedin, Records.grantAccess('readAny', 'invoice'), Records.DeleteSelectedInvoice); // Add new Request
+router.get('/Invoices/Delete/:recordcode/:id', Records.allowIfLoggedin, Records.grantAccess('readAny', 'invoice'), Records.DeleteSelectedInvoice); // Add new Request
 
 
 
@@ -107,7 +107,7 @@ router.get('/Profiles/:id/invoices', Profiles.allowIfLoggedin, Profiles.grantAcc
 router.get('/Profiles/:id/Debut/invoices', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.GetAllDebutInvoiceForCustomers); // Get All invoice for specific Profile
 
 router.get('/Profile/:id/NewRequest', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.AddNewRequest); // Add new Request per Customer
-router.get('/Profiles/:invoiceID/Print', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.PrintSelectedInvoice); // Print Invoice
+router.get('/Profiles/:invoiceID/:id/Print', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.PrintSelectedInvoice); // Print Invoice
 router.get('/Profiles/AddNew', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.CreateNewProfile);
 router.get('/Profiles/:id', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.CheckForTrailerInRequest);
 router.get('/Profiles/Customer/Types', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.ShowCustomerType);

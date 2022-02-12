@@ -314,6 +314,7 @@ exports.DeleteSelectedInvoice = async (req, res, next) => {
         const Record = await RecordsCollection.find({
             recordCode: req.params.recordcode,
             status: "Customer Request",
+            cutomerID: req.params.id
         });
 
 
