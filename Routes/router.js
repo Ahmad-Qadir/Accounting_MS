@@ -116,6 +116,10 @@ router.post('/Profiles/Customer/NewTypes', Profiles.allowIfLoggedin, Profiles.gr
 router.get('/Profiles/Invoices/:id', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.PrintAllInvoiceforCustomer); // Get All invoice for specific Profile
 router.delete('/Profiles/:id', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.RemoveProfile); // Get All invoice for specific Profile
 router.get('/Debtors', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.debtors); // Get All Debtors
+router.get('/Profiles/Modification/:id', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.EditCustomerUI); // Get All invoice for specific Profile
+router.post('/Profiles/Modification/:id/Updates', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.UpdateProfileChanges); // Get All invoice for specific Profile
+
+
 
 //Item Unit
 router.post('/Products/ItemUnit', ItemUnit.AddNewItemUnit); // Get All Customers Profile

@@ -104,6 +104,41 @@ exports.GetAllCustomers = async (req, res, next) => {
     })
 }
 
+//Get All Customers
+exports.EditCustomerUI = async (req, res, next) => {
+    const Profiles = await ProfileCollection
+        .findOne({ _id: req.params.id })
+    const CustomerType = await CustomerTypeCollection
+        .find({
+            softdelete: false
+        })
+    res.render("Profiles/EditProfile", {
+        title: "نوەکردنەوەی زانیاریەکانی " + Profiles['clientName'],
+        profiles: Profiles,
+        types: CustomerType
+    })
+}
+
+//Get All Customers
+exports.UpdateProfileChanges = async (req, res, next) => {
+
+    await ProfileCollection.findByIdAndUpdate({
+        _id: req.params.id
+    }, {
+        clientName: req.body.clientName,
+        phoneNumber: req.body.phoneNumber,
+        companyName: req.body.companyName,
+        clientType: req.body.clientType,
+        remainedbalance: req.body.remainedbalance,
+        updatedBy: req.user.username,
+    });
+
+
+    req.flash('success', "زانیاریەکان بە سەرکەوتوویی نوێ کرانەوە");
+    res.redirect("/Profiles")
+
+}
+
 
 // ! User Invoices
 //Get Invoice for Specific Customer

@@ -1,0 +1,34 @@
+include ../Components/Header
+block content
+    br
+    .container
+        // Page Heading
+        .d-sm-flex.align-items-left.justify-content-between.mb-4
+        .jumbotron
+            .row
+                .container-fluid.table-responsive
+                    form(method='POST' action="/Profiles/Modification/"+profiles['_id']+"/Updates")
+                        h2 زانیاری کڕیار
+                        .row
+                            .form-group.col-md-6
+                                label ناوی كڕیار
+                                input.form-control(name="clientName" type='text' placeholder='ناوی كڕیار' value=profiles['clientName'])
+                            .form-group.col-md-3
+                                label ژمارەی مۆبایل
+                                input.form-control(name="phoneNumber" type='text' placeholder='ژمارەی مۆبایل 1' value=profiles['phoneNumber'])
+                            .form-group.col-md-3
+                                label ژمارەی مۆبایل
+                                input.form-control(name="secondPhoneNumber" type='text' placeholder='ژمارەی مۆبایل 2' value=profiles['secondPhoneNumber'])
+                        .row
+                            .form-group.col-md-4
+                                label ناوی کۆمپانیا
+                                input.form-control(name="companyName" type='text' value=profiles['companyName'])
+                            .form-group.col-md-4
+                                label بری قارز
+                                input.form-control(name="remainedbalance" type='text' value=profiles['remainedbalance'])
+                            .form-group.col-md-4
+                                label جۆری کڕیار
+                                select(name="clientType" class="form-control")
+                                    each item,i in types
+                                        option(value=item['customerType'])=item['customerType']
+                        button.btn.btn-primary.m-2(type='submit') تۆماربکە
