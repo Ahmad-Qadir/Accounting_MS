@@ -1,0 +1,30 @@
+include ../Components/Header
+block content
+    br
+    .container
+        // Page Heading
+        .d-sm-flex.align-items-left.justify-content-between.mb-4
+        .jumbotron
+            .row
+                .container-fluid.table-responsive
+                    form(method='POST' action="/Profiles/Debut/"+profiles['_id']+"/Updates")
+                        h2="نوێکردنەوەی زانیاریەکانی "+profiles['clientName']
+                        .row
+                            .form-group.col-md-2
+                                label قەرزی کۆن
+                                input.form-control(id="olddebut" name="olddebut" type='number' placeholder='0' required step='any' value=profiles['remainedbalance'])
+                            .form-group.col-md-2
+                                label بڕی دراوە
+                                input.form-control(id="paid" name="paid" type='number' placeholder='0' required step='any')
+                            .form-group.col-md-2
+                                label قەرزی ماوە
+                                input.form-control(id="finalbalance" name="finalbalance" readOnly type='number' value=profiles['remainedbalance'])
+                            .form-group.col-md-1.mt-4
+                                button.btn.btn-primary(type='submit') تۆمارکردن
+    script.
+        $(document).ready(function(){
+            // Check For Packets
+            $( "#paid" ).change(function() {
+                document.getElementById('finalbalance').value=parseFloat(document.getElementById('olddebut').value)-parseFloat(document.getElementById('paid').value)
+            });
+        });

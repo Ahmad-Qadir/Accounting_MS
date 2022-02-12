@@ -113,10 +113,73 @@ exports.EditCustomerUI = async (req, res, next) => {
             softdelete: false
         })
     res.render("Profiles/EditProfile", {
-        title: "نوەکردنەوەی زانیاریەکانی " + Profiles['clientName'],
+        title: "نوێکردنەوەی زانیاریەکانی " + Profiles['clientName'],
         profiles: Profiles,
         types: CustomerType
     })
+}
+
+//Get All Customers
+exports.PayMoneyUI = async (req, res, next) => {
+    const Profiles = await ProfileCollection
+        .findOne({ _id: req.params.id })
+
+    res.render("Profiles/PayMoney", {
+        title: "نوێکردنەوەی زانیاریەکانی " + Profiles['clientName'],
+        profiles: Profiles,
+    })
+}
+
+//Get All Customers
+exports.PayMoney = async (req, res, next) => {
+
+    const Records = await HistoryClass.find({
+        status: "Compensate",
+        softdelete: false
+    }).sort({
+        "createdAt": -1
+    });
+
+    var Profile = await ProfileCollection.find({
+        _id: req.params.id
+    });
+
+    var invoiceID = parseFloat(Records[0]['recordCode']) + 1;
+
+    const newRecordtoHistory = new HistoryClass({
+        recordCode: invoiceID,
+        status: "Compensate",
+        sellPrice: req.body.paid,
+        totalPrice: req.body.paid,
+        totalQuantity: 0,
+        oldDebut: Profile[0]['remainedbalance'],
+        addedBy: req.user.username,
+        updatedBy: req.user.username,
+        note: req.body.note,
+        cutomerID: req.params.id,
+        moneyStatus: "Return Money"
+    });
+    await newRecordtoHistory.save();
+
+    await ProfileCollection.findByIdAndUpdate({
+        _id: req.params.id
+    }, {
+        remainedbalance: req.body.finalbalance,
+        $push: {
+            invoiceID: newRecordtoHistory["_id"],
+        }
+    });
+
+
+    // await ProfileCollection.findByIdAndUpdate({
+    //     _id: req.params.id
+    // }, {
+    //     remainedbalance: req.body.finalbalance,
+    //     updatedBy: req.user.username,
+    // });
+
+    req.flash('success', "پارەدان بە سەرکەوتوویی تۆمارکرا");
+    res.redirect("/Profiles")
 }
 
 //Get All Customers

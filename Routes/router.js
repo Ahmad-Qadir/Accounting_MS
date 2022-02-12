@@ -119,6 +119,9 @@ router.get('/Debtors', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny',
 router.get('/Profiles/Modification/:id', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.EditCustomerUI); // Get All invoice for specific Profile
 router.post('/Profiles/Modification/:id/Updates', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.UpdateProfileChanges); // Get All invoice for specific Profile
 
+router.get('/Profiles/Debut/:id', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.PayMoneyUI); // Get All invoice for specific Profile
+router.post('/Profiles/Debut/:id/Updates', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.PayMoney); // Get All invoice for specific Profile
+
 
 
 //Item Unit
