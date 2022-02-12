@@ -1,0 +1,121 @@
+include ../Components/Header
+block content
+  br
+  .container
+    // Page Heading
+    .d-sm-flex.align-items-left.justify-content-between.mb-4
+      h1.h3.mb-0.text-gray-800=title
+      .span
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.m-1(type='button' data-toggle='modal' onclick="printDiv('printableArea')")
+          i.fas.fa-print.fa-sm.text-white-50
+          |  چاپکردن
+    .container(id="newRecord")
+    .jumbotron
+      .row
+        .container-fluid(id="printableArea")
+          .card.border(style="border: 5px solid #1794BA !important;" class="h-100")
+            //- .card-header(style='background-color: black;')
+            .card-body(id="targetedArea" style="background: url('https://i.ibb.co/HhnspzY/Invoice-UI.jpg'); background-size: 100% 280mm;")
+              .p-4
+                .container
+                  .row.col-12
+                    .col-6
+                      h2
+                        strong تیتان سێرڤس
+                      br
+                      h6="ژمارەی تۆمار: "+invoiceID
+                      h6="بۆ:"+profile['cutomerID']['companyName']+" /کاک  "+profile['cutomerID']['clientName']
+                      h6="ژمارەی مۆبایل: "+profile['cutomerID']['phoneNumber']
+                      h6="بار: "+"فرۆشتن"
+                      h6="لەلایان:"+records[0]['addedBy']
+                      h6="ژمارەی مۆبایل ی کۆمپانیا:07504153878"
+                    .col-6
+                      img#icon(src='https://i.ibb.co/9GPnfN5/titan-removebg-preview.png' width=300).mx-auto.d-block
+              hr
+              div
+                table(id="invoiceTable").table-bordered.table-xs.table-responsive.col-12
+                  thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
+                    tr
+                      th(style="width:3%").center #
+                      th(style="font-weight:bold;") ناوی بەرهەم
+                      th(style="" colspan=2) جۆری بەرهەم
+                      th(style="") ڕەنگ
+                      th(style="width:7%") پێوانە
+                      th(style="width:3%") ژمارە
+                      th(style="width:10%").right نرخی تاک
+                      th(style="").right کۆی گشتی
+                      //- th(style="text-align:center; font-size:100%;font-weight:bold; width:3%")
+                  tbody(id="dataOfInvoiceTable" style="font-size: 12px;font-weight:bold;text-align:center;")
+                    each item,i in records
+                      - var j=i+1;
+                        tr 
+                          if item['productID']==undefined
+                            td=j
+                            td پارەدان
+                            td(style="text-align:center;") -
+                            td(style="text-align:center;") -
+                            td(style="text-align:center;") -
+                            td(style=`text-align:center;`) -
+                            td(style="text-align:center;") -
+                            td(style="text-align:center;")="$ "+item['sellPrice']
+                            td.count-me(style="text-align:center;")="$ "+item['totalPrice']
+                          else
+                            td=j
+                            td=item['productID']['itemModel']
+                            td(style="text-align:center;")=item['productID']['itemName']
+                            td(style="text-align:center;")=item['productID']['itemType']
+                            td(style="text-align:center;")=item['productID']['color']
+                            td(style=`text-align:center;`)=item['productID']['itemUnit']
+                            td(style="text-align:center;")=item['totalQuantity']
+                            td(style="text-align:center;")="$ "+item['sellPrice']
+                            td.count-me(style="text-align:center;")="$ "+item['totalPrice']
+              if records[0]['productID']==undefined
+                .row
+                  .col-5.ml-auto
+                    br
+                    table.table.table-bordered.table-xs(id="totalPayment")
+                      tbody
+                        //- tr(style="line-height: 10px;")
+                        //-   td.left
+                        //-     strong(style="color:#f00") قەرزی پێشوو
+                        //-   td(id="olddebut" style="color:#f00").right="$"+records[0]['oldDebut']
+                        //- tr(style="line-height: 10px;")
+                        //-   td.left
+                        //-     strong قەرزی ئێستا
+                        //-   td.right(id="total") 0
+                        tr(style="line-height: 10px;")
+                          td.left
+                            strong کۆی گشتی (دۆلار)
+                          td.right
+                            strong(id="finalPrice")="$"+(records[0]['totalPrice'])
+              else 
+                .row
+                  .col-5.ml-auto
+                    br
+                    table.table.table-bordered.table-xs(id="totalPayment")
+                      tbody
+                        tr(style="line-height: 10px;")
+                          td.left
+                            strong(style="color:#f00") قەرزی پێشوو
+                          td(id="olddebut" style="color:#f00").right="$"+records[0]['oldDebut']
+                        tr(style="line-height: 10px;")
+                          td.left
+                            strong قەرزی ئێستا
+                          td.right(id="total") 0
+                        tr(style="line-height: 10px;")
+                          td.left
+                            strong کۆی گشتی (دۆلار)
+                          td.right
+                            strong(id="finalPrice")="$"+(records[0]['oldDebut']+records[0]['totalPrice'])
+              footer(style="position: fixed;padding: 10px 10px 0px 10px;bottom: 0;width: 100%;height: 30mm;")
+                hr
+                .row 
+                  .col-1
+                  .col-4
+                    -var today = new Date();
+                    -var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                    -var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                    -var dateTime = date+' '+time;
+                    span="    بەروار: "+dateTime.toLocaleString()
+                  .col-6
+                    span="ناونیشان: "+"هەولێر - گەڕەکی عدالە - نزیک بانکی زانکۆ"

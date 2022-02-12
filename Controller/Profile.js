@@ -321,35 +321,56 @@ exports.GetAllDebutInvoiceForCustomers = async (req, res, next) => {
 
 //Get Invoice for Specific Customer
 exports.PrintAllInvoiceforCustomer = async (req, res, next) => {
-    // console.log("hey")
-    const Records = await HistoryClass
-        .aggregate([
+    const Invoices = await HistoryClass.aggregate(
+        [
+            {
+                $group: {
+                    _id: { recordCode: '$recordCode', status: "$status" },
+                    amount: { $sum: "$totalPrice" },
+                    items: {
+                        $push: { softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                    },
+                },
+
+            },
+            {
+                $sort: { "_id": -1 },
+            },
             {
                 $match: {
-                    cutomerID: mongoose.Types.ObjectId(req.params.id),
+                    "items.cutomerID": mongoose.Types.ObjectId(req.params.id)
                 }
             },
             {
                 $lookup: {
                     from: "items",
-                    localField: "productID",
+                    localField: "items.productID",
                     foreignField: "_id",
                     as: "data",
                 },
             },
-            {
-                $unwind: "$data",
-            },
         ]);
 
-    // var checker = await ProductsCollection.populate(Records, { path: "productID" });
-
-    const ProfileInformation = await ProfileCollection
-        .findOne({
-            _id: req.params.id
+    const Profile = await HistoryClass
+        .find({
+            cutomerID: req.params.id
         })
+        .sort({
+            "createdAt": -1
+        }).populate('cutomerID')
 
-    res.json(Records)
+    if (Invoices == "") {
+        req.flash('danger', "کڕیاری داواکراو هیج تۆماڕێکی نیە");
+        res.redirect("/Profiles")
+    } else {
+        res.render("Profiles/PrintAllInvoices", {
+            title: "تۆماری " + Profile[0]['cutomerID']['clientName'],
+            invoices: Invoices,
+            profile: Profile,
+            address: address,
+            // recovered: _RecoveredInvoices
+        })
+    }
     // res.render('Profiles/PrintInvoice', {
     //     title: "تۆمارەکانی " + ProfileInformation['clientName'],
     //     records: Records,
