@@ -46,8 +46,8 @@ block content
                                                 //- th(style="text-align:center; font-size:100%;font-weight:bold; width:3%")
                                         tbody(id="dataOfInvoiceTable" style="font-size: 12px;font-weight:bold;text-align:center;")
                                             - var j=h+1;
-                                                tr 
-                                                    if invoice['data'].length==0
+                                                if invoice['data'].length==0
+                                                    tr 
                                                         td پارەدان
                                                         td(style="text-align:center;") -
                                                         td(style="text-align:center;") -
@@ -56,8 +56,9 @@ block content
                                                         td(style="text-align:center;") -
                                                         td(style="text-align:center;")="$ "+invoice['items'][0]['sellPrice']
                                                         td.count-me(style="text-align:center;")="$ "+invoice['items'][0]['totalPrice']
-                                                    else
-                                                        each loop,l in invoice['data']
+                                                else
+                                                    each loop,l in invoice['data']
+                                                        tr
                                                             td=loop['itemModel']
                                                             td(style="text-align:center;")=loop['itemName']
                                                             td(style="text-align:center;")=loop['itemType']
@@ -94,7 +95,7 @@ block content
                                                     tr(style="line-height: 10px;")
                                                         td.left
                                                             strong(style="color:#f00") قەرزی پێشوو
-                                                        td(id="olddebut" style="color:#f00").right="$"+invoice['items'][0]['oldDebut']
+                                                        td(id="olddebut" style="color:#f00").right="$"+(invoice['items'][0]['oldDebut']).toFixed(2)
                                                     tr(style="line-height: 10px;")
                                                         td.left
                                                             strong قەرزی ئێستا
@@ -104,6 +105,14 @@ block content
                                                             strong کۆی گشتی (دۆلار)
                                                         td.right
                                                             strong(id="finalPrice")="$"+(invoice['items'][0]['oldDebut']+invoice['items'][0]['totalPrice']).toFixed(2)
+                                                    tr(style="line-height: 10px;")
+                                                        td.left
+                                                            strong باری پارەدان
+                                                        td.right
+                                                            if invoice['items'][0]['moneyStatus']=="Debut"
+                                                                strong(id="finalPrice" style="color:#f00") قەرز
+                                                            else
+                                                                strong(id="finalPrice" style="color:#0f0") کاش
 
                             script.
                                 //Print Section
