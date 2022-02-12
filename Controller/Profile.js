@@ -328,7 +328,7 @@ exports.PrintAllInvoiceforCustomer = async (req, res, next) => {
                     _id: { recordCode: '$recordCode', status: "$status" },
                     amount: { $sum: "$totalPrice" },
                     items: {
-                        $push: { softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                        $push: { oldDebut: "$oldDebut", softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
                     },
                 },
 
@@ -351,20 +351,16 @@ exports.PrintAllInvoiceforCustomer = async (req, res, next) => {
             },
         ]);
 
-    const Profile = await HistoryClass
-        .find({
-            cutomerID: req.params.id
-        })
-        .sort({
-            "createdAt": -1
-        }).populate('cutomerID')
-
+    const Profile = await ProfileCollection
+        .findOne({
+            _id: req.params.id
+        });
     if (Invoices == "") {
         req.flash('danger', "کڕیاری داواکراو هیج تۆماڕێکی نیە");
         res.redirect("/Profiles")
     } else {
         res.render("Profiles/PrintAllInvoices", {
-            title: "تۆماری " + Profile[0]['cutomerID']['clientName'],
+            title: "تۆماری " + Profile['clientName'],
             invoices: Invoices,
             profile: Profile,
             address: address,
