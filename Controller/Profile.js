@@ -492,11 +492,13 @@ exports.PrintSelectedInvoice = async (req, res, next) => {
         const Records = await HistoryClass
             .find({
                 recordCode: req.params.invoiceID,
+                cutomerID: req.params.id
             }).populate('productID')
 
         const ProfileInformation = await HistoryClass
             .find({
                 recordCode: req.params.invoiceID,
+                cutomerID: req.params.id
             }).populate('cutomerID')
 
         // res.json(Records)
