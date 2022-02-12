@@ -14,8 +14,14 @@ block content
                                 label قەرزی کۆن
                                 input.form-control(id="olddebut" name="olddebut" type='number' placeholder='0' required step='any' value=profiles['remainedbalance'])
                             .form-group.col-md-2
-                                label بڕی دراوە
+                                label کۆی گشتی
                                 input.form-control(id="paid" name="paid" type='number' placeholder='0' required step='any')
+                            .form-group.col-md-2
+                                label بڕی دراو
+                                input.form-control(id="prepaid" name="prepaid" type='number' placeholder='0' required step='any')
+                            .form-group.col-md-2
+                                label کۆی گشتی داشکان
+                                input.form-control(id="discount" name="discount" type='text' placeholder='0' required step='any' readOnly)
                             .form-group.col-md-2
                                 label قەرزی ماوە
                                 input.form-control(id="finalbalance" name="finalbalance" readOnly type='number' value=profiles['remainedbalance'])
@@ -26,5 +32,11 @@ block content
             // Check For Packets
             $( "#paid" ).change(function() {
                 document.getElementById('finalbalance').value=parseFloat(document.getElementById('olddebut').value)-parseFloat(document.getElementById('paid').value)
+            });
+            $( "#prepaid" ).change(function() {
+                var calculation=parseFloat(document.getElementById('paid').value)-parseFloat(document.getElementById('prepaid').value)
+                var x=calculation/parseFloat(document.getElementById('paid').value);
+                var y=x*100;
+                document.getElementById('discount').value="% "+y;
             });
         });
