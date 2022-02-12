@@ -1,0 +1,131 @@
+include ../Components/Header
+block content
+    br
+    .container-fluid
+        // Page Heading
+        .d-sm-flex.align-items-left.justify-content-between.mb-4
+            h1.h3.mb-0.text-gray-800 تۆمارەکان
+            .span
+                a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white
+                    i.fas.fa-file-invoice.fa-sm.text-white-50
+                    |  چاپکردنی تۆمارەکان
+        hr
+        .row
+            .container-fluid.table-responsive
+                table(id="clientTable").table.table-hover.table-sm.dt-responsive.table-striped
+                    thead.thead-light
+                        tr(style="text-align:center; font-size:3 rem")
+                            th(scope='col' style="font-size:90%") بەرهەم
+                            th(scope='col' style="text-align:center; font-size:90%") بڕ/دانە
+                            th(scope='col' style="text-align:center; font-size:90%") کۆی گشتی $
+                            th(scope='col' style="text-align:center; font-size:90%") بەروار
+                            th(scope='col' style="text-align:center; font-size:90%") کڕیار
+                            th(scope='col' style="text-align:center; font-size:90%") فەرمانبەر
+                            th(scope='col') ژمارەی فاتورە
+                            th(scope='col' style="text-align:center; font-size:90%") چالاکی 
+
+                    tbody
+                        each item,i in records
+                            tr 
+                                if item['productID']==undefined
+                                    td پارەدان
+                                    td(style="text-align:center;") -
+                                    td(style="text-align:center;")="$ "+item['sellPrice']
+                                    td(style="text-align:center;")=item['createdAt'].toLocaleString()
+                                    if profiles[i]['cutomerID']==undefined 
+                                      td(style="text-align:center;")
+                                    else 
+                                      td(style="text-align:center;")=profiles[i]['cutomerID']['clientName']+"/"+profiles[i]['cutomerID']['companyName']
+                                    td(style="text-align:center;")=item['addedBy']
+                                    td(style="text-align:center;")=item['recordCode']
+                                    if item['status']=="Deleted Product"
+                                        td(style="text-align:center;") ڕەشکردنەوە
+                                        td(style="text-align:center;")
+                                            span.icon.text-danger
+                                                i.fas.fa-minus-circle
+                                    else if item['status']=="New Product"
+                                        td(style="text-align:center;") بەرهەمی نوێ
+                                        td(style="text-align:center;")
+                                            span.icon.text-primary
+                                                i.fas.fa-clipboard-check
+                                    else if item['status']=="Customer Request"
+                                        td(style="text-align:center;") داواکاری
+                                        td(style="text-align:center;")
+                                            span.icon.text-info
+                                                i.fas.fa-user-check
+                                    else if item['status']=="New Trailer"
+                                        td(style="text-align:center;") بار‌هەڵگری نوێ
+                                        td(style="text-align:center;")
+                                            span.icon.text-warning
+                                                i.fas.fa-truck-moving
+                                    else if item['status']=="Recovered"
+                                        td(style="text-align:center;") بەرهەمی گەڕاوە
+                                        td(style="text-align:center;")
+                                            span.icon.text-danger
+                                                i.fas.fa-recycle
+                                    else if item['status']=="Compensate"
+                                        td(style="text-align:center;") پارەدان
+                                        td(style="text-align:center;")
+                                            span.icon.text-danger
+                                                i.fas.fa-money-bill-alt
+                                    else if item['status']=="Partner Request"
+                                        td(style="text-align:center;") داواکاری پشکدار
+                                        td(style="text-align:center;")
+                                            span.icon.text-danger
+                                                i.fas.fa-money-bill-alt
+                                    else
+                                        td(style="text-align:center;")=item['status']
+                                        td(style="text-align:center;")
+                                            span.icon.text-danger
+                                                i.fas.fa-tasks
+                                else
+                                    td=item['productID']['itemModel']+"/"+item['productID']['itemName']+"/"+item['productID']['color']
+                                    td(style="text-align:center;")=item['totalQuantity']
+                                    td(style="text-align:center;")="$ "+item['totalPrice']
+                                    td(style="text-align:center;")=item['createdAt'].toLocaleString()
+                                    if profiles[i]['cutomerID']==undefined 
+                                      td(style="text-align:center;")
+                                    else 
+                                      td(style="text-align:center;")=profiles[i]['cutomerID']['clientName']+"/"+profiles[i]['cutomerID']['companyName']
+                                    td(style="text-align:center;")=item['addedBy']
+                                    td(style="text-align:center;")=item['recordCode']
+                                    if item['status']=="Deleted Product"
+                                        td(style="text-align:center;") ڕەشکردنەوە
+                                        td(style="text-align:center;")
+                                            span.icon.text-danger
+                                                i.fas.fa-minus-circle
+                                    else if item['status']=="New Product"
+                                        td(style="text-align:center;") بەرهەمی نوێ
+                                        td(style="text-align:center;")
+                                            span.icon.text-primary
+                                                i.fas.fa-clipboard-check
+                                    else if item['status']=="Customer Request"
+                                        td(style="text-align:center;") داواکاری
+                                        td(style="text-align:center;")
+                                            span.icon.text-info
+                                                i.fas.fa-user-check
+                                    else if item['status']=="New Trailer"
+                                        td(style="text-align:center;") بار‌هەڵگری نوێ
+                                        td(style="text-align:center;")
+                                            span.icon.text-warning
+                                                i.fas.fa-truck-moving
+                                    else if item['status']=="Recovered"
+                                        td(style="text-align:center;") بەرهەمی گەڕاوە
+                                        td(style="text-align:center;")
+                                            span.icon.text-danger
+                                                i.fas.fa-recycle
+                                    else if item['status']=="Compensate"
+                                        td(style="text-align:center;") پارەدان
+                                        td(style="text-align:center;")
+                                            span.icon.text-danger
+                                                i.fas.fa-money-bill-alt
+                                    else if item['status']=="Partner Request"
+                                        td(style="text-align:center;") داواکاری پشکدار
+                                        td(style="text-align:center;")
+                                            span.icon.text-danger
+                                                i.fas.fa-money-bill-alt
+                                    else
+                                        td(style="text-align:center;")=item['status']
+                                        td(style="text-align:center;")
+                                            span.icon.text-danger
+                                                i.fas.fa-tasks

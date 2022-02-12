@@ -102,11 +102,27 @@ exports.ShowSelectedDateOfInvoicesOperation = async (req, res, next) => {
             $gte: req.body.startDate,
             $lt: req.body.endDate
         },
+        status: { $ne: "New Product", }
     }).populate("productID").sort({
         "createdAt": -1
     });
 
-    res.send(Records)
+    const Profiles = await RecordsCollection.find({
+        createdAt: {
+            $gte: req.body.startDate,
+            $lt: req.body.endDate
+        },
+        status: { $ne: "New Product", }
+    }).populate("cutomerID").sort({
+        "createdAt": -1
+    });
+
+
+    res.render('Records/SelectableRecord', {
+        title: "تۆماری کارەکانی " + req.body.startDate + " تاکو " + req.body.endDate,
+        records: Records,
+        profiles: Profiles
+    })
 }
 
 // TODO: Checked and Worked Properly
