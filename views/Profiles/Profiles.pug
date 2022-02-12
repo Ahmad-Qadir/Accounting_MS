@@ -41,19 +41,9 @@ block content
               tr(style="font-weight:bold; font-size:2 rem")
                 form(method='POST')
                   td(style="text-align:center;")
-                    //- a.btn.btn-sm.btn-secondary.mr-2( title="profiles Information" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" type='button' data-toggle='modal' data-target='#infowindow'+i)
-                    //-     span.icon.text-white-50
-                    //-         i.fas.fa-info-circle
                     a.btn.btn-sm.btn-success.m-1(href="Profile/"+item['_id']+"/NewRequest" title="Add Invoice for "+item['clientName'])
                       span.icon.text-white-50
                         i.fas.fa-plus-square
-                    //- a.disabled(target="_blank" title="Edit profiles" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;").btn.btn-sm.btn-warning.mr-2
-                    //-     span.icon.text-white-50
-                    //-         i.fas.fa-pencil-alt
-                    //- a.btn.btn-sm.btn-danger.m-1(target="_blank" title="Delete Profiles" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" data-toggle="modal" data-target="#confirm-delete"+i)
-                    //-     span.icon.text-white-50
-                    //-         i.fas.fa-trash-alt
-
                   td=item['clientName']
                   td(style="text-align:center;")=item['phoneNumber']
                   td(style="text-align:center;")=item['companyName']
@@ -75,33 +65,6 @@ block content
                     a.btn.btn-sm.btn-warning.m-1(title="نوەکردنەوەی زانیاریەکان" href="/Profiles/Modification/"+item['_id'])
                       span.icon.text-white-50
                         i.fas.fa-pencil-alt
-
-
-
-
-                    // Modal
-                    .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id=`confirm-delete${i}`)
-                      .modal-dialog.modal-dialog-centered.modal-s(role='document')
-                        .modal-content
-                          .modal-header=item['clientName']
-
-                          .modal-body ئایا دڵنیای لە ڕەشکردنەوەی  
-                            b=item['clientName']
-                          .modal-footer
-                            button.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
-                            a.btn.btn-danger.btn-ok(id="objID"+i data-dismiss='modal' onclick='deleteRow(this,'+json+')') ڕەشکردنەوە
-                    // Modal
-                    .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-payment')
-                      .modal-dialog.modal-dialog-centered.modal-s(role='document')
-                        .modal-content
-                          .modal-header دواخستنی پارەدان
-                          .modal-body 
-                            p بڕی پارەی دراو
-                              input.form-control(name="debut" type='number' step='any' value='0' id="paidmoney")
-                          .modal-footer
-                            button.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
-                            a.btn.btn-success.btn-ok(onclick="payNowDebut()" data-dismiss='modal') رازیبوون
-
   //- include ../Components/Footer
   script.
     $(document).ready(function() {
