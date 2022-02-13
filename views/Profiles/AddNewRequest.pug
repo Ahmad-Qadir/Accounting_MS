@@ -155,9 +155,9 @@ block content
                             strong کۆی گشتی (دۆلار)
                           td.right
                             strong(id="finalPrice")="$"+0 
-                  //- .col-7
-                  //-   b تێبینی
-                  //-   textarea.form-control.rounded-0(rows='5' cols='80' id='note')
+                  .col-7
+                    b تێبینی
+                    textarea.form-control.rounded-0(rows='2' cols='40' id='note' name="note")
                 footer(style="position: fixed;padding: 10px 10px 0px 10px;bottom: 0;width: 100%;height: 30mm;")
                   hr
                   .row 
@@ -325,13 +325,17 @@ block content
     //Pay All Money now
     function payNow(){
       objectData=document.getElementById("invoiceTable")
-
+      var note = document.getElementById("note").value;
+      var result=Object.values(getJSON(objectData))
+      result.push([note])
+      console.log(result)
       //Send to Database
         var data= $.ajax({
           type: 'POST',
           url: "/Products/#{profile[0]['_id']}/Requests",
           dataType: 'JSON',
-          data:getJSON(objectData),
+          data:JSON.stringify(result),
+          contentType: "application/json; charset=utf-8",
           success: function(data,xhr){
             $('#newRecord').empty();
             for (i = 0; i <data.length;i++){
@@ -350,13 +354,16 @@ block content
     function Qard(){
       objectData=document.getElementById("invoiceTable")
       var subtotal=document.getElementById('total').innerHTML;
-      //- console.log(subtotal)
+      var note = document.getElementById("note").value;
+      var result=Object.values(getJSON(objectData))
+      result.push([note])
+      console.log(result)      
       //Send to Database
         var data= $.ajax({
           type: 'POST',
           url: "/Products/#{profile[0]['_id']}/Requests/Debut/"+subtotal,
-          dataType: 'JSON',
-          data:getJSON(objectData),
+          data:JSON.stringify(result),
+          contentType: "application/json; charset=utf-8",
           success: function(data,xhr){
             $('#newRecord').empty();
             for (i = 0; i <data.length;i++){

@@ -225,7 +225,7 @@ exports.RemoveProduct = async (req, res, next) => {
 //Invoice Request Operation
 exports.NewInvoice = async (req, res, next) => {
     try {
-        var RequestList = req.body['tbody'];
+        var RequestList = req.body[0];
         var checkLength = 0;
         var preparation = [];
         var resultOfValidation = [];
@@ -311,7 +311,7 @@ exports.NewInvoice = async (req, res, next) => {
                             oldDebut: Profile['remainedbalance'],
                             addedBy: req.user.username,
                             updatedBy: req.user.username,
-                            note: req.body.note,
+                            note: req.body[1].toString(),
                             productID: Product['_id'],
                             cutomerID: req.params.id,
                             htmlObject: req.body['tbody'],
@@ -358,7 +358,7 @@ exports.NewInvoice = async (req, res, next) => {
 //Invoice Request Operation
 exports.NewInvoiceOfNoPrice = async (req, res, next) => {
     try {
-        var RequestList = req.body['tbody'];
+        var RequestList = req.body[0];
         var checkLength = 0;
         var preparation = [];
         var count = 0;
@@ -443,7 +443,7 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                             oldDebut: Profile['remainedbalance'],
                             addedBy: req.user.username,
                             updatedBy: req.user.username,
-                            note: req.body.note,
+                            note: req.body[1].toString(),
                             productID: Product['_id'],
                             cutomerID: req.params.id,
                             htmlObject: req.body['tbody'],
