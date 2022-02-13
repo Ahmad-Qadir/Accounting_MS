@@ -228,6 +228,7 @@ exports.NewInvoice = async (req, res, next) => {
         var RequestList = req.body['tbody'];
         var checkLength = 0;
         var preparation = [];
+        var resultOfValidation = [];
         var count = 0;
         const Records = await RecordsCollection.find({
             status: "Customer Request",
@@ -344,8 +345,7 @@ exports.NewInvoice = async (req, res, next) => {
                 }
                 res.send("بە سەرکەوتوویی تۆمارکرا")
             } else {
-
-                res.send("بە سەرکەوتوویی تۆمارنەکرا")
+                res.send(preparation)
             }
         }, 2000);
 
@@ -483,7 +483,7 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                     remainedbalance: Profile['remainedbalance'] + parseFloat(req.params.price.replace("$", '')),
                 });
             } else {
-                res.status(202).send("بە سەرکەوتوویی تۆمارنەکرا")
+                res.send(preparation)
             }
         }, 2000);
 
