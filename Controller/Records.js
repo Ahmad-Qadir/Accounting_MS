@@ -47,20 +47,53 @@ exports.allowIfLoggedin = async (req, res, next) => {
 // TODO: Checked and Worked Properly
 exports.Records = async (req, res, next) => {
     try {
-        const Records = await RecordsCollection.find({}).populate("productID").sort({
-            "createdAt": -1
-        }).limit(20);
+        // const Records = await RecordsCollection.find({}).populate("productID").sort({
+        //     "createdAt": -1
+        // }).limit(20);
 
-        const Profiles = await RecordsCollection.find({}).populate("cutomerID").sort({
-            "createdAt": -1
-        }).limit(20);
+        // const Profiles = await RecordsCollection.find({}).populate("cutomerID").sort({
+        //     "createdAt": -1
+        // }).limit(20);
 
-        // res.send(Records[0]['productID']['itemName'])
+        const Invoices = await RecordsCollection.aggregate(
+            [
+                {
+                    $group: {
+                        _id: { recordCode: '$recordCode', status: "$status" },
+                        amount: { $sum: "$totalPrice" },
+                        count: { $sum: 1 },
+                        items: {
+                            $push: { note:"$note",softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                        },
+                    },
+
+                },
+                {
+                    $sort: { "items.createdAt": -1 },
+                },
+                {
+                    $lookup: {
+                        from: "items",
+                        localField: "items.productID",
+                        foreignField: "_id",
+                        as: "data",
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "profiles",
+                        localField: "items.cutomerID",
+                        foreignField: "_id",
+                        as: "profile",
+                    },
+                },
+            ]);
+
+        // res.send(Invoices)
         res.render('Records/Records', {
             title: "تۆمارەکان",
-            records: Records,
+            records: Invoices,
             user: req.user,
-            profiles: Profiles
         })
     } catch (error) {
         next(error)
