@@ -385,3 +385,15 @@ block content
         //- document.getElementById('final').innerHTML = TotalValue;
 
     }
+
+    $(document).ready(function(){
+
+    $(document).on("click", "table tbody tr td", function(e) {
+      var data = $(this).attr('id');
+      if(data.includes("quantity")){
+      //- alert (data.match(/\d+/)[0]);
+      //- var data = $(this).attr('id').match(/\d+/)[0];
+        document.getElementById("checkstatus"+data.match(/\d+/)[0]).checked = true;
+      }
+        }); 
+        });
