@@ -32,8 +32,18 @@ block content
                 .row
                   button.accordion-button(type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
                     div="تۆماری ژمارە: "+item['_id']['recordCode']
-                    .col-md-4="کۆی بەرهەم: "+item['count']
+                    .col-md-2="کۆی بەرهەم: "+item['count']
                     .col-md-2="تێچووی تۆمار: "+item['amount']
+                    if item['profile'].length==0
+                      .col-md-2
+                    else 
+                      .col-md-2="کڕیار: "+item['profile'][0]['clientName']
+                    if item['items'][0]['note']==undefined
+                      .col-md-2
+                    else 
+                      .col-md-2="تێبینی: "+item['items'][0]['note']
+
+                    
                     //- if item['items'][0]['status']=="Deleted Product"
                     //-   div(style="text-align:center;") ڕەشکردنەوە
                     //-   //- div(style="text-align:center;")
@@ -76,7 +86,7 @@ block content
                         //- div(style="text-align:center;")
                         //-   span.icon.text-danger
                         //-     i.fas.fa-tasks
-                    .col-md-4="بەروار: "+item['items'][0]['createdAt'].toLocaleString()
+                    .col-md-2="بەروار: "+item['items'][0]['createdAt'].toLocaleString()
               .accordion-collapse.collapse.hide(aria-labelledby="heading"+i data-mdb-parent='#accordionExample' id="collapse"+i)
                 .accordion-body
                   .container-fluid.table-responsive
@@ -113,7 +123,7 @@ block content
                               if item['items'][x]['productID'].equals(product['_id'])
                                 tr
                                   td=x
-                                  td=product['itemName']
+                                  td=product['itemModel']+" "+product['itemName']
                                   td(style="text-align:center;")=product['weight']+product['unit']
                                   td(style="text-align:center;")=product['color']
                                   td(style="text-align:center;")=item['items'][x]['totalQuantity']
