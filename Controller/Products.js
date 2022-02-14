@@ -316,7 +316,7 @@ exports.NewInvoice = async (req, res, next) => {
                             cutomerID: req.params.id,
                             htmlObject: req.body['tbody'],
                             moneyStatus: "Paid",
-                            personName:req.body[2].toString()
+                            personName: req.body[2].toString()
                         });
                         await newRecordtoHistory.save();
 
@@ -449,7 +449,7 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                             cutomerID: req.params.id,
                             htmlObject: req.body['tbody'],
                             moneyStatus: "Debut",
-                            personName:req.body[2].toString()
+                            personName: req.body[2].toString()
                         });
                         await newRecordtoHistory.save();
 
@@ -560,6 +560,25 @@ exports.getProducts = async (req, res, next) => {
         product: Products,
         user: req.user,
         address: address
+    })
+}
+
+
+//Get All Products
+exports.PrintAllProducts = async (req, res, next) => {
+    const Products = await ProductsCollection
+        .find({
+            softdelete: false,
+        })
+        .sort({
+            "manufacturerCompany": 1,
+            "itemModel": 1
+        })
+
+    res.render("Products/PrintProducts", {
+        title: "بەرهەمەکان",
+        product: Products,
+        user: req.user,
     })
 }
 

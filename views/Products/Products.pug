@@ -6,31 +6,20 @@ block content
     .d-sm-flex.align-items-left.justify-content-between.mb-4
       h1.h3.mb-0.text-gray-800=title
       .span
-        //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.mr-2(id="backup" onclick="backupAll()")
-        //-   i.fas.fa-database.fa-sm.text-white-50
-        //-   |  Backup Hotspots
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.m-1(href="/NewProduct")
           i.fas.fa-plus-square.fa-sm.text-white-50
           |  بەرهەمی نوێ
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-warning.shadow-sm.text-white.m-1(href="/NewTrailer")
           i.fas.fa-truck-moving.fa-sm.text-white-50
           |  بار‌هەڵگری نوێ
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.m-1(href="/Products/Print")
+          i.fas.fa-print.fa-sm.text-white-50
+          |  بەرهەمەمی بەردەست
     .container
       != messages('message', locals)
       if errors
         each error, i in errors
           div(class="alert alert-danger") #{error.msg}
-    //- .container
-    //-   .row.height.d-flex.justify-content-center.align-items-center
-    //-     .col.md-6
-    //-       .search-box
-    //-         .input-group
-    //-           input#search.form-control(type='text' placeholder='Search by Name')
-    //-     .col.md-6
-    //-       .search-box
-    //-         .input-group
-    //-           input#searchByCom.form-control(type='text' placeholder='Search by Company')
-
     hr
     .row
       .container-fluid.table-responsive
@@ -47,16 +36,12 @@ block content
               th(scope='col') شوێنی بەکارهێنان
               th(scope='col') بڕی پێوانە
               th(scope='col') ڕەنگ
-              //- th(scope='col') فرۆشتن (تاک)
               th(scope='col') بڕی بەردەست
               th(scope='col') کردارەکان 
           tbody
   script.
     $(document).ready(function() {
       $('#productTable').DataTable({
-        //- "mRender" : function(oObj) {
-        //-   return '<select id="year">' + '<option value="2010">2010</option>' + '<option value="2011">2011</option>' + '<option value="2012">2012</option>' + '</select> ';
-        //- },
         "processing": true,
         "serverSide": true,
         "pageLength": 50,        
@@ -74,13 +59,11 @@ block content
             { 'data': 'usedIn', "defaultContent": "N", 'name': 'usedIn' },
             { 'data': 'weight', "defaultContent": "N", 'name': 'weight' },
             { 'data': 'color', "defaultContent": "N", 'name': 'color' },
-            //- { 'data': 'sellPriceMufrad', "defaultContent": "N", 'name': 'sellPriceMufrad' },
             { 'data': 'totalQuantity', "defaultContent": "N", 'name': 'totalQuantity' },
             { 
               data: '_id', 
               render: function ( data, type, row, meta ) {
                 var object=[];
-                //- object[0]= "<a class='btn btn-sm btn-secondary m-1' title='زانیاری بەرهەم' style='padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;' type='button' data-toggle='modal' data-target='#infowindow"+data+"><span class='icon text-white-50'><i class='fas fa-info-circle'></i></span></a>";
                 object[0]= "<a class='btn btn-sm btn-info m-1' title='تۆماری بەرهەم' href='/Products/"+data+"/invoices' style='padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;'><span class='icon text-white-50'><i class='fas fa-file-invoice'></i></span></a>";
                 object[1]="<a class='btn btn-sm btn-warning m-1' href='/Products/"+data+"/Modification' title='نوێکردنەوەی بەرهەم' style='padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;'><span class='icon text-white-50'><i class='fas fa-pencil-alt'></i></span></a>";
                 object[2]="<a class='btn btn-sm btn-danger m-1' href='/Products/Remove/"+data+"'title='ڕەشکردنەوەی بەرهەم' style='padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;><span class='icon text-white-50'><i class='fas fa-trash-alt'></i></span></a>";
@@ -99,30 +82,8 @@ block content
               }
             }
           ],
-        //- "createdRow":function(row,data,index){
-        //- $(row).append('<td>'+ data['itemName']+'</td>');
-        //- $(row).append('<td>'+ data['color']+'</td>');
-        //- $(row).append('<td>'+ data['itemName']+'</td>');
-        //- $(row).append('<td>'+ data['itemName']+'</td>');
-        //- $(row).append('<td>'+ data['itemName']+'</td>');
-        //- $(row).append('<td>'+ data['itemName']+'</td>');
-        //- $(row).append('<td>'+ data['itemName']+'</td>');
-
-        //-   console.log(data)
-        //- },
-        //- "deferLoading": 20,
         "deferRender": true,
         "searching": true,
         "paging": true
       });
     } );
-      function deleteRow(r,GetArray) {
-        var row = r.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.rowIndex;
-        console.log(r)
-          //- $.ajax({
-          //-   type: 'DELETE',
-          //-   url: "#{address}/Products/Remove/"+GetArray[row-1]['_id'],
-          //-   dataType: 'JSON'
-          //-   })
-        document.getElementById("productTable").deleteRow(row);
-      }

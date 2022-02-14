@@ -50,6 +50,7 @@ router.post('/Products/:id/Update', Products.allowIfLoggedin, Products.grantAcce
 // ! Clone Products
 router.get('/Products/:id/Clone', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.CloneProductUI);
 router.post('/Products/Clone', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.CloneProduct);
+router.get('/Products/Print', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.PrintAllProducts);
 
 
 // router.get('/:id/NewRequest', Products.AddNewRequest); // Add new Request per Product

@@ -1,0 +1,64 @@
+include ../Components/Header
+block content
+    br
+    .container-fluid
+        // Page Heading
+        .d-sm-flex.align-items-left.justify-content-between.mb-4
+            .row 
+                h1.h3.mb-0.text-gray-800.col-md-12=title
+            .span
+                a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white(onclick="printDiv('printableArea')")
+                    i.fas.fa-print.fa-sm.text-white-50
+                    |  چاپکردن
+        .row
+            .container-fluid.table-responsive(id="printableArea")
+                table(id="clientTable").table.table-hover.table-sm.dt-responsive.table-striped
+                    thead.thead-light
+                        tr(style="text-align:center; font-size:3 rem")
+                            th(scope='col') #
+                            th(scope='col') بڕاندی بەرهەم
+                            th(scope='col') ناوی بەرهەم
+                            th(scope='col') وڵات
+                            th(scope='col') کۆمپانیای وەبەرهێن
+                            th(scope='col') پێوانەی گشتی
+                            th(scope='col') پێوانەی تاک
+                            th(scope='col') جۆری بەرهەم
+                            th(scope='col') شوێنی بەکارهێنان
+                            th(scope='col') بڕی پێوانە
+                            th(scope='col') ڕەنگ
+                            th(scope='col') بڕی بەردەست
+                    tbody
+                        each item,i in product
+                            - var j=i+1
+                            tr(style="font-weight:bold; font-size:2 rem")
+                                td(style="text-align:center;")=j
+                                td(style="text-align:center;")=item['itemModel']
+                                td(style="text-align:center;")=item['itemName']
+                                td(style="text-align:center;")=item['countryCompany']
+                                td(style="text-align:center;")=item['manufacturerCompany']
+                                td(style="text-align:center;")=item['unit']
+                                td(style="text-align:center;")=item['itemUnit']
+                                td(style="text-align:center;")=item['itemType']
+                                td(style="text-align:center;")=item['usedIn']
+                                td(style="text-align:center;")=item['weight']
+                                td(style="text-align:center;")=item['color']
+                                td(style="text-align:center;")=item['totalQuantity']
+    //- include ../Components/Footer
+    script.
+        function printDiv(divName) {
+            var originalContents = document.body.innerHTML;
+            //- $('table thead tr').find('td:eq(1),th:eq(1)').remove();
+            //- $('table thead tr').find('td:eq(1),th:eq(1)').remove();
+            //- $('table thead tr').find('td:eq(2),th:eq(2)').remove();
+            //- $('table thead tr').find('td:eq(3),th:eq(3)').remove();
+
+            //- $('table tbody tr').find('td:eq(1),th:eq(1)').remove();
+            //- $('table tbody tr').find('td:eq(1),th:eq(1)').remove();
+            //- $('table tbody tr').find('td:eq(2),th:eq(2)').remove();
+            //- $('table tbody tr').find('td:eq(3),th:eq(3)').remove();
+            //- $('table tbody tr').find('td:eq(4),th:eq(4)').remove();
+            var printContents = document.getElementById(divName).innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
