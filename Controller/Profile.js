@@ -151,8 +151,8 @@ exports.PayMoney = async (req, res, next) => {
         status: "Compensate",
         sellPrice: req.body.paid,
         totalPrice: req.body.paid,
-        prepaid:req.body.prepaid,
-        discount:req.body.discount,
+        prepaid: req.body.prepaid,
+        discount: req.body.discount,
         totalQuantity: 0,
         oldDebut: Profile[0]['remainedbalance'],
         addedBy: req.user.username,
@@ -588,7 +588,7 @@ exports.PrintSelectedInvoice = async (req, res, next) => {
             title: "تۆماری ژمارە " + req.params.invoiceID,
             records: Records,
             profile: ProfileInformation[0],
-            invoiceID: req.params.invoiceID
+            invoiceID: req.params.invoiceID,
         })
     } catch (error) {
         next(error)

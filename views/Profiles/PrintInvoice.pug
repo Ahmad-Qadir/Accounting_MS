@@ -94,13 +94,13 @@ block content
                         //-   td.left
                         //-     strong(style="color:#f00") قەرزی پێشوو
                         //-   td(id="olddebut" style="color:#f00").right="$"+records[0]['oldDebut']
-                        //- tr(style="line-height: 10px;")
-                        //-   td.left
-                        //-     strong قەرزی ئێستا
-                        //-   td.right(id="total") 0
                         tr(style="line-height: 10px;")
                           td.left
-                            strong کۆی گشتی (دۆلار)
+                            strong قەرزی ماوە
+                          td.right(id="majmu3")="$"+profile['cutomerID']['remainedbalance']
+                        tr(style="line-height: 10px;")
+                          td.left
+                            strong قەرزی دراوە
                           td.right
                             strong(id="finalPrice")="$"+(records[0]['totalPrice'])
               else 
@@ -153,7 +153,7 @@ block content
       var sum = 0;
       for(var i = 0; i < tds.length; i ++) {
         if(tds[i].className == 'count-me') {
-          sum += isNaN(tds[i].innerHTML) ? 0 : parseInt(tds[i].innerHTML);
+          sum += isNaN(tds[i].innerHTML) ? 0 : parseFloat(tds[i].innerHTML.replace("$","").replace(" ",""));
         }
       }
       document.getElementById('total').innerHTML = '$ ' + sum ;
