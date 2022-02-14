@@ -17,6 +17,7 @@ const itemHistorySchema = new mongoose.Schema({
     sellPriceWakil: Number,
     sellPriceSharika: Number,
     totalPrice: Number, // bakarde bo away bzani wasly esta chand bwa
+    personName: String, 
     moneyStatus: String,
     addedBy: {
         type: String

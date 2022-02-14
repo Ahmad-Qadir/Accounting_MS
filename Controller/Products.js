@@ -315,7 +315,8 @@ exports.NewInvoice = async (req, res, next) => {
                             productID: Product['_id'],
                             cutomerID: req.params.id,
                             htmlObject: req.body['tbody'],
-                            moneyStatus: "Paid"
+                            moneyStatus: "Paid",
+                            personName:req.body[2].toString()
                         });
                         await newRecordtoHistory.save();
 
@@ -447,7 +448,8 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                             productID: Product['_id'],
                             cutomerID: req.params.id,
                             htmlObject: req.body['tbody'],
-                            moneyStatus: "Debut"
+                            moneyStatus: "Debut",
+                            personName:req.body[2].toString()
                         });
                         await newRecordtoHistory.save();
 
