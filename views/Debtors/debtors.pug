@@ -44,6 +44,9 @@ block content
                   a.btn.btn-sm.btn-info.m-1(title="profiles Invoices" href="/profiles/"+item['_id']+"/Debut/invoices")
                     span.icon.text-white-50
                       i.fas.fa-file-invoice
+                  a.btn.btn-sm.btn-secondary.m-1(title="profiles Invoices" href="/Profiles/Debut/"+item['_id'])
+                      span.icon.text-white-50
+                        i.fas.fa-wallet
   //- include ../Components/Footer
   script.
     $(document).ready(function() {

@@ -151,6 +151,8 @@ exports.PayMoney = async (req, res, next) => {
         status: "Compensate",
         sellPrice: req.body.paid,
         totalPrice: req.body.paid,
+        prepaid:req.body.prepaid,
+        discount:req.body.discount,
         totalQuantity: 0,
         oldDebut: Profile[0]['remainedbalance'],
         addedBy: req.user.username,
