@@ -112,16 +112,23 @@ block content
                         tr(style="line-height: 10px;")
                           td.left
                             strong(style="color:#f00") قەرزی پێشوو
-                          td(id="olddebut" style="color:#f00").right="$"+records[0]['oldDebut']
+                          if profile['cutomerID']['remainedbalance']==0
+                            td(id="olddebut" style="color:#f00").right="$"+0
+                          else
+                            td(id="olddebut" style="color:#f00").right="$"+(profile['cutomerID']['remainedbalance']-totalPrice['amount'])
+                          
                         tr(style="line-height: 10px;")
                           td.left
                             strong قەرزی ئێستا
-                          td.right(id="total") 0
+                          td.right(id="total")="$"+totalPrice['amount']
                         tr(style="line-height: 10px;")
                           td.left
                             strong کۆی گشتی (دۆلار)
                           td.right
-                            strong(id="finalPrice")="$"+(records[0]['oldDebut']+records[0]['totalPrice'])
+                            if profile['cutomerID']['remainedbalance']==0
+                              strong(id="finalPrice")="$"+(totalPrice['amount'])
+                            else
+                              strong(id="finalPrice")="$"+((profile['cutomerID']['remainedbalance']-totalPrice['amount'])+totalPrice['amount'])
               footer(style="position: fixed;padding: 10px 10px 0px 10px;bottom: 0;width: 100%;height: 30mm;")
                 hr
                 .row 
@@ -148,15 +155,15 @@ block content
       window.print();
       document.body.innerHTML = originalContents;
     }
-    $( document ).ready(function() {
-    var tds = document.getElementById('invoiceTable').getElementsByTagName('td');
-      var sum = 0;
-      for(var i = 0; i < tds.length; i ++) {
-        if(tds[i].className == 'count-me') {
-          console.log(tds[i].innerHTML.replace("$","").replace(" ",""))
-          sum += isNaN(tds[i].innerHTML.replace("$","").replace(" ","")) ? 0 : parseFloat(tds[i].innerHTML.replace("$","").replace(" ",""));
-        }
-      }
-      document.getElementById('total').innerHTML = '$ ' + sum ;
-    });
+    //- $( document ).ready(function() {
+    //- var tds = document.getElementById('invoiceTable').getElementsByTagName('td');
+    //-   var sum = 0;
+    //-   for(var i = 0; i < tds.length; i ++) {
+    //-     if(tds[i].className == 'count-me') {
+    //-       console.log(tds[i].innerHTML.replace("$","").replace(" ",""))
+    //-       sum += isNaN(tds[i].innerHTML.replace("$","").replace(" ","")) ? 0 : parseFloat(tds[i].innerHTML.replace("$","").replace(" ",""));
+    //-     }
+    //-   }
+    //-   document.getElementById('total').innerHTML = '$ ' + sum ;
+    //- });
 

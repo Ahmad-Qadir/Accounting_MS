@@ -583,13 +583,25 @@ exports.PrintSelectedInvoice = async (req, res, next) => {
                 cutomerID: req.params.id
             }).populate('cutomerID')
 
+        const totalPrice = await HistoryClass.aggregate([
+            {
+                $match: {
+                    recordCode: req.params.invoiceID,
+                    cutomerID: mongoose.Types.ObjectId(req.params.id)
+                },
+            },
+            { $group: { _id: null, amount: { $sum: "$totalPrice" } } }
+        ])
+
         // res.json(Records)
         res.render('Profiles/PrintInvoice', {
             title: "تۆماری ژمارە " + req.params.invoiceID,
             records: Records,
             profile: ProfileInformation[0],
             invoiceID: req.params.invoiceID,
+            totalPrice: totalPrice[0]
         })
+        // res.send()
     } catch (error) {
         next(error)
     }
