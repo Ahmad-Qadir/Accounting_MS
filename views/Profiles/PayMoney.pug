@@ -21,7 +21,7 @@ block content
                                 input.form-control(id="prepaid" name="prepaid" type='number' placeholder='0' required step='any')
                             .form-group.col-md-2
                                 label کۆی گشتی داشکان
-                                input.form-control(id="discount" name="discount" type='text' placeholder='0' required step='any' readOnly)
+                                input.form-control(id="discount" name="discount" type='number' placeholder='0' required step='any')
                             .form-group.col-md-2
                                 label قەرزی ماوە
                                 input.form-control(id="finalbalance" name="finalbalance" readOnly type='number' value=profiles['remainedbalance'])
@@ -37,6 +37,14 @@ block content
                 var calculation=parseFloat(document.getElementById('paid').value)-parseFloat(document.getElementById('prepaid').value)
                 var x=calculation/parseFloat(document.getElementById('paid').value);
                 var y=x*100;
-                document.getElementById('discount').value="% "+y;
+                document.getElementById('discount').value=y;
             });
+
+            $( "#discount" ).change(function() {
+                var calculation=parseFloat(document.getElementById('paid').value)*(parseFloat(document.getElementById('discount').value)/100)
+                var x=parseFloat(document.getElementById('paid').value)-calculation;
+                document.getElementById('prepaid').value=x;
+            });
+
+            
         });
