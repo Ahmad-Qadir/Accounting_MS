@@ -131,21 +131,21 @@ exports.ShowSelectedDateOfInvoices = async (req, res, next) => {
 //Get Spedicif Invoice
 exports.ShowSelectedDateOfInvoicesOperation = async (req, res, next) => {
     const Records = await RecordsCollection.find({
-        createdAt: {
-            $gte: req.body.startDate,
-            $lt: req.body.endDate
-        },
-        status: { $ne: "New Product", }
+        // createdAt: {
+        //     $gte: req.body.startDate,
+        //     $lt: req.body.endDate
+        // },
+        status: req.body.status
     }).populate("productID").sort({
         "createdAt": -1
     });
 
     const Profiles = await RecordsCollection.find({
-        createdAt: {
-            $gte: req.body.startDate,
-            $lt: req.body.endDate
-        },
-        status: { $ne: "New Product", }
+        // createdAt: {
+        //     $gte: req.body.startDate,
+        //     $lt: req.body.endDate
+        // },
+        status: req.body.status
     }).populate("cutomerID").sort({
         "createdAt": -1
     });
