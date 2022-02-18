@@ -451,3 +451,201 @@ exports.DeleteSelectedInvoice = async (req, res, next) => {
         next(error)
     }
 }
+
+
+// TODO: Checked and Worked Properly
+//Update Products Operation
+exports.AddNewItemToInvoiceUI = async (req, res, next) => {
+    try {
+
+        const Records = await RecordsCollection.find({
+            recordCode: req.params.recordCode,
+            cutomerID: req.params.id,
+            status: "Customer Request",
+            softdelete: false
+        });
+
+        const Products = await ProductsCollection
+            .find({
+                id: req.params.id,
+                softdelete: false
+            })
+
+        const ProductNames = await ProductsCollection
+            .find({
+                id: req.params.id,
+                softdelete: false
+            }).distinct('itemModel')
+
+        const Profiles = await ProfileCollection
+            .find({
+                _id: req.params.id,
+                // softdelete: false,
+            })
+
+        res.render('Profiles/NewItemToInvoice', {
+            title: "دەسکاری کردنی تۆماری ژمارە " + req.params.recordCode,
+            record: Records,
+            profile: Profiles,
+            productNames: ProductNames,
+            products: Products,
+            time: Date(),
+            user: req.user,
+        });
+
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+// TODO: Checked and Worked Properly
+//Update Products Operation
+exports.AddNewItemToInvoice = async (req, res, next) => {
+    try {
+
+        const Record = await RecordsCollection.findOne({
+            _id: req.params.recordCode,
+            status: "Customer Request",
+            cutomerID: req.params.id
+        });
+
+
+        var Profile = await ProfileCollection.findOne({
+            _id: req.params.id
+        });
+
+        var RequestList = req.body[0];
+
+
+        for (let index = 0; index < RequestList.length; index++) {
+            const element = RequestList[index];
+
+            const Product = await ProductsCollection.findOne({
+                itemModel: element[1],
+                itemName: element[2],
+                itemType: element[3],
+                color: element[4],
+                weight: parseFloat(element[5].split(" ")[0]),
+                itemUnit: element[5].split(" ")[1]
+            });
+
+            var totalRequestedPackets = element[6];
+            var _SellPrice = parseFloat(element[7].replace("$", ''));
+
+            //===============Records Collection=============
+            const newRecordtoHistory = new RecordsCollection({
+                recordCode: Record['recordCode'],
+                totalQuantity: totalRequestedPackets,
+                status: "Customer Request",
+                sellPrice: _SellPrice,
+                totalPrice: _SellPrice * totalRequestedPackets,
+                oldDebut: Record['oldDebut'],
+                addedBy: req.user.username,
+                updatedBy: req.user.username,
+                productID: Product['_id'],
+                cutomerID: req.params.id,
+                htmlObject: req.body['tbody'],
+                moneyStatus: Record['moneyStatus'],
+            });
+            await newRecordtoHistory.save();
+
+            var result = Product['totalQuantity'] - totalRequestedPackets;
+
+            await ProductsCollection.findByIdAndUpdate({
+                _id: Product['_id']
+            }, {
+                totalQuantity: result,
+                updatedBy: req.user.username,
+                $push: {
+                    itemHistory: newRecordtoHistory["_id"],
+                }
+            });
+
+
+            await ProfileCollection.findByIdAndUpdate({
+                _id: req.params.id
+            }, {
+                updatedBy: req.user.username,
+                $push: {
+                    invoiceID: newRecordtoHistory["_id"],
+                }
+            });
+
+
+            //     if (element['moneyStatus'] == "Paid") {
+            //         const Product = await ProductsCollection.findOne({
+            //             _id: element['productID']
+            //         });
+
+            //         // const Trailer = await TrailersCollection.findOne({
+            //         //     trailerNumber: element['trailerNumber'],
+            //         //     productID: element['productID']
+            //         // });
+
+            //         const returnedPackets = element['totalQuantity'] + Product['totalQuantity'];
+            //         await ProductsCollection.findByIdAndUpdate({
+            //             _id: element['productID']
+            //         }, {
+            //             totalQuantity: returnedPackets
+            //         });
+
+            //         // const returnedPacketsForTrailer = element['totalQuantity'] + Trailer['totalQuantity']
+            //         // await TrailersCollection.findByIdAndUpdate({
+            //         //     "_id": Trailer['_id']
+            //         // }, {
+            //         //     totalQuantity: returnedPacketsForTrailer
+            //         // });
+
+
+            //         setTimeout(async () => {
+            //             await RecordsCollection.deleteMany({
+            //                 recordCode: req.params.recordcode,
+            //                 status: "Customer Request",
+            //             })
+            //         }, 1000);
+            //     } else {
+            //         const Product = await ProductsCollection.findOne({
+            //             _id: element['productID']
+            //         });
+
+            //         // const Trailer = await TrailersCollection.findOne({
+            //         //     trailerNumber: element['trailerNumber'],
+            //         //     productID: element['productID']
+            //         // });
+
+            //         const returnedPackets = element['totalQuantity'] + Product['totalQuantity'];
+            //         await ProductsCollection.findByIdAndUpdate({
+            //             _id: element['productID']
+            //         }, {
+            //             totalQuantity: returnedPackets
+            //         });
+
+            //         // const returnedPacketsForTrailer = element['totalQuantity'] + Trailer['totalQuantity']
+            //         // await TrailersCollection.findByIdAndUpdate({
+            //         //     "_id": Trailer['_id']
+            //         // }, {
+            //         //     totalQuantity: returnedPacketsForTrailer
+            //         // });
+
+            //         await ProfileCollection.findByIdAndUpdate({
+            //             _id: Record[0]['cutomerID']
+            //         }, {
+            //             remainedbalance: Profile['remainedbalance'] - parseFloat(element['totalPrice']),
+            //         });
+
+            //         setTimeout(async () => {
+            //             await RecordsCollection.deleteMany({
+            //                 recordCode: req.params.recordcode,
+            //                 status: "Customer Request",
+            //             })
+            //         }, 1000);
+            //     }
+        }
+
+        res.send("بە سەرکەوتوویی تۆمارکرا");
+
+    } catch (error) {
+        next(error)
+    }
+}

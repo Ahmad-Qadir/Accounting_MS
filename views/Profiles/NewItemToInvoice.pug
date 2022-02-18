@@ -59,142 +59,68 @@ block content
     .d-sm-flex.align-items-left.justify-content-between.mb-4
       h1.h3.mb-0.text-gray-800=title
       .span
-        a.d-none.d-sm-inline-block.btn.btn-sm.btn-danger.shadow-sm.text-white.m-1(onclick="deleteAllContent()")
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm.text-white.m-1(type='button' onclick="updateInvoice()")
           i.fas.fa-sync-alt.fa-sm.text-white-50
           |  نوێکردنەوە
         //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-warning.shadow-sm.text-white.m-1.edit
         //-   i.fas.fa-pen.fa-sm.text-white-50
         //-   |  دەسکاریکردن
-        a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm.text-white.m-1(type='button' onclick="payNow()")
-          i.fas.fa-money-bill-alt.fa-sm.text-white-50
-          |  پارەدان
-        a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white.m-1(type='button' onclick="Qard()")
-          i.fas.fa-money-bill-alt.fa-sm.text-white-50
-          |  قەرزکردن
-        a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.m-1(type='button' data-toggle="modal" data-target="#confirm-payment")
-          i.fas.fa-wallet.fa-sm.text-white-50
-          |  دانەوەی پارە
-        a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.m-1(type='button' data-toggle='modal' onclick="printDiv('printableArea')")
-          i.fas.fa-print.fa-sm.text-white-50
-          |  چاپکردن
+        //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm.text-white.m-1(type='button' onclick="payNow()")
+        //-   i.fas.fa-money-bill-alt.fa-sm.text-white-50
+        //-   |  پارەدان
+        //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white.m-1(type='button' onclick="Qard()")
+        //-   i.fas.fa-money-bill-alt.fa-sm.text-white-50
+        //-   |  قەرزکردن
+        //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.m-1(type='button' data-toggle="modal" data-target="#confirm-payment")
+        //-   i.fas.fa-wallet.fa-sm.text-white-50
+        //-   |  دانەوەی پارە
+        //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.m-1(type='button' data-toggle='modal' onclick="printDiv('printableArea')")
+        //-   i.fas.fa-print.fa-sm.text-white-50
+        //-   |  چاپکردن
     .container(id="newRecord")
     .jumbotron
       .row
-        .container-fluid.table-responsive
-          table.table.table-striped
-
-            tbody
-              .row
-                .form-group.col-md-3
-                  label ناوی بەرهەم
-                  input(name="itemName" class="form-control fstdropdown-select custom-selection" id="productName" onclick='myFunction()' onkeyup='filterFunction()')
-                  .dropdown
-                    #myDropdown.dropdown-content
-                      each item,i in productNames
-                        a(href="#" onclick="getModel(this,event);" title=item type='button' data-toggle="modal" data-target="#confirm-product"+i)=item
-                .form-group.col-md-2
-                  p(id="dataofIncome") 0
-          .container-fluid(id="printableArea")
-            .card.border(style="border: 5px solid #1794BA !important;" class="h-100")
-              //- .card-header(style='background-color: black;')
-              .card-body(id="targetedArea" style="background: url('https://i.ibb.co/HhnspzY/Invoice-UI.jpg'); background-size: 100% 280mm;")
-                .p-4
-                  .container
-                    .row.col-12
-                      .col-6
-                        h2
-                          strong تیتان سێرڤس
-                        br
-                        h6="ژمارەی تۆمار: "+invoiceID
-                        h6="بۆ:"+profile[0]['companyName']
-                          input(id="personName" name="personName" type="text" value="/کاک "+profile[0]['clientName'])
-                        h6="ژمارەی مۆبایل: "+profile[0]['phoneNumber']
-                        h6="بار: "+"فرۆشتن"
-                        h6="لەلایان:"+user.username
-                        h6=" ژمارەی مۆبایل ی کۆمپانیا:07504153878 // 7504964908"
-                      .col-6
-                        img#icon(src='https://i.ibb.co/9GPnfN5/titan-removebg-preview.png' width=300).mx-auto.d-block
-                hr
-                div
-                  table(id="invoiceTable").table-bordered.table-xs.table-responsive.col-12
-                    thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
-                      tr
-                        th(style="width:3%").center #
-                        th(style="font-weight:bold;") ناوی بەرهەم
-                        th(style="" colspan=2) جۆری بەرهەم
-                        th(style="") ڕەنگ
-                        th(style="width:7%") پێوانە
-                        th(style="width:3%") ژمارە
-                        th(style="width:10%").right نرخی تاک
-                        th(style="").right کۆی گشتی
-                        //- th(style="text-align:center; font-size:100%;font-weight:bold; width:3%")
-                    tbody(id="dataOfInvoiceTable" style="font-size: 12px;font-weight:bold;text-align:center;")
-                .row
-                  .col-5.ml-auto
-                    br
-                    table.table.table-bordered.table-xs(id="totalPayment")
-                      tbody
-                        //- tr
-                        //-   td.left
-                        //-     strong کۆی گشتی تۆمار
-                        //-   td(id="subtotal").right 0
-                        tr(style="line-height: 10px;")
-                          td.left
-                            strong قەرزی پێشوو
-                          td(id="olddebut").right="$"+profile[0]['remainedbalance'].toFixed(2)
-                        //- tr
-                        //-   td.left
-                        //-     strong داشکان
-                        //-   td.right
-                        //-     input(type="number" id="discount" value="0")
-                        tr(style="line-height: 10px;")
-                          td.left
-                            strong قەرزی ئێستا
-                          td.right(id="total")="$"+0
-                        tr(style="line-height: 10px;")
-                          td.left
-                            strong کۆی گشتی (دۆلار)
-                          td.right
-                            strong(id="finalPrice")="$"+0 
-                  .col-7
-                    b تێبینی
-                    textarea.form-control.rounded-0(rows='2' cols='40' id='note' name="note")
-                footer(style="position: fixed;padding: 10px 10px 0px 10px;bottom: 0;width: 100%;height: 30mm;")
-                  hr
-                  .row 
-                    .col-5
-                      -var today = new Date();
-                      -var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-                      -var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                      -var dateTime = date+' '+time;
-                      span="    بەروار: "+dateTime.toLocaleString()
-                    .col-7
-                      span="ناونیشان: "+"هەولێر - گەڕەکی عدالە - نزیک بانکی زانکۆ"
-
-                // Modal
-                .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-payment')
-                  .modal-dialog.modal-dialog-centered.modal-s(role='document')
+        table.table.table-striped
+          tbody
+            .row
+              .form-group.col-md-3
+                label ناوی بەرهەم
+                input(name="itemName" class="form-control fstdropdown-select custom-selection" id="productName" onclick='myFunction()' onkeyup='filterFunction()')
+                .dropdown
+                  #myDropdown.dropdown-content
+                    each item,i in productNames
+                      a(href="#" onclick="getModel(this,event);" title=item type='button' data-toggle="modal" data-target="#confirm-product"+i)=item
+        .container-fluid(id="printableArea")
+          .card.border(style="border: 5px solid #1794BA !important;")
+            //- .card-header(style='background-color: black;')
+            .card-body(id="targetedArea")
+              hr
+              div
+                table(id="invoiceTable").table-bordered.table-xs.table-responsive.col-12
+                  thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
+                    tr
+                      th(style="width:3%").center #
+                      th(style="font-weight:bold;") ناوی بەرهەم
+                      th(style="" colspan=2) جۆری بەرهەم
+                      th(style="") ڕەنگ
+                      th(style="width:7%") پێوانە
+                      th(style="width:3%") ژمارە
+                      th(style="width:10%").right نرخی تاک
+                      th(style="").right کۆی گشتی
+                      //- th(style="text-align:center; font-size:100%;font-weight:bold; width:3%")
+                  tbody(id="dataOfInvoiceTable" style="font-size: 12px;font-weight:bold;text-align:center;")
+              each item,i in productNames
+                .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-product'+i)
+                  .modal-dialog.modal-dialog-centered.modal-fullscreen(role='document')
                     .modal-content
-                      .modal-header دواخستنی پارەدان
-
-                      .modal-body 
-                        p بڕی پارەی دراو
-                          input.form-control(name="debut" type='number' step='any' value='0' id="paidmoney")
+                      .modal-header=item
+                      thead.thead-dark
+                        .container(id="checkForRemainedProduct")
+                      .modal-body(id='body-product'+i)
                       .modal-footer
                         button.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
-                        a.btn.btn-success.btn-ok(onclick="payNowDebut()" data-dismiss='modal') رازیبوون
-                each item,i in productNames
-                  .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-product'+i)
-                    .modal-dialog.modal-dialog-centered.modal-fullscreen(role='document')
-                      .modal-content
-                        .modal-header=item
-                        thead.thead-dark
-                          .container(id="checkForRemainedProduct")
-                        .modal-body(id='body-product'+i)
-                        .modal-footer
-                          button.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
-                          a.btn.btn-success.btn-ok(onclick="resultOfValidation(this)" data-dismiss='modal') زیادکردنی بەرهەم
-              //- .card-footer(style='background-color: black;')
+                        a.btn.btn-success.btn-ok(onclick="resultOfValidation(this)" data-dismiss='modal') زیادکردنی بەرهەم
+            //- .card-footer(style='background-color: black;')
 
 
 
@@ -324,19 +250,14 @@ block content
     }
 
     //Pay All Money now
-    function payNow(){
+    function updateInvoice(){
       objectData=document.getElementById("invoiceTable")
-      var note = document.getElementById("note").value;
-      var personName = document.getElementById("personName").value;
 
       var result=Object.values(getJSON(objectData))
-      result.push([note])
-      result.push([personName])
-      console.log(result)
       //Send to Database
         var data= $.ajax({
           type: 'POST',
-          url: "/Products/#{profile[0]['_id']}/Requests",
+          url: "/Invoices/AddNewItem/#{record[0]['_id']}/#{profile[0]['_id']}",
           dataType: 'JSON',
           data:JSON.stringify(result),
           contentType: "application/json; charset=utf-8",
@@ -432,9 +353,6 @@ block content
 
       for (let i = 0; i < table.length; i++) {
         if(document.getElementById(table[i].childNodes[0].childNodes[0].id).checked==true){
-
-          document.getElementById("dataofIncome").innerHTML = parseFloat(document.getElementById("dataofIncome").innerHTML)+parseFloat(table[i].childNodes[7].firstChild.value)*parseFloat(table[i].childNodes[6].firstChild.value)-parseFloat(table[i].childNodes[9].innerHTML)*parseFloat(table[i].childNodes[6].firstChild.value)+"TAN"+Math.random().toString(36).substring(7);
-
           $("#invoiceTable").find('tbody')
             .append($('<tr>').attr("id","itemNumber"+i)
               .append($('<td>')
@@ -462,11 +380,6 @@ block content
               //-   )
               //- )
             );
-            var subtotal=document.getElementById('total').innerHTML.match(/(\d+)/);
-            document.getElementById('total').innerHTML=(parseFloat(subtotal)+parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)).toFixed(2)
-            document.getElementById('total').innerHTML="$"+document.getElementById('total').innerHTML
-            document.getElementById('finalPrice').innerHTML=(parseFloat((document.getElementById('total').innerHTML).match(/(\d+)/))+parseFloat(parseFloat((document.getElementById("olddebut").innerHTML).match(/(\d+)/))))
-            document.getElementById('finalPrice').innerHTML="$"+document.getElementById('finalPrice').innerHTML
           }
           else{
             continue;
