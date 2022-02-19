@@ -90,6 +90,7 @@ block content
                     thead.thead-light
                       tr(scope='col' style="text-align:center; font-size:90%")
                         th #
+                        th خۆری بەرهەم
                         th ناوی بەرهەم
                         th بڕی پێوانە
                         th ڕەنگ
@@ -102,6 +103,7 @@ block content
                     tbody
                       if item['_id']['status']=="Compensate"
                         td=1
+                        td(style=`text-align:center;`) -
                         td پارەدان
                         td(style="text-align:center;") -
                         td(style=`text-align:center;`) -
@@ -119,6 +121,7 @@ block content
                             if item['items'][x]['productID'].equals(product['_id'])
                               tr
                                 td=x
+                                td=product['itemModel']
                                 td=product['itemName']
                                 td(style="text-align:center;")=product['weight']+product['unit']
                                 td(style="text-align:center;")=product['color']
