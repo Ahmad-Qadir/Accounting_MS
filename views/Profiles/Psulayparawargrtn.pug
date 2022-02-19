@@ -1,0 +1,114 @@
+include ../Components/Header
+block content
+  br
+  .container
+    // Page Heading
+    .d-sm-flex.align-items-left.justify-content-between.mb-4
+      h1.h3.mb-0.text-gray-800=title
+      .span
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.m-1(type='button' data-toggle='modal' onclick="printDiv('printableArea')")
+          i.fas.fa-print.fa-sm.text-white-50
+          |  چاپکردن
+    .container(id="newRecord")
+    .jumbotron  
+      .row
+        .container-fluid(id="printableArea")
+          .card.border
+            //- .card-header(style='background-color: black;')
+            .card-body(id="targetedArea")
+              .p-2
+                .container
+                  .row.col-12
+                    .col-6
+                      h5(style="color:#f00") پسوولەی پارەوەرگرتن
+                      br
+                      h6="ژمارەی تۆمار: "+invoiceID
+                        -var today = new Date();
+                        -var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                        -var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                        -var dateTime = date+' '+time;
+                      span="بەروار: "+(records[0]['createdAt'].toLocaleString('en-US'))
+                    .col-6
+                      img#icon(src='https://i.ibb.co/sCdqDQc/titan-removebg-preview.png' width=50).mx-auto.d-block
+              hr
+              div
+                table(id="invoiceTable").table-xs.table-responsive.col-12
+                  thead.table-striped
+                    tr
+                      th(style="font-weight:bold; width:150px")="وەرگیرا لە بەڕێز: "
+                      td=profile['cutomerID']['companyName']+" / "+profile['cutomerID']['clientName']
+                    tr
+                      th(style="font-weight:bold;")="بڕی وەرگیراو(دۆلار): " 
+                      td="$"+(records[0]['totalPrice'])
+                    tr
+                      th(style="font-weight:bold;") بڕی وەرگیراو(دینار)
+                    tr
+                      th(style="font-weight:bold;")="قەرزی ماوە: "
+                      td="$"+profile['cutomerID']['remainedbalance']
+                      //- th(style="text-align:center; font-size:100%;font-weight:bold; width:3%")
+                  tbody(id="dataOfInvoiceTable" style="font-size: 12px;font-weight:bold;text-align:center;")
+                    //- each item,i in 
+                    //-   - var j=i+1;
+                    //-     tr 
+                    //-       td=j
+                    //-       td پارەدان
+                    //-       td(style="text-align:center;") -
+                    //-       td(style="text-align:center;") -
+                    //-       td(style="text-align:center;") -
+                    //-       td(style=`text-align:center;`) -
+                    //-       td(style="text-align:center;") -
+                    //-       td(style="text-align:center;")="$ "+item['sellPrice']
+                    //-       td.count-me(style="text-align:center;")="$ "+item['totalPrice']
+                .row
+                  //- .ml-auto
+                  //-   br
+                  //- table.table.table-xs(id="totalPayment")
+                  //-   tbody
+                  //-     //- tr(style="line-height: 10px;")
+                  //-     //-   td.left
+                  //-     //-     strong(style="color:#f00") قەرزی پێشوو
+                  //-     //-   td(id="olddebut" style="color:#f00").right="$"+records[0]['oldDebut']
+                  //-     tr(style="line-height: 10px;")
+                  //-       td.left
+                  //-         strong قەرزی ماوە
+                  //-       td.right(id="majmu3")="$"+profile['cutomerID']['remainedbalance']
+                  //-       td.left
+                  //-         strong قەرزی دراوە
+                  //-       td.right
+                  //-         strong(id="finalPrice")="$"+(records[0]['totalPrice'])
+                  //-       td.right
+                  //-         strong(id="finalPrice")="$"+(records[0]['totalPrice'])
+                  //-     hr
+              .row 
+                .col-1
+                .col-6
+                  span="ناونیشان: "+"هەولێر - گەڕەکی عدالە - نزیک بانکی زانکۆ"
+                .col-5
+                  span 07504153878
+              br
+
+
+  script.
+    //Print Section
+    function printDiv(divName) {
+      var originalContents = document.body.innerHTML;
+      //- 
+      document.getElementById("targetedArea").setAttribute("style", "background: url('https://i.ibb.co/dBMzRB5/image.jpg'); background-size: 200mm 100mm;");
+      //- document.getElementById('targetedArea')
+      var printContents = document.getElementById(divName).innerHTML;
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+    }
+    $( document ).ready(function() {
+    //- var tds = document.getElementById('invoiceTable').getElementsByTagName('td');
+    //-   var sum = 0;
+    //-   for(var i = 0; i < tds.length; i ++) {
+    //-     if(tds[i].className == 'count-me') {
+    //-       console.log(tds[i].innerHTML.replace("$","").replace(" ",""))
+    //-       sum += isNaN(tds[i].innerHTML.replace("$","").replace(" ","")) ? 0 : parseFloat(tds[i].innerHTML.replace("$","").replace(" ",""));
+    //-     }
+    //-   }
+    //-   document.getElementById('total').innerHTML = '$ ' + sum ;
+    });
+

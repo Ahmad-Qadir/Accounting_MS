@@ -593,14 +593,27 @@ exports.PrintSelectedInvoice = async (req, res, next) => {
             { $group: { _id: null, amount: { $sum: "$totalPrice" } } }
         ])
 
+        if (Records[0]['productID'] == undefined) {
+            res.render('Profiles/Psulayparawargrtn', {
+                title: "تۆماری ژمارە " + req.params.invoiceID,
+                records: Records,
+                profile: ProfileInformation[0],
+                invoiceID: req.params.invoiceID,
+                totalPrice: totalPrice[0]
+            })
+        }
+        else {
+            res.render('Profiles/PrintInvoice', {
+                title: "تۆماری ژمارە " + req.params.invoiceID,
+                records: Records,
+                profile: ProfileInformation[0],
+                invoiceID: req.params.invoiceID,
+                totalPrice: totalPrice[0]
+            })
+        }
+
         // res.json(Records)
-        res.render('Profiles/PrintInvoice', {
-            title: "تۆماری ژمارە " + req.params.invoiceID,
-            records: Records,
-            profile: ProfileInformation[0],
-            invoiceID: req.params.invoiceID,
-            totalPrice: totalPrice[0]
-        })
+
         // res.send()
     } catch (error) {
         next(error)
