@@ -54,9 +54,12 @@ block content
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm.text-white.m-1(type='button' onclick="payNow()" )
           i.fas.fa-truck-moving.fa-sm.text-white-50
           |  زیاد کردنی بارهەڵگر
-        a.d-none.d-sm-inline-block.btn.btn-sm.btn-danger.shadow-sm.text-white.m-1(type='button' href="/Products")
-          i.fas.fa-times-circle.fa-sm.text-white-50
-          |  گەڕانەوەی بارهەڵگر
+        //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.m-1(type='button' data-toggle="modal" data-target="#confirm-payment")
+        //-   i.fas.fa-wallet.fa-sm.text-white-50
+        //-   |  دانەوەی پارە
+        //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-danger.shadow-sm.text-white.m-1(type='button' href="/Products")
+        //-   i.fas.fa-times-circle.fa-sm.text-white-50
+        //-   |  گەڕانەوەی بارهەڵگر
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-warning.shadow-sm.text-white.m-1(type='button' onclick='rearrangement()')
           i.fas.fa-reset.fa-sm.text-white-50
           |  ڕێکخستنەوەی بارهەڵگر
@@ -96,30 +99,29 @@ block content
                 //-     div=Date().toLocaleString()
                 //-     //- div Email: robert@daniel.com
                 //-     div Phone: +964 750 000 00 00
-                .table-responsive-sm
-                  table.table.table-striped(id="invoiceTable")
-                    thead
-                      tr
-                        th.center #
-                        th بڕاندی بەرهەم
-                        th ناوی بەرهەم
-                        th ڕەنگ
-                        th جۆری بەرهەم
-                        th پێوانە
-                        th وەکیل
-                        th شرکە
-                        th محل
-                        th مفرد
-                        th وەستا
-                        th ژمارە
-                        th نرخی کڕین
-                        th نرخی کۆمپانیا
-                        th.right کۆی نرخ
-                    tbody(id="dataOfInvoiceTable")
+                table.table-bordered.table-xs.table-responsive.col-12(id="invoiceTable")
+                  thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
+                    tr
+                      th.center #
+                      th بڕاندی بەرهەم
+                      th ناوی بەرهەم
+                      th ڕەنگ
+                      th جۆری بەرهەم
+                      th پێوانە
+                      th وەکیل
+                      th شرکە
+                      th محل
+                      th مفرد
+                      th وەستا
+                      th ژمارە
+                      th نرخی کڕین
+                      th نرخی کۆمپانیا
+                      th.right کۆی نرخ
+                  tbody(id="dataOfInvoiceTable" style="font-size: 12px;font-weight:bold;text-align:center;")
                 .row
                   .col-lg-8.col-sm-8
-                    b تێبینی
-                    textarea.form-control.rounded-0(rows='5' cols='80' id='note')
+                    //- b تێبینی
+                    //- textarea.form-control.rounded-0(rows='5' cols='80' id='note')
                   .col-lg-4.col-sm-4.ml-auto
                     table.table.table-clear(id="totalPayment")
                       tbody
@@ -133,6 +135,17 @@ block content
                         //-     strong کۆی گشتی
                         //-   td.right
                         //-     strong(id="final") 0
+                        // Modal
+          .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-payment')
+            .modal-dialog.modal-dialog-centered.modal-s(role='document')
+              .modal-content
+                .modal-header دواخستنی پارەدان
+                .modal-body 
+                  p بڕی پارەی دراو
+                    input.form-control(name="debut" type='number' step='any' value='0' id="paidmoney")
+                .modal-footer
+                  button.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
+                  a.btn.btn-success.btn-ok(onclick="payNowDebut()" data-dismiss='modal') رازیبوون
       each item,i in company
         //- if element['manufacturerCompany']==item['companyName']
         .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-product'+i)
@@ -262,7 +275,7 @@ block content
           $("#invoiceTable").find('tbody')
             .append($('<tr>')
               .append($('<td>')
-                .text($('#invoiceTable>tbody>tr').length+1)
+                .text($('#invoiceTable>tbody>tr').length+1).attr('class','delete')
               ).append($('<td>')
                 .text(table[i].childNodes[1].innerHTML) //Item Model
               ).append($('<td>')
@@ -270,9 +283,9 @@ block content
               ).append($('<td>')
                 .text(table[i].childNodes[3].innerHTML) //Item Color
               ).append($('<td>')
-                .text(table[i].childNodes[4].innerHTML).attr("contenteditable",'true') //
+                .text(table[i].childNodes[4].innerHTML)
               ).append($('<td>')
-                .text(table[i].childNodes[5].innerHTML).attr("contenteditable",'true')
+                .text(table[i].childNodes[5].innerHTML)
               ).append($('<td>')
                 .text(table[i].childNodes[6].innerHTML).attr("contenteditable",'true')
               ).append($('<td>')
@@ -288,9 +301,9 @@ block content
               ).append($('<td>')
                 .text(table[i].childNodes[12].firstChild.value).attr("contenteditable",'true')
               ).append($("<td>")
-                .text(" ").attr('id',"loop")
+                .text(" ")
               ).append($('<td>')
-                .text(parseFloat(table[i].childNodes[11].firstChild.value)*parseFloat(table[i].childNodes[12].firstChild.value))
+                .text(parseFloat(table[i].childNodes[11].firstChild.value)*parseFloat(table[i].childNodes[12].firstChild.value)).attr('id',"loop")
               )
             );
               document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML)+parseFloat(table[i].childNodes[11].firstChild.value)*parseFloat(table[i].childNodes[12].firstChild.value)
@@ -303,7 +316,6 @@ block content
 
     function payNow(){
       objectData=document.getElementById("invoiceTable")
-      var note=document.getElementById("note").value
       var cost=document.getElementById("PriceOfExpense").value
       //Send to Database
         var data= $.ajax({
@@ -387,6 +399,11 @@ block content
     }
 
     $(document).ready(function(){
+      $(document).on("click", ".delete", function(){
+        $(this).parents("tr").remove();
+        //- console.log(this.parentNode.childNodes[14].innerHTML.replace("$", ''))
+        document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML.replace("$", ''))-parseFloat(this.parentNode.childNodes[14].innerHTML.replace("$", ''))
+        });
 
     $(document).on("click", "table tbody tr td", function(e) {
       var data = $(this).attr('id');

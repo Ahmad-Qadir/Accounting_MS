@@ -58,28 +58,31 @@ block content
 
 
                                         tbody
-                                            each data,j in item['data']
-                                                -var index=j+1
-                                                tr(style="font-weight:bold; font-size:2 rem")
-                                                    td(style="text-align:center;")=index
-                                                    td(style="text-align:center;")=data['itemModel']
-                                                    td(style="text-align:center;")=data['itemName']
-                                                    td(style="text-align:center;")=data['manufacturerCompany']
-                                                    td(style="text-align:center;")=data['itemUnit']
-                                                    td(style="text-align:center;")=data['itemType']
-                                                    td(style="text-align:center;")=data['usedIn']
-                                                    td(style="text-align:center;")=data['weight']
-                                                    td(style="text-align:center;")=item['items'][j]['camePrice']
-                                                    td(style="text-align:center;")=item['items'][j]['sellPrice']
-                                                    td(style="text-align:center;")=(item['items'][j]['sellPrice']-item['items'][j]['camePrice']).toFixed(2)
-                                                    td(style="text-align:center;")=item['items'][j]['totalQuantity']
-                                                    td(style="text-align:center;")=data['color']
-                                                    td(style="text-align:center;")=(parseFloat(item['items'][j]['totalQuantity'])*parseFloat(item['items'][j]['camePrice'])).toFixed(2)
-                                                    td(style="text-align:center;")=(parseFloat(item['items'][j]['totalQuantity'])*parseFloat(item['items'][j]['sellPrice'])).toFixed(2)
-                                                    td(style="text-align:center;")
-                                                        a.btn.btn-sm.btn-warning.m-2( title="نوێکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Trailers/Modification/"+item['_id']['trailerNumber']+"/"+item['items'][j]['_id'])
-                                                            span.icon.text-white-50
-                                                                i.fas.fa-pencil-alt
-                                                        a.btn.btn-sm.btn-danger.m-2( title="ڕەشکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Trailers/Delete/"+item['_id']['trailerNumber']+"/"+item['items'][j]['_id'])
-                                                            span.icon.text-white-50
-                                                                i.fas.fa-trash
+                                            each product,j in item['data']
+                                                each product,k in item['data']
+                                                    if item['items'][j]['productID'].equals(product['_id'])
+                                                        tr
+                                                            -var index=j+1
+                                                            tr(style="font-weight:bold; font-size:2 rem")
+                                                                td(style="text-align:center;")=index
+                                                                td(style="text-align:center;")=product['itemModel']
+                                                                td(style="text-align:center;")=product['itemName']
+                                                                td(style="text-align:center;")=product['manufacturerCompany']
+                                                                td(style="text-align:center;")=product['itemUnit']
+                                                                td(style="text-align:center;")=product['itemType']
+                                                                td(style="text-align:center;")=product['usedIn']
+                                                                td(style="text-align:center;")=product['weight']
+                                                                td(style="text-align:center;")=item['items'][j]['camePrice']
+                                                                td(style="text-align:center;")=item['items'][j]['sellPrice']
+                                                                td(style="text-align:center;")=(item['items'][j]['sellPrice']-item['items'][j]['camePrice']).toFixed(2)
+                                                                td(style="text-align:center;")=item['items'][j]['totalQuantity']
+                                                                td(style="text-align:center;")=product['color']
+                                                                td(style="text-align:center;")=(parseFloat(item['items'][j]['totalQuantity'])*parseFloat(item['items'][j]['camePrice'])).toFixed(2)
+                                                                td(style="text-align:center;")=(parseFloat(item['items'][j]['totalQuantity'])*parseFloat(item['items'][j]['sellPrice'])).toFixed(2)
+                                                                td(style="text-align:center;")
+                                                                    a.btn.btn-sm.btn-warning.m-2( title="نوێکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Trailers/Modification/"+item['_id']['trailerNumber']+"/"+item['items'][j]['_id'])
+                                                                        span.icon.text-white-50
+                                                                            i.fas.fa-pencil-alt
+                                                                    a.btn.btn-sm.btn-danger.m-2( title="ڕەشکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Trailers/Delete/"+item['_id']['trailerNumber']+"/"+item['items'][j]['_id'])
+                                                                        span.icon.text-white-50
+                                                                            i.fas.fa-trash

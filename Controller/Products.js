@@ -881,7 +881,6 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
         else
             var _TrailerNumber = Trailer[0]['trailerNumber'] + 1;
 
-        var record = uuid.v1();
         // console.log("ID: "+RequestList[0][0])                   
         // console.log("Product Model: "+RequestList[0][1])
         // console.log("Product Name: "+RequestList[0][2])
@@ -911,7 +910,7 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
             });
 
             const newRecordtoHistory = new RecordsCollection({
-                recordCode: record,
+                recordCode: _TrailerNumber,
                 totalQuantity: parseFloat(element[11]),
                 status: "New Trailer",
                 camePrice: parseFloat(element[12]),
@@ -939,11 +938,7 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
             await ProductsCollection.findByIdAndUpdate({
                 "_id": Product[0]['_id']
             }, {
-                // remainedPacket: parseFloat(quantity / Product[0]['perPacket']),
-                // remainedPerPacket: quantity % Product[0]['perPacket'],
                 totalQuantity: quantity,
-                // totalPrice: Product[0]['totalPrice'] + (parseFloat(element[11]) * parseFloat(element[13])),
-                // totalWeight: Product[0]['totalWeight'] + (parseFloat(element[11]) * Product[0]['weight']),
                 sellPriceWakil: parseFloat(element[6]),
                 sellPriceSharika: parseFloat(element[7]),
                 sellPriceMahal: parseFloat(element[8]),
@@ -955,7 +950,6 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
                 }
             });
 
-            // console.log((parseFloat(element[11]) * parseFloat(element[13])))
             const newTrailer = new TrailerCollection({
                 itemName: Product[0]['itemName'],
                 itemModel: Product[0]['itemModel'],
@@ -968,7 +962,6 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
                 usedIn: Product[0]['usedIn'],
                 color: Product[0]['color'],
                 weight: Product[0]['weight'],
-                // totalWeight: (parseFloat(element[11]) * Product[0]['weight']),
                 camePrice: parseInt(element[12]),
                 sellPrice: parseInt(element[13]),
                 sellPriceWakil: parseFloat(element[6]),
@@ -976,18 +969,11 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
                 sellPriceMahal: parseFloat(element[8]),
                 sellPriceMufrad: parseFloat(element[9]),
                 sellPriceWasta: parseFloat(element[10]),
-                // totalPrice: (parseFloat(element[11]) * parseFloat(element[13])),
-                // packet: parseFloat(element[11]) / Product[0]['packet'],
-                // perPacket: parseFloat(element[11]) % Product[0]['packet'],
-                // remainedPacket: parseFloat(element[11]) / Product[0]['packet'],
-                // remainedPerPacket: parseFloat(element[11]) % Product[0]['packet'],
                 totalQuantity: parseFloat(element[11]),
                 status: "New Trailer",
-                // expireDate: Product[0]['expireDate'],
                 trailerNumber: _TrailerNumber,
                 addedBy: req.user.username,
                 updatedBy: req.user.username,
-                // note: req.params.note,
                 productID: Product[0]['_id'],
             });
             await newTrailer.save();
