@@ -242,7 +242,7 @@ block content
           $('#header'+idOfModel).append($("<th></th>").text('پێوانە'));
           $('#header'+idOfModel).append($("<th></th>").attr('style',"width:10%").text('ژمارە'));
           $('#header'+idOfModel).append($("<th></th>").attr('style',"width:10%").text('نرخ'));
-          $('#header'+idOfModel).append($("<th></th>").text('بڕی بەردەست'));
+          $('#header'+idOfModel).append($("<th></th>").text('ژمارەی بارهەڵگر'));
           $('#header'+idOfModel).append($("<th></th>").text('نرخی هاتوو'));
           $('#header'+idOfModel).append($("<th></th>").text('ID'));
           $('#datas'+idOfModel).append($("<tbody></tbody>").attr('id','MainBody'+idOfModel));
@@ -268,7 +268,8 @@ block content
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','priceRow'+idOfModel+i));
             $('#priceRow'+idOfModel+i).append($("<input></input>").attr('type','number').attr('name','priceOf').attr('id','priceOf'+idOfModel+i).attr('class','form-control').attr('value',data[i]['sellPriceMufrad']));
             $('#rows'+idOfModel+i).append($("<td></td>").attr('id','trailerRow'+idOfModel+i));
-            $('#trailerRow'+idOfModel+i).append($("<input></input>").attr('type','number').attr('name','trailerNum').attr('class','form-control').attr('id','trailerNum'+idOfModel+i).attr('value',data[i]['totalQuantity']));
+            $('#trailerRow'+idOfModel+i).append($("<select></select>").attr('name','trailerNumber').attr('id','trailerNumbers'+idOfModel+i).attr('class','form-control'));
+            $('#trailerNumbers'+idOfModel+i).append($("<option></option>").attr('value',data[i]['trailerNumber']).text(data[i]['trailerNumber']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['camePrice']));
             $('#rows'+idOfModel+i).append($("<td></td>").text(data[i]['_id']));
             }
@@ -281,8 +282,25 @@ block content
 
     // Update Value Regarding the Item Name
     function updateValue(val, event) {
+      //- var itemModel=val.childNodes[1].innerHTML;
+      //- var itemName=val.childNodes[2].innerHTML;
+      //- var itemType=val.childNodes[3].innerHTML;
+      //- var color=val.childNodes[4].innerHTML;
+      //- var itemUnit=val.childNodes[5].innerHTML;
+      //- var quantity=val.childNodes[6].firstChild.id;
       var priceOf=val.childNodes[7].firstChild.id;
+      var trailerNumber=val.childNodes[8].firstChild.id;
+      //- document.getElementById("productName").value = val;
       event.preventDefault();
+
+
+      //- console.log(itemModel)
+      //- console.log(itemName)
+      //- console.log(itemType)
+      //- console.log(color)
+      //- console.log(itemUnit)
+      //- console.log(val.childNodes[10].innerHTML)
+
 
 
       var data=$.ajax({
@@ -290,19 +308,36 @@ block content
         url: "/Profiles/"+val.childNodes[10].innerHTML,
         dataType: 'JSON',
         success: function(data){
-          if("#{profile[0]['clientType']}"=="مفرد"){
-            document.getElementById(priceOf).value = data[0]['sellPriceMufrad'];
-          }else if("#{profile[0]['clientType']}"=="محل"){
-            document.getElementById(priceOf).value = data[0]['sellPriceMahal'];
-          }else if("#{profile[0]['clientType']}"=="وەستا"){
-            document.getElementById(priceOf).value = data[0]['sellPriceWasta'];
-          }else if("#{profile[0]['clientType']}"=="وەکیل"){
-            document.getElementById(priceOf).value = data[0]['sellPriceWakil'];
-          }else if("#{profile[0]['clientType']}"=="شركه‌"){
-            document.getElementById(priceOf).value = data[0]['sellPriceSharika'];
-          }
+          $("#"+trailerNumber).empty()
+          for (let i = 0; i < data.length; i++) {
+            if(parseFloat(data[i]['totalQuantity'])==0){
+              continue;
+            }else{
+              if(data[i]['status']=="Recovered"){
+                $("#"+trailerNumber).append($("<option></option>").attr("value",data[i]['trailerNumber']).text(data[i]['trailerNumber']+"-----ماوە:"+data[i]['totalQuantity']+"(گەڕاوە)"));
+              }else{
+                $("#"+trailerNumber).append($("<option></option>").attr("value",data[i]['trailerNumber']).text(data[i]['trailerNumber']+"-----ماوە:"+data[i]['totalQuantity']));
+              //- document.getElementById(priceOf).value = data[i]['camePrice'];
+                if("#{profile[0]['clientType']}"=="مفرد"){
+                  document.getElementById(priceOf).value = data[i]['sellPriceMufrad'];
+                }else if("#{profile[0]['clientType']}"=="محل"){
+                  document.getElementById(priceOf).value = data[i]['sellPriceMahal'];
+                }else if("#{profile[0]['clientType']}"=="وەستا"){
+                  document.getElementById(priceOf).value = data[i]['sellPriceWasta'];
+                }else if("#{profile[0]['clientType']}"=="وەکیل"){
+                  document.getElementById(priceOf).value = data[i]['sellPriceWakil'];
+                }else if("#{profile[0]['clientType']}"=="شركه‌"){
+                  document.getElementById(priceOf).value = data[i]['sellPriceSharika'];
+                }
+              }
+            }
+            }
           }
       });
+
+      //============================
+
+      //============================
     }
 
     // Auto Find Datas in Input Form
@@ -431,6 +466,8 @@ block content
                 .text("$"+parseFloat(table[i].childNodes[7].firstChild.value).toFixed(2)).attr("contenteditable",'true').attr("id","priceNumber"+i)
               ).append($('<td>')
                 .text("$"+parseFloat(parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)).toFixed(2)).attr('id',"macPrice"+i)
+              ).append($('<td>')
+                .text(table[i].childNodes[8].firstChild.value).attr("style","display:none")
               )
               //- .append($('<td>')
               //-   .append($('<a>')).append($("<i>")
@@ -441,7 +478,7 @@ block content
             var subtotal=document.getElementById('total').innerHTML.match(/(\d+)/);
             document.getElementById('total').innerHTML=(parseFloat(subtotal)+parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)).toFixed(2)
             document.getElementById('total').innerHTML="$"+document.getElementById('total').innerHTML
-            document.getElementById('finalPrice').innerHTML=parseFloat(parseFloat((document.getElementById("olddebut").innerHTML).match(/(\d+)/))))-(parseFloat((document.getElementById('total').innerHTML).match(/(\d+)/))
+            document.getElementById('finalPrice').innerHTML=(parseFloat((document.getElementById('total').innerHTML).match(/(\d+)/))+parseFloat(parseFloat((document.getElementById("olddebut").innerHTML).match(/(\d+)/))))
             document.getElementById('finalPrice').innerHTML="$"+document.getElementById('finalPrice').innerHTML
           }
           else{
