@@ -623,10 +623,8 @@ exports.PrintSelectedInvoice = async (req, res, next) => {
                 totalPrice: totalPrice[0]
             })
         }
-
         // res.json(Records)
 
-        // res.send()
     } catch (error) {
         next(error)
     }

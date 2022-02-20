@@ -105,14 +105,6 @@ block content
                                                             strong کۆی گشتی (دۆلار)
                                                         td.right
                                                             strong(id="finalPrice")="$"+(invoice['items'][0]['oldDebut']+invoice['items'][0]['totalPrice']).toFixed(2)
-                                                    tr(style="line-height: 10px;")
-                                                        td.left
-                                                            strong باری پارەدان
-                                                        td.right
-                                                            if invoice['items'][0]['moneyStatus']=="Debut"
-                                                                strong(id="finalPrice" style="color:#f00") قەرز
-                                                            else
-                                                                strong(id="finalPrice" style="color:#0f0") کاش
 
                             script.
                                 //Print Section
