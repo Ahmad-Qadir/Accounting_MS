@@ -128,7 +128,7 @@ block content
                             if profile['cutomerID']['remainedbalance']==0
                               strong(id="finalPrice")="$"+(totalPrice['amount'])
                             else
-                              strong(id="finalPrice")="$"+(records[0]['oldDebut']+totalPrice['amount'])
+                              strong(id="finalPrice")="$"+(profile['cutomerID']['remainedbalance'])
                   .col-5.ml-auto
                     br
                     table.table.table-bordered.table-xs(id="totalPayment")
