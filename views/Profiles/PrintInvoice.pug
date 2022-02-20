@@ -115,7 +115,7 @@ block content
                           if profile['cutomerID']['remainedbalance']==0
                             td(id="olddebut" style="color:#f00").right="$"+0
                           else
-                            td(id="olddebut" style="color:#f00").right="$"+(profile['cutomerID']['remainedbalance']-totalPrice['amount'])
+                            td(id="olddebut" style="color:#f00").right="$"+(records[0]['oldDebut'])
                           
                         tr(style="line-height: 10px;")
                           td.left
