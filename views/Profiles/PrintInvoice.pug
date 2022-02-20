@@ -129,6 +129,24 @@ block content
                               strong(id="finalPrice")="$"+(totalPrice['amount'])
                             else
                               strong(id="finalPrice")="$"+((profile['cutomerID']['remainedbalance']-totalPrice['amount'])+totalPrice['amount'])
+                  .col-5.ml-auto
+                    br
+                    table.table.table-bordered.table-xs(id="totalPayment")
+                      tbody
+                        tr(style="line-height: 10px;")
+                          td.left
+                            strong سەرجەم (دۆلار)
+                          td.right(id="total")="$"+totalPrice['amount']
+                        tr(style="line-height: 10px;")
+                          td.left
+                            strong داشکان
+                          td.right
+                              strong(id="finalPrice") 0
+                        tr(style="line-height: 10px;")
+                          td.left
+                            strong ماوە
+                          td.right
+                              strong(id="finalPrice")="$"+totalPrice['amount']
               footer(style="position: fixed;padding: 10px 10px 0px 10px;bottom: 0;width: 100%;height: 30mm;")
                 hr
                 .row 
