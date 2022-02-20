@@ -79,6 +79,10 @@ mongoose.connect("mongodb+srv://Accountant:Accountant@cluster0.c5jxd.mongodb.net
     console.log('Connected to database server')
 );
 
+// mongoose.connect("mongodb://localhost:27017/AccountingMS").then(
+//     console.log('Connected to database server')
+// );
+
 //Collections
 const EmployeeClass = require('./models/Employee');
 const ProductsCollection = require('./models/Product')

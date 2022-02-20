@@ -230,18 +230,16 @@ exports.NewInvoice = async (req, res, next) => {
         var preparation = [];
         var resultOfValidation = [];
         var count = 0;
-        const Records = await RecordsCollection.find({
+        const Record = await RecordsCollection.findOne({
             status: "Customer Request",
             softdelete: false
-        }).sort({
-            "createdAt": -1
-        });
+        }).distinct("recordCode");
+
+        var invoiceID = parseFloat(Record.length) + 1;
 
         var Profile = await ProfileCollection.findOne({
             _id: req.params.id
         });
-
-        var invoiceID = parseFloat(Records[0]['recordCode']) + 1;
 
         for (let k = 0; k < RequestList.length; k++) {
             const element = RequestList[k];
@@ -363,18 +361,16 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
         var checkLength = 0;
         var preparation = [];
         var count = 0;
-        const Records = await RecordsCollection.find({
+        const Record = await RecordsCollection.findOne({
             status: "Customer Request",
             softdelete: false
-        }).sort({
-            "createdAt": -1
-        });
+        }).distinct("recordCode");
+
+        var invoiceID = parseFloat(Record.length) + 1;
 
         var Profile = await ProfileCollection.findOne({
             _id: req.params.id
         });
-
-        var invoiceID = parseFloat(Records[0]['recordCode']) + 1;
 
         for (let k = 0; k < RequestList.length; k++) {
             const element = RequestList[k];
