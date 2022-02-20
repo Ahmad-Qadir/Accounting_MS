@@ -395,7 +395,13 @@ exports.AddNewRequest = async (req, res, next) => {
             softdelete: false
         }).distinct("recordCode");
 
-        var invoiceID = parseFloat(Record.length) + 1;
+        var numberArray = Record.map(Number);
+
+        numberArray.sort(function (a, b) {
+            return a - b;
+        });
+
+        var invoiceID = parseFloat((numberArray[numberArray.length - 1])) + 1;
 
         const Products = await ProductsCollection
             .find({

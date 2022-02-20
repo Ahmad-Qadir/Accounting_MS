@@ -235,7 +235,13 @@ exports.NewInvoice = async (req, res, next) => {
             softdelete: false
         }).distinct("recordCode");
 
-        var invoiceID = parseFloat(Record.length) + 1;
+        var numberArray = Record.map(Number);
+
+        numberArray.sort(function (a, b) {
+            return a - b;
+        });
+
+        var invoiceID = parseFloat((numberArray[numberArray.length - 1])) + 1;
 
         var Profile = await ProfileCollection.findOne({
             _id: req.params.id
@@ -366,8 +372,15 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
             softdelete: false
         }).distinct("recordCode");
 
-        var invoiceID = parseFloat(Record.length) + 1;
+        var numberArray = Record.map(Number);
 
+        numberArray.sort(function (a, b) {
+            return a - b;
+        });
+
+        var invoiceID = parseFloat((numberArray[numberArray.length - 1])) + 1;
+
+        
         var Profile = await ProfileCollection.findOne({
             _id: req.params.id
         });
