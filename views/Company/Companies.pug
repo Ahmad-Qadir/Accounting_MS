@@ -1,0 +1,77 @@
+include ../Components/Header
+block content
+  br
+  .container-fluid
+    // Page Heading
+    .d-sm-flex.align-items-left.justify-content-between.mb-4
+      h1.h3.mb-0.text-gray-800=title
+      .span
+        //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm.text-white.mr-2(id="backup" href="/Profile/61f40f3142d5059afe5d42cd/NewRequest")
+        //-   i.fas.fa-database.fa-sm.text-white-50
+        //-   |  فرۆشتنی راستەوخۆ
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.me-2(href="/Companies/AddNew")
+          i.fas.fa-plus-square.fa-sm.text-white-50
+          |  زیادکردنی کۆمپانیای نوێ
+    .container
+      != messages('message', locals)
+      if errors
+        each error, i in errors
+          div(class="note note-danger") #{error.msg}
+    .row
+      .container-fluid.table-responsive
+        table(id="companiesTable").table.table-hover.table-sm.dt-responsive.table-striped
+          thead.thead-light
+            tr(style="text-align:center; font-size:3 rem")
+              th(scope='col') ناوی کۆمپانیا
+              th(scope='col') ژمارەی مۆبایل
+              //-   th(scope='col') ئیمیڵ
+              th(scope='col') ناونیشان
+              th(scope='col') باڵانسی ماوە
+              th(scope='col') کردارەکان 
+
+          tbody
+            each item,i in companies
+              - var json = JSON.stringify(profiles);
+              - var j=i;
+              - var time = new Date();
+              tr(style="font-weight:bold; font-size:2 rem")
+                form(method='POST')
+                  td=item['companyName']
+                  td(style="text-align:center;")=item['phoneNumber']
+                  //-   td(style="text-align:center;") "نیە"
+                  td(style="text-align:center;")=item['location']
+                  td(style="text-align:center;")=item['remainedbalance']
+                  td(style="text-align:center;")
+                    //- a.btn.btn-sm.btn-info.m-1(title="profiles Invoices" href="/profiles/"+item['_id']+"/invoices")
+                    //-   span.icon.text-white-50
+                    //-     i.fas.fa-file-invoice
+                    //- a.btn.btn-sm.btn-primary.m-1(href="/Products/"+item['_id']+"/NewRecover" title="گەڕانەوەی بەرهەم" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;")
+                    //-   span.icon.text-white-50
+                    //-     i.fas.fa-recycle
+                    //- a.btn.btn-sm.btn-secondary.m-1(title="profiles Invoices" href="/Profiles/Debut/"+item['_id'])
+                    //-   span.icon.text-white-50
+                    //-     i.fas.fa-wallet
+                    a.btn.btn-sm.btn-warning.m-1(title="نوێکردنەوەی زانیاریەکان" href="/Company/Modification/"+item['_id'])
+                      span.icon.text-white-50
+                        i.fas.fa-pencil-alt
+  //- include ../Components/Footer
+  script.
+    $(document).ready(function() {
+      $('#companiesTable').DataTable({
+        "pageLength": 50
+      }
+      );
+    } );
+
+    //- function deleteRow(r,GetArray) {
+    //-   var row = r.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.rowIndex;
+
+    //-     $.ajax({
+    //-       type: 'DELETE',
+    //-       url: "#{address}/Profiles/"+GetArray[row-1]['_id'],
+    //-       dataType: 'JSON'
+    //-       })
+    //-   document.getElementById("clientTable").deleteRow(row);
+    //-   }
+
+

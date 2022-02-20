@@ -4,6 +4,7 @@ const Company = mongoose.model('Company', mongoose.Schema({
     companyName: String,
     note: String,
     remainedbalance: Number,
+    phoneNumber: String,
     location: String,
     addedBy: {
         type: String

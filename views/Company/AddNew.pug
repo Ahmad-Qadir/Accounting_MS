@@ -1,0 +1,33 @@
+include ../Components/Header
+block content
+    br
+    .container
+        // Page Heading
+        .d-sm-flex.align-items-left.justify-content-between.mb-4
+        .jumbotron
+            .row
+                .container-fluid.table-responsive
+                    form(method='POST' action="/Companies")
+                        .container
+                            != messages('message', locals)
+                            if errors
+                                each error, i in errors
+                                    div(class="alert alert-danger") #{error.msg}
+                        h2 زانیاری کۆمپانیا
+                        .row
+                            .form-group.col-md-6
+                                label ناوی کۆمپانیا
+                                input.form-control(name="companyName" type='text' placeholder='ناوی کۆمپانیا')
+                            .form-group.col-md-3
+                                label ژمارەی مۆبایل
+                                input.form-control(name="phoneNumber" type='text' placeholder='ژمارەی مۆبایل')
+                            .form-group.col-md-3
+                                label ناونیشان
+                                input.form-control(name="location" type='text' placeholder='ناونیشان')
+                        button.btn.btn-primary.m-2(type='submit') تۆماربکە
+
+
+
+
+
+

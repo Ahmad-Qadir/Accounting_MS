@@ -10,7 +10,7 @@ const HistoryClass = require('../models/records');
 const ProfileCollection = require('../models/Profiles');
 const TrailerCollection = require('../models/Trailers');
 const CompanyCollection = require('../models/Companies');
-const address=process.env.address
+const address = process.env.address
 
 const {
     roles
@@ -65,31 +65,26 @@ exports.CheckForCompanyProducts = async (req, res, next) => {
     }
 }
 
+exports.AddNewCompanyUI = async (req, res, next) => {
+    try {
+        res.render("Company/AddNew", {
+            title: "زیادکردنی کۆمپانیای نوێ",
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
 exports.AddNewCompany = async (req, res, next) => {
     try {
-        const validationSchema = {
-            companyName: validator.string().required(),
-            note: validator.string()
-        }
-        const resultOfValidator = validator.validate(req.body, validationSchema);
-        if (resultOfValidator.error) {
-            req.flash('danger', resultOfValidator.error.details[0].message);
-            res.redirect(process.env.address+"/Profiles/Customer/NewTypes")
-        } else {
-            const CompanyName = await CompanyCollection.findOne({
-                companyName: req.body.companyName
-            });
-            if (CompanyCollection) {
-                res.send("Customer Type is exist")
-            } else {
-                const NewCompany = new CompanyCollection({
-                    companyName: req.body.companyName,
-                    note: req.body.note
-                });
-                await NewCompany.save();
-                res.send(NewCompany)
-            }
-        }
+        const NewCompany = new CompanyCollection({
+            companyName: req.body.companyName,
+            phoneNumber: req.body.phoneNumber,
+            location: req.body.location,
+        });
+        await NewCompany.save();
+        req.flash('success', "بە سەرکەوتوویی تۆمارکرا");
+        res.redirect("/Companies")
     } catch (error) {
         next(error)
     }
@@ -101,13 +96,45 @@ exports.GetAllCompanies = async (req, res, next) => {
         .find({
             softdelete: false,
         })
-        .sort({
-            "createdAt": -1
-        })
 
-    res.render("products/Products", {
-        title: "بەرهەمەکان",
-        product: Companies,
+    res.render("Company/Companies", {
+        title: "كۆمپانیاکان",
+        companies: Companies,
         user: req.user
     })
+}
+
+
+exports.UpdateCompanyUI = async (req, res, next) => {
+    try {
+        const Companies = await CompanyCollection
+            .findOne({
+                _id: req.params.id
+            })
+
+        res.render("Company/Update", {
+            title: "نوێ کردنەوەی زانیاریەکانی " + Companies['companyName'],
+            company: Companies
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+exports.UpdateCompany = async (req, res, next) => {
+    try {
+        await CompanyCollection
+            .findByIdAndUpdate({
+                _id: req.params.id
+            }, {
+                companyName: req.body.companyName,
+                phoneNumber: req.body.phoneNumber,
+                location: req.body.location,
+            })
+
+        req.flash('success', "زانیاریەکان بە سەرکەوتوویی نوێکرانەوە");
+        res.redirect("/Companies")
+    } catch (error) {
+        next(error)
+    }
 }
