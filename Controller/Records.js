@@ -3,6 +3,7 @@ require('events').EventEmitter.defaultMaxListeners = Infinity
 const {
     roles
 } = require('../Middleware/roles');
+var mongoose = require('mongoose');
 
 // ! Collections
 const RecordsCollection = require('../models/records');
@@ -363,9 +364,22 @@ exports.DeleteSelectedInvoice = async (req, res, next) => {
 
         const Record = await RecordsCollection.find({
             recordCode: req.params.recordcode,
-            status: "Customer Request",
+            status: req.params.status,
             cutomerID: req.params.id
         });
+
+        const totalPrice = await RecordsCollection.aggregate([
+            {
+                $match: {
+                    recordCode: req.params.recordcode,
+                    cutomerID: mongoose.Types.ObjectId(req.params.id),
+                    status: req.params.status
+                },
+            },
+            { $group: { _id: null, amount: { $sum: "$totalPrice" } } }
+        ])
+
+        // console.log()
 
 
         var Profile = await ProfileCollection.findOne({
@@ -375,75 +389,46 @@ exports.DeleteSelectedInvoice = async (req, res, next) => {
         for (let index = 0; index < Record.length; index++) {
             const element = Record[index];
 
-            if (element['moneyStatus'] == "Paid") {
-                const Product = await ProductsCollection.findOne({
-                    _id: element['productID']
-                });
+            const Product = await ProductsCollection.findOne({
+                _id: element['productID']
+            });
 
-                // const Trailer = await TrailersCollection.findOne({
-                //     trailerNumber: element['trailerNumber'],
-                //     productID: element['productID']
-                // });
+            // const Trailer = await TrailersCollection.findOne({
+            //     trailerNumber: element['trailerNumber'],
+            //     productID: element['productID']
+            // });
 
-                const returnedPackets = element['totalQuantity'] + Product['totalQuantity'];
-                await ProductsCollection.findByIdAndUpdate({
-                    _id: element['productID']
-                }, {
-                    totalQuantity: returnedPackets
-                });
+            const returnedPackets = element['totalQuantity'] + Product['totalQuantity'];
+            await ProductsCollection.findByIdAndUpdate({
+                _id: element['productID']
+            }, {
+                totalQuantity: returnedPackets
+            });
 
-                // const returnedPacketsForTrailer = element['totalQuantity'] + Trailer['totalQuantity']
-                // await TrailersCollection.findByIdAndUpdate({
-                //     "_id": Trailer['_id']
-                // }, {
-                //     totalQuantity: returnedPacketsForTrailer
-                // });
+            // const returnedPacketsForTrailer = element['totalQuantity'] + Trailer['totalQuantity']
+            // await TrailersCollection.findByIdAndUpdate({
+            //     "_id": Trailer['_id']
+            // }, {
+            //     totalQuantity: returnedPacketsForTrailer
+            // });
 
 
-                setTimeout(async () => {
-                    await RecordsCollection.deleteMany({
-                        recordCode: req.params.recordcode,
-                        status: "Customer Request",
-                    })
-                }, 1000);
-            } else {
-                const Product = await ProductsCollection.findOne({
-                    _id: element['productID']
-                });
-
-                // const Trailer = await TrailersCollection.findOne({
-                //     trailerNumber: element['trailerNumber'],
-                //     productID: element['productID']
-                // });
-
-                const returnedPackets = element['totalQuantity'] + Product['totalQuantity'];
-                await ProductsCollection.findByIdAndUpdate({
-                    _id: element['productID']
-                }, {
-                    totalQuantity: returnedPackets
-                });
-
-                // const returnedPacketsForTrailer = element['totalQuantity'] + Trailer['totalQuantity']
-                // await TrailersCollection.findByIdAndUpdate({
-                //     "_id": Trailer['_id']
-                // }, {
-                //     totalQuantity: returnedPacketsForTrailer
-                // });
-
-                await ProfileCollection.findByIdAndUpdate({
-                    _id: Record[0]['cutomerID']
-                }, {
-                    remainedbalance: Profile['remainedbalance'] - parseFloat(element['totalPrice']),
-                });
-
-                setTimeout(async () => {
-                    await RecordsCollection.deleteMany({
-                        recordCode: req.params.recordcode,
-                        status: "Customer Request",
-                    })
-                }, 1000);
-            }
+            setTimeout(async () => {
+                await RecordsCollection.deleteMany({
+                    recordCode: req.params.recordcode,
+                    status: "Customer Request",
+                })
+            }, 1000);
         }
+
+        if (Record[0]['moneyStatus'] == "Debut") {
+            await ProfileCollection.findByIdAndUpdate({
+                _id: Record[0]['cutomerID']
+            }, {
+                remainedbalance: Profile['remainedbalance'] - parseFloat(totalPrice[0]['amount']),
+            });
+        }
+
 
         req.flash('success', "تۆمارەکە بە سەرکەوتوویی ڕەشکرایەوە");
         res.redirect("/Profiles")
