@@ -107,7 +107,7 @@ block content
                         br
                         h6="ژمارەی تۆمار: "+invoiceID
                         h6="بۆ:"+profile[0]['companyName']
-                          input(id="personName" name="personName" type="text" value="/کاک "+profile[0]['clientName'])
+                          input(id="personName" name="personName" type="text" value="کاک "+profile[0]['clientName'])
                         h6="ژمارەی مۆبایل: "+profile[0]['phoneNumber']
                         h6="بار: "+"فرۆشتن"
                         h6="لەلایان:"+user.username
@@ -462,10 +462,10 @@ block content
               //-   )
               //- )
             );
-            var subtotal=document.getElementById('total').innerHTML.match(/(\d+)/);
+            var subtotal=document.getElementById('total').innerHTML.replace("$","");
             document.getElementById('total').innerHTML=(parseFloat(subtotal)+parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)).toFixed(2)
             document.getElementById('total').innerHTML="$"+document.getElementById('total').innerHTML
-            document.getElementById('finalPrice').innerHTML=(parseFloat((document.getElementById('total').innerHTML).match(/(\d+)/))+parseFloat(parseFloat((document.getElementById("olddebut").innerHTML).match(/(\d+)/))))
+            document.getElementById('finalPrice').innerHTML=(parseFloat((document.getElementById('total').innerHTML).replace("$",""))+parseFloat(parseFloat((document.getElementById("olddebut").innerHTML).replace("$",""))))
             document.getElementById('finalPrice').innerHTML="$"+document.getElementById('finalPrice').innerHTML
           }
           else{

@@ -12,7 +12,7 @@ block content
                         .row
                             .form-group.col-md-2
                                 label نرخی فرۆشتن
-                                input.form-control(id="totalPrice" name="totalPrice" type='number' placeholder='0' required step='any' value=record[0]['sellPrice'])
+                                input.form-control(id="sellPrice" name="sellPrice" type='number' placeholder='0' required step='any' value=record[0]['sellPrice'])
                             .form-group.col-md-2
                                 label بڕ
                                 input.form-control(id="totalQuantity" name="totalQuantity" type='number' placeholder='0' required step='any' value=record[0]['totalQuantity'])
@@ -24,11 +24,11 @@ block content
     script.
         $(document).ready(function(){
             // Check For Packets
-            $( "#totalPrice" ).change(function() {
-                document.getElementById('detail').value=parseFloat(document.getElementById('totalQuantity').value)*parseFloat(document.getElementById('totalPrice').value)
+            $( "#sellPrice" ).change(function() {
+                document.getElementById('detail').value=parseFloat(document.getElementById('totalQuantity').value)*parseFloat(document.getElementById('sellPrice').value)
             });
             $( "#totalQuantity" ).change(function() {
-                document.getElementById('detail').value=parseFloat(document.getElementById('totalQuantity').value)*parseFloat(document.getElementById('totalPrice').value)
+                document.getElementById('detail').value=parseFloat(document.getElementById('totalQuantity').value)*parseFloat(document.getElementById('sellPrice').value)
             });
         });
         

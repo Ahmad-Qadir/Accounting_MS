@@ -206,8 +206,8 @@ exports.UpdateChangesinEditOfTrailer = async (req, res, next) => {
             _id: Record['cutomerID']
         });
 
-
         const NumberOfPackets = Math.abs(parseFloat(Record['totalQuantity']) - parseFloat(req.body.totalQuantity));
+        var totalPrice = parseFloat(NumberOfPackets) * parseFloat(req.body.sellPrice);
 
         // console.log(NumberOfPackets)
         if (parseFloat(req.body.totalQuantity) > Record['totalQuantity']) {
@@ -233,11 +233,12 @@ exports.UpdateChangesinEditOfTrailer = async (req, res, next) => {
             // });
 
 
+
             if (Record['moneyStatus'] == "Debut") {
                 await ProfileCollection.findByIdAndUpdate({
                     _id: Record['cutomerID']
                 }, {
-                    remainedbalance: Profile['remainedbalance'] + (NumberOfPackets * parseFloat(req.body.sellPrice)),
+                    remainedbalance: Profile['remainedbalance'] + totalPrice,
                 });
             }
 
@@ -286,7 +287,7 @@ exports.UpdateChangesinEditOfTrailer = async (req, res, next) => {
                 await ProfileCollection.findByIdAndUpdate({
                     _id: Record['cutomerID']
                 }, {
-                    remainedbalance: Profile['remainedbalance'] - (NumberOfPackets * parseFloat(req.body.sellPrice)),
+                    remainedbalance: Profile['remainedbalance'] - totalPrice,
                 });
             }
         }
@@ -451,7 +452,6 @@ exports.DeleteSelectedInvoice = async (req, res, next) => {
         next(error)
     }
 }
-
 
 // TODO: Checked and Worked Properly
 //Update Products Operation
