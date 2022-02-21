@@ -701,6 +701,7 @@ exports.EditProductOperation = async (req, res, next) => {
             sellPriceWakil: req.body.sellPriceWakil,
             sellPriceSharika: req.body.sellPriceSharika,
             perPacket: req.body.perPacket,
+            totalQuantity:req.body.totalQuantity,
             updatedBy: req.user.username,
             note: req.body.note
         });
