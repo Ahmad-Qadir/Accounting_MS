@@ -58,16 +58,18 @@ block content
     // Page Heading
     .d-sm-flex.align-items-left.justify-content-between.mb-4
       h1.h3.mb-0.text-gray-800=title
+      .form-group.col-md-2
+        p(id="dataofIncome") 0
       .span
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-danger.shadow-sm.text-white.m-1(onclick="deleteAllContent()")
           i.fas.fa-sync-alt.fa-sm.text-white-50
           |  نوێکردنەوە
-        //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-warning.shadow-sm.text-white.m-1.edit
-        //-   i.fas.fa-pen.fa-sm.text-white-50
-        //-   |  دەسکاریکردن
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-warning.shadow-sm.text-white.m-1.edit.disabled(type='button' onclick="paradaniGshty()")
+          i.fas.fa-money-bill-alt.fa-sm.text-white-50
+          |  پارەدانی گشتی
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm.text-white.m-1(type='button' onclick="payNow()")
           i.fas.fa-money-bill-alt.fa-sm.text-white-50
-          |  پارەدان
+          |  واصڵ کردن
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white.m-1(type='button' onclick="Qard()")
           i.fas.fa-money-bill-alt.fa-sm.text-white-50
           |  قەرزکردن
@@ -92,8 +94,22 @@ block content
                     #myDropdown.dropdown-content
                       each item,i in productNames
                         a(href="#" onclick="getModel(this,event);" title=item type='button' data-toggle="modal" data-target="#confirm-product"+i)=item
-                .form-group.col-md-2
-                  p(id="dataofIncome") 0
+                .form-group.col-md-2.invisible(id="showme1")
+                  label قەرزی کۆن
+                  input.form-control(id="qardikon" name="qardikon" type='number' placeholder='0' required step='any' value=profile[0]['remainedbalance'].toFixed(2))
+                .form-group.col-md-1.invisible(id="showme2")
+                  label کۆی گشتی
+                  input.form-control(id="koywasl" name="koywasl" type='number' placeholder='0' required step='any')
+                .form-group.col-md-1.invisible(id="showme3")
+                  label بڕی دراو
+                  input.form-control(id="koydraw" name="koydraw" type='number' placeholder='0' required step='any')
+                .form-group.col-md-2.invisible(id="showme4")
+                  label کۆی گشتی داشکان
+                  input.form-control(id="dashkan" name="dashkan" type='number' placeholder='0' required step='any')
+                .form-group.col-md-1.invisible(id="showme5")
+                  label قەرزی ماوە
+                  input.form-control(id="koymawa" name="koymawa" readOnly type='number' value=profile[0]['remainedbalance'].toFixed(2))
+
           .container-fluid(id="printableArea")
             .card.border(style="border: 5px solid #1794BA !important;" class="h-100")
               //- .card-header(style='background-color: black;')
@@ -515,9 +531,66 @@ block content
         })
     }
 
+    function paradaniGshty(val, event) {
+
+      document.getElementById('showme1').classList.remove('invisible')
+      document.getElementById('showme1').classList.add('visible')
+      document.getElementById('showme2').classList.remove('invisible')
+      document.getElementById('showme2').classList.add('visible')
+      document.getElementById('showme3').classList.remove('invisible')
+      document.getElementById('showme3').classList.add('visible')
+      document.getElementById('showme4').classList.remove('invisible')
+      document.getElementById('showme4').classList.add('visible')
+      document.getElementById('showme5').classList.remove('invisible')
+      document.getElementById('showme5').classList.add('visible')
+
+      document.getElementById('koywasl').value=document.getElementById('finalPrice').innerHTML.replace("$","")
+
+
+
+
+
+      //- event.preventDefault();
+
+      //-   var data=$.ajax({
+      //-     type: 'POST',
+      //-     url: "/Product/Trailers/#{profile[0]['clientType']}",
+      //-     dataType: 'JSON',
+      //-     data:{
+      //-       "itemModel":itemModel,
+      //-       "itemName":itemName,
+      //-       "itemType":itemType,
+      //-       "color":color,
+      //-       "itemUnit":itemUnit
+      //-     },
+      //-     success: function(data){
+      //-       //- console.log(data)
+
+      //-       }
+      //-   })
+    }
+
 
 
     $(document).ready(function(){
+
+      // Check For Packets
+        $( "#koywasl" ).change(function() {
+          document.getElementById('koymawa').value=parseFloat(document.getElementById('qardikon').value)-parseFloat(document.getElementById('koywasl').value)
+        });
+        $( "#koydraw" ).change(function() {
+          var calculation=parseFloat(document.getElementById('koywasl').value)-parseFloat(document.getElementById('koydraw').value)
+          var x=calculation/parseFloat(document.getElementById('koywasl').value);
+          var y=x*100;
+          document.getElementById('dashkan').value=y;
+        });
+
+        $( "#dashkan" ).change(function() {
+          var calculation=parseFloat(document.getElementById('koywasl').value)*(parseFloat(document.getElementById('dashkan').value)/100)
+          var x=parseFloat(document.getElementById('koywasl').value)-calculation;
+          document.getElementById('koydraw').value=x;
+        });
+
       // Delete row on delete button click
       $(document).on("click", ".delete", function(){
         $(this).parents("tr").remove();
