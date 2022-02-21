@@ -589,20 +589,23 @@ exports.PrintSelectedInvoice = async (req, res, next) => {
         const Records = await HistoryClass
             .find({
                 recordCode: req.params.invoiceID,
-                cutomerID: req.params.id
+                cutomerID: req.params.id,
+                status: req.params.status
             }).populate('productID')
 
         const ProfileInformation = await HistoryClass
             .find({
                 recordCode: req.params.invoiceID,
-                cutomerID: req.params.id
+                cutomerID: req.params.id,
+                status: req.params.status
             }).populate('cutomerID')
 
         const totalPrice = await HistoryClass.aggregate([
             {
                 $match: {
                     recordCode: req.params.invoiceID,
-                    cutomerID: mongoose.Types.ObjectId(req.params.id)
+                    cutomerID: mongoose.Types.ObjectId(req.params.id),
+                    status: req.params.status
                 },
             },
             { $group: { _id: null, amount: { $sum: "$totalPrice" } } }

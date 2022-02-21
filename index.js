@@ -75,13 +75,13 @@ app.use(cors());
 
 
 //Mongoose ODM
-// mongoose.connect("mongodb+srv://Accountant:Accountant@cluster0.c5jxd.mongodb.net/AccountingMS?retryWrites=true&w=majority").then(
-//     console.log('Connected to database server')
-// );
-
-mongoose.connect("mongodb://localhost:27017/AccountingMS").then(
+mongoose.connect("mongodb+srv://Accountant:Accountant@cluster0.c5jxd.mongodb.net/AccountingMS?retryWrites=true&w=majority").then(
     console.log('Connected to database server')
 );
+
+// mongoose.connect("mongodb://localhost:27017/AccountingMS").then(
+//     console.log('Connected to database server')
+// );
 
 //Collections
 const EmployeeClass = require('./models/Employee');
