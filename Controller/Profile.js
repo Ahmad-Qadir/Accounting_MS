@@ -403,6 +403,9 @@ exports.AddNewRequest = async (req, res, next) => {
 
         var invoiceID = parseFloat((numberArray[numberArray.length - 1])) + 1;
 
+        if (isNaN(invoiceID))
+            invoiceID = 1;
+
         const Products = await ProductsCollection
             .find({
                 id: req.params.id,

@@ -87,12 +87,17 @@ exports.AddNewProduct = async (req, res, next) => {
 exports.addNewItem = async (req, res, next) => {
     try {
 
+        var _TrailerNumber = 0;
+
         const Trailer = await TrailerCollection.find({
             status: "New Trailer",
             softdelete: false
         }).sort({
             "createdAt": -1
         });
+
+        if (Trailer[0] != undefined)
+            _TrailerNumber = Trailer[0]['trailerNumber']
 
         const Product = await ProductsCollection.findOne({
             itemName: req.body.itemName,
@@ -136,7 +141,7 @@ exports.addNewItem = async (req, res, next) => {
                 totalQuantity: 0,
                 status: "New Product",
                 expireDate: req.body.expireDate,
-                trailerNumber: Trailer[0]['trailerNumber'],
+                trailerNumber: _TrailerNumber,
                 addedBy: req.user.username,
                 updatedBy: req.user.username,
                 note: req.body.note
@@ -149,7 +154,7 @@ exports.addNewItem = async (req, res, next) => {
                 packet: 1,
                 perPacket: req.body.perPacket,
                 status: "New Product",
-                trailerNumber: Trailer[0]['trailerNumber'],
+                trailerNumber: _TrailerNumber,
                 addedBy: req.user.username,
                 updatedBy: req.user.username,
                 totalQuantity: 0,
@@ -242,6 +247,9 @@ exports.NewInvoice = async (req, res, next) => {
         });
 
         var invoiceID = parseFloat((numberArray[numberArray.length - 1])) + 1;
+
+        if (isNaN(invoiceID))
+            invoiceID = 1;
 
         var Profile = await ProfileCollection.findOne({
             _id: req.params.id
@@ -380,7 +388,9 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
 
         var invoiceID = parseFloat((numberArray[numberArray.length - 1])) + 1;
 
-        
+        if (isNaN(invoiceID))
+            invoiceID = 1;
+
         var Profile = await ProfileCollection.findOne({
             _id: req.params.id
         });
