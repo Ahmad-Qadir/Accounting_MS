@@ -43,7 +43,7 @@ block content
                       h6="ژمارەی مۆبایل: "+profile['cutomerID']['phoneNumber']
                       h6="بار: "+"فرۆشتن"
                       h6="لەلایان:"+records[0]['addedBy']
-                      h6="ژمارەی مۆبایل ی کۆمپانیا:07504153878"
+                      h6=" ژمارەی مۆبایل ی کۆمپانیا:07504153878 // 7504964908"
                     .col-6
                       img#icon(src='https://i.ibb.co/9GPnfN5/titan-removebg-preview.png' width=300).mx-auto.d-block
               hr
@@ -172,11 +172,7 @@ block content
                 .row 
                   .col-1
                   .col-4
-                    -var today = new Date();
-                    -var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-                    -var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                    -var dateTime = date+' '+time;
-                    span="    بەروار: "+dateTime.toLocaleString()
+                    span="    بەروار: "+(records[0]['createdAt']).toLocaleString()
                   .col-6
                     span="ناونیشان: "+"هەولێر - گەڕەکی عدالە - نزیک بانکی زانکۆ"
 
