@@ -27,7 +27,7 @@ block content
               th(scope='col') ژمارەی مۆبایل
               th(scope='col') ناوی کۆمپانیا
               th(scope='col') جۆری کڕیار
-              th(scope='col') ئیمیڵ
+              //- th(scope='col') ئیمیڵ
               th(scope='col') ناونیشان
               th(scope='col') باڵانسی ماوە
               th(scope='col') ژمارەی فاتورە
@@ -48,7 +48,7 @@ block content
                   td(style="text-align:center;")=item['phoneNumber']
                   td(style="text-align:center;")=item['companyName']
                   td(style="text-align:center;")=item['clientType']
-                  td(style="text-align:center;") "نیە"
+                  //- td(style="text-align:center;") "نیە"
                   td(style="text-align:center;")=item['location']
                   td(style="text-align:center;")=parseFloat(item['remainedbalance']).toFixed(2)
                   td(style="text-align:center;")=Object.keys(item['invoiceID']).length
