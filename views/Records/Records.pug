@@ -76,25 +76,19 @@ block content
                         thead.thead-light
                           tr(scope='col' style="text-align:center; font-size:90%")
                             th #
-                            th ناوی بەرهەم
-                            th بڕی پێوانە
-                            th ڕەنگ
-                            th بڕ
-                            th باری ئێستا
-                            th کۆی گشتی نرخ
-                            th تێبینی 
+                            th قەرزی کۆن
+                            th بڕی پارەی دراو
+                            th داشکان
+                            th بڕی پارەی دراو (دوای داشکان)
                             th بەروار 
                             th لەلایان 
                         tbody
                           if item['_id']['status']=="Compensate"
                             td=1
-                            td پارەدان
-                            td(style="text-align:center;") -
-                            td(style=`text-align:center;`) -
-                            td(style="text-align:center;") -
-                            td(style="text-align:center;")=item['items'][0]['status']
-                            td(style="text-align:center;")="$ "+item['items'][0]['sellPrice']
-                            td(style="text-align:center;")=item['items'][0]['note']
+                            td(style="text-align:center;")="$ "+item['items'][0]['oldDebut']
+                            td(style="text-align:center;")="$ "+item['items'][0]['totalPrice']
+                            td(style=`text-align:center;`)="% "+parseFloat(item['items'][0]['discount']).toFixed(2)
+                            td(style="text-align:center;")="$ "+item['items'][0]['prepaid']
                             td(style="text-align:center;")=item['items'][0]['createdAt'].toLocaleString()
                             td(style="text-align:center;")=item['items'][0]['addedBy']
                           else

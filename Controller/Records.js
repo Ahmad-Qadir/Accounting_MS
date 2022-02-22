@@ -64,7 +64,7 @@ exports.Records = async (req, res, next) => {
                         amount: { $sum: "$totalPrice" },
                         count: { $sum: 1 },
                         items: {
-                            $push: { personName: "$personName", note: "$note", softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                            $push: { discount: "$discount", prepaid: "$prepaid", oldDebut: "$oldDebut", personName: "$personName", note: "$note", softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
                         },
                     },
 
