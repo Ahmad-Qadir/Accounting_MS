@@ -126,14 +126,14 @@ block content
 
                         tr(style="line-height: 10px;")
                           td.left
-                            strong(style="color:#f00") قەرزی نوێ
+                            strong قەرزی پێشوو
                           if profile['cutomerID']['remainedbalance']==0
-                            td(id="olddebut" style="color:#f00").right="$"+0
+                            td(id="olddebut").right="$"+0
                           else
-                            td(id="olddebut" style="color:#f00").right="$"+parseFloat(profile['cutomerID']['remainedbalance']-totalPrice['amount']).toFixed(2)
+                            td(id="olddebut").right="$"+parseFloat(profile['cutomerID']['remainedbalance']-totalPrice['amount']).toFixed(2)
                         tr(style="line-height: 10px;")
                           td.left
-                            strong سەرجەمی تۆمار
+                            strong قەرزی نوێ
                           td.right(id="total")="$"+totalPrice['amount']
                         //- tr(style="line-height: 10px;")
                         //-   td.left
@@ -141,12 +141,12 @@ block content
                         //-   td.right(id="total")="$"+totalPrice['amount']
                         tr(style="line-height: 10px;")
                           td.left
-                            strong کۆی گشتی (دۆلار)
+                            strong(style="color:#f00") کۆی گشتی (دۆلار)
                           td.right
                             if profile['cutomerID']['remainedbalance']==0
-                              strong(id="finalPrice")="$"+(totalPrice['amount'])
+                              strong(id="finalPrice" style="color:#f00")="$"+(totalPrice['amount'])
                             else
-                              strong(id="finalPrice")="$"+parseFloat(profile['cutomerID']['remainedbalance']).toFixed(2)
+                              strong(id="finalPrice" style="color:#f00")="$"+parseFloat(profile['cutomerID']['remainedbalance']).toFixed(2)
 
 
                   //- .col-5.ml-auto
