@@ -53,16 +53,16 @@ block content
                   td(style="text-align:center;")=parseFloat(item['remainedbalance']).toFixed(2)
                   td(style="text-align:center;")=Object.keys(item['invoiceID']).length
                   td(style="text-align:center;")
-                    a.btn.btn-sm.btn-info.m-1(title="تۆمارەکان" href="/profiles/"+item['_id']+"/invoices")
+                    a.btn.btn-sm.btn-info.m-1(title="تۆمارەکان" href="/profiles/"+item['_id']+"/invoices" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;")
                       span.icon.text-white-50
                         i.fas.fa-file-invoice
                     a.btn.btn-sm.btn-primary.m-1(href="/Products/"+item['_id']+"/NewRecover" title="گەڕانەوەی بەرهەم" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;")
                       span.icon.text-white-50
                         i.fas.fa-recycle
-                    a.btn.btn-sm.btn-secondary.m-1(title="پارەدان" href="/Profiles/Debut/"+item['_id'])
+                    a.btn.btn-sm.btn-secondary.m-1(title="پارەدان" href="/Profiles/Debut/"+item['_id'] style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;")
                       span.icon.text-white-50
                         i.fas.fa-wallet
-                    a.btn.btn-sm.btn-warning.m-1(title="نوێکردنەوەی زانیاریەکان" href="/Profiles/Modification/"+item['_id'])
+                    a.btn.btn-sm.btn-warning.m-1(title="نوێکردنەوەی زانیاریەکان" href="/Profiles/Modification/"+item['_id'] style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;")
                       span.icon.text-white-50
                         i.fas.fa-pencil-alt
   //- include ../Components/Footer
