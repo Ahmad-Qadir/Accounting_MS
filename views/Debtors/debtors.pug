@@ -39,7 +39,7 @@ block content
                 td(style="text-align:center;")=item['phoneNumber']
                 td(style="text-align:center;")=item['companyName']
                 td(style="text-align:center;")=item['clientType']
-                td(style="text-align:center;" id="totalPP")="$ "+item['remainedbalance']
+                td(style="text-align:center;" id="totalPP")="$ "+parseFloat(item['remainedbalance']).toFixed(2)
                 td(style="text-align:center;")
                   a.btn.btn-sm.btn-info.m-1(title="profiles Invoices" href="/profiles/"+item['_id']+"/Debut/invoices")
                     span.icon.text-white-50
