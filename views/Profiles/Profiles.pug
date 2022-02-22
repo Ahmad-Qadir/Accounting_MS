@@ -41,7 +41,7 @@ block content
               tr(style="font-weight:bold; font-size:2 rem")
                 form(method='POST')
                   td(style="text-align:center;")
-                    a.btn.btn-sm.btn-success.m-1(href="Profile/"+item['_id']+"/NewRequest" title="Add Invoice for "+item['clientName'])
+                    a.btn.btn-sm.btn-success.m-1(href="Profile/"+item['_id']+"/NewRequest" title="زیادکردنی تۆمار بۆ "+item['clientName'])
                       span.icon.text-white-50
                         i.fas.fa-plus-square
                   td=item['clientName']
@@ -53,13 +53,13 @@ block content
                   td(style="text-align:center;")=item['remainedbalance']
                   td(style="text-align:center;")=Object.keys(item['invoiceID']).length
                   td(style="text-align:center;")
-                    a.btn.btn-sm.btn-info.m-1(title="profiles Invoices" href="/profiles/"+item['_id']+"/invoices")
+                    a.btn.btn-sm.btn-info.m-1(title="تۆمارەکان" href="/profiles/"+item['_id']+"/invoices")
                       span.icon.text-white-50
                         i.fas.fa-file-invoice
                     a.btn.btn-sm.btn-primary.m-1(href="/Products/"+item['_id']+"/NewRecover" title="گەڕانەوەی بەرهەم" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;")
                       span.icon.text-white-50
                         i.fas.fa-recycle
-                    a.btn.btn-sm.btn-secondary.m-1(title="profiles Invoices" href="/Profiles/Debut/"+item['_id'])
+                    a.btn.btn-sm.btn-secondary.m-1(title="پارەدان" href="/Profiles/Debut/"+item['_id'])
                       span.icon.text-white-50
                         i.fas.fa-wallet
                     a.btn.btn-sm.btn-warning.m-1(title="نوێکردنەوەی زانیاریەکان" href="/Profiles/Modification/"+item['_id'])
