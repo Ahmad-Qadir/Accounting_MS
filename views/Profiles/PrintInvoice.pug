@@ -84,6 +84,17 @@ block content
                             td(style="text-align:center;")=item['totalQuantity']
                             td(style="text-align:center;")="$ "+item['sellPrice']
                             td.count-me(style="text-align:center;")="$ "+item['totalPrice']
+                  tfoot(style="font-size: 12px;font-weight:bold;text-align:center;")
+                    tr
+                      td(style="text-align:center;") #
+                      td(style="text-align:center;")
+                      td(style="text-align:center;")
+                      td(style="text-align:center;")
+                      td(style="text-align:center;")
+                      td(style="text-align:center;")
+                      td(style="text-align:center;")
+                      td(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light کۆی گشتی
+                      td(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light="$"+totalPrice['amount']
               if records[0]['productID']==undefined
                 .row
                   .col-5.ml-auto
@@ -103,24 +114,27 @@ block content
                             strong قەرزی دراوە
                           td.right
                             strong(id="finalPrice")="$"+(records[0]['totalPrice'])
+                      tfoot 
+                        tr(style="line-height: 10px;")
+                          td.left 45
               else 
                 .row
                   .col-5.ml-auto
                     br
                     table.table.table-bordered.table-xs(id="totalPayment")
                       tbody
+
                         tr(style="line-height: 10px;")
                           td.left
-                            strong سەرجەمی تۆمار
-                          td.right(id="total")="$"+totalPrice['amount']
-                        tr(style="line-height: 10px;")
-                          td.left
-                            strong(style="color:#f00") قەرزی پێشوو
+                            strong(style="color:#f00") قەرزی نوێ
                           if profile['cutomerID']['remainedbalance']==0
                             td(id="olddebut" style="color:#f00").right="$"+0
                           else
                             td(id="olddebut" style="color:#f00").right="$"+parseFloat(profile['cutomerID']['remainedbalance']-totalPrice['amount']).toFixed(2)
-
+                        tr(style="line-height: 10px;")
+                          td.left
+                            strong سەرجەمی تۆمار
+                          td.right(id="total")="$"+totalPrice['amount']
                         //- tr(style="line-height: 10px;")
                         //-   td.left
                         //-     strong قەرزی ئێستا
@@ -133,6 +147,7 @@ block content
                               strong(id="finalPrice")="$"+(totalPrice['amount'])
                             else
                               strong(id="finalPrice")="$"+parseFloat(profile['cutomerID']['remainedbalance']).toFixed(2)
+
 
                   //- .col-5.ml-auto
                   //-   br
