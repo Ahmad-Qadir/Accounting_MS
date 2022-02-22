@@ -7,7 +7,7 @@ var mongoose = require('mongoose');
 //Collections Section
 const ProductsCollection = require('../models/Product');
 const CustomerTypeCollection = require('../models/CustomerType');
-const HistoryClass = require('../models/records');
+const RecordsCollection = require('../models/records');
 const ProfileCollection = require('../models/Profiles');
 const TrailerCollection = require('../models/Trailers');
 const CompanyCollection = require('../models/Companies');
@@ -133,20 +133,28 @@ exports.PayMoneyUI = async (req, res, next) => {
 //Get All Customers
 exports.PayMoney = async (req, res, next) => {
 
-    const Records = await HistoryClass.find({
+    const Record = await RecordsCollection.findOne({
         status: "Compensate",
         softdelete: false
-    }).sort({
-        "createdAt": -1
+    }).distinct("recordCode");
+
+    var numberArray = Record.map(Number);
+
+    numberArray.sort(function (a, b) {
+        return a - b;
     });
+
+    var invoiceID = parseFloat((numberArray[numberArray.length - 1])) + 1;
+
+    if (isNaN(invoiceID))
+        invoiceID = 1;
 
     var Profile = await ProfileCollection.find({
         _id: req.params.id
     });
 
-    var invoiceID = parseFloat(Records[0]['recordCode']) + 1;
 
-    const newRecordtoHistory = new HistoryClass({
+    const newRecordtoHistory = new RecordsCollection({
         recordCode: invoiceID,
         status: "Compensate",
         sellPrice: req.body.paid,
@@ -167,18 +175,11 @@ exports.PayMoney = async (req, res, next) => {
         _id: req.params.id
     }, {
         remainedbalance: req.body.finalbalance,
+        updatedBy: req.user.username,
         $push: {
             invoiceID: newRecordtoHistory["_id"],
         }
     });
-
-
-    // await ProfileCollection.findByIdAndUpdate({
-    //     _id: req.params.id
-    // }, {
-    //     remainedbalance: req.body.finalbalance,
-    //     updatedBy: req.user.username,
-    // });
 
     req.flash('success', "پارەدان بە سەرکەوتوویی تۆمارکرا");
     res.redirect("/Profiles")
@@ -208,14 +209,14 @@ exports.UpdateProfileChanges = async (req, res, next) => {
 // ! User Invoices
 //Get Invoice for Specific Customer
 exports.GetAllInvoiceForCustomers = async (req, res, next) => {
-    const Invoices = await HistoryClass.aggregate(
+    const Invoices = await RecordsCollection.aggregate(
         [
             {
                 $group: {
                     _id: { recordCode: '$recordCode', status: "$status" },
                     amount: { $sum: "$totalPrice" },
                     items: {
-                        $push: { softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                        $push: { recordCode: '$recordCode',softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
                     },
                 },
 
@@ -238,7 +239,7 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
             },
         ]);
 
-    const Profile = await HistoryClass
+    const Profile = await RecordsCollection
         .find({
             cutomerID: req.params.id
         })
@@ -264,7 +265,7 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
 
 //Get Debut Invoice for Specific Customer
 exports.GetAllDebutInvoiceForCustomers = async (req, res, next) => {
-    const Invoices = await HistoryClass
+    const Invoices = await RecordsCollection
         .aggregate([
             {
                 $group: {
@@ -295,7 +296,7 @@ exports.GetAllDebutInvoiceForCustomers = async (req, res, next) => {
             },
         ]);
 
-    const Profile = await HistoryClass
+    const Profile = await RecordsCollection
         .find({
             cutomerID: req.params.id
         })
@@ -323,7 +324,7 @@ exports.GetAllDebutInvoiceForCustomers = async (req, res, next) => {
 
 //Get Invoice for Specific Customer
 exports.PrintAllInvoiceforCustomer = async (req, res, next) => {
-    const Invoices = await HistoryClass.aggregate(
+    const Invoices = await RecordsCollection.aggregate(
         [
             {
                 $group: {
@@ -382,7 +383,7 @@ exports.PrintAllInvoiceforCustomer = async (req, res, next) => {
 exports.AddNewRequest = async (req, res, next) => {
     try {
 
-        // const Records = await HistoryClass.findOne({
+        // const Records = await RecordsCollection.findOne({
         //     status: "Customer Request",
         //     softdelete: false
         // }).sort({
@@ -390,7 +391,7 @@ exports.AddNewRequest = async (req, res, next) => {
         //     "updatedAt": -1
         // });
 
-        const Record = await HistoryClass.findOne({
+        const Record = await RecordsCollection.findOne({
             status: "Customer Request",
             softdelete: false
         }).distinct("recordCode");
@@ -586,21 +587,21 @@ exports.debtors = async (req, res, next) => {
 //Print Selected Invoice
 exports.PrintSelectedInvoice = async (req, res, next) => {
     try {
-        const Records = await HistoryClass
+        const Records = await RecordsCollection
             .find({
                 recordCode: req.params.invoiceID,
                 cutomerID: req.params.id,
                 status: req.params.status
             }).populate('productID')
 
-        const ProfileInformation = await HistoryClass
+        const ProfileInformation = await RecordsCollection
             .find({
                 recordCode: req.params.invoiceID,
                 cutomerID: req.params.id,
                 status: req.params.status
             }).populate('cutomerID')
 
-        const totalPrice = await HistoryClass.aggregate([
+        const totalPrice = await RecordsCollection.aggregate([
             {
                 $match: {
                     recordCode: req.params.invoiceID,
@@ -724,7 +725,7 @@ exports.CheckForTrailerInRequest = async (req, res, next) => {
         //         productID: Products[0]["_id"],
         //         status: "New Trailer"
         //     })
-        const Recovered = await HistoryClass
+        const Recovered = await RecordsCollection
             .find({
                 productID: Products[0]["_id"],
                 status: "Recovered"
