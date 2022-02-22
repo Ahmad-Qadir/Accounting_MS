@@ -50,7 +50,7 @@ block content
                   td(style="text-align:center;")=item['clientType']
                   td(style="text-align:center;") "نیە"
                   td(style="text-align:center;") "نیە"
-                  td(style="text-align:center;")=item['remainedbalance']
+                  td(style="text-align:center;")=parseFloat(item['remainedbalance']).toFixed(2)
                   td(style="text-align:center;")=Object.keys(item['invoiceID']).length
                   td(style="text-align:center;")
                     a.btn.btn-sm.btn-info.m-1(title="تۆمارەکان" href="/profiles/"+item['_id']+"/invoices")
