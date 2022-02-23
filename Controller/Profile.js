@@ -93,10 +93,22 @@ exports.CreateNewProfile = async (req, res, next) => {
     })
 }
 
+exports.DeleteProfile = async (req, res, next) => {
+    await ProfileCollection
+        .findByIdAndUpdate({
+            _id: req.params.id
+        }, {
+            softdelete: true
+        })
+
+    req.flash('success', "کڕیاری ناوبراو بە سەرکەوتوویی ڕەشکرایەوە");
+    res.redirect("/Profiles")
+}
+
 //Get All Customers
 exports.GetAllCustomers = async (req, res, next) => {
     const Profiles = await ProfileCollection
-        .find({})
+        .find({ softdelete: false })
 
     res.render("Profiles/Profiles", {
         title: "کڕیارەکان",
@@ -216,7 +228,7 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
                     _id: { recordCode: '$recordCode', status: "$status" },
                     amount: { $sum: "$totalPrice" },
                     items: {
-                        $push: { recordCode: '$recordCode',softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                        $push: { recordCode: '$recordCode', softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
                     },
                 },
 

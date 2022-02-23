@@ -17,7 +17,7 @@ const ProfileClass = mongoose.model('Profiles', mongoose.Schema({
         type: String
     },
     softdelete: {
-        type: String,
+        type: Boolean,
         default: false
     },
     invoiceID: [{
