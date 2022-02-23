@@ -65,6 +65,9 @@ block content
                     a.btn.btn-sm.btn-warning.m-1(title="نوێکردنەوەی زانیاریەکان" href="/Profiles/Modification/"+item['_id'] style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;")
                       span.icon.text-white-50
                         i.fas.fa-pencil-alt
+                    a.btn.btn-sm.btn-danger.m-1(title="ڕەشکردنەوە" href="/Profiles/Delete/"+item['_id'] style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;")
+                      span.icon.text-white-50
+                        i.fas.fa-trash
   //- include ../Components/Footer
   script.
     $(document).ready(function() {
