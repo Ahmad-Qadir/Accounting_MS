@@ -1,0 +1,55 @@
+include ../Components/Header
+block content
+    br
+    .container-fluid
+        // Page Heading
+        .d-sm-flex.align-items-left.justify-content-between.mb-4
+            h1.h3.mb-0.text-gray-800=" تۆماری "+ profile[0]['cutomerID']['clientName']
+            //- .container.col-md-4
+            //-     .row.height.d-flex.justify-content-center.align-items-center
+            //-         .col.md-6
+            //-             .search-box
+            //-                 .input-group
+            //-                     input#search.form-control(type='text' placeholder='گەڕان بەپێی ژمارەی تۆمار')
+            .span
+                //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.m-2(href="/Profiles/Invoices/List/"+profile[0]['cutomerID']['_id'])
+                //-     i.fas.fa-file-invoice.fa-sm.text-white-50
+                //-     |  چاپکردن
+                //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white.m-2(href="/Profiles/Invoices/"+profile[0]['cutomerID']['_id'])
+                //-   i.fas.fa-file-invoice.fa-sm.text-white-50
+                //-   |  تۆمارەکان(بە وەصڵ)
+                //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white(href=Address+"/Clients/Register")
+                //-     i.fas.fa-plus-square.fa-sm.text-white-50
+                //-     |  Add New Product
+        .row
+            table.table.table-hover.table-sm.dt-responsive.table-striped
+                thead.thead-light
+                    tr(scope='col' style="text-align:center; font-size:90%")
+                        th #
+                        th ژمارەی تۆمار
+                        th بەروار
+                        th قەرزی کۆن
+                        th قەرزی نوێ
+                        th چالاکی
+                        th کۆی گشتی
+
+                tbody
+                    each item,i in invoices
+                        tr(scope='col' style="text-align:center; font-size:90%")
+                            td=i
+                            td(style="text-align:center;")=item['_id']['recordCode']
+                            td(style=`text-align:center;`)=item['items'][0]['createdAt'].toLocaleString()
+                            td(style=`text-align:center;`)="$ "+item['items'][0]['oldDebut']
+                            td(style="text-align:center;")="$ "+item['amount']
+                            if item['items'][0]['moneyStatus']=="Return Money"
+                                td(style="text-align:center;") پارەدان
+                            else if item['items'][0]['status']=="Recovered"
+                                td(style="text-align:center;") گەڕانەوە
+                            else if item['items'][0]['moneyStatus']=="Debut"
+                                td(style="text-align:center;") فرۆشتن-قەرد
+                            else if item['items'][0]['moneyStatus']=="Paid"
+                                td(style="text-align:center;") فرۆشتن-کاش
+                            if item['items'][0]['moneyStatus']=="Return Money"
+                                td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']-item['amount'])
+                            else 
+                                td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']+item['amount'])

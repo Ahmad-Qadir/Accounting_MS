@@ -127,6 +127,7 @@ router.post('/Profiles/Modification/:id/Updates', Profiles.allowIfLoggedin, Prof
 router.get('/Profiles/Debut/:id', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.PayMoneyUI); // Get All invoice for specific Profile
 router.post('/Profiles/Debut/:id/Updates', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.PayMoney); // Get All invoice for specific Profile
 router.get('/Profiles/Delete/:id', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.DeleteProfile); // Get All invoice for specific Profile
+router.get('/Profiles/Invoices/List/:id', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.GetAllInvoiceInList); // Get All invoice for specific Profile
 
 
 

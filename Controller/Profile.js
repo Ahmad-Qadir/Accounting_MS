@@ -228,7 +228,7 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
                     _id: { recordCode: '$recordCode', status: "$status" },
                     amount: { $sum: "$totalPrice" },
                     items: {
-                        $push: { recordCode: '$recordCode', softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                        $push: { oldDebut: "$oldDebut", discount: "$discount", prepaid: "$prepaid", recordCode: '$recordCode', softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
                     },
                 },
 
@@ -388,6 +388,56 @@ exports.PrintAllInvoiceforCustomer = async (req, res, next) => {
     //     profile: ProfileInformation
     // })
     // res.send(Invoices)
+
+}
+
+//Get Invoice for Specific Customer
+exports.GetAllInvoiceInList = async (req, res, next) => {
+    const Invoices = await RecordsCollection.aggregate(
+        [
+            {
+                $group: {
+                    _id: { recordCode: '$recordCode', status: "$status" },
+                    amount: { $sum: "$totalPrice" },
+                    items: {
+                        $push: { oldDebut: "$oldDebut", discount: "$discount", prepaid: "$prepaid", recordCode: '$recordCode', softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                    },
+                },
+
+            },
+            {
+                $sort: { "items.createdAt": 1 },
+            },
+            {
+                $match: {
+                    "items.cutomerID": mongoose.Types.ObjectId(req.params.id)
+                }
+            },
+            {
+                $lookup: {
+                    from: "items",
+                    localField: "items.productID",
+                    foreignField: "_id",
+                    as: "data",
+                },
+            },
+        ]);
+
+    const Profile = await RecordsCollection
+        .find({
+            cutomerID: req.params.id
+        })
+        .sort({
+            "createdAt": -1
+        }).populate('cutomerID')
+
+    res.render("Profiles/PrintInvoicesInList", {
+        title: "تۆماری " + Profile[0]['cutomerID']['clientName'],
+        invoices: Invoices,
+        profile: Profile,
+        address: address,
+        // recovered: _RecoveredInvoices
+    })
 
 }
 
