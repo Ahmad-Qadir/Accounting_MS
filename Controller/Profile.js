@@ -206,7 +206,7 @@ exports.UpdateProfileChanges = async (req, res, next) => {
         clientType: req.body.clientType,
         remainedbalance: req.body.remainedbalance,
         updatedBy: req.user.username,
-        location: req.user.location,
+        location: req.body.location,
     });
 
 

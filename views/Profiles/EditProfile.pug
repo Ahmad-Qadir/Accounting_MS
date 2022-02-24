@@ -27,11 +27,12 @@ block content
                                 label ناوی کۆمپانیا
                                 input.form-control(name="companyName" type='text' value=profiles['companyName'])
                             .form-group.col-md-4
-                                label بری قارز
+                                label بری قەرز
                                 input.form-control(name="remainedbalance" type='text' value=parseFloat(profiles['remainedbalance']).toFixed(2))
                             .form-group.col-md-4
                                 label جۆری کڕیار
                                 select(name="clientType" class="form-control")
+                                    option(value=profiles['clientType'])=profiles['clientType']
                                     each item,i in types
                                         option(value=item['customerType'])=item['customerType']
                         button.btn.btn-primary.m-2(type='submit') تۆماربکە
