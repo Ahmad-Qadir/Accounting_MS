@@ -478,7 +478,6 @@ exports.AddNewRequest = async (req, res, next) => {
         const ProductNames = await ProductsCollection
             .find({
                 id: req.params.id,
-                softdelete: false
             }).distinct('itemModel')
 
         const Profiles = await ProfileCollection
