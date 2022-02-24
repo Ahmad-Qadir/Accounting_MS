@@ -59,17 +59,14 @@ exports.AddNewProduct = async (req, res, next) => {
     try {
         const Company = await CompanyCollection
             .find({
-                softdelete: false,
             })
 
         const Color = await ProductsCollection
             .find({
-                softdelete: false
             }).distinct('color')
 
         const ItemUnit = await ItemUnitCollection
             .find({
-                softdelete: false,
             })
         res.render('Products/AddProduct.pug', {
             title: "زیادکردنی بەرهەمی نوێ",
@@ -91,7 +88,6 @@ exports.addNewItem = async (req, res, next) => {
 
         const Trailer = await TrailerCollection.find({
             status: "New Trailer",
-            softdelete: false
         }).sort({
             "createdAt": -1
         });
@@ -237,7 +233,6 @@ exports.NewInvoice = async (req, res, next) => {
         var count = 0;
         const Record = await RecordsCollection.findOne({
             status: "Customer Request",
-            softdelete: false
         }).distinct("recordCode");
 
         var numberArray = Record.map(Number);
@@ -377,7 +372,6 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
         var count = 0;
         const Record = await RecordsCollection.findOne({
             status: "Customer Request",
-            softdelete: false
         }).distinct("recordCode");
 
         var numberArray = Record.map(Number);
@@ -519,7 +513,6 @@ exports.NewInvoiceForDebut = async (req, res, next) => {
     try {
         const Records = await RecordsCollection.find({
             status: "Compensate",
-            softdelete: false
         }).sort({
             "createdAt": -1
         });
@@ -568,7 +561,6 @@ exports.NewInvoiceForDebut = async (req, res, next) => {
 exports.getProducts = async (req, res, next) => {
     const Products = await ProductsCollection
         .find({
-            softdelete: false,
         })
         .sort({
             "createdAt": -1
@@ -587,7 +579,6 @@ exports.getProducts = async (req, res, next) => {
 exports.PrintAllProducts = async (req, res, next) => {
     const Products = await ProductsCollection
         .find({
-            softdelete: false,
         })
         .sort({
             "manufacturerCompany": 1,
@@ -606,7 +597,6 @@ exports.PrintAllProducts = async (req, res, next) => {
 exports.getInvoiceofSpecificProduct = async (req, res, next) => {
     const Products = await RecordsCollection
         .find({
-            softdelete: false,
             productID: req.params.id
         })
         .sort({
@@ -615,7 +605,6 @@ exports.getInvoiceofSpecificProduct = async (req, res, next) => {
 
     const Profile = await RecordsCollection
         .find({
-            softdelete: false,
             productID: req.params.id
         })
         .sort({
@@ -647,22 +636,18 @@ exports.EditProductUI = async (req, res, next) => {
         const Product = await ProductsCollection
             .find({
                 _id: req.params.id,
-                softdelete: false,
             });
 
         const Company = await CompanyCollection
             .find({
-                softdelete: false,
             })
 
         const Color = await ProductsCollection
             .find({
-                softdelete: false
             }).distinct('color')
 
         const ItemUnit = await ItemUnitCollection
             .find({
-                softdelete: false,
             })
         res.render('Products/EditProduct', {
             title: "دەسکاریکردنی بەرهەمی " + Product[0]['itemName'],
@@ -719,22 +704,18 @@ exports.CloneProductUI = async (req, res, next) => {
         const Product = await ProductsCollection
             .find({
                 _id: req.params.id,
-                softdelete: false,
             });
 
         const Company = await CompanyCollection
             .find({
-                softdelete: false,
             })
 
         const Color = await ProductsCollection
             .find({
-                softdelete: false
             }).distinct('color')
 
         const ItemUnit = await ItemUnitCollection
             .find({
-                softdelete: false,
             })
         res.render('Products/cloneProduct', {
             title: "لەبەرگرتنەوەی " + Product[0]['itemName'],
@@ -755,7 +736,6 @@ exports.CloneProduct = async (req, res, next) => {
 
         const Trailer = await TrailerCollection.find({
             status: "New Trailer",
-            softdelete: false
         }).sort({
             "createdAt": -1
         });
@@ -846,7 +826,6 @@ exports.AddNewTrailer = async (req, res, next) => {
     try {
         const Trailer = await TrailerCollection.find({
             status: "New Trailer",
-            softdelete: false
         }).sort({
             "createdAt": -1
         });
@@ -860,12 +839,10 @@ exports.AddNewTrailer = async (req, res, next) => {
 
         const Products = await ProductsCollection
             .find({
-                softdelete: false
             })
 
         const Company = await ProductsCollection
             .find({
-                softdelete: false
             }).distinct('manufacturerCompany')
 
         res.render('Products/newTrailer', {
@@ -889,7 +866,6 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
         var RequestList = req.body['tbody'];
         const Trailer = await TrailerCollection.find({
             status: "New Trailer",
-            softdelete: false
         }).sort({
             "createdAt": -1
         });
@@ -1019,7 +995,6 @@ exports.CheckForProductPriceInTrailer = async (req, res, next) => {
         const Products = await ProductsCollection
             .find({
                 itemName: req.body.itemName,
-                softdelete: false,
                 itemType: req.body.itemType,
                 color: req.body.color,
                 itemModel: req.body.itemModel,
@@ -1105,7 +1080,6 @@ exports.SearchForProductsinCompany = async (req, res, next) => {
         var CompanyName = req.params.company;
         const Product = await ProductsCollection
             .find({
-                softdelete: false,
                 manufacturerCompany: CompanyName
             });
         // console.log(Product)
@@ -1129,7 +1103,6 @@ exports.AddNewRecover = async (req, res, next) => {
     try {
         const Records = await RecordsCollection.find({
             status: "Recovered",
-            softdelete: false
         }).sort({
             "createdAt": -1
         });
@@ -1143,28 +1116,23 @@ exports.AddNewRecover = async (req, res, next) => {
         const Products = await ProductsCollection
             .find({
                 id: req.params.id,
-                softdelete: false
             })
 
         const ProductNames = await ProductsCollection
             .find({
                 id: req.params.id,
-                softdelete: false
             }).distinct('itemModel')
 
         const Profiles = await ProfileCollection
             .find({
                 _id: req.params.id,
-                // softdelete: false,
             })
         const Trailers = await TrailerCollection
             .find({
-                softdelete: false,
                 productID: req.params.id,
             })
         const Company = await CompanyCollection
             .find({
-                softdelete: false,
             })
 
         res.render('Profiles/AddNewRecover', {
@@ -1192,7 +1160,6 @@ exports.RecoveredSoldProducts = async (req, res, next) => {
 
         const Records = await RecordsCollection.find({
             status: "Recovered",
-            softdelete: false
         }).sort({
             "createdAt": -1
         });
@@ -1590,7 +1557,6 @@ exports.SearchForProductModel = async (req, res, next) => {
     try {
         const Product = await ProductsCollection
             .find({
-                softdelete: false,
                 itemModel: req.body.itemModel,
             }).sort({
                 itemName: 1

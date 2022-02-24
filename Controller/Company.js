@@ -57,6 +57,7 @@ exports.CheckForCompanyProducts = async (req, res, next) => {
                     manufacturerCompany: req.params.companyName,
                     softdelete: false
                 })
+            console.log(CompanyProducts)
             res.send(CompanyProducts)
         }, 500);
 

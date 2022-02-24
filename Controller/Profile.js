@@ -85,7 +85,6 @@ exports.addNewCustomer = async (req, res, next) => {
 exports.CreateNewProfile = async (req, res, next) => {
     const CustomerType = await CustomerTypeCollection
         .find({
-            softdelete: false
         })
     res.render("Profiles/AddProfile", {
         title: "زیادکردنی كڕیاری نوێ",
@@ -98,7 +97,6 @@ exports.DeleteProfile = async (req, res, next) => {
         .findByIdAndUpdate({
             _id: req.params.id
         }, {
-            softdelete: true
         })
 
     req.flash('success', "کڕیاری ناوبراو بە سەرکەوتوویی ڕەشکرایەوە");
@@ -108,7 +106,7 @@ exports.DeleteProfile = async (req, res, next) => {
 //Get All Customers
 exports.GetAllCustomers = async (req, res, next) => {
     const Profiles = await ProfileCollection
-        .find({ softdelete: false })
+        .find({  })
 
     res.render("Profiles/Profiles", {
         title: "کڕیارەکان",
@@ -122,7 +120,6 @@ exports.EditCustomerUI = async (req, res, next) => {
         .findOne({ _id: req.params.id })
     const CustomerType = await CustomerTypeCollection
         .find({
-            softdelete: false
         })
     res.render("Profiles/EditProfile", {
         title: "نوێکردنەوەی زانیاریەکانی " + Profiles['clientName'],
@@ -147,7 +144,6 @@ exports.PayMoney = async (req, res, next) => {
 
     const Record = await RecordsCollection.findOne({
         status: "Compensate",
-        softdelete: false
     }).distinct("recordCode");
 
     var numberArray = Record.map(Number);
@@ -447,7 +443,6 @@ exports.AddNewRequest = async (req, res, next) => {
 
         // const Records = await RecordsCollection.findOne({
         //     status: "Customer Request",
-        //     softdelete: false
         // }).sort({
         //     "createdAt": -1,
         //     "updatedAt": -1
@@ -455,7 +450,6 @@ exports.AddNewRequest = async (req, res, next) => {
 
         const Record = await RecordsCollection.findOne({
             status: "Customer Request",
-            softdelete: false
         }).distinct("recordCode");
 
         var numberArray = Record.map(Number);
@@ -472,7 +466,6 @@ exports.AddNewRequest = async (req, res, next) => {
         const Products = await ProductsCollection
             .find({
                 id: req.params.id,
-                softdelete: false
             })
 
         const ProductNames = await ProductsCollection
@@ -483,16 +476,13 @@ exports.AddNewRequest = async (req, res, next) => {
         const Profiles = await ProfileCollection
             .find({
                 _id: req.params.id,
-                // softdelete: false,
             })
         const Trailers = await TrailerCollection
             .find({
-                softdelete: false,
                 productID: req.params.id,
             })
         const Company = await CompanyCollection
             .find({
-                softdelete: false,
             })
 
         res.render('Profiles/AddNewRequest', {
@@ -782,7 +772,6 @@ exports.CheckForTrailerInRequest = async (req, res, next) => {
             })
         // const Trailers = await TrailerCollection
         //     .find({
-        //         softdelete: false,
         //         productID: Products[0]["_id"],
         //         status: "New Trailer"
         //     })
