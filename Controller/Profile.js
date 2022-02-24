@@ -93,11 +93,11 @@ exports.CreateNewProfile = async (req, res, next) => {
 }
 
 exports.DeleteProfile = async (req, res, next) => {
-    await ProfileCollection
+    const data = await ProfileCollection
         .findByIdAndUpdate({
             _id: req.params.id
         }, {
-            softdelete: false
+            softdelete: true
         })
 
     req.flash('success', "کڕیاری ناوبراو بە سەرکەوتوویی ڕەشکرایەوە");
