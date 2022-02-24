@@ -10,7 +10,7 @@ block content
                     form(method='POST' action="/Profiles/Modification/"+profiles['_id']+"/Updates")
                         h2 زانیاری کڕیار
                         .row
-                            .form-group.col-md-6
+                            .form-group.col-md-3
                                 label ناوی كڕیار
                                 input.form-control(name="clientName" type='text' placeholder='ناوی كڕیار' value=profiles['clientName'])
                             .form-group.col-md-3
@@ -19,6 +19,9 @@ block content
                             .form-group.col-md-3
                                 label ژمارەی مۆبایل
                                 input.form-control(name="secondPhoneNumber" type='text' placeholder='ژمارەی مۆبایل 2' value=profiles['secondPhoneNumber'])
+                            .form-group.col-md-3
+                                label ناونیشان
+                                input.form-control(name="location" type='text' placeholder='ناونیشان' value=profiles['location'])
                         .row
                             .form-group.col-md-4
                                 label ناوی کۆمپانیا

@@ -106,7 +106,7 @@ exports.DeleteProfile = async (req, res, next) => {
 //Get All Customers
 exports.GetAllCustomers = async (req, res, next) => {
     const Profiles = await ProfileCollection
-        .find({  })
+        .find({ softdelete: false })
 
     res.render("Profiles/Profiles", {
         title: "کڕیارەکان",
@@ -205,6 +205,7 @@ exports.UpdateProfileChanges = async (req, res, next) => {
         clientType: req.body.clientType,
         remainedbalance: req.body.remainedbalance,
         updatedBy: req.user.username,
+        location: req.user.location,
     });
 
 
