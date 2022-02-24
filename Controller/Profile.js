@@ -97,6 +97,7 @@ exports.DeleteProfile = async (req, res, next) => {
         .findByIdAndUpdate({
             _id: req.params.id
         }, {
+            softdelete: false
         })
 
     req.flash('success', "کڕیاری ناوبراو بە سەرکەوتوویی ڕەشکرایەوە");
