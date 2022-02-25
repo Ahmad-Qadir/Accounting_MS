@@ -516,7 +516,8 @@ exports.debtors = async (req, res, next) => {
 
         const Profiles = await ProfileCollection
             .find({
-                remainedbalance: { "$ne": 0 }
+                remainedbalance: { "$ne": 0 },
+                softdelete: false
             }).sort({
                 remainedbalance: -1
             })
