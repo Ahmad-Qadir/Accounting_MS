@@ -12,18 +12,18 @@ block content
             //-                 .input-group
             //-                     input#search.form-control(type='text' placeholder='گەڕان بەپێی ژمارەی تۆمار')
             .span
-                //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.m-2(href="/Profiles/Invoices/List/"+profile[0]['cutomerID']['_id'])
-                //-     i.fas.fa-file-invoice.fa-sm.text-white-50
-                //-     |  چاپکردن
+                a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.m-2(onclick="printDiv('printableArea')")
+                    i.fas.fa-file-invoice.fa-sm.text-white-50
+                    |  چاپکردن
                 //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white.m-2(href="/Profiles/Invoices/"+profile[0]['cutomerID']['_id'])
                 //-   i.fas.fa-file-invoice.fa-sm.text-white-50
                 //-   |  تۆمارەکان(بە وەصڵ)
                 //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white(href=Address+"/Clients/Register")
                 //-     i.fas.fa-plus-square.fa-sm.text-white-50
                 //-     |  Add New Product
-        .row
-            table.table.table-hover.table-sm.dt-responsive.table-striped
-                thead.thead-light
+        .container(id="printableArea")
+            table.table.table-hover.table-sm.dt-responsive.table-striped.table-bordered
+                thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
                     tr(scope='col' style="text-align:center; font-size:90%")
                         th #
                         th ژمارەی تۆمار
@@ -36,20 +36,32 @@ block content
                 tbody
                     each item,i in invoices
                         tr(scope='col' style="text-align:center; font-size:90%")
-                            td=i
+                            td=i+1
                             td(style="text-align:center;")=item['_id']['recordCode']
                             td(style=`text-align:center;`)=item['items'][0]['createdAt'].toLocaleString()
                             td(style=`text-align:center;`)="$ "+item['items'][0]['oldDebut']
                             td(style="text-align:center;")="$ "+item['amount']
                             if item['items'][0]['moneyStatus']=="Return Money"
-                                td(style="text-align:center;") پارەدان
+                                td(style="text-align:center; background-color: rgba(0, 255, 0, 0.3);") پارەدان
                             else if item['items'][0]['status']=="Recovered"
-                                td(style="text-align:center;") گەڕانەوە
+                                td(style="text-align:center; background-color: rgba(178, 60,253, 0.3);") گەڕانەوە
                             else if item['items'][0]['moneyStatus']=="Debut"
-                                td(style="text-align:center;") فرۆشتن-قەرد
+                                td(style="text-align:center; background-color: rgba(255, 169, 0, 0.3);") فرۆشتن-قەرد
                             else if item['items'][0]['moneyStatus']=="Paid"
                                 td(style="text-align:center;") فرۆشتن-کاش
                             if item['items'][0]['moneyStatus']=="Return Money"
                                 td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']-item['amount'])
+                            else if item['items'][0]['moneyStatus']=="Paid"
+                                td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut'])
                             else 
                                 td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']+item['amount'])
+
+    script.
+        function printDiv(divName) 
+        {
+            var originalContents = document.body.innerHTML;
+            var printContents = document.getElementById(divName).innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }

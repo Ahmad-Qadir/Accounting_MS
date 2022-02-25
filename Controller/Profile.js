@@ -107,7 +107,12 @@ exports.DeleteProfile = async (req, res, next) => {
 //Get All Customers
 exports.GetAllCustomers = async (req, res, next) => {
     const Profiles = await ProfileCollection
-        .find({ softdelete: false })
+        .find({
+            softdelete: false
+        })
+        .sort({
+            updatedAt: -1
+        })
 
     res.render("Profiles/Profiles", {
         title: "کڕیارەکان",
