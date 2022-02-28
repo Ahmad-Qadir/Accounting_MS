@@ -23,10 +23,11 @@ block content
                 //-     |  Add New Product
         .container-fluid(id="printableArea")
             table.table.table-hover.table-sm.dt-responsive.table-striped.table-bordered
-                thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
+                thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;")
                     tr(scope='col' style="text-align:center; font-size:90%")
                         th #
                         th سەردێر
+                        th کۆمپانیا
                         th ژمارەی تۆمار
                         th بەروار
                         th چالاکی
@@ -36,34 +37,35 @@ block content
                         th نرخی هاتوو
                         th کۆی گشتی
 
-                tbody
+                tbody( id="count-it")
                     each item,i in records
                         tr(scope='col' style="text-align:center; font-size:90%")
-                            if item['status']=="Recovered"
-                                td=i+1
-                                td(style="text-align:center;") بەرهەمی گەڕاوە
-                                td(style="text-align:center;")=item['recordCode']
-                                td(style=`text-align:center;`)=item['createdAt'].toLocaleString()
-                                td(style="text-align:center;") بەرهەمی گەڕاوە
-                                td(style="text-align:center;")=item['totalQuantity']
-                                td(style=`text-align:center;`)="$ "+(item['sellPrice']).toFixed(2)
-                                td(style=`text-align:center;`)="$ "+(item['totalPrice']).toFixed(2)
-                                td(style=`text-align:center;`)="$ "+(item['productID']['camePrice']).toFixed(2)
-                                td(style=`text-align:center;`)=((item['sellPrice']).toFixed(2)*item['totalQuantity'])-((item['productID']['camePrice']).toFixed(2)*item['totalQuantity'])
-                            else if item['status']=="Compensate"
-                                td=i+1
-                                td(style="text-align:center;") پارەدان
-                                td(style="text-align:center;")=item['recordCode']
-                                td(style=`text-align:center;`)=item['createdAt'].toLocaleString()
-                                td(style="text-align:center;") پارەدان
-                                td(style="text-align:center;") - 
-                                td(style=`text-align:center;`) - 
-                                td(style=`text-align:center;`) -
-                                td(style=`text-align:center;`) -
-                                td(style=`text-align:center;`)="$ "+(item['totalPrice']).toFixed(2)
-                            else if item['status']=="Customer Request"
+                            //- if item['status']=="Recovered"
+                            //-     td=i+1
+                            //-     td(style="text-align:center;") بەرهەمی گەڕاوە
+                            //-     td(style="text-align:center;")=item['recordCode']
+                            //-     td(style=`text-align:center;`)=item['createdAt'].toLocaleString()
+                            //-     td(style="text-align:center;") بەرهەمی گەڕاوە
+                            //-     td(style="text-align:center;")=item['totalQuantity']
+                            //-     td(style=`text-align:center;`)="$ "+(item['sellPrice']).toFixed(2)
+                            //-     td(style=`text-align:center;`)="$ "+(item['totalPrice']).toFixed(2)
+                            //-     td(style=`text-align:center;`)="$ "+(item['productID']['camePrice']).toFixed(2)
+                            //-     td(style=`text-align:center;`)=((item['sellPrice']).toFixed(2)*item['totalQuantity'])-((item['productID']['camePrice']).toFixed(2)*item['totalQuantity'])
+                            //- else if item['status']=="Compensate"
+                            //-     td=i+1
+                            //-     td(style="text-align:center;") پارەدان
+                            //-     td(style="text-align:center;")=item['recordCode']
+                            //-     td(style=`text-align:center;`)=item['createdAt'].toLocaleString()
+                            //-     td(style="text-align:center;") پارەدان
+                            //-     td(style="text-align:center;") - 
+                            //-     td(style=`text-align:center;`) - 
+                            //-     td(style=`text-align:center;`) -
+                            //-     td(style=`text-align:center;`) -
+                            //-     td(style=`text-align:center;`)="$ "+(item['totalPrice']).toFixed(2)
+                            if item['status']=="Customer Request"
                                 td=i+1
                                 td(style="text-align:center;")=item['productID']['itemModel']+" / "+item['productID']['itemName']+" / "+item['productID']['color']+" / "+item['productID']['weight']
+                                td(style="text-align:center;")=item['productID']['manufacturerCompany']
                                 td(style="text-align:center;")=item['recordCode']
                                 td(style=`text-align:center;`)=item['createdAt'].toLocaleString()
                                 td(style="text-align:center;") داواکاری
@@ -71,8 +73,8 @@ block content
                                 td(style=`text-align:center;`)="$ "+(item['sellPrice']).toFixed(2)
                                 td(style=`text-align:center;`)="$ "+(item['totalPrice']).toFixed(2)
                                 td(style=`text-align:center;`)="$ "+(item['productID']['camePrice']).toFixed(2)
-                                td(style=`text-align:center;`)=((item['sellPrice']*item['totalQuantity'])-(item['productID']['camePrice']*item['totalQuantity'])).toFixed(2)
-                            
+                                td(style=`text-align:center;` id="count-me").count-me=((item['sellPrice']*item['totalQuantity'])-(item['productID']['camePrice']*item['totalQuantity'])).toFixed(2)
+
 
                             //- td(style=`text-align:center;`)="$ "+(item['total']).toFixed(2)
                             //- if item['items'][0]['moneyStatus']=="Return Money"
@@ -91,7 +93,21 @@ block content
                             //-     td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']-item['amount']).toFixed(2)
                             //- else 
                             //-     td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']+item['amount']).toFixed(2)
-
+                tfoot 
+                    tr(style="line-height: 10px;")
+                        td.left(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
+                            strong کۆی گشتی (دۆلار)
+                        td.left(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
+                        td.left(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
+                        td.left(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
+                        td.left(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
+                        td.left(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
+                        td.left(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
+                        td.left(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
+                        td.left(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
+                        td.left(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
+                        td.right(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
+                            strong(id="finalPrice")
     script.
         function printDiv(divName) 
         {
@@ -101,3 +117,15 @@ block content
             window.print();
             document.body.innerHTML = originalContents;
         }
+        $( document ).ready(function() {
+            var tds = document.getElementById('count-it').getElementsByTagName('td');
+            var sum = 0;
+                console.log(tds.length)
+            for(var i = 0; i < tds.length; i ++) {
+                if(tds[i].className == 'count-me') {
+                    sum += isNaN(tds[i].innerHTML.replace("$","")) ? 0 : parseInt(tds[i].innerHTML.replace("$",""));
+                }
+            }
+            document.getElementById('finalPrice').innerHTML += sum 
+        });
+

@@ -57,7 +57,7 @@ exports.allowIfLoggedin = async (req, res, next) => {
 //Add New Product UI
 exports.GetAllMyIncome = async (req, res, next) => {
     try {
-        const Invoices = await RecordsCollection.find({}).populate('productID');
+        const Invoices = await RecordsCollection.find({}).populate('productID').sort({'createdAt':1,"manufacturerCompany":1});
         res.render('Dashboard/Incomes.pug', {
             title: "تۆمارەکان",
             records: Invoices,
