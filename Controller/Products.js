@@ -187,6 +187,7 @@ exports.RemoveProductUI = async (req, res, next) => {
     })
 }
 
+// TODO: Checked and Worked Properly
 //Remove Selected Product
 exports.RemoveProduct = async (req, res, next) => {
 

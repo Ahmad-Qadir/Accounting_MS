@@ -1,0 +1,103 @@
+include ../Components/Header
+block content
+    br
+    .container-fluid
+        // Page Heading
+        .d-sm-flex.align-items-left.justify-content-between.mb-4
+            h1.h3.mb-0.text-gray-800 تۆمارەکان
+            //- .container.col-md-4
+            //-     .row.height.d-flex.justify-content-center.align-items-center
+            //-         .col.md-6
+            //-             .search-box
+            //-                 .input-group
+            //-                     input#search.form-control(type='text' placeholder='گەڕان بەپێی ژمارەی تۆمار')
+            .span
+                a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.m-2(onclick="printDiv('printableArea')")
+                    i.fas.fa-file-invoice.fa-sm.text-white-50
+                    |  چاپکردن
+                //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white.m-2(href="/Profiles/Invoices/"+profile[0]['cutomerID']['_id'])
+                //-   i.fas.fa-file-invoice.fa-sm.text-white-50
+                //-   |  تۆمارەکان(بە وەصڵ)
+                //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white(href=Address+"/Clients/Register")
+                //-     i.fas.fa-plus-square.fa-sm.text-white-50
+                //-     |  Add New Product
+        .container-fluid(id="printableArea")
+            table.table.table-hover.table-sm.dt-responsive.table-striped.table-bordered
+                thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
+                    tr(scope='col' style="text-align:center; font-size:90%")
+                        th #
+                        th سەردێر
+                        th ژمارەی تۆمار
+                        th بەروار
+                        th چالاکی
+                        th بڕی فرۆشراو
+                        th نرخی فرۆشتن
+                        th کۆی تۆمار
+                        th نرخی هاتوو
+                        th کۆی گشتی
+
+                tbody
+                    each item,i in records
+                        tr(scope='col' style="text-align:center; font-size:90%")
+                            if item['status']=="Recovered"
+                                td=i+1
+                                td(style="text-align:center;") بەرهەمی گەڕاوە
+                                td(style="text-align:center;")=item['recordCode']
+                                td(style=`text-align:center;`)=item['createdAt'].toLocaleString()
+                                td(style="text-align:center;") بەرهەمی گەڕاوە
+                                td(style="text-align:center;")=item['totalQuantity']
+                                td(style=`text-align:center;`)="$ "+(item['sellPrice']).toFixed(2)
+                                td(style=`text-align:center;`)="$ "+(item['totalPrice']).toFixed(2)
+                                td(style=`text-align:center;`)="$ "+(item['productID']['camePrice']).toFixed(2)
+                                td(style=`text-align:center;`)=((item['sellPrice']).toFixed(2)*item['totalQuantity'])-((item['productID']['camePrice']).toFixed(2)*item['totalQuantity'])
+                            else if item['status']=="Compensate"
+                                td=i+1
+                                td(style="text-align:center;") پارەدان
+                                td(style="text-align:center;")=item['recordCode']
+                                td(style=`text-align:center;`)=item['createdAt'].toLocaleString()
+                                td(style="text-align:center;") پارەدان
+                                td(style="text-align:center;") - 
+                                td(style=`text-align:center;`) - 
+                                td(style=`text-align:center;`) -
+                                td(style=`text-align:center;`) -
+                                td(style=`text-align:center;`)="$ "+(item['totalPrice']).toFixed(2)
+                            else if item['status']=="Customer Request"
+                                td=i+1
+                                td(style="text-align:center;")=item['productID']['itemModel']+" / "+item['productID']['itemName']+" / "+item['productID']['color']+" / "+item['productID']['weight']
+                                td(style="text-align:center;")=item['recordCode']
+                                td(style=`text-align:center;`)=item['createdAt'].toLocaleString()
+                                td(style="text-align:center;") داواکاری
+                                td(style="text-align:center;")=item['totalQuantity']
+                                td(style=`text-align:center;`)="$ "+(item['sellPrice']).toFixed(2)
+                                td(style=`text-align:center;`)="$ "+(item['totalPrice']).toFixed(2)
+                                td(style=`text-align:center;`)="$ "+(item['productID']['camePrice']).toFixed(2)
+                                td(style=`text-align:center;`)=((item['sellPrice']*item['totalQuantity'])-(item['productID']['camePrice']*item['totalQuantity'])).toFixed(2)
+                            
+
+                            //- td(style=`text-align:center;`)="$ "+(item['total']).toFixed(2)
+                            //- if item['items'][0]['moneyStatus']=="Return Money"
+                            //-     td(style="text-align:center; background-color: rgba(0, 255, 0, 0.3);") پارەدان
+                            //- else if item['items'][0]['status']=="Recovered"
+                            //-     td(style="text-align:center; background-color: rgba(178, 60,253, 0.3);") گەڕانەوە
+                            //- else if item['items'][0]['moneyStatus']=="Debut"
+                            //-     td(style="text-align:center; background-color: rgba(255, 169, 0, 0.3);") فرۆشتن-قەرد
+                            //- else if item['items'][0]['moneyStatus']=="Paid"
+                            //-     td(style="text-align:center;") فرۆشتن-کاش
+                            //- if item['items'][0]['moneyStatus']=="Return Money"
+                            //-     td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']-item['amount']).toFixed(2)
+                            //- else if item['items'][0]['moneyStatus']=="Paid"
+                            //-     td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut'])
+                            //- else if item['items'][0]['status']=="Recovered"
+                            //-     td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']-item['amount']).toFixed(2)
+                            //- else 
+                            //-     td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']+item['amount']).toFixed(2)
+
+    script.
+        function printDiv(divName) 
+        {
+            var originalContents = document.body.innerHTML;
+            var printContents = document.getElementById(divName).innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }

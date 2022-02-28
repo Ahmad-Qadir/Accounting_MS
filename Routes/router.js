@@ -16,6 +16,7 @@ const Daily = require('../Controller/Daily_Work');
 const ItemUnit = require('../Controller/ItemUnit');
 const Trailers = require('../Controller/Trailers');
 const Partners = require('../Controller/partners');
+const Dashboard = require('../Controller/Dashboard');
 
 
 
@@ -153,6 +154,10 @@ router.get('/Partners', Partners.allowIfLoggedin, Trailers.grantAccess('readAny'
 router.post('/Partners', Partners.allowIfLoggedin, Trailers.grantAccess('createAny', 'profile'), Partners.AddNewPartner); // Add New Partner
 router.get('/Partners/request', Partners.allowIfLoggedin, Trailers.grantAccess('readAny', 'profile'), Partners.AddNewRequestForPartner); // Get All Partners
 router.post('/Partners/Request/NewRequest', Partners.allowIfLoggedin, Trailers.grantAccess('createAny', 'profile'), Partners.AddNewRequestForPartnerOperation); // Add New Partner
+
+
+
+router.get('/Calculation', Dashboard.allowIfLoggedin, Trailers.grantAccess('readAny', 'records'), Dashboard.GetAllMyIncome); // Add New Partner
 
 
 

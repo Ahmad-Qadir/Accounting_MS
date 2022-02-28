@@ -45,34 +45,81 @@ block content
         //- th(scope='col' style="text-align:center; font-size:90%") کڕیار
         //- th(scope='col' style="text-align:center; font-size:90%") چالاکی 
         //- th(scope='col' style="text-align:center; font-size:90%") 
-        h4 تۆماری پارەدان
+        h4 تۆماری گشتی
         hr
         each item,i in records
-          if item['_id']['status']=="Compensate"
-            #accordionExample.accordion
-              .accordion-item
-                h2(id="heading"+i).accordion-header
-                  .row
-                    button.accordion-button(type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
-                      .col-md-1(style="text-align:center;")
+          #accordionExample.accordion
+            .accordion-item
+              h2(id="heading"+i).accordion-header
+                .row
+                  button.accordion-button(type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
+                    if item['_id']['status']=="New Trailer"
+                      div="تۆماری ژمارە: "+item['items'][0]['trailerNumber']
+                    else if item['_id']['status']=="New Product"
+                      div="تۆماری ژمارە:0"
+                    else
+                      div="تۆماری ژمارە: "+item['_id']['recordCode']
+                    if item['items'][0]['status']=="Deleted Product"
+                      .col-md-2(style="text-align:center;") جۆری تۆمار: ڕەشکردنەوە
+                      div(style="text-align:center;")
+                        span.icon.text-danger
+                          i.fas.fa-minus-circle
+                    else if item['items'][0]['status']=="New Product"
+                      .col-md-2(style="text-align:center;") جۆری تۆمار: بەرهەمی نوێ
+                      div(style="text-align:center;")
+                        span.icon.text-primary
+                          i.fas.fa-clipboard-check
+                    else if item['items'][0]['status']=="Customer Request"
+                      .col-md-2(style="text-align:center;") جۆری تۆمار: فرۆشتن
+                      div(style="text-align:center;")
+                        span.icon.text-info
+                          i.fas.fa-user-check
+                    else if item['items'][0]['status']=="New Trailer"
+                      .col-md-2(style="text-align:center;") جۆری تۆمار:باری نوێ
+                      div(style="text-align:center;")
+                        span.icon.text-warning
+                          i.fas.fa-truck-moving
+                    else if item['items'][0]['status']=="Recovered"
+                      .col-md-2(style="text-align:center;") جۆری تۆمار: بەرهەمی گەڕاوە
+                      div(style="text-align:center;")
+                        span.icon.text-danger
+                          i.fas.fa-recycle
+                    else if item['items'][0]['status']=="Compensate"
+                      .col-md-2(style="text-align:center;") جۆری تۆمار: پارەدان
+                      div(style="text-align:center;")
                         span.icon.text-danger
                           i.fas.fa-money-bill-alt
-                      div="تۆماری ژمارە: "+item['_id']['recordCode']
-                      .col-md-3(style="text-align:center;") جۆری تۆمار: پارەدان
-                      .col-md-2="تێچووی تۆمار: "+item['amount'].toFixed(2)
-                      if item['profile'].length==0
-                        .col-md-2
-                      else 
-                        .col-md-2="کڕیار: "+item['profile'][0]['companyName']+"/"+item['profile'][0]['clientName']
-                      //- if item['items'][0]['note']==undefined
-                      //-   .col-md-2
-                      //- else 
-                      //-   .col-md-2="تێبینی: "+item['items'][0]['note']
-                      .col-md-2="بەروار: "+item['items'][0]['createdAt'].toLocaleString()
-                .accordion-collapse.collapse.hide(aria-labelledby="heading"+i data-mdb-parent='#accordionExample' id="collapse"+i)
-                  .accordion-body
-                    .container-fluid.table-responsive
-                      table(id="clientTable").table.table-hover.table-sm.dt-responsive.table-striped
+                    else if item['items'][0]['status']=="Partner Request"
+                      .col-md-2(style="text-align:center;") جۆری تۆمار: داواکاری پشکدار
+                      div(style="text-align:center;")
+                        span.icon.text-danger
+                          i.fas.fa-money-bill-alt
+                    else
+                      .row.col-md-2
+                        div(style="text-align:center;")="جۆری تۆمار: "+item['items'][0]['status']
+                        div(style="text-align:center;")
+                        div(style="text-align:center;")
+                          span.icon.text-danger
+                            i.fas.fa-tasks
+                    .col-md-2="کۆی بەرهەم: "+item['count']
+                    .col-md-2="تێچووی تۆمار: "+item['amount'].toFixed(2)
+                    if item['profile'].length==0
+                      .col-md-2
+                    else 
+                      .col-md-2="کڕیار: "+item['profile'][0]['clientName']+"/"+item['items'][0]['personName']
+                    //- if item['items'][0]['note']==undefined
+                    //-   .col-md-2
+                    //- else 
+                    //-   .col-md-2="تێبینی: "+item['items'][0]['note']
+
+
+
+                    .col-md-2="بەروار: "+item['items'][0]['createdAt'].toLocaleString()
+              .accordion-collapse.collapse.hide(aria-labelledby="heading"+i data-mdb-parent='#accordionExample' id="collapse"+i)
+                .accordion-body
+                  .container-fluid.table-responsive
+                    table(id="clientTable").table.table-hover.table-sm.dt-responsive.table-striped
+                      if item['_id']['status']=="Compensate"
                         thead.thead-light
                           tr(scope='col' style="text-align:center; font-size:90%")
                             th #
@@ -91,108 +138,11 @@ block content
                             td(style="text-align:center;")="$ "+item['items'][0]['prepaid']
                             td(style="text-align:center;")=item['items'][0]['createdAt'].toLocaleString()
                             td(style="text-align:center;")=item['items'][0]['addedBy']
-                          else
-                            each product,x in item['data']
-                              each product,k in item['data']
-                                //- - console.log(x+"//Invoice:"+item['items'][x]['productID'])
-                                //- - console.log(k+"//Product:"+product['_id'])
-                                if item['items'][x]['productID'].equals(product['_id'])
-                                  tr
-                                    td=x
-                                    td=product['itemModel']+" "+product['itemName']
-                                    td(style="text-align:center;")=product['weight']+product['unit']
-                                    td(style="text-align:center;")=product['color']
-                                    td(style="text-align:center;")=item['items'][x]['totalQuantity']
-                                    td(style="text-align:center;")=item['items'][x]['status']
-                                    td(style="text-align:center;")="$ "+item['items'][x]['totalPrice']
-                                    td(style="text-align:center;")=item['items'][x]['note']
-                                    td(style="text-align:center;")=item['items'][x]['createdAt'].toLocaleString()
-                                    td(style="text-align:center;")=item['items'][x]['addedBy']
-
-                      //- if profiles[i]['cutomerID']==undefined 
-                      //-   td(style="text-align:center;")
-                      //- else 
-                      //-   td(style="text-align:center;")=profiles[i]['cutomerID']['clientName']+"/"+profiles[i]['cutomerID']['companyName']
-        br
-        br
-        h4 تۆماری فرۆشتن
-        hr
-        each item,i in records
-          if item['_id']['status']=="Customer Request"
-            #accordionExample.accordion
-              .accordion-item
-                h2(id="heading"+i).accordion-header
-                  .row
-                    button.accordion-button(type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
-                      if item['_id']['status']=="New Trailer"
-                        div="تۆماری ژمارە: "+item['items'][0]['trailerNumber']
-                      else if item['_id']['status']=="New Product"
-                        div="تۆماری ژمارە:0"
-                      else
-                        div="تۆماری ژمارە: "+item['_id']['recordCode']
-                      if item['items'][0]['status']=="Deleted Product"
-                        .col-md-2(style="text-align:center;") جۆری تۆمار: ڕەشکردنەوە
-                        div(style="text-align:center;")
-                          span.icon.text-danger
-                            i.fas.fa-minus-circle
-                      else if item['items'][0]['status']=="New Product"
-                        .col-md-2(style="text-align:center;") جۆری تۆمار: بەرهەمی نوێ
-                        div(style="text-align:center;")
-                          span.icon.text-primary
-                            i.fas.fa-clipboard-check
-                      else if item['items'][0]['status']=="Customer Request"
-                        .col-md-2(style="text-align:center;") جۆری تۆمار: فرۆشتن
-                        div(style="text-align:center;")
-                          span.icon.text-info
-                            i.fas.fa-user-check
-                      else if item['items'][0]['status']=="New Trailer"
-                        .col-md-2(style="text-align:center;") جۆری تۆمار:باری نوێ
-                        div(style="text-align:center;")
-                          span.icon.text-warning
-                            i.fas.fa-truck-moving
-                      else if item['items'][0]['status']=="Recovered"
-                        .col-md-2(style="text-align:center;") جۆری تۆمار: بەرهەمی گەڕاوە
-                        div(style="text-align:center;")
-                          span.icon.text-danger
-                            i.fas.fa-recycle
-                      else if item['items'][0]['status']=="Compensate"
-                        .col-md-2(style="text-align:center;") جۆری تۆمار: پارەدان
-                        div(style="text-align:center;")
-                          span.icon.text-danger
-                            i.fas.fa-money-bill-alt
-                      else if item['items'][0]['status']=="Partner Request"
-                        .col-md-2(style="text-align:center;") جۆری تۆمار: داواکاری پشکدار
-                        div(style="text-align:center;")
-                          span.icon.text-danger
-                            i.fas.fa-money-bill-alt
-                      else
-                        .row.col-md-2
-                          div(style="text-align:center;")="جۆری تۆمار: "+item['items'][0]['status']
-                          div(style="text-align:center;")
-                          div(style="text-align:center;")
-                            span.icon.text-danger
-                              i.fas.fa-tasks
-                      .col-md-2="کۆی بەرهەم: "+item['count']
-                      .col-md-2="تێچووی تۆمار: "+item['amount'].toFixed(2)
-                      if item['profile'].length==0
-                        .col-md-2
                       else 
-                        .col-md-2="کڕیار: "+item['profile'][0]['companyName']+"/"+item['items'][0]['personName']
-                      //- if item['items'][0]['note']==undefined
-                      //-   .col-md-2
-                      //- else 
-                      //-   .col-md-2="تێبینی: "+item['items'][0]['note']
-
-
-
-                      .col-md-2="بەروار: "+item['items'][0]['createdAt'].toLocaleString()
-                .accordion-collapse.collapse.hide(aria-labelledby="heading"+i data-mdb-parent='#accordionExample' id="collapse"+i)
-                  .accordion-body
-                    .container-fluid.table-responsive
-                      table(id="clientTable").table.table-hover.table-sm.dt-responsive.table-striped
                         thead.thead-light
                           tr(scope='col' style="text-align:center; font-size:90%")
                             th #
+                            th بڕاندی بەرهەم
                             th ناوی بەرهەم
                             th بڕی پێوانە
                             th ڕەنگ
@@ -203,159 +153,25 @@ block content
                             th بەروار 
                             th لەلایان 
                         tbody
-                          if item['_id']['status']=="Compensate"
-                            td=1
-                            td پارەدان
-                            td(style="text-align:center;") -
-                            td(style=`text-align:center;`) -
-                            td(style="text-align:center;") -
-                            td(style="text-align:center;")=item['items'][0]['status']
-                            td(style="text-align:center;")="$ "+item['items'][0]['sellPrice']
-                            td(style="text-align:center;")=item['items'][0]['note']
-                            td(style="text-align:center;")=item['items'][0]['createdAt'].toLocaleString()
-                            td(style="text-align:center;")=item['items'][0]['addedBy']
-                          else
-                            each product,x in item['data']
-                              each product,k in item['data']
-                                //- - console.log(x+"//Invoice:"+item['items'][x]['productID'])
-                                //- - console.log(k+"//Product:"+product['_id'])
-                                if item['items'][x]['productID'].equals(product['_id'])
-                                  tr
-                                    td=x
-                                    td=product['itemModel']+" "+product['itemName']
-                                    td(style="text-align:center;")=product['weight']+product['unit']
-                                    td(style="text-align:center;")=product['color']
-                                    td(style="text-align:center;")=item['items'][x]['totalQuantity']
-                                    td(style="text-align:center;")=item['items'][x]['status']
-                                    td(style="text-align:center;")="$ "+item['items'][x]['totalPrice']
-                                    td(style="text-align:center;")=item['items'][x]['note']
-                                    td(style="text-align:center;")=item['items'][x]['createdAt'].toLocaleString()
-                                    td(style="text-align:center;")=item['items'][x]['addedBy']
+                          each product,x in item['data']
+                            each product,k in item['data']
+                              //- - console.log(x+"//Invoice:"+item['items'][x]['productID'])
+                              //- - console.log(k+"//Product:"+product['_id'])
+                              if item['items'][x]['productID'].equals(product['_id'])
+                                tr
+                                  td=x
+                                  td=product['itemModel']
+                                  td=product['itemName']
+                                  td(style="text-align:center;")=product['weight']+product['unit']
+                                  td(style="text-align:center;")=product['color']
+                                  td(style="text-align:center;")=item['items'][x]['totalQuantity']
+                                  td(style="text-align:center;")=item['items'][x]['status']
+                                  td(style="text-align:center;")="$ "+item['items'][x]['totalPrice']
+                                  td(style="text-align:center;")=item['items'][x]['note']
+                                  td(style="text-align:center;")=item['items'][x]['createdAt'].toLocaleString()
+                                  td(style="text-align:center;")=item['items'][x]['addedBy']
 
-                      //- if profiles[i]['cutomerID']==undefined 
-                      //-   td(style="text-align:center;")
-                      //- else 
-                      //-   td(style="text-align:center;")=profiles[i]['cutomerID']['clientName']+"/"+profiles[i]['cutomerID']['companyName']
-        br
-        br
-        h4 تۆماری گشتی
-        hr
-        each item,i in records
-          if item['_id']['status']!="Customer Request" && item['_id']['status']!="Compensate"
-            #accordionExample.accordion
-              .accordion-item
-                h2(id="heading"+i).accordion-header
-                  .row
-                    button.accordion-button(type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
-                      if item['_id']['status']=="New Trailer"
-                        div="تۆماری ژمارە: "+item['items'][0]['trailerNumber']
-                      else if item['_id']['status']=="New Product"
-                        div="تۆماری ژمارە:0"
-                      else
-                        div="تۆماری ژمارە: "+item['_id']['recordCode']
-                      if item['items'][0]['status']=="Deleted Product"
-                        .col-md-2(style="text-align:center;") جۆری تۆمار: ڕەشکردنەوە
-                        div(style="text-align:center;")
-                          span.icon.text-danger
-                            i.fas.fa-minus-circle
-                      else if item['items'][0]['status']=="New Product"
-                        .col-md-2(style="text-align:center;") جۆری تۆمار: بەرهەمی نوێ
-                        div(style="text-align:center;")
-                          span.icon.text-primary
-                            i.fas.fa-clipboard-check
-                      else if item['items'][0]['status']=="Customer Request"
-                        .col-md-2(style="text-align:center;") جۆری تۆمار: فرۆشتن
-                        div(style="text-align:center;")
-                          span.icon.text-info
-                            i.fas.fa-user-check
-                      else if item['items'][0]['status']=="New Trailer"
-                        .col-md-2(style="text-align:center;") جۆری تۆمار:باری نوێ
-                        div(style="text-align:center;")
-                          span.icon.text-warning
-                            i.fas.fa-truck-moving
-                      else if item['items'][0]['status']=="Recovered"
-                        .col-md-2(style="text-align:center;") جۆری تۆمار: بەرهەمی گەڕاوە
-                        div(style="text-align:center;")
-                          span.icon.text-danger
-                            i.fas.fa-recycle
-                      else if item['items'][0]['status']=="Compensate"
-                        .col-md-2(style="text-align:center;") جۆری تۆمار: پارەدان
-                        div(style="text-align:center;")
-                          span.icon.text-danger
-                            i.fas.fa-money-bill-alt
-                      else if item['items'][0]['status']=="Partner Request"
-                        .col-md-2(style="text-align:center;") جۆری تۆمار: داواکاری پشکدار
-                        div(style="text-align:center;")
-                          span.icon.text-danger
-                            i.fas.fa-money-bill-alt
-                      else
-                        .row.col-md-2
-                          div(style="text-align:center;")="جۆری تۆمار: "+item['items'][0]['status']
-                          div(style="text-align:center;")
-                          div(style="text-align:center;")
-                            span.icon.text-danger
-                              i.fas.fa-tasks
-                      .col-md-2="کۆی بەرهەم: "+item['count']
-                      .col-md-2="تێچووی تۆمار: "+item['amount'].toFixed(2)
-                      if item['profile'].length==0
-                        .col-md-2
-                      else 
-                        .col-md-2="کڕیار: "+item['profile'][0]['clientName']+"/"+item['items'][0]['personName']
-                      //- if item['items'][0]['note']==undefined
-                      //-   .col-md-2
-                      //- else 
-                      //-   .col-md-2="تێبینی: "+item['items'][0]['note']
-
-
-
-                      .col-md-2="بەروار: "+item['items'][0]['createdAt'].toLocaleString()
-                .accordion-collapse.collapse.hide(aria-labelledby="heading"+i data-mdb-parent='#accordionExample' id="collapse"+i)
-                  .accordion-body
-                    .container-fluid.table-responsive
-                      table(id="clientTable").table.table-hover.table-sm.dt-responsive.table-striped
-                        thead.thead-light
-                          tr(scope='col' style="text-align:center; font-size:90%")
-                            th #
-                            th ناوی بەرهەم
-                            th بڕی پێوانە
-                            th ڕەنگ
-                            th بڕ
-                            th باری ئێستا
-                            th کۆی گشتی نرخ
-                            th تێبینی 
-                            th بەروار 
-                            th لەلایان 
-                        tbody
-                          if item['_id']['status']=="Compensate"
-                            td=1
-                            td پارەدان
-                            td(style="text-align:center;") -
-                            td(style=`text-align:center;`) -
-                            td(style="text-align:center;") -
-                            td(style="text-align:center;")=item['items'][0]['status']
-                            td(style="text-align:center;")="$ "+item['items'][0]['sellPrice']
-                            td(style="text-align:center;")=item['items'][0]['note']
-                            td(style="text-align:center;")=item['items'][0]['createdAt'].toLocaleString()
-                            td(style="text-align:center;")=item['items'][0]['addedBy']
-                          else
-                            each product,x in item['data']
-                              each product,k in item['data']
-                                //- - console.log(x+"//Invoice:"+item['items'][x]['productID'])
-                                //- - console.log(k+"//Product:"+product['_id'])
-                                if item['items'][x]['productID'].equals(product['_id'])
-                                  tr
-                                    td=x
-                                    td=product['itemModel']+" "+product['itemName']
-                                    td(style="text-align:center;")=product['weight']+product['unit']
-                                    td(style="text-align:center;")=product['color']
-                                    td(style="text-align:center;")=item['items'][x]['totalQuantity']
-                                    td(style="text-align:center;")=item['items'][x]['status']
-                                    td(style="text-align:center;")="$ "+item['items'][x]['totalPrice']
-                                    td(style="text-align:center;")=item['items'][x]['note']
-                                    td(style="text-align:center;")=item['items'][x]['createdAt'].toLocaleString()
-                                    td(style="text-align:center;")=item['items'][x]['addedBy']
-
-                      //- if profiles[i]['cutomerID']==undefined 
-                      //-   td(style="text-align:center;")
-                      //- else 
-                      //-   td(style="text-align:center;")=profiles[i]['cutomerID']['clientName']+"/"+profiles[i]['cutomerID']['companyName']
+                    //- if profiles[i]['cutomerID']==undefined 
+                    //-   td(style="text-align:center;")
+                    //- else 
+                    //-   td(style="text-align:center;")=profiles[i]['cutomerID']['clientName']+"/"+profiles[i]['cutomerID']['companyName']

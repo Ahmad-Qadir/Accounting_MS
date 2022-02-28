@@ -53,6 +53,8 @@ block content
                                 td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']-item['amount']).toFixed(2)
                             else if item['items'][0]['moneyStatus']=="Paid"
                                 td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut'])
+                            else if item['items'][0]['status']=="Recovered"
+                                td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']-item['amount']).toFixed(2)
                             else 
                                 td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']+item['amount']).toFixed(2)
 
