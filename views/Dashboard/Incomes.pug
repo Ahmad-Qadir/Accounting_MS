@@ -95,9 +95,8 @@ block content
                             //-     td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']+item['amount']).toFixed(2)
                 tfoot 
                     tr(style="line-height: 10px;")
-                        td.left(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
+                        td.left(style="text-align:center; font-size:3 rem;font-weight:bold" colspan=2).bg-dark.text-light
                             strong کۆی گشتی (دۆلار)
-                        td.left(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
                         td.left(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
                         td.left(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
                         td.left(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
@@ -108,6 +107,22 @@ block content
                         td.left(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
                         td.right(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light
                             strong(id="finalPrice")
+
+            br
+            table.table.table-hover.table-sm.dt-responsive.table-striped.table-bordered
+                thead
+                    tr
+                        th(style="text-align:center; font-size:3 rem;font-weight:bold;width: 300px").bg-dark.text-light کۆی گشتی خەرجی بارەکان
+                        th="$ "+(expoenses[0]['amount']).toFixed(2)
+                    tr
+                        th(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light کۆی گشتی خەرجی رۆژانە
+                        th="$ "+(daily[0]['amount']/148000).toFixed(2) + " دۆلار - بەرامبەر بە " + daily[0]['amount'] + " دینار"
+                    //- tr
+                    //-     th(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light کۆی گشتی پارەی گەڕاوە
+                    //-     th=(returnedmoney[0]['amount']).toFixed(2)
+                    tr
+                        th(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light کۆی گشتی قەرزەکان
+                        th="$ "+debtors[0]['amount']
     script.
         function printDiv(divName) 
         {
