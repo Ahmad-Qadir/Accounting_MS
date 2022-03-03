@@ -159,7 +159,7 @@ block content
                           td(style=`text-align:center;`) -
                           td(style="text-align:center;") -
                           td(style="text-align:center;")=item['items'][0]['status']
-                          td(style="text-align:center;")="$ "+item['items'][0]['sellPrice']
+                          td(style="text-align:center;")="$ "+item['items'][0]['sellPrice'].toFixed(2)
                           td(style="text-align:center;")=item['items'][0]['note']
                           td(style="text-align:center;")=item['items'][0]['createdAt'].toLocaleString()
                           td(style="text-align:center;")=item['items'][0]['addedBy']
@@ -177,7 +177,7 @@ block content
                                   td(style="text-align:center;")=product['color']
                                   td(style="text-align:center;")=item['items'][x]['totalQuantity']
                                   td(style="text-align:center;")=item['items'][x]['status']
-                                  td(style="text-align:center;")="$ "+item['items'][x]['totalPrice']
+                                  td(style="text-align:center;")="$ "+item['items'][x]['totalPrice'].toFixed(2)
                                   td(style="text-align:center;")=item['items'][x]['note']
                                   td(style="text-align:center;")=item['items'][x]['createdAt'].toLocaleString()
                                   td(style="text-align:center;")=item['items'][x]['addedBy']

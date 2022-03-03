@@ -557,77 +557,7 @@ exports.AddNewItemToInvoice = async (req, res, next) => {
                 }
             });
 
-
-            //     if (element['moneyStatus'] == "Paid") {
-            //         const Product = await ProductsCollection.findOne({
-            //             _id: element['productID']
-            //         });
-
-            //         // const Trailer = await TrailersCollection.findOne({
-            //         //     trailerNumber: element['trailerNumber'],
-            //         //     productID: element['productID']
-            //         // });
-
-            //         const returnedPackets = element['totalQuantity'] + Product['totalQuantity'];
-            //         await ProductsCollection.findByIdAndUpdate({
-            //             _id: element['productID']
-            //         }, {
-            //             totalQuantity: returnedPackets
-            //         });
-
-            //         // const returnedPacketsForTrailer = element['totalQuantity'] + Trailer['totalQuantity']
-            //         // await TrailersCollection.findByIdAndUpdate({
-            //         //     "_id": Trailer['_id']
-            //         // }, {
-            //         //     totalQuantity: returnedPacketsForTrailer
-            //         // });
-
-
-            //         setTimeout(async () => {
-            //             await RecordsCollection.deleteMany({
-            //                 recordCode: req.params.recordcode,
-            //                 status: "Customer Request",
-            //             })
-            //         }, 1000);
-            //     } else {
-            //         const Product = await ProductsCollection.findOne({
-            //             _id: element['productID']
-            //         });
-
-            //         // const Trailer = await TrailersCollection.findOne({
-            //         //     trailerNumber: element['trailerNumber'],
-            //         //     productID: element['productID']
-            //         // });
-
-            //         const returnedPackets = element['totalQuantity'] + Product['totalQuantity'];
-            //         await ProductsCollection.findByIdAndUpdate({
-            //             _id: element['productID']
-            //         }, {
-            //             totalQuantity: returnedPackets
-            //         });
-
-            //         // const returnedPacketsForTrailer = element['totalQuantity'] + Trailer['totalQuantity']
-            //         // await TrailersCollection.findByIdAndUpdate({
-            //         //     "_id": Trailer['_id']
-            //         // }, {
-            //         //     totalQuantity: returnedPacketsForTrailer
-            //         // });
-
-            //         await ProfileCollection.findByIdAndUpdate({
-            //             _id: Record[0]['cutomerID']
-            //         }, {
-            //             remainedbalance: Profile['remainedbalance'] - parseFloat(element['totalPrice']),
-            //         });
-
-            //         setTimeout(async () => {
-            //             await RecordsCollection.deleteMany({
-            //                 recordCode: req.params.recordcode,
-            //                 status: "Customer Request",
-            //             })
-            //         }, 1000);
-            //     }
         }
-
         res.send("بە سەرکەوتوویی تۆمارکرا");
 
     } catch (error) {

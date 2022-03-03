@@ -119,7 +119,6 @@ exports.GetAllMyIncome = async (req, res, next) => {
                 // }
             ]);
 
-        console.log(TotalExpenses)
         res.render('Dashboard/Incomes.pug', {
             title: "تۆمارەکان",
             records: Invoices,

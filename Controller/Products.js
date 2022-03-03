@@ -578,13 +578,25 @@ exports.getProducts = async (req, res, next) => {
 
 //Get All Products
 exports.PrintAllProducts = async (req, res, next) => {
-    const Products = await ProductsCollection
-        .find({
-        })
-        .sort({
-            "manufacturerCompany": 1,
-            "itemModel": 1
-        })
+
+    const Products = await ProductsCollection.aggregate(
+        [
+            {
+                $group: {
+                    _id: { manufacturerCompany: '$manufacturerCompany' },
+                    count: { $sum: 1 },
+                    items: {
+                        $push: { itemModel: "$itemModel", itemName: "$itemName", countryCompany: "$countryCompany", manufacturerCompany: "$manufacturerCompany", unit: "$unit", itemUnit: "$itemUnit", itemType: "$itemType", usedIn: "$usedIn", weight: "$weight", color: "$color", totalQuantity: "$totalQuantity"},
+                    },
+                },
+
+            },
+            {
+                $sort: { "items.itemModel": 1 },
+            },
+        ]);
+
+        // console.log()
 
     res.render("Products/PrintProducts", {
         title: "بەرهەمەکان",
@@ -687,7 +699,7 @@ exports.EditProductOperation = async (req, res, next) => {
             sellPriceWakil: req.body.sellPriceWakil,
             sellPriceSharika: req.body.sellPriceSharika,
             perPacket: req.body.perPacket,
-            totalQuantity:req.body.totalQuantity,
+            totalQuantity: req.body.totalQuantity,
             updatedBy: req.user.username,
             note: req.body.note
         });
