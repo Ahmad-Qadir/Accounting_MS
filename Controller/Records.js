@@ -447,20 +447,18 @@ exports.AddNewItemToInvoiceUI = async (req, res, next) => {
             recordCode: req.params.recordCode,
             cutomerID: req.params.id,
             status: "Customer Request",
-            softdelete: false
         });
 
         const Products = await ProductsCollection
             .find({
                 id: req.params.id,
-                softdelete: false
             })
 
         const ProductNames = await ProductsCollection
             .find({
                 id: req.params.id,
-                softdelete: false
             }).distinct('itemModel')
+
 
         const Profiles = await ProfileCollection
             .find({
@@ -499,6 +497,8 @@ exports.AddNewItemToInvoice = async (req, res, next) => {
         var Profile = await ProfileCollection.findOne({
             _id: req.params.id
         });
+
+        var totalPrice = 0;
 
         var RequestList = req.body[0];
 
@@ -556,8 +556,18 @@ exports.AddNewItemToInvoice = async (req, res, next) => {
                     invoiceID: newRecordtoHistory["_id"],
                 }
             });
+            totalPrice += _SellPrice * totalRequestedPackets
 
         }
+
+        setTimeout(async () => {
+            await ProfileCollection.findByIdAndUpdate({
+                _id: req.params.id
+            }, {
+                remainedbalance: Profile['remainedbalance'] + totalPrice,
+            });
+        }, 3000);
+
         res.send("بە سەرکەوتوویی تۆمارکرا");
 
     } catch (error) {
