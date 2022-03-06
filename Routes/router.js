@@ -52,6 +52,7 @@ router.post('/Products/:id/Update', Products.allowIfLoggedin, Products.grantAcce
 router.get('/Products/:id/Clone', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.CloneProductUI);
 router.post('/Products/Clone', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.CloneProduct);
 router.get('/Products/Print', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.PrintAllProducts);
+router.get('/Admin/Color', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.AddNewColor);
 
 
 // router.get('/:id/NewRequest', Products.AddNewRequest); // Add new Request per Product

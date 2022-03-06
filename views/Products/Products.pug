@@ -1,4 +1,9 @@
 include ../Components/Header
+append styles 
+  style.
+    .table-hover thead tr:hover th, .table-hover tbody tr:hover td {
+      background-color: #D1D119;
+      }
 block content
   br
   .container-fluid
@@ -6,13 +11,16 @@ block content
     .d-sm-flex.align-items-left.justify-content-between.mb-4
       h1.h3.mb-0.text-gray-800=title
       .span
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.m-1(onclick="printDiv('printableArea')")
+          i.fas.fa-print.fa-sm.text-white-50
+          |  چاپکردن
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.m-1(href="/NewProduct")
           i.fas.fa-plus-square.fa-sm.text-white-50
           |  بەرهەمی نوێ
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-warning.shadow-sm.text-white.m-1(href="/NewTrailer")
           i.fas.fa-truck-moving.fa-sm.text-white-50
           |  بار‌هەڵگری نوێ
-        a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.m-1(href="/Products/Print")
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm.text-white.m-1(href="/Products/Print")
           i.fas.fa-print.fa-sm.text-white-50
           |  بەرهەمەمی بەردەست
     .container
@@ -22,7 +30,7 @@ block content
           div(class="alert alert-danger") #{error.msg}
     hr
     .row
-      .container-fluid.table-responsive
+      .container-fluid.table-responsive(id="printableArea")
         table(id="productTable").table.table-hover.table-lg.table-striped
           thead.thead-light
             tr(style="text-align:center; font-size:90%")
@@ -40,6 +48,32 @@ block content
               th(scope='col') کردارەکان 
           tbody
   script.
+    //Print Section
+    function printDiv(divName) {
+      var originalContents = document.body.innerHTML;
+      $('table thead tr').find('td:eq(6),th:eq(6)').remove();
+      $('table thead tr').find('td:eq(6),th:eq(6)').remove();
+      $('table thead tr').find('td:eq(9),th:eq(9)').remove();
+
+
+      $('table tbody tr').find('td:eq(6),th:eq(6)').remove();
+      $('table tbody tr').find('td:eq(6),th:eq(6)').remove();
+      $('table tbody tr').find('td:eq(9),th:eq(9)').remove();
+
+      //- $('table thead tr').find('td:eq(1),th:eq(1)').remove();
+      //- $('table thead tr').find('td:eq(2),th:eq(2)').remove();
+      //- $('table thead tr').find('td:eq(3),th:eq(3)').remove();
+
+      //- $('table tbody tr').find('td:eq(1),th:eq(1)').remove();
+      //- $('table tbody tr').find('td:eq(1),th:eq(1)').remove();
+      //- $('table tbody tr').find('td:eq(2),th:eq(2)').remove();
+      //- $('table tbody tr').find('td:eq(3),th:eq(3)').remove();
+      //- $('table tbody tr').find('td:eq(4),th:eq(4)').remove();
+      var printContents = document.getElementById(divName).innerHTML;
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+    }
     $(document).ready(function() {
       $('#productTable').DataTable({
         "processing": true,

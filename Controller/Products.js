@@ -1102,7 +1102,19 @@ exports.SearchForProductsinCompany = async (req, res, next) => {
     }
 }
 
-
+// TODO: Checked and Worked Properly
+//Search for Products of Specific Company
+exports.AddNewColor = async (req, res, next) => {
+    try {
+        res.render('Products/NewColor', {
+            title: "زیادکردنی ڕەنگ",
+            time: Date(),
+            user: req.user,
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 
 

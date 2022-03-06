@@ -1,0 +1,23 @@
+extends /Dashboard/Header
+block PageContent
+  .container-fluid
+    .row
+      .container-fluid.table-responsive
+        form(method='POST' action="/Profiles/Customer/NewTypes")
+          .container
+            != messages('message', locals)
+            if errors
+              each error, i in errors
+                div(class="alert alert-danger") #{error.msg}
+          h2 زیادکردنی ڕەنگ
+          .form-row
+            .form-group.col-md-4
+              label ڕەنگ
+              input.form-control(name="color" type='text' placeholder='ڕەنگ')
+          button.btn.btn-primary(type='submit') Submit
+
+
+
+
+
+

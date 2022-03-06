@@ -237,7 +237,7 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
 
             },
             {
-                $sort: { "_id": -1 },
+                $sort: { "items.createdAt": -1 },
             },
             {
                 $match: {
