@@ -440,6 +440,83 @@ exports.DeleteSelectedInvoice = async (req, res, next) => {
 
 // TODO: Checked and Worked Properly
 //Update Products Operation
+exports.DeleteSelectedInvoiceForRecovers = async (req, res, next) => {
+    try {
+
+        const Record = await RecordsCollection.find({
+            recordCode: req.params.recordcode,
+            status: req.params.status,
+            cutomerID: req.params.id
+        });
+
+        const totalPrice = await RecordsCollection.aggregate([
+            {
+                $match: {
+                    recordCode: req.params.recordcode,
+                    cutomerID: mongoose.Types.ObjectId(req.params.id),
+                    status: req.params.status
+                },
+            },
+            { $group: { _id: null, amount: { $sum: "$totalPrice" } } }
+        ])
+
+
+        var Profile = await ProfileCollection.findOne({
+            _id: Record[0]['cutomerID']
+        });
+
+
+        for (let index = 0; index < Record.length; index++) {
+            const element = Record[index];
+
+            const Product = await ProductsCollection.findOne({
+                _id: element['productID']
+            });
+
+            // const Trailer = await TrailersCollection.findOne({
+            //     trailerNumber: element['trailerNumber'],
+            //     productID: element['productID']
+            // });
+
+            const returnedPackets = Product['totalQuantity'] - element['totalQuantity'];
+            await ProductsCollection.findByIdAndUpdate({
+                _id: element['productID']
+            }, {
+                totalQuantity: returnedPackets
+            });
+
+            // const returnedPacketsForTrailer = element['totalQuantity'] + Trailer['totalQuantity']
+            // await TrailersCollection.findByIdAndUpdate({
+            //     "_id": Trailer['_id']
+            // }, {
+            //     totalQuantity: returnedPacketsForTrailer
+            // });
+
+            setTimeout(async () => {
+                await RecordsCollection.deleteMany({
+                    recordCode: req.params.recordcode,
+                    status: "Recovered",
+                })
+            }, 1000);
+        }
+
+        await ProfileCollection.findByIdAndUpdate({
+            _id: Record[0]['cutomerID']
+        }, {
+            remainedbalance: Profile['remainedbalance'] - parseFloat(totalPrice[0]['amount']),
+        });
+
+
+        req.flash('success', "تۆمارەکە بە سەرکەوتوویی ڕەشکرایەوە");
+        res.redirect("/Profiles")
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+// TODO: Checked and Worked Properly
+//Update Products Operation
 exports.AddNewItemToInvoiceUI = async (req, res, next) => {
     try {
 

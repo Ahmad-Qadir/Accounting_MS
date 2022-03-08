@@ -101,7 +101,7 @@ block content
                   td=item['trailerNumber']
                   td(style="text-align:center;")=item['totalQuantity']
                   td(style="text-align:center;")=item['status']
-                  td(style="text-align:center;")="$ "+item['totalPrice']
+                  td(style="text-align:center;")="$ "+item['totalPrice'].toFixed(2)
                   td(style="text-align:center;")=item['trailerNumber']
                   td(style="text-align:center;")=item['note']
                   if item['cutomerID']==undefined

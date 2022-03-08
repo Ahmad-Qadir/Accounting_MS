@@ -72,8 +72,8 @@ block content
                             td(style="text-align:center;") -
                             td(style=`text-align:center;`) -
                             td(style="text-align:center;") -
-                            td(style="text-align:center;")="$ "+item['sellPrice']
-                            td.count-me(style="text-align:center;")="$ "+item['totalPrice']
+                            td(style="text-align:center;")="$ "+item['sellPrice'].toFixed(2)
+                            td.count-me(style="text-align:center;")="$ "+item['totalPrice'].toFixed(2)
                           else
                             td=j
                             td=item['productID']['itemModel']
@@ -82,8 +82,8 @@ block content
                             td(style="text-align:center;")=item['productID']['color']
                             td(style=`text-align:center;`)=item['productID']['itemUnit']
                             td(style="text-align:center;")=item['totalQuantity']
-                            td(style="text-align:center;")="$ "+item['sellPrice']
-                            td.count-me(style="text-align:center;")="$ "+item['totalPrice']
+                            td(style="text-align:center;")="$ "+item['sellPrice'].toFixed(2)
+                            td.count-me(style="text-align:center;")="$ "+item['totalPrice'].toFixed(2)
                   tfoot(style="font-size: 12px;font-weight:bold;text-align:center;")
                     tr
                       td(style="text-align:center;") #

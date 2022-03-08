@@ -85,7 +85,7 @@ block content
                                                         td.left
                                                             strong کۆی گشتی (دۆلار)
                                                         td.right
-                                                            strong(id="finalPrice")="$"+(invoice['items'][0]['totalPrice'])
+                                                            strong(id="finalPrice")="$"+(invoice['items'][0]['totalPrice'].toFixed(2))
                                 else 
                                     .row
                                         .col-5.ml-auto
@@ -99,7 +99,7 @@ block content
                                                     tr(style="line-height: 10px;")
                                                         td.left
                                                             strong قەرزی ئێستا
-                                                        td.right(id="total")="$"+invoice['amount']
+                                                        td.right(id="total")="$"+invoice['amount'].toFixed(2)
                                                     tr(style="line-height: 10px;")
                                                         td.left
                                                             strong کۆی گشتی (دۆلار)

@@ -71,6 +71,7 @@ router.get('/Invoice/:invoiceID/:productName', Records.allowIfLoggedin, Records.
 router.get('/Invoices/query', Records.allowIfLoggedin, Records.grantAccess('readAny', 'invoice'), Records.ShowSelectedDateOfInvoices); // Add new Request
 router.post('/Invoices/Print', Records.allowIfLoggedin, Records.grantAccess('readAny', 'invoice'), Records.ShowSelectedDateOfInvoicesOperation); // Add new Request
 router.get('/Invoices/Delete/:recordcode/:id/:status', Records.allowIfLoggedin, Records.grantAccess('readAny', 'invoice'), Records.DeleteSelectedInvoice); // Add new Request
+router.get('/Invoices/Delete/:recordcode/:id/:status/Recovered', Records.allowIfLoggedin, Records.grantAccess('readAny', 'invoice'), Records.DeleteSelectedInvoiceForRecovers); // Add new Request
 router.get('/Invoices/NewItem/:recordCode/:id', Records.allowIfLoggedin, Records.grantAccess('readAny', 'records'), Records.AddNewItemToInvoiceUI); // Records
 router.post('/Invoices/AddNewItem/:recordCode/:id', Records.allowIfLoggedin, Records.grantAccess('readAny', 'records'), Records.AddNewItemToInvoice); // Records
 

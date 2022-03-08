@@ -1,7 +1,7 @@
 include ../Components/Header
 append styles 
   style.
-    .table-hover thead tr:hover th, .table-hover tbody tr:hover td {
+    .table-hover tbody tr:hover td {
       background-color: #D1D119;
       }
 block content
@@ -74,8 +74,10 @@ block content
       window.print();
       document.body.innerHTML = originalContents;
     }
+
     $(document).ready(function() {
       $('#productTable').DataTable({
+        "ordering": false,
         "processing": true,
         "serverSide": true,
         "pageLength": 50,        
