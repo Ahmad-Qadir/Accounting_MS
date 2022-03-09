@@ -145,6 +145,13 @@ block content
                         th(style="").right کۆی گشتی
                         //- th(style="text-align:center; font-size:100%;font-weight:bold; width:3%")
                     tbody(id="dataOfInvoiceTable" style="font-size: 12px;font-weight:bold;text-align:center;")
+                    tfoot(style="font-size: 12px;font-weight:bold;text-align:center;")
+                      tr
+                        td(style="text-align:center;") #
+                        td(style="text-align:center;" colspan="6")
+                        td(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light کۆی گشتی
+                        td(style="text-align:center; font-size:3 rem;font-weight:bold" id="total1").bg-dark.text-light="$"+0
+
                 .row
                   .col-5.ml-auto
                     br
@@ -483,6 +490,7 @@ block content
             document.getElementById('total').innerHTML="$"+document.getElementById('total').innerHTML
             document.getElementById('finalPrice').innerHTML=(parseFloat((document.getElementById('total').innerHTML).replace("$",""))+parseFloat(parseFloat((document.getElementById("olddebut").innerHTML).replace("$",""))))
             document.getElementById('finalPrice').innerHTML="$"+document.getElementById('finalPrice').innerHTML
+            document.getElementById('total1').innerHTML=document.getElementById('total').innerHTML
           }
           else{
             continue;
@@ -596,6 +604,7 @@ block content
         $(this).parents("tr").remove();
         document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML.replace("$", ''))-parseFloat(this.parentNode.childNodes[8].innerHTML.replace("$", ''))
         document.getElementById('finalPrice').innerHTML=parseFloat(document.getElementById('total').innerHTML.replace("$", ''))+parseFloat(parseFloat(document.getElementById("olddebut").innerHTML.replace("$", '')))
+        document.getElementById('total1').innerHTML=parseFloat(document.getElementById('total1').innerHTML.replace("$", ''))-parseFloat(this.parentNode.childNodes[8].innerHTML.replace("$", ''))
         });
           $('#invoiceTable').on('click', 'tbody tr', function(event) {
             var idnumber=$(this).attr('id').replace(/[^0-9]/g,'')
@@ -613,6 +622,7 @@ block content
               });
               document.getElementById('total').innerHTML = TotalValue;
               document.getElementById('finalPrice').innerHTML="$"+(TotalValue+parseFloat(parseFloat(document.getElementById("olddebut").innerHTML.replace("$", ''))))
+              document.getElementById('total1').innerHTML=TotalValue
 
             //- if(!isNaN(totalNewPrice)){
             //-   document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML.replace("$",""))-parseFloat(OldMaxPrice)+totalNewPrice
