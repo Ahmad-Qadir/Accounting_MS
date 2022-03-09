@@ -52,8 +52,8 @@ block content
             h2(id="heading"+i).accordion-header
               .row
                 if item['items'][0]['moneyStatus']=="Debut"
-                  button.accordion-button.note.note-warning(type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
-                    div="تۆماری ژمارە: "+item['_id']['recordCode']
+                  button.accordion-button.note.note-warning.border.border-warning.rounded-5(style="border-width:10px !important;" type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
+                    div(style="background-color:#f0ad4e")="تۆماری ژمارە: "+item['_id']['recordCode']
                     //- .col-md-2="کۆی بەرهەم: "+item['count']
                     .col-md-4="تێچووی تۆمار: "+item['amount']
                     .col-md-4="بەروار: "+item['items'][0]['createdAt'].toLocaleString()
@@ -67,8 +67,11 @@ block content
                       a.btn.btn-sm.btn-primary.m-2( title="زیادکردنی بەرهەم" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Invoices/NewItem/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID'])
                         span.icon.text-white-50
                           i.fas.fa-plus-square
+                      a.btn.btn-sm.btn-success.m-2( title="پارەدانی ئەم تۆمارە" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Invoices/NewItem/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID'])
+                        span.icon.text-white-50
+                          i.fas.fa-money-bill-alt
                 else if item['items'][0]['status']=="Recovered"
-                  button.accordion-button.note.note-secondary(type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
+                  button.accordion-button.note.note-secondary.border.border-secondary.rounded(style="border-width:10px !important;" type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
                     div="تۆماری ژمارە: "+item['_id']['recordCode']
                     //- .col-md-2="کۆی بەرهەم: "+item['count']
                     .col-md-4="تێچووی تۆمار: "+item['amount']
@@ -81,7 +84,7 @@ block content
                       //-   span.icon.text-white-50
                       //-     i.fas.fa-trash 
                 else if item['items'][0]['status']=="Compensate"
-                  button.accordion-button.note.note-success(type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
+                  button.accordion-button.note.note-success.border.border-success.rounded(style="border-width:10px !important;" type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
                     div="تۆماری ژمارە: "+item['_id']['recordCode']
                     //- .col-md-2="کۆی بەرهەم: "+item['count']
                     .col-md-4="تێچووی تۆمار: "+item['amount']
