@@ -57,16 +57,18 @@ block content
                                                         td(style="text-align:center;")="$ "+invoice['items'][0]['sellPrice']
                                                         td.count-me(style="text-align:center;")="$ "+invoice['items'][0]['totalPrice']
                                                 else
-                                                    each loop,l in invoice['data']
-                                                        tr
-                                                            td=loop['itemModel']
-                                                            td(style="text-align:center;")=loop['itemName']
-                                                            td(style="text-align:center;")=loop['itemType']
-                                                            td(style="text-align:center;")=loop['color']
-                                                            td(style=`text-align:center;`)=loop['itemUnit']
-                                                            td(style="text-align:center;")=invoice['items'][l]['totalQuantity']
-                                                            td(style="text-align:center;")="$ "+invoice['items'][l]['sellPrice']
-                                                            td.count-me(style="text-align:center;")="$ "+invoice['items'][l]['totalPrice']
+                                                    each product,x in invoice['data']
+                                                        each product,k in invoice['data']
+                                                            if invoice['items'][x]['productID'].equals(product['_id'])
+                                                                tr
+                                                                    td=product['itemModel']
+                                                                    td(style="text-align:center;")=product['itemName']
+                                                                    td(style="text-align:center;")=product['itemType']
+                                                                    td(style="text-align:center;")=product['color']
+                                                                    td(style=`text-align:center;`)=product['itemUnit']
+                                                                    td(style="text-align:center;")=invoice['items'][x]['totalQuantity']
+                                                                    td(style="text-align:center;")="$ "+invoice['items'][x]['sellPrice']
+                                                                    td.count-me(style="text-align:center;")="$ "+invoice['items'][x]['totalPrice']
                                 if invoice['data'].length==0
                                     .row
                                         .col-5.ml-auto
