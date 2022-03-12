@@ -83,6 +83,7 @@ router.get('/Records', Records.allowIfLoggedin, Records.grantAccess('readAny', '
 router.get('/Records/Delete/:recordcode/:productid', Records.allowIfLoggedin, Records.grantAccess('readAny', 'records'), Records.DeletIteminInvoice); // Records
 router.get('/Records/Modification/:recordcode/:productid', Records.allowIfLoggedin, Records.grantAccess('readAny', 'records'), Records.EditProductInInvoice); // Records
 router.post('/Records/Modification/:id/updates', Records.allowIfLoggedin, Records.grantAccess('readAny', 'records'), Records.UpdateChangesinEditOfTrailer); // Records
+router.get('/Records/Status/:recordcode/:customerID', Records.allowIfLoggedin, Records.grantAccess('readAny', 'records'), Records.ChangeStatusOfInvoice); // Records
 
 
 

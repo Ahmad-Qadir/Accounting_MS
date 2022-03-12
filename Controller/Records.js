@@ -184,6 +184,98 @@ exports.EditProductInInvoice = async (req, res, next) => {
     }
 }
 
+
+//Print Selected Invoice
+exports.ChangeStatusOfInvoice = async (req, res, next) => {
+    try {
+
+        // const Record = await RecordsCollection.findOne({
+        //     recordCode: req.params.recordcode,
+        //     status: "Customer Request",
+        //     moneyStatus: "Debut",
+        //     cutomerID: req.params.customerID
+        // });
+
+        const Invoices = await RecordsCollection.aggregate(
+            [
+                {
+                    $group: {
+                        _id: { recordCode: '$recordCode', status: "$status" },
+                        amount: { $sum: "$totalPrice" },
+                        count: { $sum: 1 },
+                        items: {
+                            $push: { cutomerID: "$cutomerID", totalPrice: "$totalPrice", recordCode: "$recordCode", status: "$status", moneyStatus: "$moneyStatus" },
+                        },
+                    },
+
+                },
+                {
+                    $match: {
+                        "items.recordCode": req.params.recordcode,
+                        "items.status": "Customer Request",
+                        "items.moneyStatus": "Debut",
+                        "items.cutomerID": mongoose.Types.ObjectId(req.params.customerID)
+                    },
+                },
+            ]);
+
+
+        // res.send(Invoices)
+
+
+        const Record = await RecordsCollection.findOne({
+            status: "Invoice Payment",
+        }).distinct("recordCode");
+
+        var numberArray = Record.map(Number);
+
+        numberArray.sort(function (a, b) {
+            return a - b;
+        });
+
+        var invoiceID = parseFloat((numberArray[numberArray.length - 1])) + 1;
+
+        if (isNaN(invoiceID))
+            invoiceID = 1;
+
+
+
+        var Profile = await ProfileCollection.findOne({
+            _id: req.params.customerID
+        });
+
+
+
+        const newRecordtoHistory = new RecordsCollection({
+            recordCode: invoiceID,
+            status: "Invoice Payment",
+            sellPrice: Invoices[0]['amount'],
+            totalPrice: Invoices[0]['amount'],
+            totalQuantity: 0,
+            oldDebut: Profile['remainedbalance'],
+            addedBy: req.user.username,
+            updatedBy: req.user.username,
+            note: Invoices[0]['_id']['recordCode'],
+            cutomerID: req.params.customerID,
+        });
+        await newRecordtoHistory.save();
+
+        await ProfileCollection.findByIdAndUpdate({
+            _id: req.params.customerID
+        }, {
+            remainedbalance: Profile['remainedbalance'] - parseFloat(Invoices[0]['amount']),
+            $push: {
+                invoiceID: newRecordtoHistory["_id"],
+            }
+        });
+
+        req.flash('success', "پارەدانەکە بە سەرکەوتوویی تۆمارکرا");
+        res.redirect("/Profiles/"+req.params.customerID+"/Invoices")
+    } catch (error) {
+        next(error)
+    }
+}
+
 // TODO: Checked and Worked Properly
 //Update Products Operation
 exports.UpdateChangesinEditOfTrailer = async (req, res, next) => {

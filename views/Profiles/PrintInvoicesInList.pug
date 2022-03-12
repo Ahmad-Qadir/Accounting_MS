@@ -25,13 +25,15 @@ block content
             table.table.table-hover.table-sm.dt-responsive.table-striped.table-bordered
                 thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
                     tr(scope='col' style="text-align:center; font-size:90%")
-                        th #
-                        th ژمارەی تۆمار
-                        th بەروار
-                        th قەرزی کۆن
-                        th قەرزی نوێ
-                        th چالاکی
-                        th کۆی گشتی
+                        th(style="width:2%") #
+                        th(style="width:10%") ژمارەی تۆمار
+                        th(style="width:15%") بەروار
+                        th(style="width:10%") قەرزی کۆن
+                        th(style="width:10%") قەرزی نوێ
+                        th(style="width:10%") چالاکی
+                        th(style="width:10%") کۆی گشتی
+                        //- th تێبینی
+
 
                 tbody
                     each item,i in invoices
@@ -52,15 +54,22 @@ block content
                                 td(style="text-align:center; background-color: rgba(255, 169, 0, 0.3);") فرۆشتن-قەرد
                             else if item['items'][0]['moneyStatus']=="Paid"
                                 td(style="text-align:center;") فرۆشتن-کاش
+                            else if item['items'][0]['status']=="Invoice Payment"
+                                td(style="text-align:center; background-color: rgba(0, 255, 0, 0.3);")=" پارەدان - (تۆماری  "+item['items'][0]['note']+")"
                             if item['items'][0]['moneyStatus']=="Return Money"
                                 td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']-item['amount']).toFixed(2)
                             else if item['items'][0]['moneyStatus']=="Paid"
                                 td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut'])
+                            else if item['items'][0]['status']=="Invoice Payment"
+                                td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']-item['amount']).toFixed(2)
                             else if item['items'][0]['status']=="Recovered"
                                 td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']-item['amount']).toFixed(2)
                             else 
                                 td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']+item['amount']).toFixed(2)
-
+                            //- if item['items'][0]['status']=="Invoice Payment"
+                            //-     td(style="text-align:center;")=" تۆماری "+item['items'][0]['note']
+                            //- else
+                            //-     td(style="text-align:center;")
     script.
         function printDiv(divName) 
         {

@@ -403,7 +403,7 @@ exports.GetAllInvoiceInList = async (req, res, next) => {
                     _id: { recordCode: '$recordCode', status: "$status" },
                     amount: { $sum: "$totalPrice" },
                     items: {
-                        $push: { oldDebut: "$oldDebut", discount: "$discount", prepaid: "$prepaid", recordCode: '$recordCode', softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                        $push: { oldDebut: "$oldDebut", discount: "$discount", prepaid: "$prepaid", recordCode: '$recordCode', softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", note: "$note", addedBy: "$addedBy", sellPrice: "$sellPrice" },
                     },
                 },
 

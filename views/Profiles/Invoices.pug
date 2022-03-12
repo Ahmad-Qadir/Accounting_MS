@@ -67,7 +67,7 @@ block content
                       a.btn.btn-sm.btn-primary.m-2( title="زیادکردنی بەرهەم" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Invoices/NewItem/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID'])
                         span.icon.text-white-50
                           i.fas.fa-plus-square
-                      a.btn.btn-sm.btn-success.m-2( title="پارەدانی ئەم تۆمارە" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Invoices/NewItem/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID'])
+                      a.btn.btn-sm.btn-success.m-2( title="پارەدانی ئەم تۆمارە" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Records/Status/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID'])
                         span.icon.text-white-50
                           i.fas.fa-money-bill-alt
                 else if item['items'][0]['status']=="Recovered"
@@ -106,12 +106,12 @@ block content
                       a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Profiles/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID']+"/"+item['items'][0]['status']+"/Print")
                         span.icon.text-white-50
                           i.fas.fa-print
-                      a.btn.btn-sm.btn-danger.m-2( title="ڕەشکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Invoices/Delete/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID']+"/"+item['items'][0]['status'])
-                        span.icon.text-white-50
-                          i.fas.fa-trash 
-                      a.btn.btn-sm.btn-primary.m-2( title="زیادکردنی بەرهەم" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Invoices/NewItem/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID'])
-                        span.icon.text-white-50
-                          i.fas.fa-plus-square
+                      //- a.btn.btn-sm.btn-danger.m-2( title="ڕەشکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Invoices/Delete/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID']+"/"+item['items'][0]['status'])
+                      //-   span.icon.text-white-50
+                      //-     i.fas.fa-trash 
+                      //- a.btn.btn-sm.btn-primary.m-2( title="زیادکردنی بەرهەم" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Invoices/NewItem/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID'])
+                      //-   span.icon.text-white-50
+                      //-     i.fas.fa-plus-square
             if item['items'][0]['status']=="Compensate"
               .accordion-collapse.collapse.hide(aria-labelledby="heading"+i data-mdb-parent='#accordionExample' id="collapse"+i)
                 .accordion-body
