@@ -58,6 +58,7 @@ router.get('/Admin/Color', Products.allowIfLoggedin, Products.grantAccess('readA
 // router.get('/:id/NewRequest', Products.AddNewRequest); // Add new Request per Product
 router.post('/Products/:id/Requests', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.NewInvoice); // Add new Request per Product
 router.post('/Products/:id/Requests/:paid', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.NewInvoiceForDebut); // Add new Request per Product
+router.post('/Products/:id/Requests/Payment/:total/:pay', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.NewInvoiceForDebutAndPrice); // Add new Request per Product
 router.post('/Products/:id/Requests/Debut/:price', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.NewInvoiceOfNoPrice); // Add new Request per Product
 router.post('/Products/RemoveProduct/:id', Products.allowIfLoggedin, Products.grantAccess('deleteAny', 'products'), Products.RemoveProduct); // Add new Request per Product
 router.get('/Products/Remove/:id', Products.allowIfLoggedin, Products.grantAccess('deleteAny', 'products'), Products.RemoveProductUI); // Add new Request per Product

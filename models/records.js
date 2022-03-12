@@ -20,6 +20,8 @@ const itemHistorySchema = new mongoose.Schema({
     personName: String,
     prepaid: Number,
     discount: String,
+    remainedMoney:Number,
+    paidMoney:Number,
     moneyStatus: String,
     addedBy: {
         type: String

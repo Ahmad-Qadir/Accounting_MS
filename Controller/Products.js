@@ -508,6 +508,157 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
     }
 }
 
+//Invoice Request Operation
+exports.NewInvoiceForDebutAndPrice = async (req, res, next) => {
+    try {
+        var RequestList = req.body[0];
+        var checkLength = 0;
+        var preparation = [];
+        var resultOfValidation = [];
+        var count = 0;
+        const Record = await RecordsCollection.findOne({
+            status: "Customer Request",
+        }).distinct("recordCode");
+
+        var numberArray = Record.map(Number);
+
+        numberArray.sort(function (a, b) {
+            return a - b;
+        });
+
+        var invoiceID = parseFloat((numberArray[numberArray.length - 1])) + 1;
+
+        if (isNaN(invoiceID))
+            invoiceID = 1;
+
+        var Profile = await ProfileCollection.findOne({
+            _id: req.params.id
+        });
+
+
+
+        for (let k = 0; k < RequestList.length; k++) {
+            const element = RequestList[k];
+            const Product = await ProductsCollection.findOne({
+                itemModel: element[1],
+                itemName: element[2],
+                itemType: element[3],
+                color: element[4],
+                weight: parseFloat(element[5].split(" ")[0]),
+                itemUnit: element[5].split(" ")[1]
+            });
+
+            var totalRequestedPackets = element[6];
+            var _SellPrice = parseFloat(element[7].replace("$", ''));
+
+            if (Product['totalQuantity'] < totalRequestedPackets) {
+                preparation[count] = Product;
+                count++;
+            } else {
+                checkLength++;
+            }
+        }
+
+        setTimeout(async () => {
+
+            if (checkLength == RequestList.length) {
+                for (let index = 0; index < RequestList.length; index++) {
+                    const element = RequestList[index];
+                    // console.log("Item Model:" + element[1])
+                    // console.log("Item Name:" + element[2])
+                    // console.log("Item Type:" + element[3])
+                    // console.log("Item Color:" + element[4])
+                    // console.log("Item Weight:" + element[5].split(" ")[0])
+                    // console.log("Item Unit:" + element[5].split(" ")[1])
+                    // console.log("Item Number:"+element[6])
+                    // console.log("Sell Price:"+element[7])
+                    // console.log("Total Price:"+element[8])
+                    // console.log("Item Trailer:"+element[9])
+
+                    const Product = await ProductsCollection.findOne({
+                        itemModel: element[1],
+                        itemName: element[2],
+                        itemType: element[3],
+                        color: element[4],
+                        weight: parseFloat(element[5].split(" ")[0]),
+                        itemUnit: element[5].split(" ")[1]
+                    });
+
+                    var totalRequestedPackets = element[6];
+                    var _SellPrice = parseFloat(element[7].replace("$", ''));
+
+
+
+
+                    //Prevent 
+                    if (Product['totalQuantity'] < totalRequestedPackets) {
+                        res.send("بەرهەمی " + Product['itemModel'] + " " + Product['itemName'] + "تەنها " + Product['totalQuantity'] + " ماوە");
+                        break;
+                    } else {
+                        //===============Records Collection=============
+                        const newRecordtoHistory = new RecordsCollection({
+                            recordCode: invoiceID,
+                            totalQuantity: totalRequestedPackets,
+                            status: "Customer Request",
+                            sellPrice: _SellPrice,
+                            totalPrice: _SellPrice * totalRequestedPackets,
+                            oldDebut: Profile['remainedbalance'],
+                            addedBy: req.user.username,
+                            updatedBy: req.user.username,
+                            note: req.body[1].toString(),
+                            productID: Product['_id'],
+                            cutomerID: req.params.id,
+                            htmlObject: req.body['tbody'],
+                            moneyStatus: "Half Invoice",
+                            paidMoney: req.params.pay,
+                            remainedMoney: req.params.total - req.params.pay,
+                            personName: req.body[2].toString()
+                        });
+                        await newRecordtoHistory.save();
+
+                        var result = Product['totalQuantity'] - totalRequestedPackets;
+
+                        await ProductsCollection.findByIdAndUpdate({
+                            _id: Product['_id']
+                        }, {
+                            totalQuantity: result,
+                            updatedBy: req.user.username,
+                            $push: {
+                                itemHistory: newRecordtoHistory["_id"],
+                            }
+                        });
+
+
+                        await ProfileCollection.findByIdAndUpdate({
+                            _id: req.params.id
+                        }, {
+                            updatedBy: req.user.username,
+                            $push: {
+                                invoiceID: newRecordtoHistory["_id"],
+                            }
+                        });
+
+                    }
+                }
+                res.send("بە سەرکەوتوویی تۆمارکرا")
+
+                await ProfileCollection.findByIdAndUpdate({
+                    _id: req.params.id
+                }, {
+                    remainedbalance: Profile['remainedbalance'] + (parseFloat(req.params.total) - parseFloat(req.params.pay)),
+                });
+
+            } else {
+                res.send(preparation)
+            }
+        }, 2000);
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
 // TODO: Checked and Worked Properly
 //Invoice Request Operation
 exports.NewInvoiceForDebut = async (req, res, next) => {
@@ -586,7 +737,7 @@ exports.PrintAllProducts = async (req, res, next) => {
                     _id: { manufacturerCompany: '$manufacturerCompany' },
                     count: { $sum: 1 },
                     items: {
-                        $push: { itemModel: "$itemModel", itemName: "$itemName", countryCompany: "$countryCompany", manufacturerCompany: "$manufacturerCompany", unit: "$unit", itemUnit: "$itemUnit", itemType: "$itemType", usedIn: "$usedIn", weight: "$weight", color: "$color", totalQuantity: "$totalQuantity"},
+                        $push: { itemModel: "$itemModel", itemName: "$itemName", countryCompany: "$countryCompany", manufacturerCompany: "$manufacturerCompany", unit: "$unit", itemUnit: "$itemUnit", itemType: "$itemType", usedIn: "$usedIn", weight: "$weight", color: "$color", totalQuantity: "$totalQuantity" },
                     },
                 },
 
@@ -596,7 +747,7 @@ exports.PrintAllProducts = async (req, res, next) => {
             },
         ]);
 
-        // console.log()
+    // console.log()
 
     res.render("Products/PrintProducts", {
         title: "بەرهەمەکان",
