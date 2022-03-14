@@ -67,7 +67,7 @@ exports.Trailers = async (req, res, next) => {
             .aggregate([
                 {
                     $group: {
-                        _id: { trailerNumber: "$trailerNumber" },
+                        _id: { trailerNumber: "$trailerNumber",status: "$status" },
                         amount: { $sum: "$totalPrice" },
                         count: { $sum: 1 },
                         items: {
