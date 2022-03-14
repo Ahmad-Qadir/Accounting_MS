@@ -132,7 +132,7 @@ block content
                   .container-fluid.table-responsive
                     table(id="clientTable").table.table-hover.table-sm.dt-responsive.table-striped
                       if item['_id']['status']=="Compensate"
-                        thead.thead-light
+                        thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
                           tr(scope='col' style="text-align:center; font-size:90%")
                             th #
                             th قەرزی کۆن
@@ -151,7 +151,7 @@ block content
                             td(style="text-align:center;")=item['items'][0]['createdAt'].toLocaleString()
                             td(style="text-align:center;")=item['items'][0]['addedBy']
                       else 
-                        thead.thead-light
+                        thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
                           tr(scope='col' style="text-align:center; font-size:90%")
                             th #
                             th بڕاندی بەرهەم

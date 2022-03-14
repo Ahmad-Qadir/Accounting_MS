@@ -29,10 +29,10 @@ block content
                             - var time = new Date();
                             tr(style="font-weight:bold; font-size:2 rem; text-align:center;")
                                 td=item['username']
-                                td=item['balance']
+                                td=parseFloat(item['balance']).toFixed(2)
                                 td=item['rate']
                                 td=item['updatedAt'].toLocaleString()
                     tfooter 
                         tr 
-                            td="کۆی گشتی داهات:"+income
+                            td="کۆی گشتی داهات:"+income.toFixed(2)
                             td="کۆی گشتی خەرجی:"+expense

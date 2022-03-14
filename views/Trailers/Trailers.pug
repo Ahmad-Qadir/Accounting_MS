@@ -36,9 +36,9 @@ block content
                         .accordion-collapse.collapse.hide(aria-labelledby="heading"+i data-mdb-parent='#accordionExample' id="collapse"+i)
                             .accordion-body
                                 .container-fluid.table-responsive
-                                    table.table.table-hover.table-sm.dt-responsive.table-striped
-                                        thead.thead-light
-                                            tr(style="text-align:center; font-size:3 rem")
+                                    table.table.table-hover.table-sm.dt-responsive.table-striped.table-bordered
+                                        thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
+                                            tr(scope='col' style="text-align:center; font-size:90%")
                                                 th(scope='col') #
                                                 th(scope='col') بڕاندی بەرهەم
                                                 th(scope='col') ناوی بەرهەم
@@ -72,8 +72,8 @@ block content
                                                                 td(style="text-align:center;")=product['itemType']
                                                                 td(style="text-align:center;")=product['usedIn']
                                                                 td(style="text-align:center;")=product['weight']
-                                                                td(style="text-align:center;")=item['items'][j]['camePrice']
-                                                                td(style="text-align:center;")=item['items'][j]['sellPrice']
+                                                                td(style="text-align:center;")=item['items'][j]['camePrice'].toFixed(2)
+                                                                td(style="text-align:center;")=item['items'][j]['sellPrice'].toFixed(2)
                                                                 td(style="text-align:center;")=(item['items'][j]['sellPrice']-item['items'][j]['camePrice']).toFixed(2)
                                                                 td(style="text-align:center;")=item['items'][j]['totalQuantity']
                                                                 td(style="text-align:center;")=product['color']
