@@ -54,7 +54,7 @@ block content
                                                 th(scope='col') ڕەنگ
                                                 th(scope='col') کۆی نرخ(بێ تێچوو)
                                                 th(scope='col') کۆی گشتی
-                                                //- th(scope='col') چالاکی
+                                                th(scope='col') چالاکی
 
 
                                         tbody
@@ -63,26 +63,26 @@ block content
                                                     if item['items'][j]['productID'].equals(product['_id'])
                                                         tr
                                                             -var index=j+1
-                                                            tr(style="font-weight:bold; font-size:2 rem")
-                                                                td(style="text-align:center;")=index
-                                                                td(style="text-align:center;")=product['itemModel']
-                                                                td(style="text-align:center;")=product['itemName']
-                                                                td(style="text-align:center;")=product['manufacturerCompany']
-                                                                td(style="text-align:center;")=product['itemUnit']
-                                                                td(style="text-align:center;")=product['itemType']
-                                                                td(style="text-align:center;")=product['usedIn']
-                                                                td(style="text-align:center;")=product['weight']
-                                                                td(style="text-align:center;")=item['items'][j]['camePrice'].toFixed(2)
-                                                                td(style="text-align:center;")=item['items'][j]['sellPrice'].toFixed(2)
-                                                                td(style="text-align:center;")=(item['items'][j]['sellPrice']-item['items'][j]['camePrice']).toFixed(2)
-                                                                td(style="text-align:center;")=item['items'][j]['totalQuantity']
-                                                                td(style="text-align:center;")=product['color']
-                                                                td(style="text-align:center;")=(parseFloat(item['items'][j]['totalQuantity'])*parseFloat(item['items'][j]['camePrice'])).toFixed(2)
-                                                                td(style="text-align:center;")=(parseFloat(item['items'][j]['totalQuantity'])*parseFloat(item['items'][j]['sellPrice'])).toFixed(2)
-                                                                //- td(style="text-align:center;")
-                                                                //-     a.btn.btn-sm.btn-warning.m-2( title="نوێکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Trailers/Modification/"+item['_id']['trailerNumber']+"/"+item['items'][j]['_id'])
-                                                                //-         span.icon.text-white-50
-                                                                //-             i.fas.fa-pencil-alt
-                                                                //-     a.btn.btn-sm.btn-danger.m-2( title="ڕەشکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Trailers/Delete/"+item['_id']['trailerNumber']+"/"+item['items'][j]['_id'])
-                                                                //-         span.icon.text-white-50
-                                                                //-             i.fas.fa-trash
+                                                            tr(style="font-weight:bold; text-align:center; font-size:90%")
+                                                                td=index
+                                                                td=product['itemModel']
+                                                                td=product['itemName']
+                                                                td=product['manufacturerCompany']
+                                                                td=product['itemUnit']
+                                                                td=product['itemType']
+                                                                td=product['usedIn']
+                                                                td=product['weight']
+                                                                td=item['items'][j]['camePrice'].toFixed(2)
+                                                                td=item['items'][j]['sellPrice'].toFixed(2)
+                                                                td=(item['items'][j]['sellPrice']-item['items'][j]['camePrice']).toFixed(2)
+                                                                td=item['items'][j]['totalQuantity']
+                                                                td=product['color']
+                                                                td=(parseFloat(item['items'][j]['totalQuantity'])*parseFloat(item['items'][j]['camePrice'])).toFixed(2)
+                                                                td=(parseFloat(item['items'][j]['totalQuantity'])*parseFloat(item['items'][j]['sellPrice'])).toFixed(2)
+                                                                td
+                                                                    a.btn.btn-sm.btn-warning.m-2.col-md-4( title="نوێکردنەوەی بەرهەم"  href="/Trailers/Modification/"+item['_id']['trailerNumber']+"/"+item['items'][j]['_id'])
+                                                                        span.icon.text-white-50
+                                                                            i.fas.fa-pencil-alt
+                                                                    a.btn.btn-sm.btn-danger.m-2.col-md-4( title="ڕەشکردنەوەی بەرهەم"  href="/Trailers/Delete/"+item['_id']['trailerNumber']+"/"+item['items'][j]['_id'])
+                                                                        span.icon.text-white-50
+                                                                            i.fas.fa-trash

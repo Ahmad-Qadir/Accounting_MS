@@ -188,18 +188,18 @@ exports.UpdateChangesinEditOfTrailer = async (req, res, next) => {
                 updatedBy: req.user.username,
             });
 
-            const NewProduct = await ProductsCollection.find({
-                _id: Record[0]['productID']
-            });
+            // const NewProduct = await ProductsCollection.find({
+            //     _id: Record[0]['productID']
+            // });
 
-            await ProductsCollection.findByIdAndUpdate({
-                "_id": Product[0]['_id']
-            }, {
-                remainedPacket: parseFloat(NewProduct[0]['totalQuantity'] / Product[0]['perPacket']),
-                remainedPerPacket: NewProduct[0]['totalQuantity'] % Product[0]['perPacket'],
-                // totalPrice: NewProduct[0]['totalQuantity'] * NewProduct['sellPrice'],
-                // totalWeight: Product[0]['totalWeight'] + NewProduct[0]['totalQuantity'],
-            });
+            // await ProductsCollection.findByIdAndUpdate({
+            //     "_id": Product[0]['_id']
+            // }, {
+            //     remainedPacket: parseFloat(NewProduct[0]['totalQuantity'] / Product[0]['perPacket']),
+            //     remainedPerPacket: NewProduct[0]['totalQuantity'] % Product[0]['perPacket'],
+            //     // totalPrice: NewProduct[0]['totalQuantity'] * NewProduct['sellPrice'],
+            //     // totalWeight: Product[0]['totalWeight'] + NewProduct[0]['totalQuantity'],
+            // });
 
 
         } else if (parseFloat(req.body.totalQuantity) == Record[0]['totalQuantity']) {
@@ -232,18 +232,18 @@ exports.UpdateChangesinEditOfTrailer = async (req, res, next) => {
                 updatedBy: req.user.username,
             });
 
-            const NewProduct = await ProductsCollection.find({
-                _id: Record[0]['productID']
-            });
+            // const NewProduct = await ProductsCollection.find({
+            //     _id: Record[0]['productID']
+            // });
 
-            await ProductsCollection.findByIdAndUpdate({
-                _id: Product[0]['_id']
-            }, {
-                remainedPacket: parseFloat(NewProduct[0]['totalQuantity'] / Product[0]['perPacket']),
-                remainedPerPacket: NewProduct[0]['totalQuantity'] % Product[0]['perPacket'],
-                // totalPrice: Product[0]['totalPrice'] + NewProduct[0]['totalQuantity'],
-                // totalWeight: Product[0]['totalWeight'] + NewProduct[0]['totalQuantity'],
-            });
+            // await ProductsCollection.findByIdAndUpdate({
+            //     _id: Product[0]['_id']
+            // }, {
+            //     remainedPacket: parseFloat(NewProduct[0]['totalQuantity'] / Product[0]['perPacket']),
+            //     remainedPerPacket: NewProduct[0]['totalQuantity'] % Product[0]['perPacket'],
+            //     // totalPrice: Product[0]['totalPrice'] + NewProduct[0]['totalQuantity'],
+            //     // totalWeight: Product[0]['totalWeight'] + NewProduct[0]['totalQuantity'],
+            // });
 
         }
 
@@ -275,10 +275,8 @@ exports.DeleteItemInTrailer = async (req, res, next) => {
         //     updatedBy: req.user.username,
         // });
 
-        await RecordsCollection.findOneAndUpdate({
+        await RecordsCollection.deleteOne({
             _id: req.params.id
-        }, {
-            softdelete: true
         });
 
         await TrailersCollection.deleteOne({
@@ -298,16 +296,16 @@ exports.DeleteItemInTrailer = async (req, res, next) => {
             updatedBy: req.user.username,
         });
 
-        const NewProduct = await ProductsCollection.find({
-            _id: Record[0]['productID']
-        });
+        // const NewProduct = await ProductsCollection.find({
+        //     _id: Record[0]['productID']
+        // });
 
-        await ProductsCollection.findByIdAndUpdate({
-            "_id": Product[0]['_id']
-        }, {
-            remainedPacket: parseFloat(NewProduct[0]['totalQuantity'] / Product[0]['perPacket']),
-            remainedPerPacket: NewProduct[0]['totalQuantity'] % Product[0]['perPacket'],
-        });
+        // await ProductsCollection.findByIdAndUpdate({
+        //     "_id": Product[0]['_id']
+        // }, {
+        //     remainedPacket: parseFloat(NewProduct[0]['totalQuantity'] / Product[0]['perPacket']),
+        //     remainedPerPacket: NewProduct[0]['totalQuantity'] % Product[0]['perPacket'],
+        // });
 
         req.flash('success', "بەرهەمەکە بە سەرکەوتوویی ڕەشکرایەوە");
         res.redirect("/Trailers")
