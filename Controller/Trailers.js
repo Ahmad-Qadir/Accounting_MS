@@ -45,24 +45,6 @@ exports.allowIfLoggedin = async (req, res, next) => {
 // !: Trailers
 exports.Trailers = async (req, res, next) => {
     try {
-        // const Trailers = await TrailersCollection
-        //     .aggregate([
-        //         {
-        //             $group:
-        //             {
-        //                 _id: { trailerNumber: "$trailerNumber" },
-        //                 count: { $sum: 1 },
-        //                 amount: { $sum: "$totalPrice" },
-        //                 items: {
-        //                     $push: { weight: "$weight", itemName: "$itemName",remainedPerPacket: "$remainedPerPacket", itemModel: "$itemModel", totalQuantity: "$totalQuantity", camePrice: "$camePrice", itemUnit: "$itemUnit", itemType: "$itemType", manufacturerCompany: "$manufacturerCompany", color: "$color", remainedPacket: "$remainedPacket", remainedPerPacket: "$remainedPerPacket", usedIn: "$usedIn", totalQuantity: "$totalQuantity", createdAt: "$createdAt", sellPrice: "$sellPrice" }
-        //                 }
-        //             }
-        //         },
-        //         {
-        //             $sort: { "_id": -1 },
-        //         }
-        //     ])
-
         const Trailers = await RecordsCollection
             .aggregate([
                 {
@@ -126,7 +108,6 @@ exports.PrintSelectedInvoice = async (req, res, next) => {
 //Print Selected Invoice
 exports.EditProductInTrailer = async (req, res, next) => {
     try {
-
 
         const Product = await RecordsCollection
             .find({
