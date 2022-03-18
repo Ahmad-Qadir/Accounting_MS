@@ -255,6 +255,7 @@ exports.UpdateChangesinEditOfTrailer = async (req, res, next) => {
     }
 }
 
+
 //Update Products Operation
 exports.DeleteItemInTrailer = async (req, res, next) => {
     try {

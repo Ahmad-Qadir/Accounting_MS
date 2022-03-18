@@ -147,6 +147,7 @@ router.get('/Trailers/Modification/:trailerNumber/:id', Trailers.allowIfLoggedin
 router.post('/Trailers/Modification/:id/Updates', Trailers.allowIfLoggedin, Trailers.grantAccess('readAny', 'profile'), Trailers.UpdateChangesinEditOfTrailer); // Get All Trailers
 router.get('/Trailers/Delete/:trailerNumber/:id', Trailers.allowIfLoggedin, Trailers.grantAccess('readAny', 'profile'), Trailers.DeleteItemInTrailer); // Get All Trailers
 // router.get('/Trailers/DeleteTrailer/:trailerNumber', Trailers.DeleteTrailer); // Get All Trailers
+// router.get('/Trailers/Append/:id', Trailers.allowIfLoggedin, Trailers.grantAccess('readAny', 'profile'), Trailers.AppendNewItemToTrailer); // Get All Trailers
 
 
 
