@@ -44,7 +44,7 @@ block content
                       th(style="font-weight:bold;") بڕی وەرگیراو(دینار)
                     tr
                       th(style="font-weight:bold;")="قەرزی ماوە: "
-                      td="$"+profile['cutomerID']['remainedbalance']
+                      td="$"+profile['cutomerID']['remainedbalance'].toFixed(2)
                       //- th(style="text-align:center; font-size:100%;font-weight:bold; width:3%")
                   tbody(id="dataOfInvoiceTable" style="font-size: 12px;font-weight:bold;text-align:center;")
                     //- each item,i in 
