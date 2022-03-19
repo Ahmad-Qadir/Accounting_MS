@@ -80,7 +80,7 @@ block content
                             td(style="text-align:center;")=item['productID']['itemName']
                             td(style="text-align:center;")=item['productID']['itemType']
                             td(style="text-align:center;")=item['productID']['color']
-                            td(style=`text-align:center;`)=item['productID']['itemUnit']
+                            td(style=`text-align:center;`)=item['productID']['weight'] + " "+ item['productID']['itemUnit']
                             td(style="text-align:center;")=item['totalQuantity']
                             td(style="text-align:center;")="$ "+item['sellPrice'].toFixed(2)
                             td.count-me(style="text-align:center;")="$ "+item['totalPrice'].toFixed(2)
