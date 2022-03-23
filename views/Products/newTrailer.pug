@@ -57,7 +57,7 @@ block content
         //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.m-1(type='button' data-toggle="modal" data-target="#confirm-payment")
         //-   i.fas.fa-wallet.fa-sm.text-white-50
         //-   |  دانەوەی پارە
-        a.d-none.d-sm-inline-block.btn.btn-sm.btn-danger.shadow-sm.text-white.m-1.disabled(type='button' href="/Products")
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-danger.shadow-sm.text-white.m-1(type='button' onclick="showDatas()")
           i.fas.fa-truck-moving.fa-sm.text-white-50
           |  زیادکردنی بارهەڵگر (قەرد)
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-warning.shadow-sm.text-white.m-1(type='button' onclick='rearrangement()')
@@ -79,9 +79,18 @@ block content
                     #myDropdown.dropdown-content
                       each item,i in company
                         a(href="#" onclick="getModel(this,event);" title=item type='button' data-toggle="modal" data-target="#confirm-product"+i)=item
-                .form-group.col-md-4
+                .form-group.col-md-3
                   label نرخی تێچووی بارهەڵگر
                   input(type="text" name="PriceOfExpense" class="form-control fstdropdown-select" id="PriceOfExpense")
+                .form-group.col-md-1.invisible(id="showme2")
+                  label کۆی گشتی
+                  input.form-control(id="koywasl" name="koywasl" type='number' placeholder='0' required step='any')
+                .form-group.col-md-1.invisible(id="showme3")
+                  label بڕی دراو
+                  input.form-control(id="koydraw" name="koydraw" type='number' placeholder='0' required step='any')
+                .form-group.col-md-1.invisible(id="showme4")
+                  a.btn.btn-primary.mt-4(onclick="paradaniGshty()") تۆماربکە
+                
           .container(id="printableArea")
             .card.border.border-dark
               .card-header.justify-content-between
@@ -314,6 +323,20 @@ block content
       }
     }
 
+    function showDatas(val, event) {
+
+      document.getElementById('showme2').classList.remove('invisible')
+      document.getElementById('showme2').classList.add('visible')
+      document.getElementById('showme3').classList.remove('invisible')
+      document.getElementById('showme3').classList.add('visible')
+      document.getElementById('showme4').classList.remove('invisible')
+      document.getElementById('showme4').classList.add('visible')
+      document.getElementById('koywasl').value=document.getElementById('total').innerHTML.replace("$","")
+    }
+
+
+     
+
     function payNow(){
       objectData=document.getElementById("invoiceTable")
       var cost=document.getElementById("PriceOfExpense").value
@@ -358,6 +381,8 @@ block content
       document.body.innerHTML = originalContents;
     }
 
+
+
     function rearrangement(){
       var expense=parseFloat(document.getElementById('PriceOfExpense').value); //Expense Price
       var total=parseFloat(document.getElementById('total').innerHTML); //Total Price
@@ -396,6 +421,33 @@ block content
         //- });
         //- document.getElementById('final').innerHTML = TotalValue;
 
+    }
+
+    function paradaniGshty(val, event) {
+      objectData=document.getElementById("invoiceTable")
+      //- var note = document.getElementById("note").value;
+      //- var personName = document.getElementById("personName").value;
+      var total = document.getElementById("koywasl").value;
+      var pay = document.getElementById("koydraw").value;
+      var cost=document.getElementById("PriceOfExpense").value
+
+      //- var result=Object.values(getJSON(objectData))
+      //- result.push([note])
+      //- result.push([personName])
+      //- console.log(getJSON(objectData))
+      //Send to Database
+        var data= $.ajax({
+          type: 'POST',
+          url: "/Trailers/NewTrailer/Debut/"+total+"/"+pay+"/"+cost,
+          dataType: 'JSON',
+          data:getJSON(objectData),
+          success: function(data){
+            $('#newRecord').append($("<div></div>").attr("class","note note-success mt-2").text("باری نوێ بە سەرکەوتوویی زیاد کرا"));
+          },
+          error: function(err){
+            $('#newRecord').append($("<div></div>").attr("class","note note-success mt-2").text("باری نوێ بە سەرکەوتوویی زیاد کرا"));
+          }
+      })
     }
 
     $(document).ready(function(){

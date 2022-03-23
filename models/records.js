@@ -8,7 +8,7 @@ const itemHistorySchema = new mongoose.Schema({
     status: String,
     trailerNumber: Number,
     camePrice: Number,
-    cost: Number,
+    cost: Number, // for trailer cost
     oldDebut: Number, //bakarde lo customer bzani qardy koni chand bwa
     sellPrice: Number, // bakarde bo bashy chapkrdni tomari customer
     sellPriceMufrad: Number,
@@ -17,12 +17,12 @@ const itemHistorySchema = new mongoose.Schema({
     sellPriceWakil: Number,
     sellPriceSharika: Number,
     totalPrice: Number, // bakarde bo away bzani wasly esta chand bwa
-    personName: String,
-    prepaid: Number,
-    discount: String,
-    remainedMoney:Number,
-    paidMoney:Number,
-    moneyStatus: String,
+    personName: String, // for invoice personName
+    prepaid: Number, //  for customer prepaid
+    discount: String, // for customer discount
+    remainedMoney:Number, // for customer remainedMoney
+    paidMoney:Number, // for customer paidMoney
+    moneyStatus: String, // for type of moneyStatus
     addedBy: {
         type: String
     },

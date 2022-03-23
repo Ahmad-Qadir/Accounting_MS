@@ -31,6 +31,7 @@ const TrailerSchema = new mongoose.Schema({
     sellPriceWakil: Number,
     sellPriceSharika: Number,
     trailerNumber: Number,
+    moneyStatus: String, // for type of moneyStatus
     addedBy: {
         type: String
     },

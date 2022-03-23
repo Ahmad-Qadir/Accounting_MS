@@ -131,6 +131,7 @@ exports.UpdateCompany = async (req, res, next) => {
                 companyName: req.body.companyName,
                 phoneNumber: req.body.phoneNumber,
                 location: req.body.location,
+                remainedbalance: req.body.remainedbalance
             })
 
         req.flash('success', "زانیاریەکان بە سەرکەوتوویی نوێکرانەوە");

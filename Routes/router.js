@@ -149,6 +149,8 @@ router.get('/Trailers/Delete/:trailerNumber/:id', Trailers.allowIfLoggedin, Trai
 // router.get('/Trailers/DeleteTrailer/:trailerNumber', Trailers.DeleteTrailer); // Get All Trailers
 // router.get('/Trailers/Append/:id', Trailers.allowIfLoggedin, Trailers.grantAccess('readAny', 'profile'), Trailers.AppendNewItemToTrailer); // Get All Trailers
 
+router.post('/Trailers/NewTrailer/Debut/:total/:pay/:cost', Trailers.allowIfLoggedin, Trailers.grantAccess('createAny', 'profile'), Trailers.AppendNewTrailer); // Get All Trailers
+
 
 
 
