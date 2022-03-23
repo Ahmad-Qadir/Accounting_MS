@@ -98,6 +98,8 @@ router.post('/Companies', Company.allowIfLoggedin, Company.grantAccess('createAn
 router.get('/Companies', Company.allowIfLoggedin, Company.grantAccess('readAny', 'company'), Company.GetAllCompanies)
 router.get('/Company/Modification/:id', Company.allowIfLoggedin, Company.grantAccess('readAny', 'company'), Company.UpdateCompanyUI)
 router.post('/Company/Modification/:id/updates', Company.allowIfLoggedin, Company.grantAccess('readAny', 'company'), Company.UpdateCompany)
+router.get('/Companies/Debut/:companyName', Company.allowIfLoggedin, Company.grantAccess('createAny', 'company'), Company.GetAllInvoiceInList);
+
 
 
 // router.post('/Products/:id/NewTrailer', Products.AppendNewTrailertoProduct); // Add new Trailer for This Product

@@ -420,6 +420,12 @@ exports.AppendNewTrailer = async (req, res, next) => {
             itemUnit: RequestList[0][5].split(" ")[1]
         });
 
+        const Companies = await CompanyCollection
+            .find({
+                companyName: CompanyName[0]['manufacturerCompany'],
+            })
+
+
         for (let index = 0; index < RequestList.length; index++) {
             const element = RequestList[index];
 
@@ -437,6 +443,7 @@ exports.AppendNewTrailer = async (req, res, next) => {
                 totalQuantity: parseFloat(element[11]),
                 status: "New Trailer",
                 moneyStatus: "Debut",
+                oldDebut: Companies[0]['remainedbalance'],
                 camePrice: parseFloat(element[12]),
                 sellPrice: parseFloat(element[13]),
                 totalPrice: parseFloat(element[12]) * parseFloat(element[11]),
@@ -513,10 +520,6 @@ exports.AppendNewTrailer = async (req, res, next) => {
             });
         }
 
-        const Companies = await CompanyCollection
-            .find({
-                companyName: CompanyName[0]['manufacturerCompany'],
-            })
 
         const totalMoney = Companies[0]['remainedbalance'] + parseFloat(req.params.total) - parseFloat(req.params.pay)
 

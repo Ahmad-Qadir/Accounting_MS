@@ -1,0 +1,118 @@
+include ../Components/Header
+block content
+    br
+    .container-fluid
+        // Page Heading
+        .d-sm-flex.align-items-left.justify-content-between.mb-4
+            h1.h3.mb-0.text-gray-800=" تۆماری "+ company[0]['companyName']
+            //- .container.col-md-4
+            //-     .row.height.d-flex.justify-content-center.align-items-center
+            //-         .col.md-6
+            //-             .search-box
+            //-                 .input-group
+            //-                     input#search.form-control(type='text' placeholder='گەڕان بەپێی ژمارەی تۆمار')
+            .span
+                a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.m-2(onclick="printDiv('printableArea')")
+                    i.fas.fa-file-invoice.fa-sm.text-white-50
+                    |  چاپکردن
+                //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white.m-2(href="/Profiles/Invoices/"+profile[0]['cutomerID']['_id'])
+                //-   i.fas.fa-file-invoice.fa-sm.text-white-50
+                //-   |  تۆمارەکان(بە وەصڵ)
+                //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white(href=Address+"/Clients/Register")
+                //-     i.fas.fa-plus-square.fa-sm.text-white-50
+                //-     |  Add New Product
+        .container(id="printableArea")
+            table.table.table-hover.table-sm.dt-responsive.table-striped.table-bordered
+                thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
+                    tr(scope='col' style="text-align:center; font-size:90%")
+                        th(style="width:2%") #
+                        th(style="width:10%") ژمارەی تۆمار
+                        th(style="width:15%") بەروار
+                        th(style="width:10%") قەرزی کۆن
+                        th(style="width:10%") قەرزی نوێ
+                        th(style="width:10%") بڕی دراو
+                        th(style="width:10%") بڕی ماوە
+                        th(style="width:10%") چالاکی
+                        th(style="width:10%") کۆی گشتی
+                        //- th تێبینی
+
+
+                tbody( id="count-it")
+                    each item,i in invoices
+                        tr(scope='col' style="text-align:center; font-size:90%")
+                            td=i+1
+                            td(style="text-align:center;")=item['_id']['trailerNumber']
+                            td(style=`text-align:center;`)=item['items'][0]['createdAt'].toLocaleString()
+                            if item['items'][0]['oldDebut']==undefined
+                                td(style=`text-align:center;`) دیاری نەکراوە
+                            else
+                                td(style=`text-align:center;`)="$ "+(item['items'][0]['oldDebut']).toFixed(2)
+                            td(style="text-align:center;")="$ "+item['amount']
+                            td(style="text-align:center;")=item['items'][0]['prepaid']
+                            td(style="text-align:center;" id="count-me")=item['items'][0]['remainedMoney']
+                            if item['items'][0]['moneyStatus']=="Return Money"
+                                td(style="text-align:center; background-color: rgba(0, 255, 0, 0.3);") پارەدان
+                            else if item['items'][0]['status']=="Recovered"
+                                td(style="text-align:center; background-color: rgba(178, 60,253, 0.3);") گەڕانەوە
+                            else if item['items'][0]['moneyStatus']=="Debut"
+                                td(style="text-align:center; background-color: rgba(255, 169, 0, 0.3);") کڕین-قەرد
+                            else if item['items'][0]['moneyStatus']=="Half Invoice"
+                                td(style="text-align:center; background-color: rgba(255, 169, 0, 0.3);")="فرۆشتن - (قەرد "+ " - $ "+(item['items'][0]['remainedMoney']).toFixed(2)+")" 
+                            else if item['items'][0]['moneyStatus']==undefined
+                                td(style="text-align:center;") کڕین-کاش
+                            else if item['items'][0]['status']=="Invoice Payment"
+                                td(style="text-align:center; background-color: rgba(0, 255, 0, 0.3);")=" پارەدان - (تۆماری  "+item['items'][0]['note']+")" 
+
+
+
+                            if item['items'][0]['moneyStatus']=="Return Money"
+                                td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']-item['amount']).toFixed(2)
+                            else if item['items'][0]['moneyStatus']=="Paid"
+                                td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']).toFixed(2)
+                            else if item['items'][0]['status']=="Invoice Payment"
+                                td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']-item['amount']).toFixed(2)
+                            else if item['items'][0]['status']=="Recovered"
+                                td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']-item['amount']).toFixed(2)
+                            else if item['items'][0]['moneyStatus']=="Debut"
+                                td(style="text-align:center;")="$ "+(item['items'][0]['oldDebut']+item['items'][0]['remainedMoney']).toFixed(2)
+                            else 
+                                td(style="text-align:center;")="$ "+parseFloat(item['items'][0]['oldDebut']).toFixed(2)
+                            //- if item['items'][0]['status']=="Invoice Payment"
+                            //-     td(style="text-align:center;")=" تۆماری "+item['items'][0]['note']
+                            //- else
+                            //-     td(style="text-align:center;")
+            //- br
+            //- table.table.table-hover.table-sm.dt-responsive.table-striped.table-bordered
+            //-     thead
+            //-         tr
+            //-             th(style="text-align:center; font-size:3 rem;font-weight:bold;width: 300px").bg-dark.text-light کۆی گشتی هەموو تۆمارەکان
+            //-             th(id="finalPrice")
+            //-         tr
+            //-             th(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light کۆی گشتی قەرزەکان
+            //-             //- th="$ "+(daily[0]['amount']/148000).toFixed(2) + " دۆلار - بەرامبەر بە " + daily[0]['amount'] + " دینار"
+            //-         //- tr
+            //-         //-     th(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light کۆی گشتی پارەی گەڕاوە
+            //-         //-     th=(returnedmoney[0]['amount']).toFixed(2)
+            //-         tr
+            //-             th(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light کۆی گشتی قەرزە دراوەکان
+                        //- th="$ "+debtors[0]['amount']
+    script.
+        function printDiv(divName) 
+        {
+            var originalContents = document.body.innerHTML;
+            var printContents = document.getElementById(divName).innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+        //- $( document ).ready(function() {
+        //-     var tds = document.getElementById('count-it').getElementsByTagName('td');
+        //-     var sum = 0;
+        //-         console.log(tds.length)
+        //-     for(var i = 0; i < tds.length; i ++) {
+        //-         if(tds[i].className == 'count-me') {
+        //-             sum += isNaN(tds[i].innerHTML.replace("$","")) ? 0 : parseInt(tds[i].innerHTML.replace("$",""));
+        //-         }
+        //-     }
+        //-     document.getElementById('finalPrice').innerHTML += sum 
+        //- });

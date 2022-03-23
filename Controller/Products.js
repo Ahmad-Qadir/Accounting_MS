@@ -1069,8 +1069,14 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
                 itemUnit: element[5].split(" ")[1]
             });
 
+            const Companies = await CompanyCollection
+            .find({
+                companyName: Product[0]['manufacturerCompany'],
+            })
+
             const newRecordtoHistory = new RecordsCollection({
                 recordCode: _TrailerNumber,
+                oldDebut:Companies[0]['remainedbalance'],
                 totalQuantity: parseFloat(element[11]),
                 status: "New Trailer",
                 camePrice: parseFloat(element[12]),

@@ -1,12 +1,13 @@
 require('events').EventEmitter.defaultMaxListeners = Infinity
 const validator = require("joi");
 const config = require('config');
+var mongoose = require('mongoose');
 
 
 //Collections Section
 const ProductsCollection = require('../models/Product');
 const CustomerTypeCollection = require('../models/CustomerType');
-const HistoryClass = require('../models/records');
+const RecordsCollection = require('../models/records');
 const ProfileCollection = require('../models/Profiles');
 const TrailerCollection = require('../models/Trailers');
 const CompanyCollection = require('../models/Companies');
@@ -103,6 +104,55 @@ exports.GetAllCompanies = async (req, res, next) => {
         companies: Companies,
         user: req.user
     })
+}
+
+//Get Invoice for Specific Customer
+exports.GetAllInvoiceInList = async (req, res, next) => {
+    const Invoices = await RecordsCollection.aggregate(
+        [
+            {
+                $group: {
+                    _id: { trailerNumber: '$trailerNumber', status: "$status" },
+                    amount: { $sum: "$totalPrice" },
+                    items: {
+                        $push: { remainedMoney: "$remainedMoney", status: "$status", remainedMoney: "$remainedMoney", paidMoney: "$paidMoney", oldDebut: "$oldDebut", discount: "$discount", prepaid: "$prepaid", recordCode: '$recordCode', softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", note: "$note", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                    },
+                },
+
+            },
+            {
+                $sort: { "items.trailerNumber": 1 },
+            },
+            {
+                $lookup: {
+                    from: "items",
+                    localField: "items.productID",
+                    foreignField: "_id",
+                    as: "data",
+                },
+            },
+            {
+                $match: {
+                    "data.manufacturerCompany": req.params.companyName,
+                    "items.status": "New Trailer"
+                }
+            },
+        ]);
+
+    const Company = await CompanyCollection
+        .find({
+            companyName: req.params.companyName
+        })
+
+    // res.send(Invoices)
+    res.render("Company/ListOfDebut", {
+        title: "تۆماری " + Company[0]['companyName'],
+        invoices: Invoices,
+        company: Company,
+        // address: address,
+        // recovered: _RecoveredInvoices
+    })
+
 }
 
 
