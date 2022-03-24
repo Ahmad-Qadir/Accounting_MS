@@ -94,7 +94,7 @@ block content
                       td(style="text-align:center;")
                       td(style="text-align:center;")
                       td(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light کۆی گشتی
-                      td(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light="$"+totalPrice['amount']
+                      td(style="text-align:center; font-size:3 rem;font-weight:bold").bg-dark.text-light="$"+totalPrice['amount'].toFixed(2)
               if records[0]['productID']==undefined
                 .row
                   .col-5.ml-auto
