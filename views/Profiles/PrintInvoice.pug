@@ -108,7 +108,7 @@ block content
                         tr(style="line-height: 10px;")
                           td.left
                             strong قەرزی ماوە
-                          td.right(id="majmu3")="$"+profile['cutomerID']['remainedbalance']
+                          td.right(id="majmu3")="$"+profile['cutomerID']['remainedbalance'].toFixed(2)
                         tr(style="line-height: 10px;")
                           td.left
                             strong قەرزی دراوە
@@ -134,7 +134,7 @@ block content
                         tr(style="line-height: 10px;")
                           td.left
                             strong قەرزی نوێ
-                          td.right(id="total")="$"+totalPrice['amount']
+                          td.right(id="total")="$"+totalPrice['amount'].toFixed(2)
                         //- tr(style="line-height: 10px;")
                         //-   td.left
                         //-     strong قەرزی ئێستا
