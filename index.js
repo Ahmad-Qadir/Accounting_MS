@@ -136,7 +136,6 @@ app.get('/', async (req, res) => {
         const Records = await RecordsCollection.find({}).populate("productID").sort({
             "createdAt": -1
         });
-        const Profiles = await ProfileCollection.find({});
         const Trailers = await TrailerCollection.find({
             softdelete: false
         }).sort({
@@ -166,23 +165,14 @@ app.get('/', async (req, res) => {
             totalPriceIncome = totalPriceIncome + element['sellPrice'] * element['totalQuantity'];
         }
         Income = [totalPriceIncome]
-        const Products = await ProductsCollection
-            .find({
-                softdelete: false
-            })
-            .sort({
-                "createdAt": -1
-            }).
-            populate('itemHistory')
+
+        // Total Products
+        const Products = await ProductsCollection.find({})
+        
+        // Total Users
+        const Profiles = await ProfileCollection.find({});
 
 
-        const _MostWanted = await ProductsCollection
-            .find({
-                softdelete: false
-            })
-            .sort({
-                "totalQuantity": -1
-            }).limit(10)
         var total_Products = 0;
         for (let index = 0; index < Products.length; index++) {
             const element = Products[index];
@@ -198,17 +188,20 @@ app.get('/', async (req, res) => {
         // });
 
 
+
+
+
         res.render("Dashboard", {
             title: "Dashboard",
             product: Products,
-            mostwanted: _MostWanted,
-            records: Records,
-            expenses: Expenses,
-            Income: Income,
+            // mostwanted: _MostWanted,
+            // records: Records,
+            // expenses: Expenses,
+            // Income: Income,
             profiles: Profiles,
-            trailers: Trailers,
+            // trailers: Trailers,
             user: User,
-            totalP: total_Products
+            // totalP: total_Products
         })
     } else {
         res.render('Login', {
@@ -225,6 +218,29 @@ app.get('/', async (req, res) => {
 //     });
 //     res.send(checker)
 // });
+
+app.get('/updatename', async (req, res) => {
+
+    const checker = await ProductsCollection.aggregate(
+        [
+            {
+                $group: {
+                    _id: { color: '$color'},
+                    count: { $sum: 1 },
+                },
+
+            },
+        ]);
+
+    // var checker = await ProductsCollection.findOneAndUpdate({
+    //     color: "الأفق"
+    // }, {
+    //     color: "الافق"
+    // });
+
+
+    res.send(checker)
+});
 
 // app.get('/removerOfCust', async (req, res) => {
 //     var checker = await ProfileCollection.updateMany({
