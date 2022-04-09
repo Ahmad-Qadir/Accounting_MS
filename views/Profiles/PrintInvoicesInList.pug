@@ -45,7 +45,7 @@ block content
                                 td(style=`text-align:center;`) دیاری نەکراوە
                             else
                                 td(style=`text-align:center;`)="$ "+(item['items'][0]['oldDebut']).toFixed(2)
-                            td(style="text-align:center;")="$ "+item['amount']
+                            td(style="text-align:center;")="$ "+parseFloat(item['amount']).toFixed(2)
                             if item['items'][0]['moneyStatus']=="Return Money"
                                 td(style="text-align:center; background-color: rgba(0, 255, 0, 0.3);") پارەدان
                             else if item['items'][0]['status']=="Recovered"
