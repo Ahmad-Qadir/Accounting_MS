@@ -25,7 +25,11 @@ block content
                             .row
                                 button.accordion-button(type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
                                     .col-md-1="بارهەڵگری ژمارە: "+item['_id']['trailerNumber']
-                                    .col-md-2="کۆی بەرهەم: "+item['count']
+                                    .col-md-1="کۆی بەرهەم: "+item['count']
+                                    if item['data'][0]==undefined
+                                     .col-md-1="کۆمپانیا: "+item['data'][0]
+                                    else 
+                                     .col-md-1="کۆمپانیا: "+item['data'][0]['manufacturerCompany']
                                     .col-md-2="تێچووی بارهەڵگر: "+item['items'][0]['cost']
                                     .col-md-2="کۆی گشتی نرخ: "+item['amount'].toFixed(2)
                                     .col-md-3="بەروار: "+item['items'][0]['createdAt'].toLocaleString()
