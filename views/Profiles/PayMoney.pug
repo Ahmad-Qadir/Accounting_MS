@@ -12,7 +12,7 @@ block content
                         .row
                             .form-group.col-md-2
                                 label قەرزی کۆن
-                                input.form-control(id="olddebut" name="olddebut" type='number' placeholder='0' required step='any' value=profiles['remainedbalance'])
+                                input.form-control(id="olddebut" name="olddebut" type='number' placeholder='0' required step='any' value=profiles['remainedbalance'].toFixed(2))
                             .form-group.col-md-2
                                 label کۆی گشتی
                                 input.form-control(id="paid" name="paid" type='number' placeholder='0' required step='any')
@@ -24,26 +24,26 @@ block content
                                 input.form-control(id="discount" name="discount" type='number' placeholder='0' required step='any')
                             .form-group.col-md-2
                                 label قەرزی ماوە
-                                input.form-control(id="finalbalance" name="finalbalance" readOnly type='number' value=profiles['remainedbalance'])
+                                input.form-control(id="finalbalance" name="finalbalance" readOnly type='number' value=profiles['remainedbalance'].toFixed(2))
                             .form-group.col-md-1.mt-4
                                 button.btn.btn-primary(type='submit') تۆمارکردن
     script.
         $(document).ready(function(){
             // Check For Packets
             $( "#paid" ).change(function() {
-                document.getElementById('finalbalance').value=parseFloat(document.getElementById('olddebut').value)-parseFloat(document.getElementById('paid').value)
+                document.getElementById('finalbalance').value=parseFloat(parseFloat(document.getElementById('olddebut').value)-parseFloat(document.getElementById('paid').value)).toFixed(2)
             });
             $( "#prepaid" ).change(function() {
                 var calculation=parseFloat(document.getElementById('paid').value)-parseFloat(document.getElementById('prepaid').value)
                 var x=calculation/parseFloat(document.getElementById('paid').value);
                 var y=x*100;
-                document.getElementById('discount').value=y;
+                document.getElementById('discount').value=y.toFixed(2);
             });
 
             $( "#discount" ).change(function() {
                 var calculation=parseFloat(document.getElementById('paid').value)*(parseFloat(document.getElementById('discount').value)/100)
                 var x=parseFloat(document.getElementById('paid').value)-calculation;
-                document.getElementById('prepaid').value=x;
+                document.getElementById('prepaid').value=x.toFixed(2);
             });
 
             
