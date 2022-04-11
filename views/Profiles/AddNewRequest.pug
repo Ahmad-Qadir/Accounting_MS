@@ -491,8 +491,8 @@ block content
             document.getElementById('total').innerHTML=(parseFloat(subtotal)+parseFloat(table[i].childNodes[6].firstChild.value)*parseFloat(table[i].childNodes[7].firstChild.value)).toFixed(2)
             document.getElementById('total').innerHTML="$"+document.getElementById('total').innerHTML
             document.getElementById('finalPrice').innerHTML=(parseFloat((document.getElementById('total').innerHTML).replace("$",""))+parseFloat(parseFloat((document.getElementById("olddebut").innerHTML).replace("$",""))))
-            document.getElementById('finalPrice').innerHTML="$"+document.getElementById('finalPrice').innerHTML
-            document.getElementById('total1').innerHTML=document.getElementById('total').innerHTML
+            document.getElementById('finalPrice').innerHTML="$"+parseFloat(document.getElementById('finalPrice').innerHTML).toFixed(2)
+            document.getElementById('total1').innerHTML=parseFloat(document.getElementById('total').innerHTML.replace("$","")).toFixed(2)
           }
           else{
             continue;
@@ -638,7 +638,7 @@ block content
             var Price=document.getElementById('priceNumber'+idnumber).innerHTML.replace("$","");
             var Quantity=document.getElementById('adad'+idnumber).innerHTML;
             var OldMaxPrice=document.getElementById('macPrice'+idnumber).innerHTML.replace("$","");
-            document.getElementById('macPrice'+idnumber).innerHTML=parseFloat(Price)*parseFloat(Quantity);
+            document.getElementById('macPrice'+idnumber).innerHTML=parseFloat(parseFloat(Price)*parseFloat(Quantity)).toFixed(2);
             var totalNewPrice=(parseFloat(Price)*parseFloat(Quantity));
 
 
@@ -647,9 +647,9 @@ block content
                 currentRow = parseFloat($(this).text().replace("$",""));
                 TotalValue += currentRow
               });
-              document.getElementById('total').innerHTML = TotalValue;
-              document.getElementById('finalPrice').innerHTML="$"+(TotalValue+parseFloat(parseFloat(document.getElementById("olddebut").innerHTML.replace("$", ''))))
-              document.getElementById('total1').innerHTML=TotalValue
+              document.getElementById('total').innerHTML = parseFloat(TotalValue).toFixed(2);
+              document.getElementById('finalPrice').innerHTML="$"+parseFloat((TotalValue+parseFloat(parseFloat(document.getElementById("olddebut").innerHTML.replace("$", ''))))).toFixed(2)
+              document.getElementById('total1').innerHTML=parseFloat(TotalValue).toFixed(2)
 
             //- if(!isNaN(totalNewPrice)){
             //-   document.getElementById('total').innerHTML=parseFloat(document.getElementById('total').innerHTML.replace("$",""))-parseFloat(OldMaxPrice)+totalNewPrice
