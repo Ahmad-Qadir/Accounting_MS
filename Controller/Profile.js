@@ -66,6 +66,7 @@ exports.addNewCustomer = async (req, res, next) => {
                 secondPhoneNumber: req.body.secondPhoneNumber,
                 companyName: req.body.companyName,
                 clientType: req.body.clientType,
+                location: req.body.location,
                 borrowedBalance: 0,
                 recoveredBalance: 0,
                 remainedbalance: 0,
