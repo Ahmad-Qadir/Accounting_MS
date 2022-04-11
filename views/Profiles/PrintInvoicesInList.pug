@@ -1,7 +1,7 @@
 include ../Components/Header
 block content
     br
-    .container-fluid
+    .container-fluid(id="printableArea")
         // Page Heading
         .d-sm-flex.align-items-left.justify-content-between.mb-4
             h1.h3.mb-0.text-gray-800=" تۆماری "+ profile[0]['cutomerID']['clientName']+" / "+profile[0]['cutomerID']['companyName']
@@ -21,7 +21,7 @@ block content
                 //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white(href=Address+"/Clients/Register")
                 //-     i.fas.fa-plus-square.fa-sm.text-white-50
                 //-     |  Add New Product
-        .container(id="printableArea")
+        .container
             table.table.table-hover.table-sm.dt-responsive.table-striped.table-bordered
                 thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
                     tr(scope='col' style="text-align:center; font-size:90%")
@@ -40,7 +40,7 @@ block content
                         tr(scope='col' style="text-align:center; font-size:90%")
                             td=i+1
                             td(style="text-align:center;")=item['_id']['recordCode']
-                            td(style=`text-align:center;`)=item['items'][0]['createdAt'].toLocaleString()
+                            td(style=`text-align:center;` id="Date")=item['items'][0]['createdAt'].toLocaleString()
                             if item['items'][0]['oldDebut']==undefined
                                 td(style=`text-align:center;`) دیاری نەکراوە
                             else
@@ -79,6 +79,7 @@ block content
         function printDiv(divName) 
         {
             var originalContents = document.body.innerHTML;
+            document.body.style.backgroundColor = "white";
             var printContents = document.getElementById(divName).innerHTML;
             document.body.innerHTML = printContents;
             window.print();
