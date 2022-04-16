@@ -10,55 +10,91 @@ block content
                 a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.disabled(onclick="printDiv('printableArea')")
                     i.fas.fa-print.fa-sm.text-white-50
                     |  چاپکردن
-        each company,i in product
+        .container-fluid.table-responsive(id="printableArea"+i)
 
-            #accordionExample.accordion
-                .accordion-item
-                    h2(id="heading"+i).accordion-header
-                        .row
-                            button.accordion-button(type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
-                                .col-md-2="کۆمپانیای "+company['_id']['manufacturerCompany']
-                                .col-md-2="کۆی بەرهەم: "+company['count']
-                                .col-md-4
-                                .col-md-3 
-                                    a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" onclick=`printDiv('printableArea'+${i})`)
-                                        span.icon.text-white-50
-                                            i.fas.fa-print
-                                //- .col-md-2="تێچووی تۆمار: "+item['amount'].toFixed(2)
-            .accordion-collapse.collapse.hide(aria-labelledby="heading"+i data-mdb-parent='#accordionExample' id="collapse"+i)
-                .accordion-body
-                    .container-fluid.table-responsive(id="printableArea"+i)
-                        table(id="clientTable").table.table-hover.table-sm.dt-responsive.table-striped
-                            thead.thead-light
-                                tr(style="text-align:center; font-size:3 rem")
-                                    th(scope='col') #
-                                    th(scope='col') بڕاندی بەرهەم
-                                    th(scope='col') ناوی بەرهەم
-                                    th(scope='col') وڵات
-                                    th(scope='col') کۆمپانیای وەبەرهێن
-                                    th(scope='col') پێوانەی گشتی
-                                    th(scope='col') پێوانەی تاک
-                                    th(scope='col') جۆری بەرهەم
-                                    th(scope='col') شوێنی بەکارهێنان
-                                    th(scope='col') بڕی پێوانە
-                                    th(scope='col') ڕەنگ
-                                    th(scope='col') بڕی بەردەست
-                            tbody
-                                each item,k in company['items']
-                                    - var j=i+1
-                                    tr(style="font-weight:bold; font-size:2 rem")
-                                        td(style="text-align:center;")=k
-                                        td(style="text-align:center;")=item['itemModel']
-                                        td(style="text-align:center;")=item['itemName']
-                                        td(style="text-align:center;")=item['countryCompany']
-                                        td(style="text-align:center;")=item['manufacturerCompany']
-                                        td(style="text-align:center;")=item['unit']
-                                        td(style="text-align:center;")=item['itemUnit']
-                                        td(style="text-align:center;")=item['itemType']
-                                        td(style="text-align:center;")=item['usedIn']
-                                        td(style="text-align:center;")=item['weight']
-                                        td(style="text-align:center;")=item['color']
-                                        td(style="text-align:center;")=item['totalQuantity']
+            table(id="clientTable").table.table-hover.table-sm.dt-responsive.table-striped
+                thead.thead-light
+                    tr(style="text-align:center; font-size:3 rem")
+                        th(scope='col') #
+                        th(scope='col') بڕاندی بەرهەم
+                        th(scope='col') ناوی بەرهەم
+                        th(scope='col') وڵات
+                        th(scope='col') کۆمپانیای وەبەرهێن
+                        th(scope='col') پێوانەی گشتی
+                        th(scope='col') پێوانەی تاک
+                        th(scope='col') جۆری بەرهەم
+                        th(scope='col') شوێنی بەکارهێنان
+                        th(scope='col') بڕی پێوانە
+                        th(scope='col') ڕەنگ
+                        th(scope='col') بڕی بەردەست
+                tbody
+                    each item,k in product
+                        //- - var j=i+1
+                        tr(style="font-weight:bold; font-size:2 rem")
+                            td(style="text-align:center;")=k
+                            //- if item['itemModel']==undefined 
+                                td(style="text-align:center;")
+                            //- else
+                            td(style="text-align:center;")=item['itemModel']
+                            td(style="text-align:center;")=(item['itemName'])
+                            td(style="text-align:center;")=item['countryCompany']
+                            td(style="text-align:center;")=item['manufacturerCompany']
+                            td(style="text-align:center;")=item['unit']
+                            td(style="text-align:center;")=item['itemUnit']
+                            td(style="text-align:center;")=item['itemType']
+                            td(style="text-align:center;")=item['usedIn']
+                            td(style="text-align:center;")=item['weight']
+                            td(style="text-align:center;")=item['color']
+                            td(style="text-align:center;")=item['totalQuantity']
+        //- each company,i in product
+        //-     #accordionExample.accordion
+        //-         .accordion-item
+        //-             h2(id="heading"+i).accordion-header
+        //-                 .row
+        //-                     button.accordion-button(type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
+        //-                         .col-md-2="کۆمپانیای "+company['_id']['manufacturerCompany']
+        //-                         .col-md-2="کۆی بەرهەم: "+company['count']
+        //-                         .col-md-4
+        //-                         .col-md-3 
+        //-                             a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" onclick=`printDiv('printableArea'+${i})`)
+        //-                                 span.icon.text-white-50
+        //-                                     i.fas.fa-print
+        //-                         //- .col-md-2="تێچووی تۆمار: "+item['amount'].toFixed(2)
+        //-     .accordion-collapse.collapse.hide(aria-labelledby="heading"+i data-mdb-parent='#accordionExample' id="collapse"+i)
+        //-         .accordion-body
+        //-             .container-fluid.table-responsive(id="printableArea"+i)
+        //-                 table(id="clientTable").table.table-hover.table-sm.dt-responsive.table-striped
+        //-                     thead.thead-light
+        //-                         tr(style="text-align:center; font-size:3 rem")
+        //-                             th(scope='col') #
+        //-                             th(scope='col') بڕاندی بەرهەم
+        //-                             th(scope='col') ناوی بەرهەم
+        //-                             th(scope='col') وڵات
+        //-                             th(scope='col') کۆمپانیای وەبەرهێن
+        //-                             th(scope='col') پێوانەی گشتی
+        //-                             th(scope='col') پێوانەی تاک
+        //-                             th(scope='col') جۆری بەرهەم
+        //-                             th(scope='col') شوێنی بەکارهێنان
+        //-                             th(scope='col') بڕی پێوانە
+        //-                             th(scope='col') ڕەنگ
+        //-                             th(scope='col') بڕی بەردەست
+        //-                     tbody
+        //-                         each item,k in company['items']
+        //-                             - var j=i+1
+        //-                             tr(style="font-weight:bold; font-size:2 rem")
+        //-                                 td(style="text-align:center;")=k
+        //-                                 td(style="text-align:center;")=item['itemModel']
+        //-                                 td(style="text-align:center;")=item['itemName']
+        //-                                 td(style="text-align:center;")=item['countryCompany']
+        //-                                 td(style="text-align:center;")=item['manufacturerCompany']
+        //-                                 td(style="text-align:center;")=item['unit']
+        //-                                 td(style="text-align:center;")=item['itemUnit']
+        //-                                 td(style="text-align:center;")=item['itemType']
+        //-                                 td(style="text-align:center;")=item['usedIn']
+        //-                                 td(style="text-align:center;")=item['weight']
+        //-                                 td(style="text-align:center;")=item['color']
+        //-                                 td(style="text-align:center;")=item['totalQuantity']
+
     //- include ../Components/Footer
     script.
         function printDiv(divName) {

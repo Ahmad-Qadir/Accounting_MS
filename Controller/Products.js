@@ -3,6 +3,7 @@ require('events').EventEmitter.defaultMaxListeners = Infinity
 const validator = require("joi");
 const config = require('config');
 var uuid = require('uuid');
+var mongoose = require('mongoose');
 const {
     roles
 } = require('../Middleware/roles');
@@ -730,24 +731,28 @@ exports.getProducts = async (req, res, next) => {
 //Get All Products
 exports.PrintAllProducts = async (req, res, next) => {
 
-    const Products = await ProductsCollection.aggregate(
-        [
-            {
-                $group: {
-                    _id: { manufacturerCompany: '$manufacturerCompany' },
-                    count: { $sum: 1 },
-                    items: {
-                        $push: { itemModel: "$itemModel", itemName: "$itemName", countryCompany: "$countryCompany", manufacturerCompany: "$manufacturerCompany", unit: "$unit", itemUnit: "$itemUnit", itemType: "$itemType", usedIn: "$usedIn", weight: "$weight", color: "$color", totalQuantity: "$totalQuantity" },
-                    },
-                },
+    // const Products = await ProductsCollection.aggregate(
+    //     [
+    //         {
+    //             $group: {
+    //                 _id: { manufacturerCompany: '$manufacturerCompany' },
+    //                 count: { $sum: 1 },
+    //                 items: {
+    //                     $push: { itemModel: "$itemModel", itemName: "$itemName", countryCompany: "$countryCompany", unit: "$unit", itemUnit: "$itemUnit", itemType: "$itemType", usedIn: "$usedIn", weight: "$weight", color: "$color", totalQuantity: "$totalQuantity" },
+    //                 },
+    //             },
 
-            },
-            {
-                $sort: { "items.itemModel": 1 },
-            },
-        ]);
+    //         },
+    //         {
+    //             $sort: { _id: 1, "items.itemModel": 1 },
+    //         },
+    //     ]);
 
     // console.log()
+    // res.send(Products)
+
+    const Products = await ProductsCollection.find({}).sort({ "manufacturerCompany": 1, "itemModel": 1 })
+
 
     res.render("Products/PrintProducts", {
         title: "بەرهەمەکان",
@@ -1070,13 +1075,13 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
             });
 
             const Companies = await CompanyCollection
-            .find({
-                companyName: Product[0]['manufacturerCompany'],
-            })
+                .find({
+                    companyName: Product[0]['manufacturerCompany'],
+                })
 
             const newRecordtoHistory = new RecordsCollection({
                 recordCode: _TrailerNumber,
-                oldDebut:Companies[0]['remainedbalance'],
+                oldDebut: Companies[0]['remainedbalance'],
                 totalQuantity: parseFloat(element[11]),
                 status: "New Trailer",
                 camePrice: parseFloat(element[12]),
