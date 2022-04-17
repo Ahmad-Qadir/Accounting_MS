@@ -135,6 +135,9 @@ router.get('/Profiles/Debut/:id', Profiles.allowIfLoggedin, Profiles.grantAccess
 router.post('/Profiles/Debut/:id/Updates', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.PayMoney); // Get All invoice for specific Profile
 router.get('/Profiles/Delete/:id', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.DeleteProfile); // Get All invoice for specific Profile
 router.get('/Profiles/Invoices/List/:id', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.GetAllInvoiceInList); // Get All invoice for specific Profile
+router.get('/Profiles/Favorates/:id', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.GetAllGottenProductsForCustomer); // Get All invoice for specific Profile
+
+
 
 
 

@@ -254,17 +254,18 @@ app.get('/updatename', async (req, res) => {
 // });
 
 // app.get('/updater', async (req, res) => {
-//     fs.createReadStream("C:\\Users\\Ahmad\\Desktop\\1122.csv")
+//     fs.createReadStream("C:\\Users\\ahmed.q\\Desktop\\csvjson.csv")
 //         .pipe(csv())
 //         .on('data', async function (row) {
 
 //             var checker = await ProductsCollection.findByIdAndUpdate({
-//                 _id: row.oid
+//                 _id: row.baxoy
 //             }, {
 //                 // borrowedBalance: parseFloat(row.borrowedBalance),
 //                 // recoveredBalance: parseFloat(row.recoveredBalance),
-//                 totalQuantity: parseFloat(row.totalQuantity),
+//                 camePrice: parseFloat(row.camePrice),
 //             });
+//             console.log(checker)
 //         })
 //         .on('end', function () {
 //             res.send("end")

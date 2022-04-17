@@ -336,6 +336,71 @@ exports.GetAllDebutInvoiceForCustomers = async (req, res, next) => {
 }
 
 
+//Get Debut Invoice for Specific Customer
+exports.GetAllGottenProductsForCustomer = async (req, res, next) => {
+    const Invoices = await RecordsCollection
+        .aggregate([
+            {
+                $group: {
+                    _id: { productID: "$productID" },
+                    count: { $sum: 1 },
+                    items: {
+                        $push: { totalQuantity: "$totalQuantity", productID: "$productID", cutomerID: "$cutomerID", status: "$status" },
+                    },
+                },
+            },
+
+            {
+                $match: {
+                    "items.cutomerID": mongoose.Types.ObjectId(req.params.id),
+                    "items.status": "Customer Request",
+
+                }
+            },
+            {
+                $project: {
+                    total: { $sum: "$items.totalQuantity" }
+                }
+            },
+            {
+                $lookup: {
+                    from: "items",
+                    localField: "_id.productID",
+                    foreignField: "_id",
+                    as: "data",
+                },
+            },
+            {
+                $sort: { "total": -1 },
+            },
+
+        ]);
+
+    const Profile = await RecordsCollection
+        .find({
+            cutomerID: req.params.id
+        })
+        .sort({
+            "createdAt": -1
+        }).populate('cutomerID')
+
+    if (Invoices == "") {
+        req.flash('danger', "کڕیاری داواکراو هیج بەرهەمێکی دڵخوازی نیە");
+        res.redirect("/Profiles")
+    } else {
+        res.render("Profiles/ProfileGottenProducts", {
+            title: "تۆماری دڵخوازەکان",
+            invoices: Invoices,
+            profile: Profile,
+        })
+    }
+    // var data = await RecordsCollection.find({
+    //     cutomerID: req.params.id
+    // }).populate('productID');
+    // res.send(Invoices)
+
+}
+
 
 
 //Get Invoice for Specific Customer

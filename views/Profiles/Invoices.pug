@@ -6,11 +6,11 @@ block content
     .d-sm-flex.align-items-left.justify-content-between.mb-4
       h1.h3.mb-0.text-gray-800=" تۆماری "+ profile[0]['cutomerID']['clientName']
       .container.col-md-4
-        .row.height.d-flex.justify-content-center.align-items-center
-          .col.md-6
-            .search-box
-              .input-group
-                input#search.form-control(type='text' placeholder='گەڕان بەپێی ژمارەی تۆمار')
+        //- .row.height.d-flex.justify-content-center.align-items-center
+        //-   .col.md-6
+        //-     .search-box
+        //-       .input-group
+        //-         input#search.form-control(type='text' placeholder='گەڕان بەپێی ژمارەی تۆمار')
       .span
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.m-2(href="/Profiles/Invoices/List/"+profile[0]['cutomerID']['_id'])
           i.fas.fa-file-invoice.fa-sm.text-white-50
@@ -18,9 +18,9 @@ block content
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white.m-2(href="/Profiles/Invoices/"+profile[0]['cutomerID']['_id'])
           i.fas.fa-file-invoice.fa-sm.text-white-50
           |  تۆمارەکان(بە وەصڵ)
-        //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white(href=Address+"/Clients/Register")
-        //-     i.fas.fa-plus-square.fa-sm.text-white-50
-        //-     |  Add New Product
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-warning.shadow-sm.text-white.m-2(href="/Profiles/Favorates/"+profile[0]['cutomerID']['_id'])
+            i.fas.fa-heart.fa-sm.text-white-50
+            |  دڵخوازەکانی کڕیار
     div.p-4
       .row
         .form-group.col-md-3
