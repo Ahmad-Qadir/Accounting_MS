@@ -48,7 +48,7 @@ router.post('/Products/Parser', Products.GetProductswithSearch); // Get All Prod
 // ! Update Products
 router.get('/Products/:id/Modification', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.EditProductUI);
 router.post('/Products/:id/Update', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.EditProductOperation);
-// ! Clone Products
+// ! Clone Products 
 router.get('/Products/:id/Clone', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.CloneProductUI);
 router.post('/Products/Clone', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.CloneProduct);
 router.get('/Products/Print', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.PrintAllProducts);
