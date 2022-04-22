@@ -397,14 +397,20 @@ block content
           url: "/Products/#{profile[0]['_id']}/Requests/Debut/"+subtotal,
           data:JSON.stringify(result),
           contentType: "application/json; charset=utf-8",
-          success: function(data,xhr){
+          success: function(data,xhr,textStatus, errorThrown){
             $('#newRecord').empty();
-            for (i = 0; i <data.length;i++){
-              $('#newRecord').append($("<div></div>").attr("class","note note-success").text("بەرهەمی "+data[i]['itemModel']+data[i]['itemName']+data[i]['itemType']+data[i]['color']+data[i]['weight']+data[i]['itemUnit']+" تەنها "+data[i]['totalQuantity']+" ماوە"))
-            }          },
-          error: function(err,xhr){
+            console.log()
+            if(textStatus['status']==201)
+              $('#newRecord').append($("<div></div>").attr("class","note note-success").text(data));
+            else{
+              for (i = 0; i <data.length;i++){
+                $('#newRecord').append($("<div></div>").attr("class","note note-danger").text("بەرهەمی "+data[i]['itemModel']+data[i]['itemName']+data[i]['itemType']+data[i]['color']+data[i]['weight']+data[i]['itemUnit']+" تەنها "+data[i]['totalQuantity']+" ماوە"))
+              }   
+            }
+          },
+          error: function(err,xhr, textStatus, errorThrown){
             $('#newRecord').empty();
-            $('#newRecord').append($("<div></div>").attr("class","note note-danger").text(err.responseText));
+            console.log(err)
           }
       })
     }

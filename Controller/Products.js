@@ -414,7 +414,6 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
         }
 
         setTimeout(async () => {
-
             if (checkLength == RequestList.length) {
                 for (let index = 0; index < RequestList.length; index++) {
                     const element = RequestList[index];
@@ -441,58 +440,50 @@ exports.NewInvoiceOfNoPrice = async (req, res, next) => {
                     var totalRequestedPackets = element[6];
                     var _SellPrice = parseFloat(element[7].replace("$", ''));
 
-
-
-
                     //Prevent 
-                    if (Product['totalQuantity'] < totalRequestedPackets) {
-                        res.send("بەرهەمی " + Product['itemModel'] + " " + Product['itemName'] + "تەنها " + Product['totalQuantity'] + " ماوە");
-                        break;
-                    } else {
-                        //===============Records Collection=============
-                        const newRecordtoHistory = new RecordsCollection({
-                            recordCode: invoiceID,
-                            totalQuantity: totalRequestedPackets,
-                            status: "Customer Request",
-                            sellPrice: _SellPrice,
-                            totalPrice: _SellPrice * totalRequestedPackets,
-                            oldDebut: Profile['remainedbalance'],
-                            addedBy: req.user.username,
-                            updatedBy: req.user.username,
-                            note: req.body[1].toString(),
-                            productID: Product['_id'],
-                            cutomerID: req.params.id,
-                            htmlObject: req.body['tbody'],
-                            moneyStatus: "Debut",
-                            personName: req.body[2].toString()
-                        });
-                        await newRecordtoHistory.save();
+                    //===============Records Collection=============
+                    const newRecordtoHistory = new RecordsCollection({
+                        recordCode: invoiceID,
+                        totalQuantity: totalRequestedPackets,
+                        status: "Customer Request",
+                        sellPrice: _SellPrice,
+                        totalPrice: _SellPrice * totalRequestedPackets,
+                        oldDebut: Profile['remainedbalance'],
+                        addedBy: req.user.username,
+                        updatedBy: req.user.username,
+                        note: req.body[1].toString(),
+                        productID: Product['_id'],
+                        cutomerID: req.params.id,
+                        htmlObject: req.body['tbody'],
+                        moneyStatus: "Debut",
+                        personName: req.body[2].toString()
+                    });
+                    await newRecordtoHistory.save();
 
-                        var result = Product['totalQuantity'] - totalRequestedPackets;
+                    var result = Product['totalQuantity'] - totalRequestedPackets;
 
-                        await ProductsCollection.findByIdAndUpdate({
-                            _id: Product['_id']
-                        }, {
-                            totalQuantity: result,
-                            updatedBy: req.user.username,
-                            $push: {
-                                itemHistory: newRecordtoHistory["_id"],
-                            }
-                        });
+                    await ProductsCollection.findByIdAndUpdate({
+                        _id: Product['_id']
+                    }, {
+                        totalQuantity: result,
+                        updatedBy: req.user.username,
+                        $push: {
+                            itemHistory: newRecordtoHistory["_id"],
+                        }
+                    });
 
 
-                        await ProfileCollection.findByIdAndUpdate({
-                            _id: req.params.id
-                        }, {
-                            updatedBy: req.user.username,
-                            $push: {
-                                invoiceID: newRecordtoHistory["_id"],
-                            }
-                        });
+                    await ProfileCollection.findByIdAndUpdate({
+                        _id: req.params.id
+                    }, {
+                        updatedBy: req.user.username,
+                        $push: {
+                            invoiceID: newRecordtoHistory["_id"],
+                        }
+                    });
 
-                    }
                 }
-                res.status(200).send("بە سەرکەوتوویی تۆمارکرا")
+                res.status(201).send("بە سەرکەوتوویی تۆمارکرا")
 
                 await ProfileCollection.findByIdAndUpdate({
                     _id: req.params.id
