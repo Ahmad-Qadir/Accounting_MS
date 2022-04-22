@@ -201,9 +201,10 @@ exports.GetAllInvoiceForCompany = async (req, res, next) => {
             {
                 $group: {
                     _id: { trailerNumber: '$trailerNumber' },
-                    amount: { $sum: {$multiply : ["$camePrice", "$totalQuantity"]} },
+                    amount: { $sum: { $multiply: ["$camePrice", "$totalQuantity"] } },
+                    count: { $sum: 1 },
                     items: {
-                        $push: { manufacturerCompany:"$manufacturerCompany",trailerNumber: '$trailerNumber' },
+                        $push: {createdAt:"$createdAt",itemModel:"$itemModel", color: "$color", itemType: "$itemType", itemUnit: "$itemUnit", itemName: "$itemName", totalQuantity: "$totalQuantity", camePrice: "$camePrice", manufacturerCompany: "$manufacturerCompany", trailerNumber: '$trailerNumber', itemName: "$itemName" },
                     },
                 },
 
@@ -226,26 +227,22 @@ exports.GetAllInvoiceForCompany = async (req, res, next) => {
             // },
         ]);
 
-    // const Profile = await RecordsCollection
-    //     .find({
-    //         cutomerID: req.params.id
-    //     })
-    //     .sort({
-    //         "createdAt": -1
-    //     }).populate('cutomerID')
+    const Profile = await CompanyCollection
+        .find({
+            companyName: req.params.manufacturerCompany
+        })
 
-    // if (Invoices == "") {
-    //     req.flash('danger', "کۆمپانیای داواکراو هیج تۆماڕێکی نیە");
-    //     res.redirect("/Companies")
-    // } else {
-    //     res.render("Company/Invoices", {
-    //         title: "تۆماری " + Profile[0]['cutomerID']['clientName'],
-    //         invoices: Invoices,
-    //         // profile: Profile,
-    //         // address: address,
-    //         // recovered: _RecoveredInvoices
-        // })
-    // }
-    res.send(Invoices)
-
+    if (Invoices == "") {
+        req.flash('danger', "کۆمپانیای داواکراو هیج تۆماڕێکی نیە");
+        res.redirect("/Companies")
+    } else {
+        res.render("Company/Invoices", {
+            title: "تۆماری " + Invoices[0]['items'][0]['manufacturerCompany'],
+            invoices: Invoices,
+            profile: Profile,
+            // address: address,
+            // recovered: _RecoveredInvoices
+        })
+    }
+    // res.send(Invoices)
 }
