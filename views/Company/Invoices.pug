@@ -56,7 +56,7 @@ block content
                     div(style="background-color:#f0ad4e")="تۆماری ژمارە: "+item['_id']['recordCode']
                     //- .col-md-2="کۆی بەرهەم: "+item['count']
                     .col-md-4="تێچووی تۆمار: "+parseFloat(item['amount']).toFixed(2)
-                    .col-md-4="بەروار: "+item['items'][0]['createdAt'].toLocaleString('en-GB')
+                    .col-md-4="بەروار: "+item['items'][0]['createdAt'].toLocaleString("en-GB")
                     .col-md-3 
                       a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Profiles/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID']+"/"+item['items'][0]['status']+"/Print")
                         span.icon.text-white-50

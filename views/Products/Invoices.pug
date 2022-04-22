@@ -75,7 +75,7 @@ block content
               .form-group.col-md-2
                 label شركه
                 input.form-control(name="sellPriceSharika" type='text' value=product[0]['productID']['sellPriceSharika'] disabled)
-      .card-footer.text-muted="دوا نوێکردنەوە لەلایان "+productInfo[0]['updatedBy'] + " لە بەرواری "+productInfo[0]["updatedAt"].toLocaleString()
+      .card-footer.text-muted="دوا نوێکردنەوە لەلایان "+productInfo[0]['updatedBy'] + " لە بەرواری "+productInfo[0]["updatedAt"].toLocaleString("en-GB")
     hr
     h2 تۆماری بەرهەم
     .row
@@ -108,4 +108,4 @@ block content
                     td(style="text-align:center;") بەردەست نیە
                   else
                     td(style="text-align:center;")=profile[i]['cutomerID']['clientName']
-                  td(style="text-align:center;")=item['createdAt'].toLocaleString()
+                  td(style="text-align:center;")=item['createdAt'].toLocaleString("en-GB")

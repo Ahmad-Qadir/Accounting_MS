@@ -32,7 +32,7 @@ block content
                                      .col-md-1="کۆمپانیا: "+item['data'][0]['manufacturerCompany']
                                     .col-md-2="تێچووی بارهەڵگر: "+item['items'][0]['cost']
                                     .col-md-2="کۆی گشتی نرخ: "+item['amount'].toFixed(2)
-                                    .col-md-3="بەروار: "+item['items'][0]['createdAt'].toLocaleString()
+                                    .col-md-3="بەروار: "+item['items'][0]['createdAt'].toLocaleString("en-GB")
                                     .col-md-2 
                                         a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Trailers/"+item['_id']['trailerNumber']+"/Invoices")
                                             span.icon.text-white-50

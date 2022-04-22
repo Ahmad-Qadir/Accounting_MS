@@ -31,7 +31,7 @@ block content
                                     td پارەدان
                                     td(style="text-align:center;") -
                                     td(style="text-align:center;")="$ "+item['sellPrice']
-                                    td(style="text-align:center;")=item['createdAt'].toLocaleString()
+                                    td(style="text-align:center;")=item['createdAt'].toLocaleString("en-GB")
                                     if profiles[i]['cutomerID']==undefined 
                                       td(style="text-align:center;")
                                     else 
@@ -82,7 +82,7 @@ block content
                                     td=item['productID']['itemModel']+"/"+item['productID']['itemName']+"/"+item['productID']['color']
                                     td(style="text-align:center;")=item['totalQuantity']
                                     td(style="text-align:center;")="$ "+item['totalPrice']
-                                    td(style="text-align:center;")=item['createdAt'].toLocaleString()
+                                    td(style="text-align:center;")=item['createdAt'].toLocaleString("en-GB")
                                     if profiles[i]['cutomerID']==undefined 
                                       td(style="text-align:center;")
                                     else 

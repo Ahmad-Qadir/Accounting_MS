@@ -126,7 +126,7 @@ block content
 
 
 
-                    .col-md-3="بەروار: "+item['items'][0]['createdAt'].toLocaleString()
+                    .col-md-3="بەروار: "+item['items'][0]['createdAt'].toLocaleString("en-GB")
               .accordion-collapse.collapse.hide(aria-labelledby="heading"+i data-mdb-parent='#accordionExample' id="collapse"+i)
                 .accordion-body
                   .container-fluid.table-responsive
@@ -148,7 +148,7 @@ block content
                             td(style="text-align:center;")="$ "+item['items'][0]['totalPrice']
                             td(style=`text-align:center;`)="% "+parseFloat(item['items'][0]['discount']).toFixed(2)
                             td(style="text-align:center;")="$ "+item['items'][0]['prepaid']
-                            td(style="text-align:center;")=item['items'][0]['createdAt'].toLocaleString()
+                            td(style="text-align:center;")=item['items'][0]['createdAt'].toLocaleString("en-GB")
                             td(style="text-align:center;")=item['items'][0]['addedBy']
                       else 
                         thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
@@ -180,7 +180,7 @@ block content
                                   td(style="text-align:center;")=item['items'][x]['status']
                                   td(style="text-align:center;")="$ "+parseFloat(item['items'][x]['totalPrice']).toFixed(2)
                                   td(style="text-align:center;")=item['items'][x]['note']
-                                  td(style="text-align:center;")=item['items'][x]['createdAt'].toLocaleString()
+                                  td(style="text-align:center;")=item['items'][x]['createdAt'].toLocaleString("en-GB")
                                   td(style="text-align:center;")=item['items'][x]['addedBy']
 
                     //- if profiles[i]['cutomerID']==undefined 

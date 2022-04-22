@@ -190,3 +190,62 @@ exports.UpdateCompany = async (req, res, next) => {
         next(error)
     }
 }
+
+
+
+// ! User Invoices
+//Get Invoice for Specific Company
+exports.GetAllInvoiceForCompany = async (req, res, next) => {
+    const Invoices = await TrailerCollection.aggregate(
+        [
+            {
+                $group: {
+                    _id: { trailerNumber: '$trailerNumber' },
+                    amount: { $sum: {$multiply : ["$camePrice", "$totalQuantity"]} },
+                    items: {
+                        $push: { manufacturerCompany:"$manufacturerCompany",trailerNumber: '$trailerNumber' },
+                    },
+                },
+
+            },
+            {
+                $sort: { "items.trailerNumber": -1 },
+            },
+            {
+                $match: {
+                    "items.manufacturerCompany": req.params.manufacturerCompany,
+                }
+            },
+            // {
+            //     $lookup: {
+            //         from: "items",
+            //         localField: "items.productID",
+            //         foreignField: "_id",
+            //         as: "data",
+            //     },
+            // },
+        ]);
+
+    // const Profile = await RecordsCollection
+    //     .find({
+    //         cutomerID: req.params.id
+    //     })
+    //     .sort({
+    //         "createdAt": -1
+    //     }).populate('cutomerID')
+
+    // if (Invoices == "") {
+    //     req.flash('danger', "کۆمپانیای داواکراو هیج تۆماڕێکی نیە");
+    //     res.redirect("/Companies")
+    // } else {
+    //     res.render("Company/Invoices", {
+    //         title: "تۆماری " + Profile[0]['cutomerID']['clientName'],
+    //         invoices: Invoices,
+    //         // profile: Profile,
+    //         // address: address,
+    //         // recovered: _RecoveredInvoices
+        // })
+    // }
+    res.send(Invoices)
+
+}

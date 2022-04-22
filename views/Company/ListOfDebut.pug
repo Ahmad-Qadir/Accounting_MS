@@ -42,7 +42,7 @@ block content
                         tr(scope='col' style="text-align:center; font-size:90%")
                             td=i+1
                             td(style="text-align:center;")=item['_id']['trailerNumber']
-                            td(style=`text-align:center;`)=item['items'][0]['createdAt'].toLocaleString()
+                            td(style=`text-align:center;`)=item['items'][0]['createdAt'].toLocaleString("en-GB")
                             if item['items'][0]['oldDebut']==undefined
                                 td(style=`text-align:center;`) دیاری نەکراوە
                             else
