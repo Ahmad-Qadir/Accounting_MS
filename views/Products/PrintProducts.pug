@@ -16,10 +16,10 @@ block content
                 thead.thead-light
                     tr(style="text-align:center; font-size:3 rem")
                         th(scope='col') #
+                        th(scope='col') کۆمپانیای وەبەرهێن
                         th(scope='col') بڕاندی بەرهەم
                         th(scope='col') ناوی بەرهەم
                         th(scope='col') وڵات
-                        th(scope='col') کۆمپانیای وەبەرهێن
                         th(scope='col') پێوانەی گشتی
                         th(scope='col') پێوانەی تاک
                         th(scope='col') جۆری بەرهەم
@@ -35,10 +35,10 @@ block content
                             //- if item['itemModel']==undefined 
                                 td(style="text-align:center;")
                             //- else
+                            td(style="text-align:center;")=item['manufacturerCompany']
                             td(style="text-align:center;")=item['itemModel']
                             td(style="text-align:center;")=(item['itemName'])
                             td(style="text-align:center;")=item['countryCompany']
-                            td(style="text-align:center;")=item['manufacturerCompany']
                             td(style="text-align:center;")=item['unit']
                             td(style="text-align:center;")=item['itemUnit']
                             td(style="text-align:center;")=item['itemType']

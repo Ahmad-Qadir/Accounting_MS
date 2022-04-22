@@ -60,7 +60,7 @@ block content
           TotalValue += currentRow
         });
 
-        document.getElementById('totalQard').innerHTML="کۆی قەرزەکان:  "+TotalValue
+        document.getElementById('totalQard').innerHTML="کۆی قەرزەکان:  "+TotalValue.toFixed(2)
     } );
       function printDiv(divName) {
         var originalContents = document.body.innerHTML;
