@@ -342,8 +342,7 @@ exports.GetAllGottenProductsForCustomer = async (req, res, next) => {
         .aggregate([
             {
                 $group: {
-                    _id: { productID: "$productID" },
-                    count: { $sum: 1 },
+                    _id: { productID: "$productID", status: "$status", cutomerID: "$cutomerID" },
                     items: {
                         $push: { totalQuantity: "$totalQuantity", productID: "$productID", cutomerID: "$cutomerID", status: "$status" },
                     },
@@ -353,13 +352,13 @@ exports.GetAllGottenProductsForCustomer = async (req, res, next) => {
             {
                 $match: {
                     "items.cutomerID": mongoose.Types.ObjectId(req.params.id),
-                    "items.status": "Customer Request",
+                    "_id.status": "Customer Request",
 
                 }
             },
             {
                 $project: {
-                    total: { $sum: "$items.totalQuantity" }
+                    total: { $sum: "$items.totalQuantity" },
                 }
             },
             {
@@ -372,6 +371,8 @@ exports.GetAllGottenProductsForCustomer = async (req, res, next) => {
             },
             {
                 $sort: { "total": -1 },
+                // $sort: { "_id.productID": -1 },
+
             },
 
         ]);
@@ -394,9 +395,6 @@ exports.GetAllGottenProductsForCustomer = async (req, res, next) => {
             profile: Profile,
         })
     }
-    // var data = await RecordsCollection.find({
-    //     cutomerID: req.params.id
-    // }).populate('productID');
     // res.send(Invoices)
 
 }
