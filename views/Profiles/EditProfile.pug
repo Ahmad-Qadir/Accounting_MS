@@ -31,7 +31,7 @@ block content
                                 input.form-control(name="remainedbalance" type='text' value=parseFloat(profiles['remainedbalance']).toFixed(2) disabled)
                             .form-group.col-md-4
                                 label جۆری کڕیار
-                                select(name="clientType" class="form-control")
+                                select(name="clientType" class="form-control") 
                                     option(value=profiles['clientType'])=profiles['clientType']
                                     each item,i in types
                                         option(value=item['customerType'])=item['customerType']
