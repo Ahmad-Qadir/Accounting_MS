@@ -190,7 +190,6 @@ block content
                           each product,x in item['data']
                             each product,k in item['data']
                               //- - console.log(x+"//Invoice:"+item['items'][x]['productID'])
-                              //- - console.log(k+"//Product:"+product['_id'])
                               if item['items'][x]['productID'].equals(product['_id'])
                                 tr
                                   td=x

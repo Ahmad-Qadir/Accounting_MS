@@ -123,17 +123,20 @@ block content
                     br
                     table.table.table-bordered.table-xs(id="totalPayment")
                       tbody
-
                         tr(style="line-height: 10px;")
                           td.left
-                            strong قەرزی پێشوو
+                            strong قەرزی کۆنی تۆمار
+                          td.right(id="total")="$"+records[0]['oldDebut'].toFixed(2)
+                        tr(style="line-height: 10px;")
+                          td.left
+                            strong کۆی قەرزی تۆمارەکان
                           if profile['cutomerID']['remainedbalance']==0
                             td(id="olddebut").right="$"+0
                           else
                             td(id="olddebut").right="$"+parseFloat(profile['cutomerID']['remainedbalance']-totalPrice['amount']).toFixed(2)
                         tr(style="line-height: 10px;")
                           td.left
-                            strong قەرزی نوێ
+                            strong قەرزی ئێستا
                           td.right(id="total")="$"+totalPrice['amount'].toFixed(2)
                         //- tr(style="line-height: 10px;")
                         //-   td.left

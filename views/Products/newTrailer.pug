@@ -66,85 +66,84 @@ block content
     .container(id="newRecord")
     .jumbotron
       .row
-        .container-fluid.table-responsive
-          table.table.table-striped
-            thead.thead-dark
-              .container(id="result")
-            tbody
+        table.table.table-striped
+          thead.thead-dark
+            .container(id="result")
+          tbody
+            .row
+              .form-group.col-md-2
+                label ناوی کۆمپانیا
+                input(name="companyName" class="form-control fstdropdown-select custom-selection" id="companyName" onclick='myFunction()' onkeyup='filterFunction()')
+                .dropdown
+                  #myDropdown.dropdown-content
+                    each item,i in company
+                      a(href="#" onclick="getModel(this,event);" title=item type='button' data-toggle="modal" data-target="#confirm-product"+i)=item
+              .form-group.col-md-3
+                label نرخی تێچووی بارهەڵگر
+                input(type="text" name="PriceOfExpense" class="form-control fstdropdown-select" id="PriceOfExpense")
+              .form-group.col-md-1.invisible(id="showme2")
+                label کۆی گشتی
+                input.form-control(id="koywasl" name="koywasl" type='number' placeholder='0' required step='any')
+              .form-group.col-md-1.invisible(id="showme3")
+                label بڕی دراو
+                input.form-control(id="koydraw" name="koydraw" type='number' placeholder='0' required step='any')
+              .form-group.col-md-1.invisible(id="showme4")
+                a.btn.btn-primary.mt-4(onclick="paradaniGshty()") تۆماربکە
+
+        .container(id="printableArea")
+          .card.border.border-dark
+            .card-header.justify-content-between
               .row
-                .form-group.col-md-4
-                  label ناوی کۆمپانیا
-                  input(name="companyName" class="form-control fstdropdown-select custom-selection" id="companyName" onclick='myFunction()' onkeyup='filterFunction()')
-                  .dropdown
-                    #myDropdown.dropdown-content
-                      each item,i in company
-                        a(href="#" onclick="getModel(this,event);" title=item type='button' data-toggle="modal" data-target="#confirm-product"+i)=item
-                .form-group.col-md-3
-                  label نرخی تێچووی بارهەڵگر
-                  input(type="text" name="PriceOfExpense" class="form-control fstdropdown-select" id="PriceOfExpense")
-                .form-group.col-md-1.invisible(id="showme2")
-                  label کۆی گشتی
-                  input.form-control(id="koywasl" name="koywasl" type='number' placeholder='0' required step='any')
-                .form-group.col-md-1.invisible(id="showme3")
-                  label بڕی دراو
-                  input.form-control(id="koydraw" name="koydraw" type='number' placeholder='0' required step='any')
-                .form-group.col-md-1.invisible(id="showme4")
-                  a.btn.btn-primary.mt-4(onclick="paradaniGshty()") تۆماربکە
-                
-          .container(id="printableArea")
-            .card.border.border-dark
-              .card-header.justify-content-between
-                .row
-                  strong.col-md-10="ژمارەی تۆمار: "+invoiceID
-                  span.col-md-2
-                    strong بارهەڵگری نوێ
-              .card-body
-                //- .row.mb-4
-                //-   .col-sm-6
-                //-     h6.mb-3 بۆ:
-                //-     div
-                //-       strong="Titan Service - " + user.username
-                //-     //- div Attn: Daniel Marek
-                //-     div=Date().toLocaleString("en-GB")
-                //-     //- div Email: robert@daniel.com
-                //-     div Phone: +964 750 000 00 00
-                table.table-bordered.table-xs.table-responsive.col-12(id="invoiceTable")
-                  thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
-                    tr
-                      th.center #
-                      th بڕاندی بەرهەم
-                      th ناوی بەرهەم
-                      th ڕەنگ
-                      th جۆری بەرهەم
-                      th پێوانە
-                      th وەکیل
-                      th شرکە
-                      th محل
-                      th مفرد
-                      th وەستا
-                      th ژمارە
-                      th نرخی کڕین
-                      th نرخی کۆمپانیا
-                      th.right کۆی نرخ
-                  tbody(id="dataOfInvoiceTable" style="font-size: 12px;font-weight:bold;text-align:center;")
-                .row
-                  .col-lg-8.col-sm-8
-                    //- b تێبینی
-                    //- textarea.form-control.rounded-0(rows='5' cols='80' id='note')
-                  .col-lg-4.col-sm-4.ml-auto
-                    table.table.table-clear(id="totalPayment")
-                      tbody
-                        tr
-                          td.left
-                            strong کۆی گشتی نرخ (بێ تێچوو)
-                          td.right
-                            strong(id="total") 0
-                        //- tr
-                        //-   td.left
-                        //-     strong کۆی گشتی
-                        //-   td.right
-                        //-     strong(id="final") 0
-                        // Modal
+                strong.col-md-10="ژمارەی تۆمار: "+invoiceID
+                span.col-md-2
+                  strong بارهەڵگری نوێ
+            .card-body
+              //- .row.mb-4
+              //-   .col-sm-6
+              //-     h6.mb-3 بۆ:
+              //-     div
+              //-       strong="Titan Service - " + user.username
+              //-     //- div Attn: Daniel Marek
+              //-     div=Date().toLocaleString("en-GB")
+              //-     //- div Email: robert@daniel.com
+              //-     div Phone: +964 750 000 00 00
+              table.table-bordered.table-xs.table-responsive.col-12(id="invoiceTable")
+                thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
+                  tr
+                    th.center #
+                    th بڕاندی بەرهەم
+                    th ناوی بەرهەم
+                    th ڕەنگ
+                    th جۆری بەرهەم
+                    th پێوانە
+                    th وەکیل
+                    th شرکە
+                    th محل
+                    th مفرد
+                    th وەستا
+                    th ژمارە
+                    th نرخی کڕین
+                    th نرخی کۆمپانیا
+                    th.right کۆی نرخ
+                tbody(id="dataOfInvoiceTable" style="font-size: 12px;font-weight:bold;text-align:center;")
+              .row
+                .col-lg-8.col-sm-8
+                  //- b تێبینی
+                  //- textarea.form-control.rounded-0(rows='5' cols='80' id='note')
+                .col-lg-4.col-sm-4.ml-auto
+                  table.table.table-clear(id="totalPayment")
+                    tbody
+                      tr
+                        td.left
+                          strong کۆی گشتی نرخ (بێ تێچوو)
+                        td.right
+                          strong(id="total") 0
+                      //- tr
+                      //-   td.left
+                      //-     strong کۆی گشتی
+                      //-   td.right
+                      //-     strong(id="final") 0
+                      // Modal
           .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-payment')
             .modal-dialog.modal-dialog-centered.modal-s(role='document')
               .modal-content
@@ -335,7 +334,7 @@ block content
     }
 
 
-     
+
 
     function payNow(){
       objectData=document.getElementById("invoiceTable")
