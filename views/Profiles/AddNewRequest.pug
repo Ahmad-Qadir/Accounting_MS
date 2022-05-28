@@ -212,13 +212,16 @@ block content
                   .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-product'+i)
                     .modal-dialog.modal-dialog-centered.modal-fullscreen(role='document')
                       .modal-content
-                        .modal-header=item
+                        //- .modal-header.text-left
+                        p=item
+                        .row 
+                          button.col-md-1.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
+                          a.col-md-1.btn.btn-success.btn-ok(onclick="resultOfValidation(this)" data-dismiss='modal') زیادکردنی بەرهەم
                         thead.thead-dark
                           .container(id="checkForRemainedProduct")
                         .modal-body(id='body-product'+i)
                         .modal-footer
-                          button.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
-                          a.btn.btn-success.btn-ok(onclick="resultOfValidation(this)" data-dismiss='modal') زیادکردنی بەرهەم
+
               //- .card-footer(style='background-color: black;')
 
 
@@ -616,21 +619,21 @@ block content
     $(document).ready(function(){
 
       // Check For Packets
-        //- $( "#koydraw" ).change(function() {
-        //-   document.getElementById('koymawa').value=parseFloat(document.getElementById('qardikon').value)-parseFloat(document.getElementById('koywasl').value)
-        //- });
-        //- $( "#koydraw" ).change(function() {
-        //-   var calculation=parseFloat(document.getElementById('koywasl').value)-parseFloat(document.getElementById('koydraw').value)
-        //-   var x=calculation/parseFloat(document.getElementById('koywasl').value);
-        //-   var y=x*100;
-        //-   document.getElementById('dashkan').value=y;
-        //- });
+      //- $( "#koydraw" ).change(function() {
+      //-   document.getElementById('koymawa').value=parseFloat(document.getElementById('qardikon').value)-parseFloat(document.getElementById('koywasl').value)
+      //- });
+      //- $( "#koydraw" ).change(function() {
+      //-   var calculation=parseFloat(document.getElementById('koywasl').value)-parseFloat(document.getElementById('koydraw').value)
+      //-   var x=calculation/parseFloat(document.getElementById('koywasl').value);
+      //-   var y=x*100;
+      //-   document.getElementById('dashkan').value=y;
+      //- });
 
-        //- $( "#dashkan" ).change(function() {
-        //-   var calculation=parseFloat(document.getElementById('koywasl').value)*(parseFloat(document.getElementById('dashkan').value)/100)
-        //-   var x=parseFloat(document.getElementById('koywasl').value)-calculation;
-        //-   document.getElementById('koydraw').value=x;
-        //- });
+      //- $( "#dashkan" ).change(function() {
+      //-   var calculation=parseFloat(document.getElementById('koywasl').value)*(parseFloat(document.getElementById('dashkan').value)/100)
+      //-   var x=parseFloat(document.getElementById('koywasl').value)-calculation;
+      //-   document.getElementById('koydraw').value=x;
+      //- });
 
       // Delete row on delete button click
       $(document).on("click", ".delete", function(){
