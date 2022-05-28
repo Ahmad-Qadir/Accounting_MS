@@ -212,15 +212,13 @@ block content
                   .modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true' id='confirm-product'+i)
                     .modal-dialog.modal-dialog-centered.modal-fullscreen(role='document')
                       .modal-content
-                        //- .modal-header.text-left
-                        p=item
-                        .row 
-                          button.col-md-1.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
-                          a.col-md-1.btn.btn-success.btn-ok(onclick="resultOfValidation(this)" data-dismiss='modal') زیادکردنی بەرهەم
+                        .modal-header.text-left=item
                         thead.thead-dark
                           .container(id="checkForRemainedProduct")
                         .modal-body(id='body-product'+i)
                         .modal-footer
+                          button.col-md-1.btn.btn-default(type='button' data-dismiss='modal') گەڕانەوە
+                          a.col-md-1.btn.btn-success.btn-ok(onclick="resultOfValidation(this)" data-dismiss='modal') زیادکردنی بەرهەم
 
               //- .card-footer(style='background-color: black;')
 
