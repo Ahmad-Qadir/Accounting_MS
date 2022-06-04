@@ -6,12 +6,12 @@ block content
     .d-sm-flex.align-items-left.justify-content-between.mb-4
       h1.h3.mb-0.text-gray-800
       .span
-        a.d-none.d-sm-inline-block.btn.btn-sm.btn-danger.shadow-sm.text-white.mr-2(id="backup" onclick="backupAll()")
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-danger.shadow-sm.text-white.m-2(id="backup" onclick="backupAll()")
           i.fas.fa-file-invoice.fa-sm.text-white-50
           |  چاپکردنی تۆمارەکان
-        //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white(href=Address+"/Clients/Register")
-        //-     i.fas.fa-plus-square.fa-sm.text-white-50
-        //-     |  Add New Product
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white.m-2(href="/Product/"+product[0]['productID']['_id']+"/History")
+          i.fas.fa-file-invoice.fa-sm.text-white-50
+          |  تۆماری کڕینی بەرهەم
 
     .card.container-fluid
       .card-body

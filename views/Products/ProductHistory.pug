@@ -1,0 +1,69 @@
+include ../Components/Header
+block content
+    br
+    .container-fluid(id="printableArea")
+        // Page Heading
+        .d-sm-flex.align-items-left.justify-content-between.mb-4
+            h1.h3.mb-0.text-gray-800 تۆمارەکانی بەرهەم
+            //- .container.col-md-4
+            //-     .row.height.d-flex.justify-content-center.align-items-center
+            //-         .col.md-6
+            //-             .search-box
+            //-                 .input-group
+            //-                     input#search.form-control(type='text' placeholder='گەڕان بەپێی ژمارەی تۆمار')
+            //- .span
+            //-     a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.m-2(onclick="printDiv('printableArea')")
+            //-         i.fas.fa-file-invoice.fa-sm.text-white-50
+            //-         |  چاپکردن
+            //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white.m-2(href="/Profiles/Invoices/"+profile[0]['cutomerID']['_id'])
+            //-   i.fas.fa-file-invoice.fa-sm.text-white-50
+            //-   |  تۆمارەکان(بە وەصڵ)
+            //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white(href=Address+"/Clients/Register")
+            //-     i.fas.fa-plus-square.fa-sm.text-white-50
+            //-     |  Add New Product
+        .container
+            table.table.table-hover.table-sm.dt-responsive.table-striped.table-bordered
+                thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
+                    tr(scope='col' style="text-align:center; font-size:90%")
+                        th(style="width:2%") #
+                        th بڕی هاتوو
+                        th نرخی هاتوو
+                        th نرخی کۆمپانیا
+                        th نرخی مفرد
+                        th نرخی محل
+                        th نرخی وەستا
+                        th نرخی وەکیل
+                        th نرخی شرکە
+                        th کۆی گشتی
+                        th بەروار
+
+
+                tbody
+                    each item,i in records
+                        tr(scope='col' style="text-align:center; font-size:90%")
+                            td=i+1
+                            //- td(style="text-align:center;")=item['productID']['itemModel']+" / "+item['productID']['itemName']+" / "+item['productID']['color']+" / "+item['productID']['weight']
+                            td(style="text-align:center;")=item['totalQuantity']
+                            td(style="text-align:center;")=item['camePrice']
+                            td(style="text-align:center;")=item['sellPrice']
+                            td(style="text-align:center;")=item['sellPriceMufrad']
+                            td(style="text-align:center;")=item['sellPriceMahal']
+                            td(style="text-align:center;")=item['sellPriceWasta']
+                            td(style="text-align:center;")=item['sellPriceWakil']
+                            td(style="text-align:center;")=item['sellPriceSharika']
+                            td(style="text-align:center;")=item['totalPrice']
+
+                            
+                            //- td(style=`text-align:center;` id="Date")=0
+                            td(style=`text-align:center;` id="Date")=item['createdAt'].toLocaleString()
+                            //- td(style=`text-align:center;` id="Date")=item['items'][0]['createdAt'].toLocaleString("en-GB")
+                            //- script.
+                            //-     function printDiv(divName) 
+                            //-     {
+                            //-         var originalContents = document.body.innerHTML;
+                            //-         document.body.style.backgroundColor = "white";
+                            //-         var printContents = document.getElementById(divName).innerHTML;
+                            //-         document.body.innerHTML = printContents;
+                            //-         window.print();
+                            //-         document.body.innerHTML = originalContents;
+                            //-     }

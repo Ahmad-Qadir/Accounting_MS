@@ -64,6 +64,7 @@ router.post('/Products/RemoveProduct/:id', Products.allowIfLoggedin, Products.gr
 router.get('/Products/Remove/:id', Products.allowIfLoggedin, Products.grantAccess('deleteAny', 'products'), Products.RemoveProductUI); // Add new Request per Product
 router.post('/Products/NewTrailer/:cost', Products.allowIfLoggedin, Products.grantAccess('createAny', 'products'), Products.AppendNewTrailertoProduct)
 router.get('/NewTrailer', Products.allowIfLoggedin, Products.grantAccess('createAny', 'products'), Products.AddNewTrailer); // Add new Request per Product
+router.get('/Product/:id/History', Products.allowIfLoggedin, Products.grantAccess('deleteAny', 'products'), Products.ProductHistory); // Add new Request per Product
 
 
 router.post('/Product/Trailers/:customerType', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.CheckForProductPriceInTrailer); // Add new Request per Product

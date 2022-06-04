@@ -1101,6 +1101,7 @@ exports.AppendNewTrailertoProduct = async (req, res, next) => {
                 "_id": Product[0]['_id']
             }, {
                 totalQuantity: quantity,
+                camePrice: parseFloat(element[12]),
                 sellPriceWakil: parseFloat(element[6]),
                 sellPriceSharika: parseFloat(element[7]),
                 sellPriceMahal: parseFloat(element[8]),
@@ -1353,11 +1354,8 @@ exports.RecoveredSoldProducts = async (req, res, next) => {
 
 
 
-        await ProfileCollection.findByIdAndUpdate({
-            _id: req.params.id
-        }, {
-            remainedbalance: Profile['remainedbalance'] - parseFloat(req.params.price.replace("$", '')),
-        });
+
+
 
 
         for (let index = 0; index < RequestList.length; index++) {
@@ -1480,156 +1478,56 @@ exports.RecoveredSoldProducts = async (req, res, next) => {
                     totalQuantity: Product[0]['totalQuantity'] + totalRequestedPackets
                 });
 
+
+
             }
 
 
-            //     var result = Product[0]['totalQuantity'] - totalRequestedPackets;
+            //     //     var result = Product[0]['totalQuantity'] - totalRequestedPackets;
 
-            //     await ProductsCollection.findByIdAndUpdate({
-            //         _id: Product[0]['_id']
-            //     }, {
-            //         totalQuantity: result,
-            //         updatedBy: req.user.username,
-            //         $push: {
-            //             itemHistory: newRecordtoHistory["_id"],
-            //         }
-            //     });
-
-
-            //     await ProfileCollection.findByIdAndUpdate({
-            //         _id: req.params.id
-            //     }, {
-            //         updatedBy: req.user.username,
-            //         $push: {
-            //             invoiceID: newRecordtoHistory["_id"],
-            //         }
-            //     });
+            //     //     await ProductsCollection.findByIdAndUpdate({
+            //     //         _id: Product[0]['_id']
+            //     //     }, {
+            //     //         totalQuantity: result,
+            //     //         updatedBy: req.user.username,
+            //     //         $push: {
+            //     //             itemHistory: newRecordtoHistory["_id"],
+            //     //         }
+            //     //     });
 
 
-            //     var numbeOfPacketsinTrailer = Trailer[0]['totalQuantity'] - totalRequestedPackets;
+            //     //     await ProfileCollection.findByIdAndUpdate({
+            //     //         _id: req.params.id
+            //     //     }, {
+            //     //         updatedBy: req.user.username,
+            //     //         $push: {
+            //     //             invoiceID: newRecordtoHistory["_id"],
+            //     //         }
+            //     //     });
 
-            //     await TrailerCollection.findByIdAndUpdate({
-            //         _id: Trailer[0]['_id']
-            //     }, {
-            //         totalQuantity: numbeOfPacketsinTrailer,
-            //         updatedBy: req.user.username,
-            //         $push: {
-            //             invoiceID: newRecordtoHistory["_id"],
-            //         }
-            //     });
+
+            //     //     var numbeOfPacketsinTrailer = Trailer[0]['totalQuantity'] - totalRequestedPackets;
+
+            //     //     await TrailerCollection.findByIdAndUpdate({
+            //     //         _id: Trailer[0]['_id']
+            //     //     }, {
+            //     //         totalQuantity: numbeOfPacketsinTrailer,
+            //     //         updatedBy: req.user.username,
+            //     //         $push: {
+            //     //             invoiceID: newRecordtoHistory["_id"],
+            //     //         }
+            //     //     });
         }
 
-        // setTimeout(() => {
-        //     if (RequestList.length == checkLength)
-        //         res.status(200).send("بە سەرکەوتوویی تۆمارکرا")
-        // }, 2000);
+        setTimeout(async () => {
+            await ProfileCollection.findByIdAndUpdate({
+                _id: req.params.id
+            }, {
+                remainedbalance: Profile['remainedbalance'] - parseFloat(req.params.price.replace("$", '')),
+            });
+        }, 3000);
 
-        // const Product = await ProductsCollection.find({
-        //     _id: req.params.id
-        // });
-        // var totalRecoveredPackets = parseFloat(req.body.perPacket);
-
-        // const Recovered = await RecordsCollection
-        //     .find({
-        //         softdelete: false,
-        //         productID: Product[0]["_id"],
-        //         status: "Recovered"
-        //     })
-        // if (Recovered != "") {
-
-        //     await RecordsCollection.findByIdAndUpdate({
-        //         _id: Recovered[0]['_id']
-        //     }, {
-        //         totalQuantity: Recovered[0]['totalQuantity'] + totalRecoveredPackets,
-        //         updatedBy: req.user.username,
-        //         totalPrice: Product[0]['totalPrice'] + (totalRecoveredPackets * Product[0]['sellPriceMufrad']),
-        //     });
-
-        //     //Prevent 
-        //     var result = Product[0]['totalQuantity'] + totalRecoveredPackets;
-
-        //     await ProductsCollection.findByIdAndUpdate({
-        //         _id: req.params.id
-        //     }, {
-        //         remainedPacket: parseFloat(result / Product[0]['perPacket']),
-        //         remainedPerPacket: result % Product[0]['perPacket'],
-        //         totalQuantity: result,
-        //         updatedBy: req.user.username,
-        //         totalPrice: Product[0]['totalPrice'] + (result * Product[0]['sellPriceMufrad']),
-        //         totalWeight: Product[0]['totalWeight'] + (result * Product[0]['weight']),
-        //     });
-
-        //     await ProfileCollection.findByIdAndUpdate({
-        //         _id: req.body.cutomerID
-        //     }, {
-        //         updatedBy: req.user.username,
-        //         $push: {
-        //             invoiceID: Recovered[0]["_id"],
-        //         }
-        //     });
-        //     req.flash('success', "بەرهەمەکە بە سەرکەوتوویی گەڕێندرایەوە");
-        //     res.redirect('/Products')
-        // } else {
-        //     const newRecordtoHistory = new RecordsCollection({
-        //         recordCode: uuid.v1(),
-        //         itemName: Product[0]['itemName'],
-        //         itemCode: Product[0]["itemCode"],
-        //         manufacturerCompany: Product[0]["manufacturerCompany"],
-        //         companyCode: Product[0]["companyCode"],
-        //         countryCompany: Product[0]["countryCompany"],
-        //         unit: Product[0]["unit"],
-        //         itemType: Product[0]["itemType"],
-        //         usedIn: Product[0]["usedIn"],
-        //         weight: Product[0]["weight"],
-        //         totalWeight: totalRecoveredPackets * Product[0]["weight"],
-        //         color: Product[0]["color"],
-        //         price: Product[0]["price"],
-        //         colorCode: Product[0]["colorCode"],
-        //         camePrice: Product[0]["camePrice"],
-        //         sellPriceMufrad: Product[0]["sellPriceMufrad"],
-        //         sellPriceMahal: Product[0]["sellPriceMahal"],
-        //         sellPriceWasta: Product[0]["sellPriceWasta"],
-        //         sellPriceWakil: Product[0]["sellPriceWakil"],
-        //         sellPriceSharika: Product[0]["sellPriceSharika"],
-        //         totalPrice: Product[0]["sellPriceMufrad"] * totalRecoveredPackets,
-        //         totalQuantity: totalRecoveredPackets,
-        //         status: "Recovered",
-        //         expireDate: Product[0]["expireDate"],
-        //         trailerNumber: 0,
-        //         addedBy: req.user.username,
-        //         updatedBy: req.user.username,
-        //         note: req.body.note,
-        //         cutomerID: req.body.cutomerID,
-        //         productID: req.params.id,
-        //     });
-        //     await newRecordtoHistory.save();
-
-
-        //     //Prevent 
-        //     var result = Product[0]['totalQuantity'] + totalRecoveredPackets;
-
-        //     await ProductsCollection.findByIdAndUpdate({
-        //         _id: req.params.id
-        //     }, {
-        //         remainedPacket: parseFloat(result / Product[0]['perPacket']),
-        //         remainedPerPacket: result % Product[0]['perPacket'],
-        //         totalQuantity: result,
-        //         updatedBy: req.user.username,
-        //         totalPrice: Product[0]['totalPrice'] + (result * Product[0]['sellPriceMufrad']),
-        //         totalWeight: Product[0]['totalWeight'] + (result * Product[0]['weight']),
-        //     });
-
-        //     await ProfileCollection.findByIdAndUpdate({
-        //         _id: req.body.cutomerID
-        //     }, {
-        //         updatedBy: req.user.username,
-        //         $push: {
-        //             invoiceID: newRecordtoHistory["_id"],
-        //         }
-        //     });
         res.send("بەرهەمەکە بە سەرکەوتوویی گەڕێندرایەوە");
-        // }
-
 
 
     } catch (error) {
@@ -1742,6 +1640,29 @@ exports.SearchForProductModel = async (req, res, next) => {
         res.send(Product);
     } catch (error) {
         console.log(error)
+    }
+}
+
+
+//Add New Invoice for Recovered Items
+exports.ProductHistory = async (req, res, next) => {
+    try {
+        const Records = await RecordsCollection.find({
+            status: "New Trailer",
+            productID: req.params.id
+        }).sort({
+            "createdAt": -1
+        }).populate('productID');
+
+        // res.json(Records)
+
+        res.render('Products/ProductHistory', {
+            title: "تۆماری بەرهەم",
+            user: req.user,
+            records: Records
+        })
+    } catch (error) {
+        next(error)
     }
 }
 
