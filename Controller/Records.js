@@ -64,7 +64,7 @@ exports.Records = async (req, res, next) => {
                         amount: { $sum: "$totalPrice" },
                         count: { $sum: 1 },
                         items: {
-                            $push: { discount: "$discount", prepaid: "$prepaid", oldDebut: "$oldDebut", personName: "$personName", note: "$note", softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                            $push: { discount: "$discount", prepaid: "$prepaid", oldDebut: "$oldDebut", personName: "$personName", note: "$note", softdelete: "$softdelete", trailerNumber: "$trailerNumber", paidMoney: "$paidMoney", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
                         },
                     },
 
@@ -87,7 +87,9 @@ exports.Records = async (req, res, next) => {
                         foreignField: "_id",
                         as: "profile",
                     },
-                },
+                }, {
+                    $limit: 20
+                }
             ]);
 
         // res.send(Invoices)
@@ -270,7 +272,7 @@ exports.ChangeStatusOfInvoice = async (req, res, next) => {
         });
 
         req.flash('success', "پارەدانەکە بە سەرکەوتوویی تۆمارکرا");
-        res.redirect("/Profiles/"+req.params.customerID+"/Invoices")
+        res.redirect("/Profiles/" + req.params.customerID + "/Invoices")
     } catch (error) {
         next(error)
     }

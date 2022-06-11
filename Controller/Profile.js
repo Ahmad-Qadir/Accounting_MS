@@ -201,6 +201,29 @@ exports.PayMoney = async (req, res, next) => {
 }
 
 //Get All Customers
+exports.TransferOwner = async (req, res, next) => {
+    var Profile = await ProfileCollection.findOne({
+        _id: req.params.id
+    });
+
+    var Customers = await ProfileCollection.find({
+    });
+
+    const Record = await RecordsCollection.find({
+        status: "Customer Request",
+        recordCode: req.params.invoiceID
+    }).populate('productID');
+
+    res.render("Profiles/TransferOwner", {
+        title: "گواستنەوەی خاوەنداریێتی",
+        profiles: Profile,
+        invoice: Record,
+        customers:Customers
+    })
+}
+
+
+//Get All Customers
 exports.UpdateProfileChanges = async (req, res, next) => {
 
     await ProfileCollection.findByIdAndUpdate({
@@ -232,7 +255,7 @@ exports.GetAllInvoiceForCustomers = async (req, res, next) => {
                     _id: { recordCode: '$recordCode', status: "$status" },
                     amount: { $sum: "$totalPrice" },
                     items: {
-                        $push: { note:"$note",remainedMoney: "$remainedMoney", paidMoney: "$paidMoney", oldDebut: "$oldDebut", discount: "$discount", prepaid: "$prepaid", recordCode: '$recordCode', softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
+                        $push: { note: "$note", remainedMoney: "$remainedMoney", paidMoney: "$paidMoney", oldDebut: "$oldDebut", discount: "$discount", prepaid: "$prepaid", recordCode: '$recordCode', softdelete: "$softdelete", trailerNumber: "$trailerNumber", productID: "$productID", cutomerID: "$cutomerID", createdAt: "$createdAt", moneyStatus: "$moneyStatus", status: "$status", totalPrice: "$totalPrice", totalQuantity: "$totalQuantity", addedBy: "$addedBy", sellPrice: "$sellPrice" },
                     },
                 },
 

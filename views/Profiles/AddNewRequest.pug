@@ -67,15 +67,15 @@ block content
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-warning.shadow-sm.text-white.m-1.edit(type='button' onclick="showDatas()")
           i.fas.fa-money-bill-alt.fa-sm.text-white-50
           |  پارەدانی کاتی
+        a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.m-1.edit(type='button' onclick="showNewDatas()")
+          i.fas.fa-money-bill-alt.fa-sm.text-white-50
+          |  داشکان
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-success.shadow-sm.text-white.m-1(type='button' onclick="payNow()")
           i.fas.fa-money-bill-alt.fa-sm.text-white-50
           |  واصڵ کردن
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white.m-1(type='button' onclick="Qard()")
           i.fas.fa-money-bill-alt.fa-sm.text-white-50
           |  قەرزکردن
-        a.d-none.d-sm-inline-block.btn.btn-sm.btn-primary.shadow-sm.text-white.m-1.disabled(type='button' data-toggle="modal" data-target="#confirm-payment")
-          i.fas.fa-wallet.fa-sm.text-white-50
-          |  دانەوەی پارە
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.m-1(type='button' data-toggle='modal' onclick="printDiv('printableArea')")
           i.fas.fa-print.fa-sm.text-white-50
           |  چاپکردن
@@ -97,14 +97,19 @@ block content
                 //- .form-group.col-md-2.invisible(id="showme1")
                 //-   label قەرزی کۆن
                 //-   input.form-control(id="qardikon" name="qardikon" type='number' placeholder='0' required step='any' value=profile[0]['remainedbalance'].toFixed(2))
-                .form-group.col-md-1.invisible(id="showme2")
-                  label کۆی گشتی
-                  input.form-control(id="koywasl" name="koywasl" type='number' placeholder='0' required step='any')
-                .form-group.col-md-1.invisible(id="showme3")
+                .form-group.col-md-2.invisible(id="showme2")
+                  label کۆی گشتی تۆمار
+                  input.form-control(id="koywasl" name="koywasl" type='number' placeholder='0' readOnly required step='any')
+                .form-group.col-md-2.invisible(id="showme3")
+                  label کۆی گشتی داشکان
+                  input.form-control(id="dashkan" name="dashkan" type='number' placeholder='0' required step='any')
+                .form-group.col-md-1.invisible(id="showme4")
                   label بڕی دراو
                   input.form-control(id="koydraw" name="koydraw" type='number' placeholder='0' required step='any')
-                .form-group.col-md-1.invisible(id="showme4")
+                .form-group.col-md-1.invisible(id="showme6")
                   a.btn.btn-primary.mt-4(onclick="paradaniGshty()") تۆماربکە
+                .form-group.col-md-1.invisible(id="showme5")
+                  a.btn.btn-primary.mt-4(onclick="payNowDiscount()") تۆماربکە
                 //- .form-group.col-md-2.invisible(id="showme4")
                 //-   label کۆی گشتی داشکان
                 //-   input.form-control(id="dashkan" name="dashkan" type='number' placeholder='0' required step='any')
@@ -442,6 +447,45 @@ block content
       })
     }
 
+    //Pay as Discount
+    function payNowDiscount(){
+      objectData=document.getElementById("invoiceTable")
+      var subtotal=document.getElementById('total').innerHTML.replace("$","");
+      var dashkan=document.getElementById('dashkan').value;
+      var note = document.getElementById("note").value;
+      var personName = document.getElementById("personName").value;
+
+      var result=Object.values(getJSON(objectData))
+      result.push([note])
+      result.push([personName])
+
+      //- console.log(result)      
+      //Send to Database
+        var data= $.ajax({
+          type: 'POST',
+          url: "/Products/#{profile[0]['_id']}/Requests/Discount/"+subtotal+"/"+dashkan,
+          data:JSON.stringify(result),
+          contentType: "application/json; charset=utf-8",
+          success: function(data,xhr,textStatus, errorThrown){
+            $('#newRecord').empty();
+            console.log()
+            if(textStatus['status']==201)
+              $('#newRecord').append($("<div></div>").attr("class","note note-success").text(data));
+            else{
+              for (i = 0; i <data.length;i++){
+                $('#newRecord').append($("<div></div>").attr("class","note note-danger").text("بەرهەمی "+data[i]['itemModel']+data[i]['itemName']+data[i]['itemType']+data[i]['color']+data[i]['weight']+data[i]['itemUnit']+" تەنها "+data[i]['totalQuantity']+" ماوە"))
+              }   
+            }
+          },
+          error: function(err,xhr, textStatus, errorThrown){
+            $('#newRecord').empty();
+            console.log(err)
+          }
+      })
+    }
+
+
+
     // Parse HTML table element to JSON array of objects
     function getJSON(table) {  
       // thead
@@ -552,12 +596,27 @@ block content
 
       document.getElementById('showme2').classList.remove('invisible')
       document.getElementById('showme2').classList.add('visible')
+      document.getElementById('showme4').classList.remove('invisible')
+      document.getElementById('showme4').classList.add('visible')
+      document.getElementById('showme6').classList.remove('invisible')
+      document.getElementById('showme6').classList.add('visible')
+      document.getElementById('koywasl').value=document.getElementById('total').innerHTML.replace("$","")
+    }
+
+    function showNewDatas(val, event) {
+
+      document.getElementById('showme2').classList.remove('invisible')
+      document.getElementById('showme2').classList.add('visible')
       document.getElementById('showme3').classList.remove('invisible')
       document.getElementById('showme3').classList.add('visible')
       document.getElementById('showme4').classList.remove('invisible')
       document.getElementById('showme4').classList.add('visible')
+      document.getElementById('showme5').classList.remove('invisible')
+      document.getElementById('showme5').classList.add('visible')
       document.getElementById('koywasl').value=document.getElementById('total').innerHTML.replace("$","")
     }
+
+
 
 
     function paradaniGshty(val, event) {
@@ -678,6 +737,11 @@ block content
           //- $('#invoiceTable').on('click', 'tbody tr td', function(event) {
           //-   var idnumber=$(this).attr('id').replace(/[^0-9]/g,'')
           //- });
+          $( "#dashkan" ).change(function() {
+            var calculation=parseFloat(document.getElementById('koywasl').value)*(parseFloat(document.getElementById('dashkan').value)/100)
+            var x=parseFloat(document.getElementById('koywasl').value)-calculation;
+            document.getElementById('koydraw').value=x.toFixed(2);
+            });
     })
 
     // Check For Packets

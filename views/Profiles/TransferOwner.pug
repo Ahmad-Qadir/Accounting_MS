@@ -1,0 +1,69 @@
+include ../Components/Header
+block content
+    br
+    .container
+        // Page Heading
+        .d-sm-flex.align-items-left.justify-content-between.mb-4
+        .jumbotron
+            .row
+                .container-fluid.table-responsive
+                    form(method='POST' action="/Profiles/Modification/"+profiles['_id']+"/Updates")
+                        h2 زانیاری کڕیار
+                        table.table
+                            thead.thead-dark
+                                tr
+                                    th(scope='col') ناوی كڕیار
+                                    th(scope='col') ژمارەی مۆبایل
+                                    th(scope='col') ناونیشان
+                                    th(scope='col') ناوی کۆمپانیا
+                            tbody
+                                tr
+                                    th(scope='row')=profiles['clientName']
+                                    td=profiles['phoneNumber']
+                                    td=profiles['location']
+                                    td=profiles['companyName']
+                        hr
+                        h2 زانیاریەکانی تۆمار
+                        table(id="clientTable").table.table-hover.table-sm.dt-responsive.table-striped
+                            thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
+                                tr(scope='col' style="text-align:center; font-size:90%")
+                                    th #
+                                    th خۆری بەرهەم
+                                    th ناوی بەرهەم
+                                    th بڕی پێوانە
+                                    th ڕەنگ
+                                    th بڕ
+                                    th باری ئێستا
+                                    th کۆی گشتی نرخ
+                                    if invoice[0]['moneyStatus']=="Discount Invoice"
+                                        th داشکان
+                                        th کۆی نرخ دوای داشکان
+                                    th تێبینی 
+                                    th بەروار 
+                                    th لەلایان 
+                            tbody 
+                                each product,k in invoice
+
+                                    tr
+                                        td=x
+                                        td=product['productID']['itemModel']
+                                        td=product['productID']['itemName']
+                                        td(style="text-align:center;")=product['productID']['weight']+product['productID']['unit']
+                                        td(style="text-align:center;")=product['productID']['color']
+                                        td(style="text-align:center;")=invoice[k]['totalQuantity']
+                                        td(style="text-align:center;")=invoice[k]['status']
+                                        td(style="text-align:center;")="$ "+invoice[k]['totalPrice'].toFixed(2)
+                                        if invoice[k]['moneyStatus']=="Discount Invoice"
+                                            td(style="text-align:center;")=invoice[k]['discount']
+                                            td(style="text-align:center;")="$ "+invoice[k]['paidMoney'].toFixed(2)
+                                        td(style="text-align:center;")=invoice[k]['note']
+                                        td(style="text-align:center;")=invoice[k]['createdAt'].toLocaleString("en-GB")
+                                        td(style="text-align:center;")=invoice[k]['addedBy']
+                        hr
+                        h2 گواستنەوە بۆ
+                        .row.col-md-5
+                            select.col-md-5(name="customers" class="form-control") 
+                                option(value=profiles['_id'])=profiles['clientName']
+                                each item,i in customers
+                                    option(value=item['_id'])=item['clientName']
+                            button.btn.btn-warning.m-2.col-md-2(type='submit').disabled گواستنەوە

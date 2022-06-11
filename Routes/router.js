@@ -60,6 +60,7 @@ router.post('/Products/:id/Requests', Products.allowIfLoggedin, Products.grantAc
 router.post('/Products/:id/Requests/:paid', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.NewInvoiceForDebut); // Add new Request per Product
 router.post('/Products/:id/Requests/Payment/:total/:pay', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.NewInvoiceForDebutAndPrice); // Add new Request per Product
 router.post('/Products/:id/Requests/Debut/:price', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.NewInvoiceOfNoPrice); // Add new Request per Product
+router.post('/Products/:id/Requests/Discount/:price/:discount', Products.allowIfLoggedin, Products.grantAccess('readAny', 'products'), Products.NewInvoiceForDiscount); // Add new Request per Product
 router.post('/Products/RemoveProduct/:id', Products.allowIfLoggedin, Products.grantAccess('deleteAny', 'products'), Products.RemoveProduct); // Add new Request per Product
 router.get('/Products/Remove/:id', Products.allowIfLoggedin, Products.grantAccess('deleteAny', 'products'), Products.RemoveProductUI); // Add new Request per Product
 router.post('/Products/NewTrailer/:cost', Products.allowIfLoggedin, Products.grantAccess('createAny', 'products'), Products.AppendNewTrailertoProduct)
@@ -119,7 +120,7 @@ router.post('/Profile', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny'
 router.get('/Profiles', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.GetAllCustomers); // Get All Customers Profile
 router.get('/Profiles/:id/invoices', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.GetAllInvoiceForCustomers); // Get All invoice for specific Profile
 router.get('/Profiles/:id/Debut/invoices', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.GetAllDebutInvoiceForCustomers); // Get All invoice for specific Profile
-
+router.get('/Profile/Transfer/Invoice/:invoiceID/:id', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.TransferOwner); // Add new Request per Customer
 router.get('/Profile/:id/NewRequest', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.AddNewRequest); // Add new Request per Customer
 router.get('/Profiles/:invoiceID/:id/:status/Print', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.PrintSelectedInvoice); // Print Invoice
 router.get('/Profiles/AddNew', Profiles.allowIfLoggedin, Profiles.grantAccess('readAny', 'profile'), Profiles.CreateNewProfile);

@@ -364,6 +364,147 @@ exports.NewInvoice = async (req, res, next) => {
     }
 }
 
+//Invoice Request Operation
+exports.NewInvoiceForDiscount = async (req, res, next) => {
+    try {
+        var RequestList = req.body[0];
+        var checkLength = 0;
+        var preparation = [];
+        var resultOfValidation = [];
+        var count = 0;
+        const Record = await RecordsCollection.findOne({
+            status: "Customer Request",
+        }).distinct("recordCode");
+
+        var numberArray = Record.map(Number);
+
+        numberArray.sort(function (a, b) {
+            return a - b;
+        });
+
+        var invoiceID = parseFloat((numberArray[numberArray.length - 1])) + 1;
+
+        if (isNaN(invoiceID))
+            invoiceID = 1;
+
+        var Profile = await ProfileCollection.findOne({
+            _id: req.params.id
+        });
+
+        for (let k = 0; k < RequestList.length; k++) {
+            const element = RequestList[k];
+            const Product = await ProductsCollection.findOne({
+                itemModel: element[1],
+                itemName: element[2],
+                itemType: element[3],
+                color: element[4],
+                weight: parseFloat(element[5].split(" ")[0]),
+                itemUnit: element[5].split(" ")[1]
+            });
+
+            var totalRequestedPackets = element[6];
+            var _SellPrice = parseFloat(element[7].replace("$", ''));
+
+            if (Product['totalQuantity'] < totalRequestedPackets) {
+                preparation[count] = Product;
+                count++;
+            } else {
+                checkLength++;
+            }
+        }
+
+        setTimeout(async () => {
+
+            if (checkLength == RequestList.length) {
+                for (let index = 0; index < RequestList.length; index++) {
+                    const element = RequestList[index];
+                    // console.log("Item Model:" + element[1])
+                    // console.log("Item Name:" + element[2])
+                    // console.log("Item Type:" + element[3])
+                    // console.log("Item Color:" + element[4])
+                    // console.log("Item Weight:" + element[5].split(" ")[0])
+                    // console.log("Item Unit:" + element[5].split(" ")[1])
+                    // console.log("Item Number:"+element[6])
+                    // console.log("Sell Price:"+element[7])
+                    // console.log("Total Price:"+element[8])
+                    // console.log("Item Trailer:"+element[9])
+
+                    const Product = await ProductsCollection.findOne({
+                        itemModel: element[1],
+                        itemName: element[2],
+                        itemType: element[3],
+                        color: element[4],
+                        weight: parseFloat(element[5].split(" ")[0]),
+                        itemUnit: element[5].split(" ")[1]
+                    });
+
+
+                    var totalRequestedPackets = element[6];
+                    var _SellPrice = parseFloat(element[7].replace("$", ''));
+
+                    //===============Records Collection=============
+                    const newRecordtoHistory = new RecordsCollection({
+                        recordCode: invoiceID,
+                        totalQuantity: totalRequestedPackets,
+                        status: "Customer Request",
+                        sellPrice: _SellPrice,
+                        totalPrice: _SellPrice * totalRequestedPackets,
+                        discount: req.params.discount / 100,
+                        paidMoney: _SellPrice * totalRequestedPackets - ((_SellPrice * totalRequestedPackets) * (req.params.discount / 100)),
+                        oldDebut: Profile['remainedbalance'],
+                        addedBy: req.user.username,
+                        updatedBy: req.user.username,
+                        note: req.body[1].toString(),
+                        productID: Product['_id'],
+                        cutomerID: req.params.id,
+                        htmlObject: req.body['tbody'],
+                        moneyStatus: "Discount Invoice",
+                        personName: req.body[2].toString(),
+                        camePrice: Product['camePrice']
+                    });
+                    await newRecordtoHistory.save();
+
+                    var result = Product['totalQuantity'] - totalRequestedPackets;
+
+                    await ProductsCollection.findByIdAndUpdate({
+                        _id: Product['_id']
+                    }, {
+                        totalQuantity: result,
+                        updatedBy: req.user.username,
+                        $push: {
+                            itemHistory: newRecordtoHistory["_id"],
+                        }
+                    });
+
+
+                    await ProfileCollection.findByIdAndUpdate({
+                        _id: req.params.id
+                    }, {
+                        updatedBy: req.user.username,
+                        $push: {
+                            invoiceID: newRecordtoHistory["_id"],
+                        }
+                    });
+
+                }
+                res.status(201).send("بە سەرکەوتوویی تۆمارکرا")
+
+                await ProfileCollection.findByIdAndUpdate({
+                    _id: req.params.id
+                }, {
+                    remainedbalance: Profile['remainedbalance'] + parseFloat(req.params.price.replace("$", '')) - (parseFloat(req.params.price.replace("$", '')) * req.params.discount / 100),
+                });
+
+            } else {
+                res.send(preparation)
+            }
+        }, 2000);
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 // TODO: Checked and Worked Properly
 //Invoice Request Operation
 exports.NewInvoiceOfNoPrice = async (req, res, next) => {

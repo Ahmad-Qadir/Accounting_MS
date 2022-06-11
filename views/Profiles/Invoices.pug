@@ -19,8 +19,8 @@ block content
           i.fas.fa-file-invoice.fa-sm.text-white-50
           |  تۆمارەکان(بە وەصڵ)
         a.d-none.d-sm-inline-block.btn.btn-sm.btn-warning.shadow-sm.text-white.m-2(href="/Profiles/Favorates/"+profile[0]['cutomerID']['_id'])
-            i.fas.fa-heart.fa-sm.text-white-50
-            |  دڵخوازەکانی کڕیار
+          i.fas.fa-heart.fa-sm.text-white-50
+          |  دڵخوازەکانی کڕیار
     div.p-4
       .row
         .form-group.col-md-3
@@ -70,6 +70,9 @@ block content
                       a.btn.btn-sm.btn-success.m-2( title="پارەدانی ئەم تۆمارە" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Records/Status/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID'])
                         span.icon.text-white-50
                           i.fas.fa-money-bill-alt
+                      a.btn.btn-sm.btn-warning.m-2( title="گواستنەوەی خاوەنداریێتی" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Profile/Transfer/Invoice/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID'])
+                        span.icon.text-white-50
+                          i.fas.fa-random
                 else if item['items'][0]['moneyStatus']=="Half Invoice"
                   button.accordion-button.note.note-warning.border.border-warning.rounded-5(style="border-width:10px !important;" type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
                     div(style="background-color:#f0ad4e")="تۆماری ژمارە: "+item['_id']['recordCode']
@@ -81,6 +84,9 @@ block content
                       a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Profiles/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID']+"/"+item['items'][0]['status']+"/Print")
                         span.icon.text-white-50
                           i.fas.fa-print
+                      a.btn.btn-sm.btn-warning.m-2( title="گواستنەوەی خاوەنداریێتی" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Profile/Transfer/Invoice/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID'])
+                        span.icon.text-white-50
+                          i.fas.fa-random
                       //- a.btn.btn-sm.btn-danger.m-2( title="ڕەشکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Invoices/Delete/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID']+"/"+item['items'][0]['status'])
                       //-   span.icon.text-white-50
                       //-     i.fas.fa-trash 
@@ -113,6 +119,27 @@ block content
                       a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Profiles/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID']+"/"+item['items'][0]['status']+"/Print")
                         span.icon.text-white-50
                           i.fas.fa-print
+                      a.btn.btn-sm.btn-warning.m-2( title="گواستنەوەی خاوەنداریێتی" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Profile/Transfer/Invoice/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID'])
+                        span.icon.text-white-50
+                          i.fas.fa-random
+                      //- a.btn.btn-sm.btn-danger.m-2( title="ڕەشکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Invoices/Delete/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID']+"/"+item['items'][0]['status'])
+                      //-   span.icon.text-white-50
+                      //-     i.fas.fa-trash 
+
+
+                else if item['items'][0]['moneyStatus']=="Discount Invoice"
+                  button.accordion-button.note.note-danger.border.border-danger.rounded(style="border-width:10px !important;" type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
+                    div="تۆماری ژمارە: "+item['_id']['recordCode']
+                    //- .col-md-2="کۆی بەرهەم: "+item['count']
+                    .col-md-4="تێچووی تۆمار: "+parseFloat(item['amount']).toFixed(2)
+                    .col-md-4="بەروار: "+item['items'][0]['createdAt'].toLocaleString("en-GB")
+                    .col-md-3 
+                      a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Profiles/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID']+"/"+item['items'][0]['status']+"/Print")
+                        span.icon.text-white-50
+                          i.fas.fa-print
+                      a.btn.btn-sm.btn-warning.m-2( title="گواستنەوەی خاوەنداریێتی" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Profile/Transfer/Invoice/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID'])
+                        span.icon.text-white-50
+                          i.fas.fa-random
                       //- a.btn.btn-sm.btn-danger.m-2( title="ڕەشکردنەوەی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Invoices/Delete/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID']+"/"+item['items'][0]['status'])
                       //-   span.icon.text-white-50
                       //-     i.fas.fa-trash 
@@ -170,6 +197,9 @@ block content
                           th بڕ
                           th باری ئێستا
                           th کۆی گشتی نرخ
+                          if item['items'][0]['moneyStatus']=="Discount Invoice"
+                            th داشکان
+                            th کۆی نرخ دوای داشکان
                           th تێبینی 
                           th بەروار 
                           th لەلایان 
@@ -200,6 +230,9 @@ block content
                                   td(style="text-align:center;")=item['items'][x]['totalQuantity']
                                   td(style="text-align:center;")=item['items'][x]['status']
                                   td(style="text-align:center;")="$ "+item['items'][x]['totalPrice'].toFixed(2)
+                                  if item['items'][x]['moneyStatus']=="Discount Invoice"
+                                    td(style="text-align:center;")=item['items'][x]['discount']
+                                    td(style="text-align:center;")="$ "+item['items'][x]['paidMoney'].toFixed(2)
                                   td(style="text-align:center;")=item['items'][x]['note']
                                   td(style="text-align:center;")=item['items'][x]['createdAt'].toLocaleString("en-GB")
                                   td(style="text-align:center;")=item['items'][x]['addedBy']
@@ -212,4 +245,3 @@ block content
                                         i.fas.fa-trash     
 
 
-                                           
