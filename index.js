@@ -8,13 +8,10 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const session = require('express-session');
-const swaggerJsDoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express");
 const PORT = process.env.PORT || 3000;
 const app = express();
 
 const fs = require('fs')
-const csv = require('csv-parser')
 var uuid = require('uuid');
 
 var bodyParser = require('body-parser')
@@ -26,24 +23,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-// Extended: https://swagger.io/specification/#infoObject
-const swaggerOptions = {
-    swaggerDefinition: {
-        info: {
-            version: "1.0.0",
-            title: "Accounting Service API",
-            description: "Customer API Information",
-            contact: {
-                name: "Ahmad Abdullah Qadir"
-            },
-            servers: [process.env.address]
-        }
-    },
-    // ['.routes/*.js']
-    apis: ["index.js"]
-};
-
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 //Express Setter
 require('events').EventEmitter.defaultMaxListeners = Infinity
@@ -71,7 +50,6 @@ app.use(function (req, res, next) {
     res.locals.messages = require('express-messages')(req, res);
     next();
 });
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(cors());
 
 
@@ -87,14 +65,10 @@ mongoose.connect("mongodb+srv://Accountant:Accountant@cluster0.c5jxd.mongodb.net
 //Collections
 const EmployeeClass = require('./models/Employee');
 const ProductsCollection = require('./models/Product')
-const swaggerJSDoc = require('swagger-jsdoc');
 const RecordsCollection = require('./models/records');
 const ProfileCollection = require('./models/Profiles');
 const TrailerCollection = require('./models/Trailers');
 const CompanyCollection = require('./models/Companies');
-require('./Controller/prod')
-
-
 
 
 //Getting Access Token
@@ -169,7 +143,7 @@ app.get('/', async (req, res) => {
 
         // Total Products
         const Products = await ProductsCollection.find({})
-        
+
         // Total Users
         const Profiles = await ProfileCollection.find({});
 
@@ -179,30 +153,12 @@ app.get('/', async (req, res) => {
             const element = Products[index];
             total_Products = total_Products + element['totalQuantity']
         }
-        // var _balance = Income * (parseFloat(User['ratio']) / 100)
-        // await EmployeeClass.findByIdAndUpdate({
-        //     _id: User['_id']
-        // }, {
-        //     $set: {
-        //         balance: _balance
-        //     }
-        // });
-
-
-
-
 
         res.render("Dashboard", {
             title: "Dashboard",
             product: Products,
-            // mostwanted: _MostWanted,
-            // records: Records,
-            // expenses: Expenses,
-            // Income: Income,
             profiles: Profiles,
-            // trailers: Trailers,
             user: User,
-            // totalP: total_Products
         })
     } else {
         res.render('Login', {
@@ -210,213 +166,6 @@ app.get('/', async (req, res) => {
         });
     }
 });
-
-
-// app.get('/remover', async (req, res) => {
-//     var checker = await ProductsCollection.updateMany({
-//     }, {
-//         totalQuantity: 0
-//     });
-//     res.send(checker)
-// });
-
-app.get('/updatename', async (req, res) => {
-
-    const checker = await ProductsCollection.aggregate(
-        [
-            {
-                $group: {
-                    _id: { color: '$color'},
-                    count: { $sum: 1 },
-                },
-
-            },
-        ]);
-
-    // var checker = await ProductsCollection.findOneAndUpdate({
-    //     color: "الأفق"
-    // }, {
-    //     color: "الافق"
-    // });
-
-
-    res.send(checker)
-});
-
-// app.get('/removerOfCust', async (req, res) => {
-//     var checker = await ProfileCollection.updateMany({
-//     }, {
-//         borrowedBalance: 0,
-//         recoveredBalance: 0,
-//         remainedbalance: 0,
-//         invoiceID: []
-//     });
-//     res.send(checker)
-// });
-
-// app.get('/updater', async (req, res) => {
-//     fs.createReadStream("C:\\Users\\ahmed.q\\Desktop\\csvjson.csv")
-//         .pipe(csv())
-//         .on('data', async function (row) {
-
-//             var checker = await ProductsCollection.findByIdAndUpdate({
-//                 _id: row.baxoy
-//             }, {
-//                 // borrowedBalance: parseFloat(row.borrowedBalance),
-//                 // recoveredBalance: parseFloat(row.recoveredBalance),
-//                 camePrice: parseFloat(row.camePrice),
-//             });
-//             console.log(checker)
-//         })
-//         .on('end', function () {
-//             res.send("end")
-//         })
-// });
-
-// app.get('/import', async (req, res) => {
-//     fs.createReadStream("C:\\Users\\Ahmad\\Desktop\\kota.csv")
-//         .pipe(csv())
-//         .on('data', async function (row) {
-//             const newProduct = new ProductsCollection({
-//                 itemName: row.itemName,
-//                 itemCode: uuid.v1(),
-//                 itemModel: row.itemModel,
-//                 itemUnit: row.itemUnit,
-//                 itemType: row.itemType,
-//                 brandType: row.brandType,
-//                 manufacturerCompany: row.manufacturerCompany,
-//                 companyCode: row.companyCode,
-//                 countryCompany: row.countryCompany,
-//                 unit: row.unit,
-//                 usedIn: row.usedIn,
-//                 weight: parseFloat(row.weight),
-//                 color: row.color,
-//                 packet: 1,
-//                 perPacket: row.perPacket,
-//                 // remainedPacket: 0,
-//                 // remainedPerPacket: 0,
-//                 totalQuantity: row.totalQuantity,
-//                 status: "New Product",
-//                 expireDate: Date.now(),
-//                 camePrice: row.camePrice,
-//                 sellPriceMufrad: row.sellPriceMufrad,
-//                 sellPriceMahal: row.sellPriceMahal,
-//                 sellPriceWasta: row.sellPriceWasta,
-//                 sellPriceWakil: row.sellPriceWakil,
-//                 sellPriceSharika: row.sellPriceSharika,
-//                 totalPrice: row.camePrice * row.perPacket,
-//                 trailerNumber: 1,
-//                 addedBy: "Ahmad Qadir",
-//                 updatedBy: "Ahmad Qadir",
-//                 note: ".",
-//                 softdelete: "false"
-//             });
-//             await newProduct.save();
-//             const newItem = new RecordsCollection({
-//                 camePrice: row.camePrice,
-//                 sellPriceMufrad: row.sellPriceMufrad,
-//                 sellPriceMahal: row.sellPriceMahal,
-//                 sellPriceWasta: row.sellPriceWasta,
-//                 sellPriceWakil: row.sellPriceWakil,
-//                 sellPriceSharika: row.sellPriceSharika,
-//                 totalPrice: 0,
-//                 packet: 0,
-//                 perPacket: 0,
-//                 totalQuantity: 0,
-//                 status: "New Product",
-//                 trailerNumber: 1,
-//                 addedBy: "Ahmad Qadir",
-//                 updatedBy: "Ahmad Qadir",
-//                 note: ".",
-//                 softdelete: "false",
-//                 productID: newProduct['_id'],
-//             });
-//             await newItem.save();
-
-
-//             const newRecordtoHistory = new RecordsCollection({
-//                 recordCode: "imported",
-//                 totalQuantity: parseFloat(row.totalQuantity),
-//                 status: "New Trailer",
-//                 sellPrice: row.sellPriceMufrad,
-//                 totalPrice: parseFloat(row.camePrice) * parseFloat(row.totalQuantity),
-//                 // cost: req.params.cost,
-//                 camePrice: row.camePrice,
-//                 sellPriceMufrad: row.sellPriceMufrad,
-//                 sellPriceMahal: row.sellPriceMahal,
-//                 sellPriceWasta: row.sellPriceWasta,
-//                 sellPriceWakil: row.sellPriceWakil,
-//                 sellPriceSharika: row.sellPriceSharika,
-//                 trailerNumber: 16,
-//                 addedBy: "Ahmad Qadir",
-//                 updatedBy: "Ahmad Qadir",
-//                 note: ".",
-//                 softdelete: "false",
-//                 productID: newProduct['_id'],
-//             });
-//             await newRecordtoHistory.save();
-
-//             const newTrailer = new TrailerCollection({
-//                 itemName: newProduct['itemName'],
-//                 itemModel: newProduct['itemModel'],
-//                 itemType: newProduct['itemType'], //[boyax-adawat]
-//                 itemUnit: newProduct['itemUnit'],
-//                 manufacturerCompany: newProduct['manufacturerCompany'],
-//                 companyCode: newProduct['companyCode'],
-//                 countryCompany: newProduct['countryCompany'],
-//                 unit: newProduct['unit'],
-//                 usedIn: newProduct['usedIn'],
-//                 color: newProduct['color'],
-//                 weight: newProduct['weight'],
-//                 // totalWeight: (parseFloat(element[11]) * newProduct['weight']),
-//                 camePrice: row.camePrice,
-//                 sellPrice: row.sellPriceMufrad,
-//                 sellPriceMufrad: row.sellPriceMufrad,
-//                 sellPriceMahal: row.sellPriceMahal,
-//                 sellPriceWasta: row.sellPriceWasta,
-//                 sellPriceWakil: row.sellPriceWakil,
-//                 sellPriceSharika: row.sellPriceSharika,
-//                 // totalPrice: (parseFloat(element[11]) * parseFloat(element[13])),
-//                 // packet: parseFloat(element[11]) / newProduct['packet'],
-//                 // perPacket: parseFloat(element[11]) % newProduct['packet'],
-//                 // remainedPacket: parseFloat(element[11]) / newProduct['packet'],
-//                 // remainedPerPacket: parseFloat(element[11]) % newProduct['packet'],
-//                 totalQuantity: parseFloat(row.totalQuantity),
-//                 status: "New Trailer",
-//                 // expireDate: newProduct['expireDate'],
-//                 trailerNumber: 16,
-//                 addedBy: "Ahmad Qadir",
-//                 updatedBy: "Ahmad Qadir",
-//                 note: ".",
-//                 softdelete: "false",
-//                 productID: newProduct['_id'],
-//             });
-//             await newTrailer.save();
-//             await TrailerCollection.findByIdAndUpdate({
-//                 "_id": newTrailer['_id']
-//             }, {
-//                 $push: {
-//                     invoiceID: newRecordtoHistory["_id"],
-//                 }
-//             });
-//             await ProductsCollection.findByIdAndUpdate({
-//                 _id: newProduct['_id']
-//             }, {
-//                 itemHistory: newItem["_id"]
-//             });
-//             await ProductsCollection.findByIdAndUpdate({
-//                 _id: newProduct['_id']
-//             }, {
-//                 itemHistory: newRecordtoHistory["_id"]
-//             });
-
-//         })
-//         .on('end', function () {
-//             res.send("end")
-//             // TODO: SAVE users data to another file
-//         })
-// })
-
 
 //Error Handler
 process.on('uncaughtException', function (err) {
