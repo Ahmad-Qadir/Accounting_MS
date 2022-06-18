@@ -1807,6 +1807,53 @@ exports.ProductHistory = async (req, res, next) => {
     }
 }
 
+exports.SoldProducts = async (req, res, next) => {
+    const Invoices = await RecordsCollection
+        .aggregate([
+            {
+                $group: {
+                    _id: { productID: "$productID" },
+                    items: {
+                        $push: { totalQuantity: "$totalQuantity", productID: "$productID", status: "$status" },
+                    },
+                },
+            },
+
+            {
+                $match: {
+                    "items.status": "Customer Request",
+
+                }
+            },
+            {
+                $project: {
+                    total: { $sum: "$items.totalQuantity" },
+                }
+            },
+            {
+                $lookup: {
+                    from: "items",
+                    localField: "_id.productID",
+                    foreignField: "_id",
+                    as: "data",
+                },
+            },
+            {
+                $sort: { "total": -1 },
+                // $sort: { "_id.productID": -1 },
+
+            },
+
+        ]);
+
+    res.render("Products/GottenProduct", {
+        title: "بەرهەمە فرۆشراوەکان",
+        invoices: Invoices,
+    })
+    // res.send(Invoices)
+
+}
+
 
 
 
