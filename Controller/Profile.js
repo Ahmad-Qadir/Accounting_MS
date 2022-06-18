@@ -218,7 +218,7 @@ exports.TransferOwner = async (req, res, next) => {
         title: "گواستنەوەی خاوەنداریێتی",
         profiles: Profile,
         invoice: Record,
-        customers:Customers
+        customers: Customers
     })
 }
 
@@ -367,7 +367,7 @@ exports.GetAllGottenProductsForCustomer = async (req, res, next) => {
                 $group: {
                     _id: { productID: "$productID", status: "$status", cutomerID: "$cutomerID" },
                     items: {
-                        $push: { totalQuantity: "$totalQuantity", productID: "$productID", cutomerID: "$cutomerID", status: "$status" },
+                        $push: { recordCode: "$recordCode", totalQuantity: "$totalQuantity", productID: "$productID", cutomerID: "$cutomerID", status: "$status" },
                     },
                 },
             },
@@ -407,6 +407,8 @@ exports.GetAllGottenProductsForCustomer = async (req, res, next) => {
         .sort({
             "createdAt": -1
         }).populate('cutomerID')
+
+    console.log(Invoices)
 
     if (Invoices == "") {
         req.flash('danger', "کڕیاری داواکراو هیج بەرهەمێکی دڵخوازی نیە");

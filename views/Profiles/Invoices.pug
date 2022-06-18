@@ -55,8 +55,9 @@ block content
                   button.accordion-button.note.note-warning.border.border-warning.rounded-5(style="border-width:10px !important;" type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
                     div(style="background-color:#f0ad4e")="تۆماری ژمارە: "+item['_id']['recordCode']
                     //- .col-md-2="کۆی بەرهەم: "+item['count']
-                    .col-md-4="تێچووی تۆمار: "+parseFloat(item['amount']).toFixed(2)
-                    .col-md-4="بەروار: "+item['items'][0]['createdAt'].toLocaleString('en-GB')
+                    .col-md-2="تێچووی تۆمار: "+parseFloat(item['amount']).toFixed(2)
+                    .col-md-3="تێبینی: "+item['items'][0]['note']
+                    .col-md-3="بەروار: "+item['items'][0]['createdAt'].toLocaleString('en-GB')
                     .col-md-3 
                       a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Profiles/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID']+"/"+item['items'][0]['status']+"/Print")
                         span.icon.text-white-50
@@ -77,7 +78,8 @@ block content
                   button.accordion-button.note.note-warning.border.border-warning.rounded-5(style="border-width:10px !important;" type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
                     div(style="background-color:#f0ad4e")="تۆماری ژمارە: "+item['_id']['recordCode']
                     //- .col-md-2="کۆی بەرهەم: "+item['count']
-                    .col-md-4="تێچووی تۆمار: "+parseFloat(item['amount']).toFixed(2)
+                    .col-md-2="تێچووی تۆمار: "+parseFloat(item['amount']).toFixed(2)
+                    .col-md-3="تێبینی: "+item['items'][0]['note']
                     .col-md-2="بڕی ماوە: "+item['items'][0]['remainedMoney']
                     .col-md-4="بەروار: "+item['items'][0]['createdAt'].toLocaleString("en-GB")
                     .col-md-1 
@@ -100,8 +102,9 @@ block content
                   button.accordion-button.note.note-secondary.border.border-secondary.rounded(style="border-width:10px !important;" type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
                     div="تۆماری ژمارە: "+item['_id']['recordCode']
                     //- .col-md-2="کۆی بەرهەم: "+item['count']
-                    .col-md-4="تێچووی تۆمار: "+parseFloat(item['amount']).toFixed(2)
-                    .col-md-4="بەروار: "+item['items'][0]['createdAt'].toLocaleString("en-GB")
+                    .col-md-2="تێچووی تۆمار: "+parseFloat(item['amount']).toFixed(2)
+                    .col-md-3="تێبینی: "+item['items'][0]['note']
+                    .col-md-3="بەروار: "+item['items'][0]['createdAt'].toLocaleString("en-GB")
                     .col-md-3 
                       a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Profiles/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID']+"/"+item['items'][0]['status']+"/Print")
                         span.icon.text-white-50
@@ -113,8 +116,9 @@ block content
                   button.accordion-button.note.note-success.border.border-success.rounded(style="border-width:10px !important;" type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
                     div="تۆماری ژمارە: "+item['_id']['recordCode']
                     //- .col-md-2="کۆی بەرهەم: "+item['count']
-                    .col-md-4="تێچووی تۆمار: "+parseFloat(item['amount']).toFixed(2)
-                    .col-md-4="بەروار: "+item['items'][0]['createdAt'].toLocaleString("en-GB")
+                    .col-md-2="تێچووی تۆمار: "+parseFloat(item['amount']).toFixed(2)
+                    .col-md-3="تێبینی: "+item['items'][0]['note']
+                    .col-md-3="بەروار: "+item['items'][0]['createdAt'].toLocaleString("en-GB")
                     .col-md-3 
                       a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Profiles/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID']+"/"+item['items'][0]['status']+"/Print")
                         span.icon.text-white-50
@@ -131,8 +135,9 @@ block content
                   button.accordion-button.note.note-danger.border.border-danger.rounded(style="border-width:10px !important;" type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
                     div="تۆماری ژمارە: "+item['_id']['recordCode']
                     //- .col-md-2="کۆی بەرهەم: "+item['count']
-                    .col-md-4="تێچووی تۆمار: "+parseFloat(item['amount']).toFixed(2)
-                    .col-md-4="بەروار: "+item['items'][0]['createdAt'].toLocaleString("en-GB")
+                    .col-md-2="تێچووی تۆمار: "+parseFloat(item['amount']).toFixed(2)
+                    .col-md-3="تێبینی: "+item['items'][0]['note']
+                    .col-md-3="بەروار: "+item['items'][0]['createdAt'].toLocaleString("en-GB")
                     .col-md-3 
                       a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Profiles/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID']+"/"+item['items'][0]['status']+"/Print")
                         span.icon.text-white-50
@@ -147,8 +152,9 @@ block content
                   button.accordion-button(type='button' data-mdb-toggle='collapse' data-mdb-target='#collapse'+i aria-expanded='true' aria-controls='collapse'+i)
                     div="تۆماری ژمارە: "+item['_id']['recordCode']
                     //- .col-md-2="کۆی بەرهەم: "+item['count']
-                    .col-md-4="تێچووی تۆمار: "+parseFloat(item['amount']).toFixed(2)
-                    .col-md-4="بەروار: "+item['items'][0]['createdAt'].toLocaleString("en-GB")
+                    .col-md-2="تێچووی تۆمار: "+parseFloat(item['amount']).toFixed(2)
+                    .col-md-3="تێبینی: "+item['items'][0]['note']
+                    .col-md-3="بەروار: "+item['items'][0]['createdAt'].toLocaleString("en-GB")
                     .col-md-3 
                       a.btn.btn-sm.btn-secondary.m-2( title="چاپکردنی تۆمار" style="padding: .25rem .4rem;font-size: .875rem;line-height: .5;border-radius: .2rem;" href="/Profiles/"+item['_id']['recordCode']+"/"+item['items'][0]['cutomerID']+"/"+item['items'][0]['status']+"/Print")
                         span.icon.text-white-50
