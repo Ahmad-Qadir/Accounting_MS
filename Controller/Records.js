@@ -745,3 +745,47 @@ exports.AddNewItemToInvoice = async (req, res, next) => {
         next(error)
     }
 }
+
+
+// TODO: Checked and Worked Properly
+//Update Products Operation
+exports.PrintReportMonth = async (req, res, next) => {
+    try {
+
+        const Record = await RecordsCollection.aggregate(
+            [
+                {
+                    $group: {
+                        _id: { recordCode: "$recordCode", moneyStatus: '$moneyStatus' },
+                        amount: { $sum: "$totalPrice" },
+                        items: {
+                            $push: { createdAt: "$createdAt", customerId: "$customerId", totalPrice: "$totalPrice", totalPrice: "$totalPrice" },
+                        },
+                    },
+
+                },
+                {
+                    $sort: { "items.createdAt": -1 },
+                },
+                {
+                    $match: {
+                        "items.createdAt": {
+                            $gte: new Date(2022, 5, 1),
+                            $lt: new Date(2022, 6, 1)
+                        },
+                        '_id.moneyStatus':req.params.moneyStatus
+                    }
+                },
+            ]);
+
+        res.render('Records/Report', {
+            title: "تۆمارەکانی مانگی شەش",
+            record: Record,
+        });
+
+        // res.send(Record)
+
+    } catch (error) {
+        next(error)
+    }
+}

@@ -88,6 +88,9 @@ router.get('/Records/Delete/:recordcode/:productid', Records.allowIfLoggedin, Re
 router.get('/Records/Modification/:recordcode/:productid', Records.allowIfLoggedin, Records.grantAccess('readAny', 'records'), Records.EditProductInInvoice); // Records
 router.post('/Records/Modification/:id/updates', Records.allowIfLoggedin, Records.grantAccess('readAny', 'records'), Records.UpdateChangesinEditOfTrailer); // Records
 router.get('/Records/Status/:recordcode/:customerID', Records.allowIfLoggedin, Records.grantAccess('readAny', 'records'), Records.ChangeStatusOfInvoice); // Records
+router.get('/Records/Report/:moneyStatus',  Records.PrintReportMonth); // Records
+
+
 
 
 

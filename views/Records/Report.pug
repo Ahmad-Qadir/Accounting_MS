@@ -1,0 +1,54 @@
+include ../Components/Header
+block content
+    br
+    .container-fluid(id="printableArea")
+        // Page Heading
+        .d-sm-flex.align-items-left.justify-content-between.mb-4
+            h1.h3.mb-0.text-gray-800=title
+            //- .container.col-md-4
+            //-     .row.height.d-flex.justify-content-center.align-items-center
+            //-         .col.md-6
+            //-             .search-box
+            //-                 .input-group
+            //-                     input#search.form-control(type='text' placeholder='گەڕان بەپێی ژمارەی تۆمار')
+            .span
+                a.d-none.d-sm-inline-block.btn.btn-sm.btn-secondary.shadow-sm.text-white.m-2(onclick="printDiv('printableArea')")
+                    i.fas.fa-file-invoice.fa-sm.text-white-50
+                    |  چاپکردن
+                //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white.m-2(href="/Profiles/Invoices/"+profile[0]['cutomerID']['_id'])
+                //-   i.fas.fa-file-invoice.fa-sm.text-white-50
+                //-   |  تۆمارەکان(بە وەصڵ)
+                //- a.d-none.d-sm-inline-block.btn.btn-sm.btn-info.shadow-sm.text-white(href=Address+"/Clients/Register")
+                //-     i.fas.fa-plus-square.fa-sm.text-white-50
+                //-     |  Add New Product
+        .container
+            table.table.table-hover.table-sm.dt-responsive.table-striped.table-bordered
+                thead(style="font-size: 12px;font-weight:bold;text-align:center; background-color: #3f87a6;color: #fff;" )
+                    tr(scope='col' style="text-align:center; font-size:90%")
+                        th(style="width:2%") #
+                        th(style="width:10%") ژمارەی تۆمار
+                        th(style="width:10%") کڕیار
+                        th(style="width:10%") کۆی گشتی
+                        th(style="width:15%") بەروار
+                        //- th تێبینی
+
+
+                tbody
+                    each item,i in record
+                        tr(scope='col' style="text-align:center; font-size:90%")
+                            td=i+1
+                            td(style="text-align:center;")=item['_id']['recordCode']
+                            td(style=`text-align:center;` id="Date")
+                            td(style="text-align:center;")=item['amount'].toFixed(2)
+                            td(style="text-align:center;")=item['items'][0]['createdAt'].toLocaleString("en-GB")
+
+    script.
+        function printDiv(divName) 
+        {
+            var originalContents = document.body.innerHTML;
+            document.body.style.backgroundColor = "white";
+            var printContents = document.getElementById(divName).innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
