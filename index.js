@@ -108,51 +108,11 @@ app.get('/', async (req, res) => {
         } = await jwt.verify(accessToken, "TitanService_jwtPrivateKey");
         const User = await EmployeeClass.findById(userId);
 
-        const Records = await RecordsCollection.find({}).populate("productID").sort({
-            "createdAt": -1
-        });
-        const Trailers = await TrailerCollection.find({
-            softdelete: false
-        }).sort({
-            "createdAt": 1
-        }).limit(5);
-        const TotalExpenses = await RecordsCollection.find({
-            status: {
-                $nin: ["Customer Request"]
-            }
-        }).populate("productID");
-        const TotalIncome = await RecordsCollection.find({
-            status: "Customer Request"
-        }).populate("productID");
-
-        var totalPrice = 0
-        var Expenses = []
-        for (let index = 0; index < TotalExpenses.length; index++) {
-            const element = TotalExpenses[index];
-            totalPrice = totalPrice + element['sellPrice'] * element['totalQuantity'];
-        }
-        Expenses = [totalPrice]
-        //==============================================
-        var totalPriceIncome = 0
-        var Income = []
-        for (let index = 0; index < TotalIncome.length; index++) {
-            const element = TotalIncome[index];
-            totalPriceIncome = totalPriceIncome + element['sellPrice'] * element['totalQuantity'];
-        }
-        Income = [totalPriceIncome]
-
         // Total Products
         const Products = await ProductsCollection.find({})
 
         // Total Users
         const Profiles = await ProfileCollection.find({});
-
-
-        var total_Products = 0;
-        for (let index = 0; index < Products.length; index++) {
-            const element = Products[index];
-            total_Products = total_Products + element['totalQuantity']
-        }
 
         res.render("Dashboard", {
             title: "Dashboard",
